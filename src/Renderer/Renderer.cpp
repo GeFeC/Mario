@@ -38,13 +38,14 @@ auto renderer::init() -> void{
 static auto draw_element(const Drawable& drawable, bool is_glyph, float offset_x = 0.f){
   if (!drawable.is_visible) return;
 
-  const auto flip_offset_x = drawable.size.x * (drawable.flip - 1) / 2;
+  const auto flip_offset_x = drawable.size.x * (drawable.flip.horizontal - 1) / 2;
+  const auto flip_offset_y = drawable.size.y * (drawable.flip.vertical - 1) / 2;
 
   program::set_uniform("rect", {
     std::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * 5 - offset_x),
-    std::round(drawable.position.y + renderer::shadow_mode * 5),
-    std::round(drawable.size.x * drawable.flip),
-    std::round(drawable.size.y)
+    std::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * 5),
+    std::round(drawable.size.x * drawable.flip.horizontal),
+    std::round(drawable.size.y * drawable.flip.vertical)
   });
 
   program::set_uniform("is_glyph", is_glyph);

@@ -11,7 +11,8 @@
 #include <iostream>
 
 namespace bounce{
-  inline auto start(BlockState& block){
+  template<typename BounceBlock>
+  inline auto start(BounceBlock& block){
     auto& bounce_state = block.bounce_state;
 
     bounce_state.is_bouncing = true;
@@ -19,7 +20,9 @@ namespace bounce{
     bounce_state.power = bounce_state.initial_power;
   }
 }
-inline auto bounce_controller(BlockState& block, EntityState& player){
+
+template<typename BounceBlock>
+inline auto bounce_controller(BounceBlock& block, EntityState& player){
   auto& bounce_state = block.bounce_state;
 
   if (bounce_state.is_bouncing){

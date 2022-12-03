@@ -39,7 +39,7 @@ static auto player_gravity(EntityState& player, LevelState& level){
   entity_gravity(player, level, gravity_boost);
 }
 
-static auto player_movement(EntityState& player, LevelState& level){
+static auto player_movement(PlayerState& player, LevelState& level){
   const auto Right = EntityState::DirectionRight;
   const auto Left = EntityState::DirectionLeft;
 
@@ -65,23 +65,90 @@ static auto player_movement(EntityState& player, LevelState& level){
   //Calculating max speed
   static auto max_speed = 5.f;
 
-  if (window::is_key_pressed(GLFW_KEY_LEFT_CONTROL)){
-    max_speed = 7.f;
+  if (!player.is_squating){
+    if (window::is_key_pressed(GLFW_KEY_LEFT_CONTROL)){
+      max_speed = 7.f;
+    }
+    else if (max_speed > 5.f){
+      max_speed -= speed_boost;
+    }
+    else{
+      max_speed = 5.f;
+    }
   }
-  else if (max_speed > 5.f){
+
+  if (player.is_squating && max_speed > 1.f){
     max_speed -= speed_boost;
-  }
-  else{
-    max_speed = 5.f;
   }
 
   player.acceleration.left = std::clamp(player.acceleration.left, 0.f, max_speed);
   player.acceleration.right = std::clamp(player.acceleration.right, 0.f, max_speed);
-
 }
 
-static auto player_textures(EntityState& player){
-  player.current_texture = &textures::small_mario;
+static auto player_grow_up(PlayerState& player){
+  if (player.grow_state < 8.f){
+    player.grow_state += window::delta_time * 9;
+  }
+  else{
+    player.is_growing_up = false;
+  }
+}
+
+static auto player_shrink_down(PlayerState& player){
+  if (player.grow_state > 0.f){
+    player.grow_state -= window::delta_time * 9;
+  }
+  else{
+    player.invincibility_delay = 2.f;
+    player.is_shrinking = false;
+  }
+}
+
+static auto player_invincibility(PlayerState& player){
+  if (player.invincibility_delay <= 0.f) {
+    player.is_visible = true;
+    return;
+  }
+
+  const auto invincibility = static_cast<int>(player.invincibility_delay * 100);
+  if (invincibility % 3 == 0){
+    player.is_visible = !player.is_visible;
+  }
+
+  player.invincibility_delay -= window::delta_time;
+}
+
+static auto player_update_growth(PlayerState& player){
+  if (!player.is_growing_up && !player.is_shrinking) return;
+
+  const auto grow_state = static_cast<int>(player.grow_state);
+
+  const auto set_grow_state = [&](auto growth, auto new_player_size){
+    player.growth = growth;
+
+    if (player.size.y != new_player_size){
+      player.position.y += player.size.y - new_player_size;
+      player.size.y = new_player_size;
+    }
+  };
+
+  if (grow_state % 3 == 0){
+    set_grow_state(PlayerState::Growth::Small, config::BlockSize);
+  }
+
+  if (grow_state % 3 == 1){
+    set_grow_state(PlayerState::Growth::Medium, config::BlockSize * 1.5f);
+  }
+
+  if (grow_state % 3 == 2){
+    set_grow_state(PlayerState::Growth::Big, config::BlockSize * 2.f);
+  }
+}
+
+static auto player_textures(PlayerState& player){
+  player.current_texture = player.default_texture();
+
+  if (player.is_growing_up || player.is_shrinking) return;
 
   static auto current_walk_animation_frame = 0.f;
   if (player.acceleration.left > 0 || player.acceleration.right > 0){
@@ -92,7 +159,7 @@ static auto player_textures(EntityState& player){
       current_walk_animation_frame = 0.f;
     }
     
-    player.current_texture = &textures::small_mario_walk[static_cast<int>(current_walk_animation_frame)];
+    player.current_texture = player.walk_texture(current_walk_animation_frame);
   }
   else{
     current_walk_animation_frame = 0.f;
@@ -103,15 +170,19 @@ static auto player_textures(EntityState& player){
   const auto is_turning_right = total_speed < 0 && player.direction == EntityState::DirectionRight;
 
   if (is_turning_left || is_turning_right){
-    player.current_texture = &textures::small_mario_turning;
+    player.current_texture = player.turn_texture();
   }
 
   if (!player.is_on_ground){
-    player.current_texture = &textures::small_mario_jumping;
+    player.current_texture = player.jump_texture();
   }
 
   if (player.is_dead){
     player.current_texture = &textures::small_mario_dead;
+  }
+
+  if (player.is_squating){
+    player.current_texture = &textures::big_mario_squating;
   }
 }
 
@@ -128,45 +199,63 @@ static auto player_death(EntityState& player){
   }
 }
 
-auto player_controller(EntityState& player, LevelState& level) -> void{
-  player_movement(player, level);
-  player_jump(player, level);
-  player_gravity(player, level);
-
-  player_death(player);
-
+auto player_squat(PlayerState& player, LevelState& level){
   if (player.is_on_ground){
     player.mobs_killed_in_row = 1;
   }
 
-  player_textures(player);
-}
+  auto is_forced_to_squat = false;
+  detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
+    if (collision_state.distance_above | util::in_range(0, 20) && player.is_squating){
+      is_forced_to_squat = true;
+    }
+  });
 
-auto player_hit_block_above(const EntityState& player, const BlockState& block) -> bool{
-  const auto was_block_hit_by_player = (player.position.y - block.position.y - block.size.y) | util::in_range(-10, 0);
+  if (player.growth == PlayerState::Growth::Big){
+    if (window::is_key_pressed(GLFW_KEY_DOWN) || is_forced_to_squat){
+      if (player.size.y == 120.f){
+        player.is_squating = true;
+        player.position.y += 60.f;
+      }
 
-  return 
-    player_can_hit_block_above(player, block) && 
-    was_block_hit_by_player && 
-    !block.bounce_state.is_bouncing && 
-    player.gravity > 0.f;
-}
+      player.size.y = 60.f;
+    }
+    else{
+      if (player.size.y == 60.f){
+        player.is_squating = false;
+        player.position.y -= 60.f;
+      }
 
-auto player_can_hit_block_above(const EntityState& player, const BlockState& block) -> bool{
-  if (player.direction == EntityState::DirectionLeft){
-    return player.position.x - block.position.x 
-      | util::in_range(0.f, block.size.x - CollisionOffset);
+      player.size.y = 120.f;
+    }
   }
+}
 
-  return player.position.x - block.position.x 
-    | util::in_range(-player.size.x + CollisionOffset, 0.f);
+auto player_controller(PlayerState& player, LevelState& level) -> void{
+  if (player.is_growing_up){
+    player_grow_up(player);
+  }
+  else if (player.is_shrinking){
+    player_shrink_down(player);
+  }
+  else{
+    player_movement(player, level);
+    player_jump(player, level);
+    player_gravity(player, level);
+    player_squat(player, level);
+    player_invincibility(player);
+
+    player_death(player);
+  } 
+
+  player_update_growth(player);
+  player_textures(player);
 }
 
 auto player_stomp_on_entity(const EntityState& player, const EntityState& entity) -> bool{
   if (collision::is_hovering_in_x(player, entity) && !entity.is_dead){
-    return entity.position.y - player.position.y - player.size.x | util::in_range(0, 20);
+    return entity.position.y - player.position.y - player.size.y | util::in_range(0, 20);
   }
 
   return false;
 }
-

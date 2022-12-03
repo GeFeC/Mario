@@ -7,6 +7,8 @@
 namespace textures{
   inline auto black = Texture("black.png");
 
+  inline auto bricks_particles_normal = Texture("bricks_particle/normal.png");
+
   inline auto bricks = Texture("tile/bricks.png");  
   inline auto dirt = Texture("tile/dirt.png");
   inline auto mushroom_bot = Texture("tile/mushroom_bot.png");
@@ -20,6 +22,21 @@ namespace textures{
   inline auto red_cloud_bottom_left = Texture("cloud/left_bottom.png");
   inline auto red_cloud_bottom_center = Texture("cloud/center_bottom.png");
   inline auto red_cloud_bottom_right = Texture("cloud/right_bottom.png");
+
+  inline auto red_bush_center = Texture("bush/mush_center.png");
+  inline auto red_bush_left = Texture("bush/mush_left.png");
+  inline auto red_bush_right = Texture("bush/mush_right.png");
+
+  inline auto red_hill_center = Texture("hill/mush_center.png");
+  inline auto red_hill_center_dot = Texture("hill/mush_center_dot.png");
+  inline auto red_hill_left = Texture("hill/mush_left.png");
+  inline auto red_hill_right = Texture("hill/mush_right.png");
+  inline auto red_hill_top = Texture("hill/mush_top.png");
+
+  inline auto red_pipe_top_left = Texture("pipe/red_left_top.png");
+  inline auto red_pipe_top_right = Texture("pipe/red_right_top.png");
+  inline auto red_pipe_bottom_left = Texture("pipe/red_left_bot.png");
+  inline auto red_pipe_bottom_right = Texture("pipe/red_right_bot.png");
 
   inline auto coin = std::array<Texture, 3>{
     Texture("coin/0.png"),
@@ -55,12 +72,32 @@ namespace textures{
     Texture("player/mario/small/normal/walk3.png")
   };
 
+  inline auto big_mario = Texture("player/mario/big/normal/mario.png");
+  inline auto big_mario_jumping = Texture("player/mario/big/normal/jumping.png");
+  inline auto big_mario_squating = Texture("player/mario/big/normal/squating.png");
+  inline auto big_mario_turning = Texture("player/mario/big/normal/turning.png");
+
+  inline auto big_mario_walk = std::array<Texture, 3>{
+    Texture("player/mario/big/normal/walk1.png"),
+    Texture("player/mario/big/normal/walk2.png"),
+    Texture("player/mario/big/normal/walk3.png")
+  };
+
+  inline auto medium_mario = Texture("player/mario/growing.png");
+
   inline auto goomba_walk = std::array<Texture, 2>{
     Texture("entity/goomba/0.png"),
     Texture("entity/goomba/1.png")
   };
-
   inline auto goomba_dead = Texture("entity/goomba/dead.png");
+
+  inline auto red_goomba_walk = std::array<Texture, 2>{
+    Texture("entity/goomba/red0.png"),
+    Texture("entity/goomba/red1.png")
+  };
+  inline auto red_goomba_dead = Texture("entity/goomba/reddead.png");
+  
+  inline auto mushroom = Texture("entity/mushroom/mushroom.png");
 
   inline auto mini_coin = Texture("mini.png");
 }

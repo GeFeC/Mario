@@ -8,7 +8,7 @@
 
 #include "Util.hpp"
 
-inline auto coin_controller(BlockState& coin, EntityState& player, StatsState& stats){
+inline auto coin_controller(CoinBlockState& coin, EntityState& player, StatsState& stats){
   static constexpr auto CollisionPadding = 5;
 
   const auto hovers_in_x = player.position.x - coin.position.x

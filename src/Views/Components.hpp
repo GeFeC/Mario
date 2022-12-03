@@ -13,17 +13,25 @@ static auto render_entity(const EntityState& entity, float offset_x = 0.f){
     entity.position - glm::vec2(offset_x, 0),
     entity.size,
     entity.current_texture,
-    entity.direction,
+    { entity.direction, entity.vertical_flip },
     entity.is_visible
   });
 }
 
-static auto render_block(const BlockState& block, float offset_x = 0.f){
+static auto render_block(const BlockBase& block, float offset_x = 0.f){
   renderer::draw(Drawable{
     block.position - glm::vec2(offset_x, 0),
     glm::vec2(BlockState::Size),
     block.texture,
-    1,
+    { Drawable::Flip::NoFlip, Drawable::Flip::NoFlip },
     block.is_visible
   });
+}
+
+static auto render_bricks(const BricksBlockState& block, float offset_x = 0.f){
+  for (const auto& particle : block.particles){
+    render_entity(particle, offset_x);
+  }
+
+  render_block(block, offset_x);
 }

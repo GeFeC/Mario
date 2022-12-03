@@ -7,21 +7,21 @@
 #include "Controllers/PlayerController.hpp"
 #include "Util.hpp"
 #include "config.hpp"
+#include "res/textures.hpp"
 
-inline auto q_block_controller(BlockState& block, EntityState& player, StatsState& stats){
-  if (player_hit_block_above(player, block) && !player.is_dead){
+inline auto q_block_controller(QBlockState& block, EntityState& player, StatsState& stats){
+  if (player_hit_block_above(player, block) && !player.is_dead && block.bounce_state.can_bounce){
     bounce::start(block);
 
     block.texture = &textures::null_block;
     --block.bounce_state.bounces_count;
 
     if (block.bounce_state.bounces_count == 0){
-      block.types = { BlockState::Type::Solid };
+      block.bounce_state.can_bounce = false;
+      block.texture = &textures::null_block;
     }
-
-    ++stats.coins;
-    stats.score += config::RewardForQBlock;
   }
+
 }
 
 inline auto q_block_points_controller(PointsParticlesState& points, const EntityState& player){

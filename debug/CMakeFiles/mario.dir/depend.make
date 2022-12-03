@@ -1364,11 +1364,13 @@ CMakeFiles/mario.dir/src/Window.cpp.o: ../src/Window.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/AnimationController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/BlinkController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/BounceController.hpp
+CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/BricksController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/CoinController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/CollisionController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/EntityController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/GoombaController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/LevelController.hpp
+CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/MushroomController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/PlayerController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/PointsParticlesController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/QBlockController.hpp

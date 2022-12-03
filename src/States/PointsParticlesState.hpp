@@ -25,7 +25,13 @@ struct PointsParticlesState{
     text.is_visible = false;
   }
 
+  auto set_active(const glm::vec2& position){
+    text.position = position;
+    text.is_visible = true;
+    is_active = true;
+  }
+
   auto as_block() const{
-    return BlockState(text.get_position(), nullptr, {});
+    return BouncingBlockState(text.get_position() / 60.f);
   }
 };

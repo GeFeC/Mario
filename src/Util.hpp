@@ -7,6 +7,9 @@
 #include <glm/glm.hpp>
 
 namespace util{
+  template<typename T>
+  using vector2d = std::vector<std::vector<T>>;
+
   inline auto rng_once = std::mt19937(0);
   inline auto rng = std::mt19937(static_cast<std::mt19937::result_type>(std::time(0)));
 
@@ -49,6 +52,29 @@ namespace util{
     auto c = Contains<T>();
     c.targets = { t, targets... };
     return c;
+  }
+
+  template<typename...>
+  struct TD;
+
+  template<std::size_t N = 0, typename Callable, typename... Ts>
+  inline auto tuple_for_each(std::tuple<Ts...>& tuple, const Callable& callable){
+    callable(std::get<N>(tuple));
+
+    if constexpr (N + 1 < sizeof...(Ts)){
+      tuple_for_each<N + 1>(tuple, callable);
+    }
+  }
+
+  template<typename Callable, typename... Containers>
+  inline auto multi_for(const Callable& callable, Containers&... containers){
+    auto tuple = std::make_tuple(std::ref(containers)...);
+
+    tuple_for_each(tuple, [&callable](auto& container){
+      for (auto& item : container){
+        callable(item);
+      }
+    });
   }
 }
 

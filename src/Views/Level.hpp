@@ -33,16 +33,55 @@ static auto render_clouds(float screen_scroll){
     const auto x = position.x - cloud_offset;
     const auto y = position.y;
 
-    render_block(BlockState({ x * 60, y * 60 }, &textures::red_cloud_top_left), screen_scroll);
-    render_block(BlockState({ x * 60, (y + 1) * 60 }, &textures::red_cloud_bottom_left), screen_scroll);
+    render_block(BlockState({ x , y  }, &textures::red_cloud_top_left), screen_scroll);
+    render_block(BlockState({ x , (y + 1)  }, &textures::red_cloud_bottom_left), screen_scroll);
 
     for (int i = 0; i < cloud_size; ++i){
-      render_block(BlockState({ (x + i + 1) * 60, y * 60 }, &textures::red_cloud_top_center), screen_scroll);
-      render_block(BlockState({ (x + i + 1) * 60, (y + 1) * 60 }, &textures::red_cloud_bottom_center), screen_scroll);
+      render_block(BlockState({ (x + i + 1) , y  }, &textures::red_cloud_top_center), screen_scroll);
+      render_block(BlockState({ (x + i + 1) , (y + 1)  }, &textures::red_cloud_bottom_center), screen_scroll);
     }
 
-    render_block(BlockState( { (x + cloud_size + 1) * 60, y * 60 }, &textures::red_cloud_top_right ), screen_scroll);
-    render_block(BlockState( { (x + cloud_size + 1) * 60, (y + 1) * 60 }, &textures::red_cloud_bottom_right ), screen_scroll);
+    render_block(BlockState( { (x + cloud_size + 1) , y  }, &textures::red_cloud_top_right ), screen_scroll);
+    render_block(BlockState( { (x + cloud_size + 1) , (y + 1)  }, &textures::red_cloud_bottom_right ), screen_scroll);
+  }
+}
+
+static auto render_bushes(const std::vector<BackgroundObjectState>& bushes, float screen_scroll){
+  for (const auto [position, bush_size] : bushes){
+    const auto x = position.x;
+    const auto y = position.y;
+
+    render_block(BlockState({ x , y  }, &textures::red_bush_left), screen_scroll);
+
+    for (int i = 0; i < bush_size; ++i){
+      render_block(BlockState({ (x + i + 1) , y  }, &textures::red_bush_center), screen_scroll);
+    }
+
+    render_block(BlockState({ (x + bush_size + 1) , y  }, &textures::red_bush_right), screen_scroll);
+  }
+}
+
+static auto render_hills(const std::vector<BackgroundObjectState>& hills, float screen_scroll){
+  for (auto [position, hill_size] : hills){
+    auto x = position.x;
+    auto y = position.y;
+
+    while(hill_size > 0){
+      render_block(BlockState({ x , y  }, &textures::red_hill_left), screen_scroll);
+
+      for (int i = 0; i < hill_size * 2 - 1; ++i){
+        const auto texture = i % 2 ? &textures::red_hill_center_dot : &textures::red_hill_center;
+        render_block(BlockState({ (x + i + 1) , y  }, texture), screen_scroll);
+      }
+
+      render_block(BlockState({ (x + hill_size * 2) , y  }, &textures::red_hill_right), screen_scroll);
+
+      --hill_size;
+      ++x;
+      --y;
+    }
+
+    render_block(BlockState({ x , y  }, &textures::red_hill_top), screen_scroll);
   }
 }
 
@@ -69,13 +108,21 @@ static auto render_stats(const StatsState& stats){
   });
 }
 
-static auto render_entities(const LevelState& level_state, float screen_scroll){
-  for (const auto& goomba : level_state.goombas){
+static auto render_entities(const LevelState& level, float screen_scroll){
+  for (const auto& goomba : level.entities.goombas){
     render_entity(goomba, screen_scroll);
+  }
+
+  for (const auto& goomba : level.entities.red_goombas){
+    render_entity(goomba, screen_scroll);
+  }
+
+  for (const auto& mushroom : level.entities.mushrooms){
+    render_entity(mushroom, screen_scroll);
   }
 }
 
-static auto render_loading_screen(const LevelState& level_state){
+static auto render_loading_screen(const LevelState& level){
   //Background;
   renderer::draw(Drawable{
     glm::vec2(0, 0),
@@ -87,7 +134,7 @@ static auto render_loading_screen(const LevelState& level_state){
 
   const auto window_width = config::InitialWindowWidth;
 
-  const auto& stats = level_state.stats_state;
+  const auto& stats = level.stats_state;
   auto text = Text(&fonts::medium, "WORLD " + std::to_string(stats.level_major) + "-" + std::to_string(stats.level_minor));
   text.set_position(glm::vec2(460, 250));
 
@@ -107,10 +154,28 @@ static auto render_loading_screen(const LevelState& level_state){
   renderer::print(text);
 }
 
-static auto render_level(const LevelState& level_state){
+static auto render_blocks(const LevelState& level, float screen_scroll){
+  for (const auto& block : level.blocks.normal){
+    render_block(block, screen_scroll);
+  }
+
+  for (const auto& block : level.blocks.coins){
+    render_block(block, screen_scroll);
+  }
+
+  for (const auto& block : level.blocks.bricks){
+    render_bricks(block, screen_scroll);
+  }
+  
+  for (const auto& block : level.blocks.spinning_coins){
+    render_block(block, screen_scroll);
+  }
+}
+
+static auto render_level(const LevelState& level){
   auto screen_scroll = 0.f;
-  if (level_state.should_screen_scroll){
-    screen_scroll = level_state.player_state.position.x - config::PlayerPositionToScroll;
+  if (level.should_screen_scroll){
+    screen_scroll = level.player_state.position.x - config::PlayerPositionToScroll;
   }
 
   renderer::draw(Drawable{
@@ -120,25 +185,35 @@ static auto render_level(const LevelState& level_state){
   });
 
   renderer::draw_with_shadow([&]{
-    render_clouds(screen_scroll);
+    render_hills(level.background.hills, screen_scroll);
   });
 
   renderer::draw_with_shadow([&]{
-    for (const auto& block : level_state.blocks){
+    render_clouds(screen_scroll);
+    render_bushes(level.background.bushes, screen_scroll);
+  });
+
+  renderer::draw_with_shadow([&]{
+    render_blocks(level, screen_scroll);
+  });
+
+  renderer::draw_with_shadow([&]{
+    render_entities(level, screen_scroll);
+
+    for (const auto& block : level.blocks.q_blocks){
       render_block(block, screen_scroll);
     }
   });
 
   renderer::draw_with_shadow([&]{
-    render_entities(level_state, screen_scroll);
-    render_entity(level_state.player_state, screen_scroll);
+    render_entity(level.player_state, screen_scroll);
 
-    if (level_state.load_delay > 0.f){
-      render_loading_screen(level_state);
+    if (level.load_delay > 0.f){
+      render_loading_screen(level);
     }
-    render_stats(level_state.stats_state);
+    render_stats(level.stats_state);
 
-    for (const auto& particle : level_state.points_particles){
+    for (const auto& particle : level.points_particles){
       renderer::print(particle.text, screen_scroll);
     }
   });

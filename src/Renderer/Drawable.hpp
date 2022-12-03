@@ -7,7 +7,15 @@
 struct Drawable{
   glm::vec2 position;
   glm::vec2 size;
-  Texture* texture;
-  int flip = 1;
+  Texture const* texture;
+
+  struct Flip{
+    static constexpr auto UseFlip = -1;
+    static constexpr auto NoFlip = 1;
+
+    int horizontal = NoFlip;
+    int vertical = NoFlip;
+  } flip;
+
   bool is_visible = true;
 };
