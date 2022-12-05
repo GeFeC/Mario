@@ -1362,15 +1362,16 @@ CMakeFiles/mario.dir/src/Window.cpp.o
  /home/wojtus/Desktop/c++/mario/src/Window.cpp
  /home/wojtus/Desktop/c++/mario/src/Window.hpp
 CMakeFiles/mario.dir/src/main.cpp.o
- ../src/Controllers/AnimationController.hpp
  ../src/Controllers/BlinkController.hpp
  ../src/Controllers/BounceController.hpp
  ../src/Controllers/BricksController.hpp
  ../src/Controllers/CoinController.hpp
  ../src/Controllers/CollisionController.hpp
  ../src/Controllers/EntityController.hpp
+ ../src/Controllers/FireFlowerController.hpp
  ../src/Controllers/GoombaController.hpp
  ../src/Controllers/LevelController.hpp
+ ../src/Controllers/LoopedCounter.hpp
  ../src/Controllers/MushroomController.hpp
  ../src/Controllers/PlayerController.hpp
  ../src/Controllers/PointsParticlesController.hpp

@@ -170,6 +170,10 @@ static auto render_blocks(const LevelState& level, float screen_scroll){
   for (const auto& block : level.blocks.spinning_coins){
     render_block(block, screen_scroll);
   }
+
+  for (const auto& block : level.blocks.fire_flowers){
+    render_block(block, screen_scroll);
+  }
 }
 
 static auto render_level(const LevelState& level){

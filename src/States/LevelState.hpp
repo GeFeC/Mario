@@ -32,6 +32,7 @@ struct LevelState{
     std::vector<QBlockState> q_blocks;
     std::vector<BricksBlockState> bricks;
     std::vector<SpinningCoinState> spinning_coins;
+    std::vector<FireFlowerState> fire_flowers;
   } blocks;
 
   struct Entities{
@@ -121,6 +122,13 @@ struct LevelState{
 
       points_particles.push_back(particle);
     }
+  }
+
+  auto put_qblock_with_flower(const glm::vec2& position){
+    blocks.fire_flowers.push_back(FireFlowerState(position));
+    blocks.fire_flowers.back().is_visible = false;
+
+    put_qblock(position);
   }
 
   using Direction = EntityState::Direction;

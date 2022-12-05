@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../src/Controllers/AnimationController.hpp
-Window.hpp
-../src/Controllers/Window.hpp
-
 ../src/Controllers/BlinkController.hpp
 States/BlockState.hpp
 ../src/Controllers/States/BlockState.hpp
@@ -84,6 +80,16 @@ Util.hpp
 Window.hpp
 ../src/Controllers/Window.hpp
 
+../src/Controllers/FireFlowerController.hpp
+States/EntityState.hpp
+../src/Controllers/States/EntityState.hpp
+States/BlockState.hpp
+../src/Controllers/States/BlockState.hpp
+Controllers/PlayerController.hpp
+../src/Controllers/Controllers/PlayerController.hpp
+Window.hpp
+../src/Controllers/Window.hpp
+
 ../src/Controllers/GoombaController.hpp
 States/EntityState.hpp
 ../src/Controllers/States/EntityState.hpp
@@ -109,8 +115,8 @@ Controllers/CoinController.hpp
 ../src/Controllers/Controllers/CoinController.hpp
 Controllers/BounceController.hpp
 ../src/Controllers/Controllers/BounceController.hpp
-Controllers/AnimationController.hpp
-../src/Controllers/Controllers/AnimationController.hpp
+Controllers/LoopedCounter.hpp
+../src/Controllers/Controllers/LoopedCounter.hpp
 Controllers/QBlockController.hpp
 ../src/Controllers/Controllers/QBlockController.hpp
 Controllers/SpinningCoinController.hpp
@@ -127,12 +133,18 @@ Controllers/MushroomController.hpp
 ../src/Controllers/Controllers/MushroomController.hpp
 Controllers/BricksController.hpp
 ../src/Controllers/Controllers/BricksController.hpp
+Controllers/FireFlowerController.hpp
+../src/Controllers/Controllers/FireFlowerController.hpp
 Util.hpp
 ../src/Controllers/Util.hpp
 config.hpp
 ../src/Controllers/config.hpp
 res/textures.hpp
 ../src/Controllers/res/textures.hpp
+
+../src/Controllers/LoopedCounter.hpp
+Window.hpp
+../src/Controllers/Window.hpp
 
 ../src/Controllers/MushroomController.hpp
 States/EntityState.hpp
@@ -352,31 +364,9 @@ sstream
 iomanip
 -
 
-../src/Window.hpp
-string
--
-glm/glm.hpp
--
-glad/glad.h
--
-GLFW/glfw3.h
--
-
-../src/config.hpp
-
-../src/res/fonts.hpp
-Renderer/Font.hpp
-../src/res/Renderer/Font.hpp
-
 ../src/res/textureAllocators.hpp
 res/textures.hpp
 ../src/res/res/textures.hpp
-
-../src/res/textures.hpp
-Renderer/Texture.hpp
-../src/res/Renderer/Texture.hpp
-array
--
 
 ../vendor/freetype/include/freetype/config/ftheader.h
 
@@ -1533,40 +1523,6 @@ Util.hpp
 /home/wojtus/Desktop/c++/mario/src/Controllers/Util.hpp
 config.hpp
 /home/wojtus/Desktop/c++/mario/src/Controllers/config.hpp
-
-/home/wojtus/Desktop/c++/mario/src/Controllers/PlayerController.cpp
-PlayerController.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/PlayerController.hpp
-Controllers/CollisionController.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/Controllers/CollisionController.hpp
-Controllers/EntityController.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/Controllers/EntityController.hpp
-Controllers/GoombaController.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/Controllers/GoombaController.hpp
-config.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/config.hpp
-res/textures.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/res/textures.hpp
-Window.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/Window.hpp
-Util.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/Util.hpp
-GLFW/glfw3.h
--
-cmath
--
-algorithm
--
-
-/home/wojtus/Desktop/c++/mario/src/Controllers/PlayerController.hpp
-States/EntityState.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/States/EntityState.hpp
-States/LevelState.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/States/LevelState.hpp
-States/BlockState.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/States/BlockState.hpp
-Controllers/CollisionController.hpp
-/home/wojtus/Desktop/c++/mario/src/Controllers/Controllers/CollisionController.hpp
 
 /home/wojtus/Desktop/c++/mario/src/Frame.hpp
 Window.hpp

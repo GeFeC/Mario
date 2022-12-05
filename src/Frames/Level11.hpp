@@ -25,7 +25,8 @@ static auto run_frame_level11(AppState& app){
     texture_allocators::red_bush,
     texture_allocators::red_hill,
     texture_allocators::red_pipe,
-    texture_allocators::red_goomba
+    texture_allocators::red_goomba,
+    texture_allocators::fire_flower
   };
 
   const auto setup = [](auto& app){
@@ -106,9 +107,7 @@ static auto run_frame_level11(AppState& app){
       level.put_bricks({ 57 + i, 5 });
     }
 
-    for (int i = 0; i < 5; ++i){
-      level.put_bricks({ i + 1, 8 });
-    }
+    level.put_qblock_with_flower({ 2, 8 });
 
     level.put_entity_hitbox_block({ 49, 10 });
 

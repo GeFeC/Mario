@@ -7,7 +7,7 @@
 #include "Controllers/BlinkController.hpp"
 #include "Controllers/CoinController.hpp"
 #include "Controllers/BounceController.hpp"
-#include "Controllers/AnimationController.hpp"
+#include "Controllers/LoopedCounter.hpp"
 #include "Controllers/QBlockController.hpp"
 #include "Controllers/SpinningCoinController.hpp"
 #include "Controllers/StatsController.hpp"
@@ -16,13 +16,13 @@
 #include "Controllers/GoombaController.hpp"
 #include "Controllers/MushroomController.hpp"
 #include "Controllers/BricksController.hpp"
+#include "Controllers/FireFlowerController.hpp"
 
 #include "Util.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
 
 static auto level_blocks_controller(LevelState& level, int blink_state){
-  const auto animation_state = animation_controller();
 
   auto& player = level.player_state;
   auto& blocks = level.blocks;
@@ -41,8 +41,11 @@ static auto level_blocks_controller(LevelState& level, int blink_state){
     bricks_controller(block, player, level);
   }
 
+  static auto spin_state = 0.f;
+  spin_state = looped_counter(spin_state, 20.f, 4.f);
+
   for (auto& block : level.blocks.spinning_coins){
-    block.texture = &textures::spinning_coin[animation_state];
+    block.texture = &textures::spinning_coin[static_cast<int>(spin_state)];
     spinning_coin_controller(block, player, level.stats_state);
     bounce_controller(block, player);
   }
@@ -50,6 +53,14 @@ static auto level_blocks_controller(LevelState& level, int blink_state){
   for (auto& block : level.blocks.coins){
     block.texture = &textures::coin[blink_state];
     coin_controller(block, player, level.stats_state);
+  }
+
+  static auto flower_blink_state = 0.f;
+  flower_blink_state = looped_counter(flower_blink_state, 15.f, 4.f);
+
+  for (auto& block : level.blocks.fire_flowers){
+    block.texture = &textures::fire_flower[static_cast<int>(flower_blink_state)];
+    fire_flower_controller(block, player);
   }
 }
 

@@ -57,6 +57,13 @@ namespace textures{
     Texture("spinning_coin/3.png"),
   };
 
+  inline auto fire_flower = std::array<Texture, 4>{
+    Texture("flower/0.png"),
+    Texture("flower/1.png"),
+    Texture("flower/2.png"),
+    Texture("flower/3.png")
+  };
+
   inline auto null_block = Texture("q_block/used.png");
 
   inline auto mushroom_bg = Texture("mushroom_background.png");

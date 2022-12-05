@@ -35,6 +35,13 @@ namespace texture_allocators{
     &textures::null_block
   });
 
+  inline auto fire_flower = TextureAllocator({
+    &textures::fire_flower[0],
+    &textures::fire_flower[1],
+    &textures::fire_flower[2],
+    &textures::fire_flower[3]
+  });
+
   inline auto bricks = TextureAllocator({
     &textures::bricks,
     &textures::bricks_particles_normal

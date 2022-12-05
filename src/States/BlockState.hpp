@@ -39,9 +39,7 @@ struct BouncingBlockBase{
   int hitbox_block_index = -1;
 };
 
-struct BlinkingBlockBase{
-  int blink_state = 0;
-};
+struct BlinkingBlockBase{};
 
 struct BackgroundObjectState{
   glm::vec2 position;
@@ -54,6 +52,16 @@ struct BlockState : BlockBase{
   BlockState(const glm::vec2& position, Texture* texture){
     this->position = position * 60.f;
     this->texture = texture;
+  }
+};
+
+struct FireFlowerState : BlockBase{
+  float offset = 0.f;
+  bool should_be_pushed_out = false;
+
+  FireFlowerState(const glm::vec2& position){
+    this->position = position * 60.f;
+    texture = &textures::fire_flower[0];
   }
 };
 
