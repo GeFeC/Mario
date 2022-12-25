@@ -90,7 +90,42 @@ namespace textures{
     Texture("player/mario/big/normal/walk3.png")
   };
 
+  inline auto fire_big_mario = Texture("player/mario/big/fire/mario.png");
+  inline auto fire_big_mario_jumping = Texture("player/mario/big/fire/jumping.png");
+  inline auto fire_big_mario_squating = Texture("player/mario/big/fire/squating.png");
+  inline auto fire_big_mario_turning = Texture("player/mario/big/fire/turning.png");
+
+  inline auto fire_big_mario_walk = std::array<Texture, 3>{
+    Texture("player/mario/big/fire/walk1.png"),
+    Texture("player/mario/big/fire/walk2.png"),
+    Texture("player/mario/big/fire/walk3.png")
+  };
+
+  inline auto black_big_mario = Texture("player/mario/big/black/mario.png");
+  inline auto black_big_mario_jumping = Texture("player/mario/big/black/jumping.png");
+  inline auto black_big_mario_squating = Texture("player/mario/big/black/squating.png");
+  inline auto black_big_mario_turning = Texture("player/mario/big/black/turning.png");
+
+  inline auto black_big_mario_walk = std::array<Texture, 3>{
+    Texture("player/mario/big/black/walk1.png"),
+    Texture("player/mario/big/black/walk2.png"),
+    Texture("player/mario/big/black/walk3.png")
+  };
+
   inline auto medium_mario = Texture("player/mario/growing.png");
+
+  inline auto fireball = std::array<Texture, 4>{
+    Texture("fireball/1.png"),
+    Texture("fireball/2.png"),
+    Texture("fireball/3.png"),
+    Texture("fireball/4.png")
+  };
+
+  inline auto explosion = std::array<Texture, 3>{
+    Texture("fireball/explosion1.png"),
+    Texture("fireball/explosion2.png"),
+    Texture("fireball/explosion3.png")
+  };
 
   inline auto goomba_walk = std::array<Texture, 2>{
     Texture("entity/goomba/0.png"),

@@ -163,6 +163,7 @@ CMakeFiles/mario.dir/src/Controllers/CollisionController.cpp.o: ../src/Controlle
 
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Controllers/CollisionController.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Controllers/EntityController.hpp
+CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Controllers/FireballController.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Controllers/GoombaController.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Renderer/Drawable.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Renderer/Font.hpp
@@ -171,7 +172,10 @@ CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Renderer/Tex
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/BlockState.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/CollisionState.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/EntityState.hpp
+CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/FireballState.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/LevelState.hpp
+CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/LoopedCounter.hpp
+CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/PlayerState.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/States/PointsParticlesState.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Util.hpp
 CMakeFiles/mario.dir/src/Controllers/PlayerController.cpp.o: ../src/Window.hpp
@@ -1370,7 +1374,6 @@ CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/EntityController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/FireFlowerController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/GoombaController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/LevelController.hpp
-CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/LoopedCounter.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/MushroomController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/PlayerController.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Controllers/PointsParticlesController.hpp
@@ -1385,7 +1388,10 @@ CMakeFiles/mario.dir/src/main.cpp.o: ../src/Renderer/Texture.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/BlockState.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/CollisionState.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/EntityState.hpp
+CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/FireballState.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/LevelState.hpp
+CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/LoopedCounter.hpp
+CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/PlayerState.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/States/PointsParticlesState.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Util.hpp
 CMakeFiles/mario.dir/src/main.cpp.o: ../src/Views/Components.hpp

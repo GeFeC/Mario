@@ -62,7 +62,28 @@ namespace texture_allocators{
     &textures::big_mario_jumping,
     &textures::big_mario_turning,
     &textures::big_mario_squating,
-    &textures::medium_mario
+    &textures::fire_big_mario_walk[0],
+    &textures::fire_big_mario_walk[1],
+    &textures::fire_big_mario_walk[2],
+    &textures::fire_big_mario,
+    &textures::fire_big_mario_jumping,
+    &textures::fire_big_mario_turning,
+    &textures::fire_big_mario_squating,
+    &textures::black_big_mario_walk[0],
+    &textures::black_big_mario_walk[1],
+    &textures::black_big_mario_walk[2],
+    &textures::black_big_mario,
+    &textures::black_big_mario_jumping,
+    &textures::black_big_mario_turning,
+    &textures::black_big_mario_squating,
+    &textures::medium_mario,
+    &textures::fireball[0],
+    &textures::fireball[1],
+    &textures::fireball[2],
+    &textures::fireball[3],
+    &textures::explosion[0],
+    &textures::explosion[1],
+    &textures::explosion[2]
   });
 
   inline auto mushroom = TextureAllocator({

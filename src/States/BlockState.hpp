@@ -58,6 +58,7 @@ struct BlockState : BlockBase{
 struct FireFlowerState : BlockBase{
   float offset = 0.f;
   bool should_be_pushed_out = false;
+  int points_index = -1;
 
   FireFlowerState(const glm::vec2& position){
     this->position = position * 60.f;

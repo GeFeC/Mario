@@ -210,7 +210,7 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
-    render_entity(level.player_state, screen_scroll);
+    render_player(level.player_state, screen_scroll);
 
     if (level.load_delay > 0.f){
       render_loading_screen(level);

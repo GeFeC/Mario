@@ -106,6 +106,7 @@ static auto run_frame_level11(AppState& app){
       level.put_bricks({ 55 + i, 8 });
       level.put_bricks({ 57 + i, 5 });
     }
+    level.put_qblock_with_coins({ 67, 5 }, 5);
 
     level.put_qblock_with_flower({ 2, 8 });
 

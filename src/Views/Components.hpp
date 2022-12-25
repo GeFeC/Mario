@@ -3,6 +3,7 @@
 #include "Renderer/Renderer.hpp"
 
 #include "States/EntityState.hpp"
+#include "States/PlayerState.hpp"
 #include "States/BlockState.hpp"
 
 #include "config.hpp"
@@ -34,4 +35,13 @@ static auto render_bricks(const BricksBlockState& block, float offset_x = 0.f){
   }
 
   render_block(block, offset_x);
+}
+
+static auto render_player(const PlayerState& player, float offset_x = 0.f){
+  for (const auto& fireball : player.fireballs){
+    render_entity(fireball, offset_x);
+    render_block(fireball.explosion, offset_x);
+  } 
+
+  render_entity(player, offset_x);
 }

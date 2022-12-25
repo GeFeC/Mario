@@ -3,8 +3,10 @@
 #include "Renderer/Texture.hpp"
 #include "Renderer/Drawable.hpp"
 #include "res/textures.hpp"
+#include "config.hpp"
 
 #include <glm/glm.hpp>
+#include <unordered_map>
 
 struct EntityState{
   using Direction = int;
@@ -37,10 +39,12 @@ struct EntityState{
   auto set_direction(Direction direction, int speed){
     if (direction == DirectionRight){
       acceleration.right = speed;
+      acceleration.left = 0.f;
       return;
     }
 
     acceleration.left = speed;
+    acceleration.right = 0.f;
   }
 };
 
@@ -49,51 +53,3 @@ struct MushroomState : EntityState{
   bool should_be_pushed_out = false;
 };
 
-struct PlayerState : EntityState{
-  enum class Growth{
-    Small,
-    Medium,
-    Big
-  } growth = Growth::Small;
-
-  int mobs_killed_in_row = 1;
-  float grow_state = 0.f;
-  float invincibility_delay = 0.f;
-  bool is_squating = false;
-  bool must_squat = false;
-  bool is_growing_up = false;
-  bool is_shrinking = false;
-
-  auto default_texture() const{
-    switch(growth){
-      case Growth::Small: return &textures::small_mario;
-      case Growth::Medium: return &textures::medium_mario;
-      case Growth::Big: return &textures::big_mario;
-      default: return &textures::small_mario;
-    }
-  }
-
-  auto walk_texture(int walk_frame) const{
-    switch(growth){
-      case Growth::Small: return &textures::small_mario_walk[walk_frame];
-      case Growth::Big: return &textures::big_mario_walk[walk_frame];
-      default: return &textures::small_mario;
-    }
-  }
-
-  auto turn_texture() const{
-    switch(growth){
-      case Growth::Small: return &textures::small_mario_turning;
-      case Growth::Big: return &textures::big_mario_turning;
-      default: return &textures::small_mario;
-    }
-  }
-
-  auto jump_texture() const{
-    switch(growth){
-      case Growth::Small: return &textures::small_mario_jumping;
-      case Growth::Big: return &textures::big_mario_jumping;
-      default: return &textures::small_mario;
-    }
-  }
-};

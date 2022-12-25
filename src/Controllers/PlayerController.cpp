@@ -1,7 +1,11 @@
 #include "PlayerController.hpp"
+
 #include "Controllers/CollisionController.hpp"
 #include "Controllers/EntityController.hpp"
 #include "Controllers/GoombaController.hpp"
+#include "Controllers/FireballController.hpp"
+#include "States/EntityState.hpp"
+
 #include "config.hpp"
 #include "res/textures.hpp"
 #include "Window.hpp"
@@ -86,21 +90,25 @@ static auto player_movement(PlayerState& player, LevelState& level){
 }
 
 static auto player_grow_up(PlayerState& player){
-  if (player.grow_state < 8.f){
-    player.grow_state += window::delta_time * 9;
-  }
-  else{
+  player.growth_counter.run();
+  player.grow_state = player.growth_counter.as_int();
+
+  if(player.growth_counter.stopped_counting()){
     player.is_growing_up = false;
+    player.growth_counter.reset();
   }
 }
 
 static auto player_shrink_down(PlayerState& player){
-  if (player.grow_state > 0.f){
-    player.grow_state -= window::delta_time * 9;
-  }
-  else{
-    player.invincibility_delay = 2.f;
+  player.form = PlayerState::Form::Normal;
+  player.growth_counter.run();
+  player.grow_state = 2 - player.growth_counter.as_int();
+
+  if(player.growth_counter.stopped_counting()){
     player.is_shrinking = false;
+    player.growth_counter.reset();
+
+    player.invincibility_delay = 2.f; //2 Seconds
   }
 }
 
@@ -145,6 +153,19 @@ static auto player_update_growth(PlayerState& player){
   }
 }
 
+auto player_transform_to_fire(PlayerState& player){
+  player.transformation_counter.run();
+  const auto transformation_state = player.transformation_counter.as_int();
+
+  if (transformation_state == 1) player.form = PlayerState::Form::Black;
+  else if (transformation_state == 0) player.form = PlayerState::Form::Fire;
+
+  if (player.transformation_counter.stopped_counting()){
+    player.transformation_counter.reset();
+    player.is_changing_to_fire = false;
+  }
+}
+
 static auto player_textures(PlayerState& player){
   player.current_texture = player.default_texture();
 
@@ -182,7 +203,7 @@ static auto player_textures(PlayerState& player){
   }
 
   if (player.is_squating){
-    player.current_texture = &textures::big_mario_squating;
+    player.current_texture = player.squat_texture();
   }
 }
 
@@ -213,26 +234,56 @@ auto player_squat(PlayerState& player, LevelState& level){
 
   if (player.growth == PlayerState::Growth::Big){
     if (window::is_key_pressed(GLFW_KEY_DOWN) || is_forced_to_squat){
-      if (player.size.y == 120.f){
+      if (player.size.y == config::BlockSize * 2){
         player.is_squating = true;
-        player.position.y += 60.f;
+        player.position.y += config::BlockSize;
       }
 
-      player.size.y = 60.f;
+      player.size.y = config::BlockSize;
     }
     else{
-      if (player.size.y == 60.f){
+      if (player.size.y == config::BlockSize){
         player.is_squating = false;
-        player.position.y -= 60.f;
+        player.position.y -= config::BlockSize;
       }
 
-      player.size.y = 120.f;
+      player.size.y = config::BlockSize * 2;
     }
   }
 }
 
+static auto player_fireballs(PlayerState& player, const LevelState& level){
+  if (player.form != PlayerState::Form::Fire) return;
+
+  for (auto& fireball : player.fireballs){
+    fireball_controller(fireball, level); 
+  }
+
+  static auto key_active = true;
+  const auto shoot_key_pressed = window::is_key_pressed(GLFW_KEY_LEFT_ALT);
+
+  if (!shoot_key_pressed) key_active = true;
+  if (!shoot_key_pressed || !key_active) return;
+  key_active = false;
+
+  const auto fireball_ptr = std::find_if(player.fireballs.begin(), player.fireballs.end(), [](const auto& f){
+    return !f.is_active && f.explosion.finished();
+  });
+
+  if (fireball_ptr == player.fireballs.end()) return;
+
+  auto& fireball = *fireball_ptr;
+  fireball.position = player.position + player.size / 2.f - fireball.size / 2.f;
+  fireball.set_direction(player.direction, 12.f);
+  fireball.is_active = true;
+  fireball.is_visible = true;
+}
+
 auto player_controller(PlayerState& player, LevelState& level) -> void{
-  if (player.is_growing_up){
+  if (player.is_changing_to_fire){
+    player_transform_to_fire(player);
+  }
+  else if (player.is_growing_up){
     player_grow_up(player);
   }
   else if (player.is_shrinking){
@@ -244,6 +295,7 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
     player_gravity(player, level);
     player_squat(player, level);
     player_invincibility(player);
+    player_fireballs(player, level);
 
     player_death(player);
   } 

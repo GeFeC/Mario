@@ -6,7 +6,7 @@
 #include "Util.hpp"
 #include "Window.hpp"
 
-static auto detect_entity_collision_with_level = [](EntityState& entity, LevelState& level, auto callable){
+static auto detect_entity_collision_with_level = [](EntityState& entity, const LevelState& level, auto callable){
   if (!entity.should_collide){
     return;
   }
@@ -19,7 +19,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, LevelSt
   }
 };
 
-static auto detect_turning_entity_collision_with_level = [](EntityState& entity, LevelState& level, auto callable){
+static auto detect_turning_entity_collision_with_level = [](EntityState& entity, const LevelState& level, auto callable){
   detect_entity_collision_with_level(entity, level, callable);
 
   for (const auto& block : level.blocks.entity_hitbox_blocks){
@@ -31,7 +31,7 @@ static auto detect_turning_entity_collision_with_level = [](EntityState& entity,
 };
 
 template<typename F>
-static auto entity_movement_helper(EntityState& entity, LevelState& level, const F& detect_collisions){
+static auto entity_movement_helper(EntityState& entity, const LevelState& level, const F& detect_collisions){
   if (entity.is_dead || !entity.is_active) return;
 
   auto left_boost = window::delta_time * entity.acceleration.left * 100;
@@ -52,16 +52,16 @@ static auto entity_movement_helper(EntityState& entity, LevelState& level, const
   entity.position.x -= left_boost;
 }
 
-static auto entity_movement(EntityState& entity, LevelState& level){
+static auto entity_movement(EntityState& entity, const LevelState& level){
   entity_movement_helper(entity, level, detect_entity_collision_with_level);
 }
 
 //This is for entities that can turn around when reaching the edge of a block
-static auto entity_movement_with_turning(EntityState& entity, LevelState& level){
+static auto entity_movement_with_turning(EntityState& entity, const LevelState& level){
   entity_movement_helper(entity, level, detect_turning_entity_collision_with_level);
 }
 
-static auto entity_gravity(EntityState& entity, LevelState& level, int gravity_boost = 1){
+static auto entity_gravity(EntityState& entity, const LevelState& level, int gravity_boost = 1){
   if (entity.is_dead && entity.death_delay > 0.f) return;
   if (!entity.is_active) return;
 

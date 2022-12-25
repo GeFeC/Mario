@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/EntityState.hpp"
+#include "States/PlayerState.hpp"
 #include "States/LevelState.hpp"
 #include "States/BlockState.hpp"
 
@@ -24,8 +25,9 @@ static auto player_hit_block_above(const EntityState& player, const BouncingBloc
   return 
     player_can_hit_block_above(player, block) && 
     was_block_hit_by_player && 
-    !block.bounce_state.is_bouncing && 
-    block.bounce_state.can_bounce;
+
+
+    !block.bounce_state.is_bouncing;
 }
 
 auto player_stomp_on_entity(const EntityState& player, const EntityState& entity) -> bool;

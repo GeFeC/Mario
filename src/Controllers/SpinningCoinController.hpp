@@ -10,7 +10,9 @@ inline auto spinning_coin_controller(SpinningCoinState& coin, EntityState& playe
     --coin.bounce_state.hits_required_to_bounce;
     coin.bounce_state.can_bounce = false;
 
-    if (coin.bounce_state.hits_required_to_bounce > 0) return;
+    if (coin.bounce_state.hits_required_to_bounce > 0){
+      return;
+    }
     
     coin.is_visible = true;
     bounce::start(coin);

@@ -2,7 +2,9 @@
 
 #include "States/BlockState.hpp"
 #include "States/EntityState.hpp"
+#include "States/PlayerState.hpp"
 #include "States/PointsParticlesState.hpp"
+#include "States/LoopedCounter.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -46,14 +48,16 @@ struct LevelState{
     std::vector<BackgroundObjectState> bushes;
   } background;
 
+  InfiniteCounter fireball_counter;
   std::vector<PointsParticlesState> points_particles;
 
   float load_delay = 3.f;
   bool should_screen_scroll = false;
 
+  LevelState() : fireball_counter(4.f, 20.f) {}
+
   auto put_entity_hitbox_block(const glm::vec2& position){
     blocks.entity_hitbox_blocks.push_back(BlockState(position, &textures::dirt));
-    //entity_hitbox_blocks.back().is_visible = false;
   }
 
   auto put_dirt(const glm::vec2& position){
@@ -93,7 +97,7 @@ struct LevelState{
     blocks.spinning_coins.back().bounce_state.hits_required_to_bounce = hits_required_to_bounce;
     
     if (hits_required_to_bounce > 0){
-      blocks.normal.back().is_visible = false;
+      blocks.spinning_coins.back().is_visible = false;
     }
   }
 
@@ -127,6 +131,13 @@ struct LevelState{
   auto put_qblock_with_flower(const glm::vec2& position){
     blocks.fire_flowers.push_back(FireFlowerState(position));
     blocks.fire_flowers.back().is_visible = false;
+
+    blocks.fire_flowers.back().points_index = points_particles.size();
+    points_particles.emplace_back(
+      config::RewardForEatingFireFlower, 
+      glm::vec2(-config::BigValue),
+      PointsParticlesState::Type::Entity
+    );
 
     put_qblock(position);
   }

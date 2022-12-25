@@ -2,12 +2,12 @@
 
 #include "Controllers/CollisionController.hpp"
 #include "States/LevelState.hpp"
+#include "States/LoopedCounter.hpp"
 
 #include "Controllers/PlayerController.hpp"
 #include "Controllers/BlinkController.hpp"
 #include "Controllers/CoinController.hpp"
 #include "Controllers/BounceController.hpp"
-#include "Controllers/LoopedCounter.hpp"
 #include "Controllers/QBlockController.hpp"
 #include "Controllers/SpinningCoinController.hpp"
 #include "Controllers/StatsController.hpp"
@@ -23,7 +23,6 @@
 #include "res/textures.hpp"
 
 static auto level_blocks_controller(LevelState& level, int blink_state){
-
   auto& player = level.player_state;
   auto& blocks = level.blocks;
 
@@ -41,11 +40,11 @@ static auto level_blocks_controller(LevelState& level, int blink_state){
     bricks_controller(block, player, level);
   }
 
-  static auto spin_state = 0.f;
-  spin_state = looped_counter(spin_state, 20.f, 4.f);
+  static auto spin_counter = InfiniteCounter(4.f, 20.f);
+  spin_counter.run();
 
   for (auto& block : level.blocks.spinning_coins){
-    block.texture = &textures::spinning_coin[static_cast<int>(spin_state)];
+    block.texture = &textures::spinning_coin[spin_counter.as_int()];
     spinning_coin_controller(block, player, level.stats_state);
     bounce_controller(block, player);
   }
@@ -55,11 +54,11 @@ static auto level_blocks_controller(LevelState& level, int blink_state){
     coin_controller(block, player, level.stats_state);
   }
 
-  static auto flower_blink_state = 0.f;
-  flower_blink_state = looped_counter(flower_blink_state, 15.f, 4.f);
+  static auto flower_blink_counter = InfiniteCounter(4.f, 15.f);
+  flower_blink_counter.run();
 
   for (auto& block : level.blocks.fire_flowers){
-    block.texture = &textures::fire_flower[static_cast<int>(flower_blink_state)];
+    block.texture = &textures::fire_flower[flower_blink_counter.as_int()];
     fire_flower_controller(block, player);
   }
 }
@@ -111,7 +110,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
   };
 
   const auto die_when_stomped = [&](auto& goomba, auto set_entity_dead){
-    if (player_stomp_on_entity(player, goomba) && !player.is_dead){
+    if (player_stomp_on_entity(player, goomba) && !player.is_dead && !goomba.is_dead){
       set_entity_dead();
       player.gravity = -15.f;
 
@@ -153,11 +152,26 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
       player.is_growing_up = true;
     }
   }
+
+  for (auto& flower : level.blocks.fire_flowers){
+    const auto is_player_big = player.growth == PlayerState::Growth::Big;
+    if (collision::is_hovering(player, flower) && flower.is_visible && is_player_big){
+      auto& points = level.points_particles[flower.points_index];
+      points.set_active(flower.position);
+      level.stats_state.score += config::RewardForEatingFireFlower;
+    
+      flower.is_visible = false;
+      flower.position.y = config::BigValue;
+      player.is_changing_to_fire = true;
+    }
+  }
 }
 
 static auto block_entity_interactions(EntityState& entity, LevelState& level){
   for (const auto& block : level.blocks.bricks){
     if (block.bounce_state.is_bouncing){
+      if (entity.is_dead || !entity.should_collide) return;
+
       const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
       
       if (collision_state.distance_below | util::in_range(-15.f, 0.f)){
@@ -179,6 +193,8 @@ static auto level_controller(LevelState& level){
     return;
   }
 
+  level.fireball_counter.run();
+
   auto& player = level.player_state;
 
   level.should_screen_scroll = false;
@@ -197,7 +213,7 @@ static auto level_controller(LevelState& level){
     points_particles_controller(particle);
   } 
 
-  if (player.is_growing_up || player.is_shrinking) return;
+  if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
 
   entity_movement(player, level);
 

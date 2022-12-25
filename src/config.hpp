@@ -16,7 +16,8 @@ namespace config{
 
   static constexpr auto RewardForQBlock = 200;
   static constexpr auto RewardForKillingGoomba = 100;
-  static constexpr auto RewardForEatingMushroom = 1000;
+  static constexpr auto RewardForEatingMushroom = 500;
+  static constexpr auto RewardForEatingFireFlower = 1000;
 
   static constexpr auto GoombaWalkSpeed = 2;
   static constexpr auto MushroomWalkSpeed = 3;
