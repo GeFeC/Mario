@@ -33,3 +33,7 @@
 
 # Cache
 .cache
+
+# Build
+debug
+release

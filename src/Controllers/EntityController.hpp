@@ -70,16 +70,18 @@ static auto entity_gravity(EntityState& entity, const LevelState& level, int gra
 
   entity.gravity += window::delta_time * 50 * gravity_boost;
 
+  auto position_increaser = entity.gravity * window::delta_time * 60;
+
   detect_entity_collision_with_level(entity, level, [&](const auto& collision_state){
     if (entity.death_delay <= 0.f) return;
 
-    if (collision_state.distance_below < entity.gravity && collision_state.distance_below > -CollisionOffset){
+    if (collision_state.distance_below < position_increaser && collision_state.distance_below > -CollisionOffset){
       entity.is_on_ground = true;
-      entity.gravity = collision_state.distance_below;
+      position_increaser = collision_state.distance_below;
     }
   });
 
-  entity.position.y += entity.gravity * window::delta_time * 60;
+  entity.position.y += position_increaser;
 }
 
 static auto entity_turn_around(EntityState& entity, int speed){

@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <array>
+#include <stdexcept>
 
 namespace program = renderer::shader_program;
 
