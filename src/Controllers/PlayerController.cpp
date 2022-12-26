@@ -253,11 +253,11 @@ auto player_squat(PlayerState& player, LevelState& level){
 }
 
 static auto player_fireballs(PlayerState& player, const LevelState& level){
-  if (player.form != PlayerState::Form::Fire) return;
-
   for (auto& fireball : player.fireballs){
     fireball_controller(fireball, level); 
   }
+
+  if (player.form != PlayerState::Form::Fire) return;
 
   static auto key_active = true;
   const auto shoot_key_pressed = window::is_key_pressed(GLFW_KEY_LEFT_ALT);

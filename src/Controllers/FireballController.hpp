@@ -7,7 +7,7 @@
 
 static auto fireball_controller(FireballState& fireball, const LevelState& level){
   if (fireball.is_on_ground){
-    fireball.gravity = -10.f;
+    fireball.gravity = -8.f;
     fireball.is_on_ground = false;
   }
 
@@ -32,7 +32,10 @@ static auto fireball_controller(FireballState& fireball, const LevelState& level
     reset_fireball(fireball);
   }
 
-  fireball.current_texture = &textures::fireball[level.fireball_counter.as_int()];
+  const auto& player = level.player_state;
+  if (fireball.is_active && std::abs(player.position.x - fireball.position.x) > config::InitialWindowWidth){
+    reset_fireball(fireball);
+  }
 
-  std::cerr << fireball.position.x << ":" << fireball.position.y << '\n';
+  fireball.current_texture = &textures::fireball[level.fireball_counter.as_int()];
 }

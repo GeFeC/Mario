@@ -97,6 +97,13 @@ static auto receive_points_for_killing_entity(const EntityState& entity, LevelSt
   points.text.is_visible = true;
 }
 
+static auto entity_bounce_die(EntityState& entity, LevelState& level, int reward){
+  entity.gravity = -20.f;
+  entity.should_collide = false;
+  entity.vertical_flip = Drawable::Flip::UseFlip;
+  receive_points_for_killing_entity(entity, level, reward);
+}
+
 static auto player_entity_interactions(PlayerState& player, LevelState& level){
   const auto kill_player_on_touch = [&](auto& goomba){
     if (collision::is_hovering(player, goomba) && !goomba.is_dead && goomba.should_collide){
@@ -109,8 +116,8 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
     }
   };
 
-  const auto die_when_stomped = [&](auto& goomba, auto set_entity_dead){
-    if (player_stomp_on_entity(player, goomba) && !player.is_dead && !goomba.is_dead){
+  const auto die_when_stomped = [&](EntityState& goomba, auto set_entity_dead){
+    if (player_stomp_on_entity(player, goomba) && !player.is_dead && !goomba.is_dead && goomba.should_collide){
       set_entity_dead();
       player.gravity = -15.f;
 
@@ -119,7 +126,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
     }
   };
 
-  const auto become_active_when_seen = [&](auto& goomba){
+  const auto become_active_when_seen = [&](EntityState& goomba){
     const auto screen_scroll = config::PlayerPositionToScroll - player.position.x;
     const auto view_extension = std::max(screen_scroll, 0.f);
 
@@ -128,16 +135,28 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
     }
   };
 
+  const auto die_when_hit_by_fireball = [&](EntityState& entity, int reward){
+    for (auto& fireball : player.fireballs){
+      if (collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active){
+        entity_bounce_die(entity, level, config::RewardForKillingGoomba);
+
+        fireball.acceleration.left = fireball.acceleration.right = 0.f;
+      }
+    } 
+  };
+
   for (auto& goomba : level.entities.goombas){
     die_when_stomped(goomba, [&]{ goomba::normal_set_dead(goomba); });
     kill_player_on_touch(goomba);
     become_active_when_seen(goomba);
+    die_when_hit_by_fireball(goomba, config::RewardForKillingGoomba);
   }
 
   for (auto& goomba : level.entities.red_goombas){
     die_when_stomped(goomba, [&]{ goomba::red_set_dead(goomba); });
     kill_player_on_touch(goomba);
     become_active_when_seen(goomba);
+    die_when_hit_by_fireball(goomba, config::RewardForKillingGoomba);
   }
 
   for (auto& mushroom : level.entities.mushrooms){
@@ -175,10 +194,7 @@ static auto block_entity_interactions(EntityState& entity, LevelState& level){
       const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
       
       if (collision_state.distance_below | util::in_range(-15.f, 0.f)){
-        entity.gravity = -20.f;
-        entity.should_collide = false;
-        entity.vertical_flip = Drawable::Flip::UseFlip;
-        receive_points_for_killing_entity(entity, level, config::RewardForKillingGoomba);
+        entity_bounce_die(entity, level, config::RewardForKillingGoomba);
       }
     }
   }
