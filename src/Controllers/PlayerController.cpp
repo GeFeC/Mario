@@ -291,6 +291,7 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
   }
   else{
     player_movement(player, level);
+    entity_movement(player, level);
     player_jump(player, level);
     player_gravity(player, level);
     player_squat(player, level);
@@ -305,8 +306,8 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
 }
 
 auto player_stomp_on_entity(const EntityState& player, const EntityState& entity) -> bool{
-  if (collision::is_hovering_in_x(player, entity) && !entity.is_dead){
-    return entity.position.y - player.position.y - player.size.y | util::in_range(0, 20);
+  if (collision::is_hovering_in_x(player, entity) && !entity.is_dead && player.gravity > 0){
+    return entity.position.y - player.position.y - player.size.y | util::in_range(-30, 0);
   }
 
   return false;

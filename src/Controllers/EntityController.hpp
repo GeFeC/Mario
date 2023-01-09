@@ -17,10 +17,8 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
     const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
     callable(collision_state);
   }
-};
 
-static auto detect_turning_entity_collision_with_level = [](EntityState& entity, const LevelState& level, auto callable){
-  detect_entity_collision_with_level(entity, level, callable);
+  if (entity.fall_from_edge) return;
 
   for (const auto& block : level.blocks.entity_hitbox_blocks){
     if (!block.is_solid) continue;
@@ -54,11 +52,6 @@ static auto entity_movement_helper(EntityState& entity, const LevelState& level,
 
 static auto entity_movement(EntityState& entity, const LevelState& level){
   entity_movement_helper(entity, level, detect_entity_collision_with_level);
-}
-
-//This is for entities that can turn around when reaching the edge of a block
-static auto entity_movement_with_turning(EntityState& entity, const LevelState& level){
-  entity_movement_helper(entity, level, detect_turning_entity_collision_with_level);
 }
 
 static auto entity_gravity(EntityState& entity, const LevelState& level, int gravity_boost = 1){

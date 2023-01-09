@@ -34,7 +34,7 @@ struct BouncingBlockBase{
     float initial_power = -7.f;
     float power = 0.f;
     float temp_y = 0.f;
-  } bounce_state;
+  } bounce_state{};
 
   int hitbox_block_index = -1;
 };
@@ -52,17 +52,6 @@ struct BlockState : BlockBase{
   BlockState(const glm::vec2& position, Texture* texture){
     this->position = position * 60.f;
     this->texture = texture;
-  }
-};
-
-struct FireFlowerState : BlockBase{
-  float offset = 0.f;
-  bool should_be_pushed_out = false;
-  int points_index = -1;
-
-  FireFlowerState(const glm::vec2& position){
-    this->position = position * 60.f;
-    texture = &textures::fire_flower[0];
   }
 };
 
@@ -104,13 +93,6 @@ struct BricksBlockState : BouncingBlockState{
     for (auto& particle : particles){
       particle.position = this->position + size / 2.f - particle.size / 2.f;
     }
-  }
-};
-
-struct QBlockState : BouncingBlockState, BlinkingBlockBase{
-  QBlockState(const glm::vec2& position){
-    this->position = position * 60.f;
-    this->texture = &textures::q_block[0];
   }
 };
 

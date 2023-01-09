@@ -25,8 +25,6 @@ static auto player_hit_block_above(const EntityState& player, const BouncingBloc
   return 
     player_can_hit_block_above(player, block) && 
     was_block_hit_by_player && 
-
-
     !block.bounce_state.is_bouncing;
 }
 

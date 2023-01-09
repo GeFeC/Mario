@@ -37,3 +37,6 @@
 # Build
 debug
 release
+
+# Vim
+compile_commands.json

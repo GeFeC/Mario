@@ -22,6 +22,9 @@ namespace util{
       position = t.position;
       size = t.size;
     }
+
+    Rect(const glm::vec2& pos, const glm::vec2& size)
+    : position(pos), size(size) {}
   };
 
   struct Interval{

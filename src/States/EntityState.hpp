@@ -24,19 +24,22 @@ struct EntityState{
   glm::vec2 position = { 60.f, 0.f };
   glm::vec2 size = { 60.f, 60.f };
   int vertical_flip = Flip::NoFlip;
+
+  int texture_flip = Flip::NoFlip;
   
   float gravity = 0.f;
   float death_delay = 1.f;
-
-  int points_index = -1;
 
   bool is_visible = true;
   bool is_on_ground = false;
   bool is_dead = false;
   bool is_active = false;
   bool should_collide = true;
+  bool fall_from_edge = true;
 
   auto set_direction(Direction direction, int speed){
+    this->direction = direction;
+
     if (direction == DirectionRight){
       acceleration.right = speed;
       acceleration.left = 0.f;
@@ -46,10 +49,9 @@ struct EntityState{
     acceleration.left = speed;
     acceleration.right = 0.f;
   }
-};
 
-struct MushroomState : EntityState{
-  float offset = 0.f;
-  bool should_be_pushed_out = false;
+  auto can_kill() const{
+    return !is_dead && should_collide;
+  }
 };
 

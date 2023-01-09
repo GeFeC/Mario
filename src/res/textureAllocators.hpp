@@ -28,6 +28,18 @@ namespace texture_allocators{
     &textures::red_goomba_walk[1]
   });
 
+  inline auto green_koopa = TextureAllocator({
+    &textures::green_koopa_dead,
+    &textures::green_koopa_walk[0],
+    &textures::green_koopa_walk[1]
+  });
+
+  inline auto red_koopa = TextureAllocator({
+    &textures::red_koopa_dead,
+    &textures::red_koopa_walk[0],
+    &textures::red_koopa_walk[1]
+  });
+
   inline auto q_block = TextureAllocator({
     &textures::q_block[0],
     &textures::q_block[1],

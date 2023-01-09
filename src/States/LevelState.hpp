@@ -2,9 +2,13 @@
 
 #include "States/BlockState.hpp"
 #include "States/EntityState.hpp"
+#include "States/MonsterState.hpp"
 #include "States/PlayerState.hpp"
 #include "States/PointsParticlesState.hpp"
 #include "States/LoopedCounter.hpp"
+#include "States/KoopaState.hpp"
+#include "States/QBlockState.hpp"
+#include "States/FireFlowerState.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -38,8 +42,10 @@ struct LevelState{
   } blocks;
 
   struct Entities{
-    std::vector<EntityState> goombas;
-    std::vector<EntityState> red_goombas;
+    std::vector<GoombaState> goombas;
+    std::vector<GoombaState> red_goombas;
+    std::vector<KoopaState> green_koopas;
+    std::vector<KoopaState> red_koopas;
     std::vector<MushroomState> mushrooms;
   } entities;
 
@@ -49,7 +55,6 @@ struct LevelState{
   } background;
 
   InfiniteCounter fireball_counter;
-  std::vector<PointsParticlesState> points_particles;
 
   float load_delay = 3.f;
   bool should_screen_scroll = false;
@@ -116,15 +121,13 @@ struct LevelState{
 
     put_qblock(position, coins);
 
+    auto& points = blocks.q_blocks.back().points_manager.points;
+    points.reserve(coins);
     for (int i = 0; i < coins; ++i){
-      auto particle = PointsParticlesState(
-        config::RewardForQBlock, 
-        position * 60.f, 
-        PointsParticlesState::Type::QBlock
-      );
+      auto particle = PointsParticlesState(config::RewardForQBlock, position * config::BlockSize);
       particle.hits_required_to_activate = i + 1;
 
-      points_particles.push_back(particle);
+      points.push_back(particle);
     }
   }
 
@@ -132,60 +135,112 @@ struct LevelState{
     blocks.fire_flowers.push_back(FireFlowerState(position));
     blocks.fire_flowers.back().is_visible = false;
 
-    blocks.fire_flowers.back().points_index = points_particles.size();
-    points_particles.emplace_back(
-      config::RewardForEatingFireFlower, 
-      glm::vec2(-config::BigValue),
-      PointsParticlesState::Type::Entity
-    );
+    //TODO
+    //blocks.fire_flowers.back().points_index = points_particles.size();
+    //points_particles.emplace_back(
+      //config::RewardForEatingFireFlower, 
+      //glm::vec2(-config::BigValue),
+      //PointsParticlesState::Type::Entity
+    //);
 
     put_qblock(position);
   }
 
   using Direction = EntityState::Direction;
+  static constexpr auto DirectionLeft = EntityState::DirectionLeft;
 
-  auto put_goomba(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
-    auto goomba = EntityState();
+  template<typename Entity>
+  auto put_entity(
+      std::vector<Entity>& array, 
+      const glm::vec2& position,
+      const glm::vec2& size,
+      Direction direction,
+      int reward,
+      int walk_speed,
+      Texture* texture
+  ){
+    auto entity = Entity();
 
-    goomba.position = position * 60.f;
-    goomba.current_texture = &textures::goomba_walk[0];
-    goomba.set_direction(direction, config::GoombaWalkSpeed);
-    goomba.points_index = points_particles.size();
+    entity.position = position * config::BlockSize;
+    entity.size = size;
+    entity.current_texture = texture;
+    entity.set_direction(direction, walk_speed);
 
-    entities.goombas.push_back(goomba);
-    
-    points_particles.emplace_back(config::RewardForKillingGoomba, glm::vec2(0), PointsParticlesState::Type::Entity);
+    array.push_back(entity);
+  }
+
+  auto put_goomba(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.goombas, 
+      position, 
+      glm::vec2(config::BlockSize),
+      direction, 
+      config::RewardForKillingGoomba, 
+      config::GoombaWalkSpeed,
+      &textures::goomba_walk[0]
+    );
   }
 
   auto put_red_goomba(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
-    auto goomba = EntityState();
+    put_entity(
+      entities.red_goombas, 
+      position, 
+      glm::vec2(config::BlockSize),
+      direction, 
+      config::RewardForKillingGoomba, 
+      config::GoombaWalkSpeed,
+      &textures::red_goomba_walk[0]
+    );
 
-    goomba.position = position * 60.f;
-    goomba.current_texture = &textures::red_goomba_walk[0];
-    goomba.set_direction(direction, config::GoombaWalkSpeed);
-    goomba.points_index = points_particles.size();
-
-    entities.red_goombas.push_back(goomba);
-    
-    points_particles.emplace_back(config::RewardForKillingGoomba, glm::vec2(0), PointsParticlesState::Type::Entity);
+    entities.red_goombas.back().fall_from_edge = false;
   }
   
   auto put_mushroom(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
-    auto mushroom = MushroomState();
+    put_entity(
+      entities.mushrooms,
+      position,
+      glm::vec2(config::BlockSize),
+      direction,
+      config::RewardForEatingMushroom,
+      config::MushroomWalkSpeed,
+      &textures::mushroom
+    );
 
-    mushroom.position = position * 60.f;
-    mushroom.current_texture = &textures::mushroom;
-    mushroom.set_direction(direction, config::MushroomWalkSpeed);
-
-    mushroom.points_index = points_particles.size();
-    mushroom.is_visible = false;
-
-    entities.mushrooms.push_back(mushroom);
-    
-    points_particles.emplace_back(config::RewardForEatingMushroom, glm::vec2(0), PointsParticlesState::Type::Entity);
+    entities.mushrooms.back().is_visible = false;
   }
 
-  auto put_qblock_with_mushroom(const glm::vec2& position, Direction direction = EntityState::DirectionLeft){
+  auto put_green_koopa(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.green_koopas,
+      position,
+      glm::vec2(config::BlockSize, config::BlockSize * 1.5f),
+      direction,
+      0,
+      config::KoopaWalkSpeed,
+      &textures::green_koopa_walk[0]
+    );
+
+    auto& koopa = entities.green_koopas.back();
+    koopa.texture_flip = Drawable::Flip::UseFlip;
+  }
+
+  auto put_red_koopa(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.red_koopas,
+      position,
+      glm::vec2(config::BlockSize, config::BlockSize * 1.5f),
+      direction,
+      0,
+      config::KoopaWalkSpeed,
+      &textures::red_koopa_walk[0]
+    );
+
+    auto& koopa = entities.red_koopas.back();
+    koopa.texture_flip = Drawable::Flip::UseFlip;
+    koopa.fall_from_edge = false;
+  }
+
+  auto put_qblock_with_mushroom(const glm::vec2& position, Direction direction = DirectionLeft){
     put_qblock(position, 1);
     put_mushroom(position, direction);
   }

@@ -5,6 +5,7 @@
 #include "States/EntityState.hpp"
 #include "States/PlayerState.hpp"
 #include "States/BlockState.hpp"
+#include "States/PointsParticlesState.hpp"
 
 #include "config.hpp"
 #include "res/textures.hpp"
@@ -14,9 +15,15 @@ static auto render_entity(const EntityState& entity, float offset_x = 0.f){
     entity.position - glm::vec2(offset_x, 0),
     entity.size,
     entity.current_texture,
-    { entity.direction, entity.vertical_flip },
+    { entity.direction * entity.texture_flip, entity.vertical_flip },
     entity.is_visible
   });
+}
+
+static auto render_points_particles(const std::vector<PointsParticlesState>& points, float offset_x = 0.f){
+  for (const auto& point : points){
+    renderer::print(point.text, offset_x);
+  }
 }
 
 static auto render_block(const BlockBase& block, float offset_x = 0.f){

@@ -117,6 +117,14 @@ static auto render_entities(const LevelState& level, float screen_scroll){
     render_entity(goomba, screen_scroll);
   }
 
+  for (const auto& koopa : level.entities.green_koopas){
+    render_entity(koopa, screen_scroll);
+  }
+
+  for (const auto& koopa : level.entities.red_koopas){
+    render_entity(koopa, screen_scroll);
+  }
+
   for (const auto& mushroom : level.entities.mushrooms){
     render_entity(mushroom, screen_scroll);
   }
@@ -216,9 +224,36 @@ static auto render_level(const LevelState& level){
       render_loading_screen(level);
     }
     render_stats(level.stats_state);
+  });
 
-    for (const auto& particle : level.points_particles){
-      renderer::print(particle.text, screen_scroll);
+  //Points particles
+  renderer::draw_with_shadow([&]{
+    for (const auto& koopa : level.entities.green_koopas){
+      render_points_particles(koopa.points_manager.points, screen_scroll);
+    }
+
+    for (const auto& koopa : level.entities.red_koopas){
+      render_points_particles(koopa.points_manager.points, screen_scroll);
+    }
+
+    for (const auto& goomba : level.entities.goombas){
+      render_points_particles(goomba.points_manager.points, screen_scroll);
+    }
+
+    for (const auto& goomba : level.entities.red_goombas){
+      render_points_particles(goomba.points_manager.points, screen_scroll);
+    }
+
+    for (const auto& mushroom : level.entities.mushrooms){
+      render_points_particles(mushroom.points_manager.points, screen_scroll);
+    }
+
+    for (const auto& block : level.blocks.q_blocks){
+      render_points_particles(block.points_manager.points, screen_scroll);
+    }
+
+    for (const auto& flower : level.blocks.fire_flowers){
+      render_points_particles(flower.points_manager.points, screen_scroll);
     }
   });
 }
