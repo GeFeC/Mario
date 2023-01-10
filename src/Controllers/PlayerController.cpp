@@ -104,8 +104,9 @@ static auto player_shrink_down(PlayerState& player){
   player.growth_counter.run();
   player.grow_state = 2 - player.growth_counter.as_int();
 
-  if(player.growth_counter.stopped_counting()){
+  if (player.growth_counter.stopped_counting()){
     player.is_shrinking = false;
+    player.is_squating = false;
     player.growth_counter.reset();
 
     player.invincibility_delay = 2.f; //2 Seconds

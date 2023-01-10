@@ -99,7 +99,7 @@ static auto run_frame_level11(AppState& app){
     for (int i = 0; i < 3; ++i){
       level.put_goomba({ 13 + i * 3, 10 });
     }
-    level.put_green_koopa({ 21.f, 9.5f });
+    level.put_green_koopa({ 10.f, 9.5f });
     level.put_red_koopa({ 9.f, 5.5f }, EntityState::DirectionRight);
 
     level.put_entity_hitbox_block({ 8.f, 6.f });
@@ -108,7 +108,6 @@ static auto run_frame_level11(AppState& app){
     level.put_red_goomba({ 35, 5 });
 
     level.put_red_pipe({ 25, 10 }, 2);
-    level.put_red_pipe({ 0, 10 }, 1);
 
     for (int i = 0; i < 10; ++i){
       level.put_bricks({ 55 + i, 8 });
