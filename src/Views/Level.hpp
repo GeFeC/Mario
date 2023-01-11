@@ -16,9 +16,9 @@
 
 static auto render_clouds(float screen_scroll){
   auto clouds = std::vector<std::pair<glm::vec2, int>>();
-  clouds.reserve(32);
+  clouds.reserve(64);
 
-  for (int i = 0; i < 8; ++i){
+  for (int i = 0; i < 16; ++i){
     clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, 2), 3));
     clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 1), 2));
     clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, 2), 1));
@@ -117,6 +117,10 @@ static auto render_entities(const LevelState& level, float screen_scroll){
     render_entity(goomba, screen_scroll);
   }
 
+  for (const auto& goomba : level.entities.yellow_goombas){
+    render_entity(goomba, screen_scroll);
+  }
+
   for (const auto& koopa : level.entities.green_koopas){
     render_entity(koopa, screen_scroll);
   }
@@ -127,6 +131,48 @@ static auto render_entities(const LevelState& level, float screen_scroll){
 
   for (const auto& mushroom : level.entities.mushrooms){
     render_entity(mushroom, screen_scroll);
+  }
+
+  for (const auto& beetle : level.entities.beetles){
+    render_entity(beetle, screen_scroll);
+  }
+}
+
+static auto render_all_points_particles(const LevelState& level, float screen_scroll){
+  for (const auto& koopa : level.entities.green_koopas){
+    render_points_particles(koopa.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& koopa : level.entities.red_koopas){
+    render_points_particles(koopa.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& goomba : level.entities.goombas){
+    render_points_particles(goomba.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& goomba : level.entities.red_goombas){
+    render_points_particles(goomba.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& goomba : level.entities.yellow_goombas){
+    render_points_particles(goomba.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& beetle : level.entities.beetles){
+    render_points_particles(beetle.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& mushroom : level.entities.mushrooms){
+    render_points_particles(mushroom.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& block : level.blocks.q_blocks){
+    render_points_particles(block.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& flower : level.blocks.fire_flowers){
+    render_points_particles(flower.points_manager.points, screen_scroll);
   }
 }
 
@@ -170,10 +216,6 @@ static auto render_blocks(const LevelState& level, float screen_scroll){
   for (const auto& block : level.blocks.coins){
     render_block(block, screen_scroll);
   }
-
-  for (const auto& block : level.blocks.bricks){
-    render_bricks(block, screen_scroll);
-  }
   
   for (const auto& block : level.blocks.spinning_coins){
     render_block(block, screen_scroll);
@@ -215,6 +257,10 @@ static auto render_level(const LevelState& level){
     for (const auto& block : level.blocks.q_blocks){
       render_block(block, screen_scroll);
     }
+
+    for (const auto& block : level.blocks.bricks){
+      render_bricks(block, screen_scroll);
+    }
   });
 
   renderer::draw_with_shadow([&]{
@@ -228,32 +274,6 @@ static auto render_level(const LevelState& level){
 
   //Points particles
   renderer::draw_with_shadow([&]{
-    for (const auto& koopa : level.entities.green_koopas){
-      render_points_particles(koopa.points_manager.points, screen_scroll);
-    }
-
-    for (const auto& koopa : level.entities.red_koopas){
-      render_points_particles(koopa.points_manager.points, screen_scroll);
-    }
-
-    for (const auto& goomba : level.entities.goombas){
-      render_points_particles(goomba.points_manager.points, screen_scroll);
-    }
-
-    for (const auto& goomba : level.entities.red_goombas){
-      render_points_particles(goomba.points_manager.points, screen_scroll);
-    }
-
-    for (const auto& mushroom : level.entities.mushrooms){
-      render_points_particles(mushroom.points_manager.points, screen_scroll);
-    }
-
-    for (const auto& block : level.blocks.q_blocks){
-      render_points_particles(block.points_manager.points, screen_scroll);
-    }
-
-    for (const auto& flower : level.blocks.fire_flowers){
-      render_points_particles(flower.points_manager.points, screen_scroll);
-    }
+    render_all_points_particles(level, screen_scroll);  
   });
 }

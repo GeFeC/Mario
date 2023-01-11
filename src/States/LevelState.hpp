@@ -6,7 +6,6 @@
 #include "States/PlayerState.hpp"
 #include "States/PointsParticlesState.hpp"
 #include "States/LoopedCounter.hpp"
-#include "States/KoopaState.hpp"
 #include "States/QBlockState.hpp"
 #include "States/FireFlowerState.hpp"
 
@@ -44,8 +43,10 @@ struct LevelState{
   struct Entities{
     std::vector<GoombaState> goombas;
     std::vector<GoombaState> red_goombas;
+    std::vector<GoombaState> yellow_goombas;
     std::vector<KoopaState> green_koopas;
     std::vector<KoopaState> red_koopas;
+    std::vector<BeetleState> beetles;
     std::vector<MushroomState> mushrooms;
   } entities;
 
@@ -181,7 +182,11 @@ struct LevelState{
     );
   }
 
-  auto put_red_goomba(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
+  auto put_red_goomba(
+      const glm::vec2& position,
+      EntityState::Direction direction = EntityState::DirectionLeft,
+      bool instantly_active = false
+  ){
     put_entity(
       entities.red_goombas, 
       position, 
@@ -193,8 +198,24 @@ struct LevelState{
     );
 
     entities.red_goombas.back().fall_from_edge = false;
+    entities.red_goombas.back().is_active = instantly_active;
   }
   
+  auto put_yellow_goomba(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
+    put_entity(
+      entities.yellow_goombas, 
+      position, 
+      glm::vec2(config::BlockSize),
+      direction, 
+      config::RewardForKillingGoomba, 
+      config::FastGoombaWalkSpeed,
+      &textures::yellow_goomba_walk[0]
+    );
+
+    entities.yellow_goombas.back().fall_from_edge = false;
+    entities.yellow_goombas.back().is_active = true;
+  }
+
   auto put_mushroom(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
     put_entity(
       entities.mushrooms,
@@ -238,6 +259,21 @@ struct LevelState{
     auto& koopa = entities.red_koopas.back();
     koopa.texture_flip = Drawable::Flip::UseFlip;
     koopa.fall_from_edge = false;
+  }
+
+  auto put_beetle(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.beetles,
+      position,
+      glm::vec2(config::BlockSize),
+      direction,
+      0,
+      config::BeetleWalkSpeed,
+      &textures::beetle_walk[0]
+    );
+
+    auto& beetle = entities.beetles.back();
+    beetle.texture_flip = Drawable::Flip::UseFlip;
   }
 
   auto put_qblock_with_mushroom(const glm::vec2& position, Direction direction = DirectionLeft){

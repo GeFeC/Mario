@@ -170,117 +170,24 @@ static auto entity_bounce_die(MonsterState& entity, LevelState& level, int rewar
   entity.points_manager.get_points_particles().set_active(reward, entity.position);
 }
 
+static auto entity_is_hit_by_fireball(MonsterState& entity, FireballState& fireball){
+  return collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active && entity.should_collide;
+}
+
 static auto entity_die_when_hit_by_fireball(MonsterState& entity, PlayerState& player, LevelState& level, int reward){
   for (auto& fireball : player.fireballs){
-    if (collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active && entity.should_collide){
-      entity_bounce_die(entity, level, config::RewardForKillingGoomba);
+    if (entity_is_hit_by_fireball(entity, fireball)){
+      entity_bounce_die(entity, level, reward);
 
       fireball.acceleration.left = fireball.acceleration.right = 0.f;
     }
   } 
 };  
 
-template<typename ShellEntity>
-const auto entity_push_shell_on_player_touch(
-    ShellEntity& entity, 
-    PlayerState& player, 
-    LevelState& level, 
-    int reward
-){
-  if (!collision::is_hovering(player, entity) || entity.is_dead || !entity.should_collide) return;
-
-  entity.shell_push_cooldown = glfwGetTime();
-  entity.current_walk_speed = config::KoopaShellWalkSpeed;
-
-  if (entity.position.y > player.position.y + 10.f){
-    entity.points_manager.make_next_points_particles();
-    auto& points = entity.points_manager.get_points_particles();
-
-    points.set_active(reward, entity.position);
-    level.stats_state.score += reward;
-  }
-
-  if (entity.position.x - player.position.x > 0){
-    entity.set_direction(EntityState::DirectionRight, config::KoopaShellWalkSpeed);
-    return;
-  }
-
-  entity.set_direction(EntityState::DirectionLeft, config::KoopaShellWalkSpeed);
-};
-
-template<typename ShellEntity>
-static auto entity_handle_shell(
-    ShellEntity& entity, 
-    PlayerState& player,
-    LevelState& level,
-    int reward, 
-    int shell_speed,
-    const Texture& dead_texture
-){
-  entity_become_active_when_seen(entity, player);
-  entity_die_when_hit_by_fireball(entity, player, level, reward);
-
-  if (entity.in_shell){
-    entity.fall_from_edge = true;
-  }
-
-  if (entity.in_shell && entity.current_walk_speed == 0.f){
-    entity_push_shell_on_player_touch(entity, player, level, reward);
-    return;
-  }
-  const auto entity_hitbox = entity.in_shell
-  ? util::Rect(entity.position, glm::vec2(config::BlockSize))
-  : util::Rect(
-      entity.position + glm::vec2(0, config::BlockSize / 2), 
-      glm::vec2(config::BlockSize)
-    );
-
-  if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    entity_die_when_stomped(entity, entity_hitbox, player, level, reward, [&]{ 
-      koopa_hide_in_shell(entity, &dead_texture); 
-    });
-  }
-
-  [&]{
-    const auto distance = entity.position.x - player.position.x;
-    if (distance > 0 && entity.acceleration.right == shell_speed) return;
-    if (distance < 0 && entity.acceleration.left == shell_speed) return;
-
-    if (entity.current_walk_speed > 0){
-      entity_kill_player_on_touch(entity, entity_hitbox, player);
+static auto entity_endure_fireball(MonsterState& entity, PlayerState& player){
+  for (auto& fireball : player.fireballs){
+    if (entity_is_hit_by_fireball(entity, fireball)){
+      fireball.acceleration.left = fireball.acceleration.right = 0.f;
     }
-  }(); 
-
-  if (entity.acceleration.left != shell_speed && entity.acceleration.right != shell_speed) return;
-
-  auto shell_kill_entity = [&](auto& target_entity, int reward){
-    using target_entity_t = std::decay_t<decltype(target_entity)>;
-    if constexpr (std::is_same_v<target_entity_t, KoopaState>){
-      if (&target_entity == &entity) return;
-    }
-
-    if (collision::is_hovering(entity, target_entity) && target_entity.should_collide && target_entity.is_active){
-      entity_bounce_die(target_entity, level, reward);
-    }
-  };
-
-  //Killing Entities with shell
-  auto& entities = level.entities;
-  for (auto& target : entities.goombas){
-    shell_kill_entity(target, config::RewardForKillingGoomba);
-  }
-
-  for (auto& target : entities.red_goombas){
-    shell_kill_entity(target, config::RewardForKillingGoomba);
-  }
-
-  for (auto& target : entities.green_koopas){
-    shell_kill_entity(target, config::RewardForKillingKoopa);
-  }
-
-  for (auto& target : entities.red_koopas){
-    shell_kill_entity(target, config::RewardForKillingKoopa);
-  }
-};
-
-
+  } 
+};  

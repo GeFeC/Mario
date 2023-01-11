@@ -139,6 +139,12 @@ namespace textures{
   };
   inline auto red_goomba_dead = Texture("entity/goomba/reddead.png");
 
+  inline auto yellow_goomba_walk = std::array<Texture, 2>{
+    Texture("entity/goomba/yellow0.png"),
+    Texture("entity/goomba/yellow1.png")
+  };
+  inline auto yellow_goomba_dead = Texture("entity/goomba/yellowdead.png");
+
   inline auto green_koopa_walk = std::array<Texture, 2>{
     Texture("entity/koopa/green1.png"),
     Texture("entity/koopa/green2.png")
@@ -150,6 +156,12 @@ namespace textures{
     Texture("entity/koopa/red2.png")
   };
   inline auto red_koopa_dead = Texture("entity/koopa/reddead.png");
+
+  inline auto beetle_walk = std::array<Texture, 2>{
+    Texture("entity/beetle/0.png"),
+    Texture("entity/beetle/1.png")
+  };
+  inline auto beetle_dead = Texture("entity/beetle/dead.png");
 
   inline auto mushroom = Texture("entity/mushroom/mushroom.png");
 

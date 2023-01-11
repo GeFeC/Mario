@@ -28,6 +28,12 @@ namespace texture_allocators{
     &textures::red_goomba_walk[1]
   });
 
+  inline auto yellow_goomba = TextureAllocator({
+    &textures::yellow_goomba_dead,
+    &textures::yellow_goomba_walk[0],
+    &textures::yellow_goomba_walk[1]
+  });
+
   inline auto green_koopa = TextureAllocator({
     &textures::green_koopa_dead,
     &textures::green_koopa_walk[0],
@@ -38,6 +44,12 @@ namespace texture_allocators{
     &textures::red_koopa_dead,
     &textures::red_koopa_walk[0],
     &textures::red_koopa_walk[1]
+  });
+
+  inline auto beetle = TextureAllocator({
+    &textures::beetle_dead,
+    &textures::beetle_walk[0],
+    &textures::beetle_walk[1]
   });
 
   inline auto q_block = TextureAllocator({

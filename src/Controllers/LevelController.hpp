@@ -17,7 +17,7 @@
 #include "Controllers/MushroomController.hpp"
 #include "Controllers/BricksController.hpp"
 #include "Controllers/FireFlowerController.hpp"
-#include "Controllers/KoopaController.hpp"
+#include "Controllers/ShellMonsterController.hpp"
 
 #include "Util.hpp"
 #include "config.hpp"
@@ -68,12 +68,20 @@ static auto level_entities_controller(LevelState& level){
     goomba_controller(goomba, level, textures::red_goomba_walk);
   }
 
+  for (auto& goomba : level.entities.yellow_goombas){
+    goomba_controller(goomba, level, textures::yellow_goomba_walk, config::FastGoombaWalkSpeed);
+  }
+
   for (auto& koopa : level.entities.green_koopas){
-    koopa_controller(koopa, level, textures::green_koopa_walk);
+    shell_monster_controller(koopa, level, textures::green_koopa_walk);
   }
 
   for (auto& koopa : level.entities.red_koopas){
-    koopa_controller(koopa, level, textures::red_koopa_walk);
+    shell_monster_controller(koopa, level, textures::red_koopa_walk);
+  }
+
+  for (auto& koopa : level.entities.beetles){
+    shell_monster_controller(koopa, level, textures::beetle_walk);
   }
 }
 
@@ -98,25 +106,51 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
     });
   }
 
+  for (auto& goomba : level.entities.yellow_goombas){
+    entity_kill_player_on_touch(goomba, player);
+    entity_become_active_when_seen(goomba, player);
+    entity_die_when_hit_by_fireball(goomba, player, level, config::RewardForKillingFastGoomba);
+    entity_die_when_stomped(goomba, player, level, config::RewardForKillingFastGoomba, [&]{ 
+      goomba_set_dead(goomba, &textures::yellow_goomba_dead);
+    });
+  }
+
   for (auto& koopa : level.entities.green_koopas){
+    entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
     entity_handle_shell(
       koopa,
       player,
       level,
       config::RewardForKillingKoopa, 
-      config::KoopaShellWalkSpeed, 
+      config::KoopaShellWalkSpeed,
+      config::BlockSize * 7.f / 8.f,
       textures::green_koopa_dead
     );
   }
 
   for (auto& koopa : level.entities.red_koopas){
+    entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
     entity_handle_shell(
       koopa, 
       player,
       level,
       config::RewardForKillingKoopa, 
       config::KoopaShellWalkSpeed, 
+      config::BlockSize * 7.f / 8.f,
       textures::red_koopa_dead
+    );
+  }
+
+  for (auto& beetle : level.entities.beetles){
+    entity_endure_fireball(beetle, player);
+    entity_handle_shell(
+      beetle,
+      player,
+      level,
+      config::RewardForKillingBeetle, 
+      config::BeetleShellWalkSpeed,
+      config::BlockSize,
+      textures::beetle_dead
     );
   }
 
@@ -155,7 +189,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
   }
 }
 
-static auto block_entity_interactions(MonsterState& entity, LevelState& level){
+static auto block_entity_interactions(MonsterState& entity, LevelState& level, int reward){
   for (const auto& block : level.blocks.bricks){
     if (block.bounce_state.is_bouncing){
       if (entity.is_dead || !entity.should_collide) return;
@@ -163,7 +197,7 @@ static auto block_entity_interactions(MonsterState& entity, LevelState& level){
       const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
       
       if (collision_state.distance_below | util::in_range(-15.f, 0.f)){
-        entity_bounce_die(entity, level, config::RewardForKillingGoomba);
+        entity_bounce_die(entity, level, reward);
       }
     }
   }
@@ -210,11 +244,25 @@ static auto level_controller(LevelState& level){
 
   auto& goombas = level.entities.goombas;
   auto& red_goombas = level.entities.red_goombas;
+  auto& yellow_goombas = level.entities.yellow_goombas;
   auto& red_koopas = level.entities.red_koopas;
   auto& green_koopas = level.entities.green_koopas;
   auto& mushrooms = level.entities.mushrooms;
+  auto& beetles = level.entities.beetles;
 
   util::multi_for([&](auto& entity){
-    block_entity_interactions(entity, level);
-  }, goombas, red_goombas, mushrooms, green_koopas, red_koopas);
+    block_entity_interactions(entity, level, config::RewardForKillingGoomba);
+  }, goombas, red_goombas);
+
+  util::multi_for([&](auto& entity){
+    block_entity_interactions(entity, level, config::RewardForKillingKoopa);
+  }, red_koopas, green_koopas);
+
+  util::multi_for([&](auto& entity){
+    block_entity_interactions(entity, level, config::RewardForKillingFastGoomba);
+  }, yellow_goombas);
+
+  util::multi_for([&](auto& entity){
+    block_entity_interactions(entity, level, config::RewardForKillingBeetle);
+  }, beetles);
 }

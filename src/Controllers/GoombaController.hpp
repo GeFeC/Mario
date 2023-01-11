@@ -10,10 +10,15 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-static auto goomba_controller(GoombaState& goomba, LevelState& level, const std::array<Texture, 2>& walk_textures){
+static auto goomba_controller(
+    GoombaState& goomba, 
+    LevelState& level, 
+    const std::array<Texture, 2>& walk_textures,
+    int speed = config::GoombaWalkSpeed
+){
   entity_gravity(goomba, level);
   entity_movement(goomba, level);
-  entity_turn_around(goomba, config::GoombaWalkSpeed);
+  entity_turn_around(goomba, speed);
 
   for (auto& p : goomba.points_manager.points){
     points_particles_controller(p);
