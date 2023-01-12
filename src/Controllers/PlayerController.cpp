@@ -19,17 +19,22 @@ static auto to_grid_coords(const glm::vec2& normal_coords){
   return glm::ivec2(normal_coords.x / 60, normal_coords.y / 60);
 }
 
-static auto player_jump(EntityState& player, LevelState& level){
+static auto player_jump(PlayerState& player, LevelState& level){
   if (player.is_dead) return;
 
-  if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground){
+  if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown){
     player.gravity = -22;
     player.is_on_ground = false;
+    player.jump_cooldown = true;
   }
 
   detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
     if (collision_state.distance_above < -player.gravity){
       player.gravity = -collision_state.distance_above;
+    }
+
+    if (collision_state.distance_below < config::BlockSize && !window::is_key_pressed(GLFW_KEY_UP)){
+      player.jump_cooldown = false;
     }
   });
 }
@@ -67,17 +72,17 @@ static auto player_movement(PlayerState& player, LevelState& level){
   }
 
   //Calculating max speed
-  static auto max_speed = 5.f;
+  static auto max_speed = config::PlayerMaxSpeedWithoutSprint;
 
   if (!player.is_squating){
     if (window::is_key_pressed(GLFW_KEY_LEFT_CONTROL)){
-      max_speed = 7.f;
+      max_speed = config::PlayerMaxSpeedWithSprint;
     }
-    else if (max_speed > 5.f){
+    else if (max_speed > config::PlayerMaxSpeedWithoutSprint){
       max_speed -= speed_boost;
     }
     else{
-      max_speed = 5.f;
+      max_speed = config::PlayerMaxSpeedWithoutSprint;
     }
   }
 
@@ -308,7 +313,7 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
 
 auto player_stomp_on_entity(const EntityState& player, const EntityState& entity) -> bool{
   if (collision::is_hovering_in_x(player, entity) && !entity.is_dead && player.gravity > 0){
-    return entity.position.y - player.position.y - player.size.y | util::in_range(-30, 0);
+    return entity.position.y - player.position.y - player.size.y | util::in_range(-45, 0);
   }
 
   return false;

@@ -12,11 +12,11 @@ auto player_controller(PlayerState& player, LevelState& level) -> void;
 static auto player_can_hit_block_above(const EntityState& player, const BouncingBlockState& block) -> bool{
   if (player.direction == EntityState::DirectionLeft){
     return player.position.x - block.position.x 
-      | util::in_range(0.f, block.size.x - CollisionOffset);
+      | util::in_range(-CollisionOffset, block.size.x - CollisionOffset);
   }
 
   return player.position.x - block.position.x 
-    | util::in_range(-player.size.x + CollisionOffset, 0.f);
+    | util::in_range(-player.size.x + CollisionOffset, CollisionOffset);
 }
 
 static auto player_hit_block_above(const EntityState& player, const BouncingBlockState& block) -> bool{

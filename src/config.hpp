@@ -31,6 +31,8 @@ namespace config{
   static constexpr auto BeetleWalkSpeed = 2;
   
   static constexpr auto PlayerPositionToScroll = 9 * BlockSize;
+  static constexpr auto PlayerMaxSpeedWithoutSprint = 4.f;
+  static constexpr auto PlayerMaxSpeedWithSprint = 6.f;
 
   static constexpr auto PlayerPositionToRestartLevel = 10000.f;
 }
