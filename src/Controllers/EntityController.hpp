@@ -129,7 +129,7 @@ static auto entity_die_when_stomped(
     set_entity_dead();
     player.gravity = -15.f;
 
-    level.stats_state.score += reward * player.mobs_killed_in_row;
+    level.stats.score += reward * player.mobs_killed_in_row;
     entity.points_manager.make_next_points_particles();
     entity.points_manager.get_points_particles().set_active(reward * player.mobs_killed_in_row, entity.position);
 
@@ -166,7 +166,7 @@ static auto entity_bounce_die(MonsterState& entity, LevelState& level, int rewar
   entity.should_collide = false;
   entity.vertical_flip = Drawable::Flip::UseFlip;
 
-  level.stats_state.score += reward;
+  level.stats.score += reward;
   entity.points_manager.get_points_particles().set_active(reward, entity.position);
 }
 

@@ -32,7 +32,7 @@ static auto fireball_controller(FireballState& fireball, const LevelState& level
     reset_fireball(fireball);
   }
 
-  const auto& player = level.player_state;
+  const auto& player = level.player;
   if (fireball.is_active && std::abs(player.position.x - fireball.position.x) > config::InitialWindowWidth){
     reset_fireball(fireball);
   }

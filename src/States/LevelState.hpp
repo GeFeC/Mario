@@ -27,8 +27,8 @@ struct StatsState{
 };
 
 struct LevelState{
-  StatsState stats_state;
-  PlayerState player_state;
+  StatsState stats;
+  PlayerState player;
 
   struct Blocks{
     std::vector<BlockState> entity_hitbox_blocks;
@@ -135,14 +135,6 @@ struct LevelState{
   auto put_qblock_with_flower(const glm::vec2& position){
     blocks.fire_flowers.push_back(FireFlowerState(position));
     blocks.fire_flowers.back().is_visible = false;
-
-    //TODO
-    //blocks.fire_flowers.back().points_index = points_particles.size();
-    //points_particles.emplace_back(
-      //config::RewardForEatingFireFlower, 
-      //glm::vec2(-config::BigValue),
-      //PointsParticlesState::Type::Entity
-    //);
 
     put_qblock(position);
   }

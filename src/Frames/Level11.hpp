@@ -37,9 +37,9 @@ static auto run_frame_level11(AppState& app){
     fonts::medium.allocate(32);
     fonts::small.allocate(16);
 
-    auto& level = app.current_level_state;
+    auto& level = app.current_level;
 
-    auto& player = level.player_state;
+    auto& player = level.player;
 
     level.background.bushes = {
       BackgroundObjectState({ 3, 10 }, 2),
@@ -219,8 +219,8 @@ static auto run_frame_level11(AppState& app){
   };
 
   const auto loop = [](auto& app){
-    level_controller(app.current_level_state);
-    render_level(app.current_level_state);
+    level_controller(app.current_level);
+    render_level(app.current_level);
   };
 
   run_frame(app, AppState::Frame::Level11, textures, setup, loop);

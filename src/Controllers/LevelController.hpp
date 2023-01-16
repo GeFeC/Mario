@@ -24,12 +24,12 @@
 #include "res/textures.hpp"
 
 static auto level_blocks_controller(LevelState& level, int blink_state){
-  auto& player = level.player_state;
+  auto& player = level.player;
   auto& blocks = level.blocks;
 
   for (auto& block : level.blocks.q_blocks){
     bounce_controller(block);
-    q_block_controller(block, player, level.stats_state);
+    q_block_controller(block, player, level.stats);
 
     if (block.bounce_state.can_bounce){
       block.texture = &textures::q_block[blink_state];
@@ -46,13 +46,13 @@ static auto level_blocks_controller(LevelState& level, int blink_state){
 
   for (auto& block : level.blocks.spinning_coins){
     block.texture = &textures::spinning_coin[spin_counter.as_int()];
-    spinning_coin_controller(block, player, level.stats_state);
+    spinning_coin_controller(block, player, level.stats);
     bounce_controller(block);
   }
 
   for (auto& block : level.blocks.coins){
     block.texture = &textures::coin[blink_state];
-    coin_controller(block, player, level.stats_state);
+    coin_controller(block, player, level.stats);
   }
 
 }
@@ -158,7 +158,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
     if (collision::is_hovering(player, mushroom) && mushroom.is_active){
       auto& points = mushroom.points_manager.get_points_particles();
       points.set_active(config::RewardForEatingMushroom, mushroom.position);
-      level.stats_state.score += config::RewardForEatingMushroom;
+      level.stats.score += config::RewardForEatingMushroom;
     
       mushroom.is_active = false;
       mushroom.is_visible = false;
@@ -180,7 +180,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
         config::RewardForEatingFireFlower,
         flower.position
       );
-      level.stats_state.score += config::RewardForEatingFireFlower;
+      level.stats.score += config::RewardForEatingFireFlower;
     
       flower.is_visible = false;
       flower.position.y = config::BigValue;
@@ -211,14 +211,14 @@ static auto level_controller(LevelState& level){
 
   level.fireball_counter.run();
 
-  auto& player = level.player_state;
+  auto& player = level.player;
 
   level.should_screen_scroll = false;
   if (player.position.x > config::PlayerPositionToScroll){
     level.should_screen_scroll = true;
   }
 
-  stats_controller(level.stats_state);
+  stats_controller(level.stats);
   player_controller(player, level);
 
   for (auto& mushroom : level.entities.mushrooms){

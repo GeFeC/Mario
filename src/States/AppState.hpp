@@ -10,5 +10,5 @@ struct AppState{
   bool should_restart_current_frame = false;
   Frame current_frame;
 
-  LevelState current_level_state;
+  LevelState current_level;
 };

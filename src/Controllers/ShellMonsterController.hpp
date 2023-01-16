@@ -56,7 +56,7 @@ static auto entity_push_shell_on_player_touch(
 
     const auto total_reward = reward * player.mobs_killed_in_row;
     points.set_active(total_reward, entity.position);
-    level.stats_state.score += total_reward;
+    level.stats.score += total_reward;
   }
 
   if (entity.position.x - player.position.x > 0){

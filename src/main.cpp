@@ -39,25 +39,25 @@ auto main() -> int{
 
   renderer::init();
 
-  auto app_state = AppState();
-  app_state.current_frame = AppState::Frame::Level11;
+  auto app = AppState();
+  app.current_frame = AppState::Frame::Level11;
 
   window::show();
 
   while(!window::should_close()){
-    auto& frame = app_state.current_frame;
+    auto& frame = app.current_frame;
 
     if (frame == AppState::Frame::Level11){
-      run_frame_level11(app_state);
+      run_frame_level11(app);
 
-      const auto player_hp = app_state.current_level_state.stats_state.hp - 1;
+      const auto player_hp = app.current_level.stats.hp - 1;
 
       if (player_hp == 0){
         break;
       }
 
-      app_state.current_level_state = LevelState{};
-      app_state.current_level_state.stats_state.hp = player_hp;
+      app.current_level = LevelState{};
+      app.current_level.stats.hp = player_hp;
     }
   }
 }

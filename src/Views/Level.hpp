@@ -188,7 +188,7 @@ static auto render_loading_screen(const LevelState& level){
 
   const auto window_width = config::InitialWindowWidth;
 
-  const auto& stats = level.stats_state;
+  const auto& stats = level.stats;
   auto text = Text(&fonts::medium, "WORLD " + std::to_string(stats.level_major) + "-" + std::to_string(stats.level_minor));
   text.set_position(glm::vec2(460, 250));
 
@@ -229,7 +229,7 @@ static auto render_blocks(const LevelState& level, float screen_scroll){
 static auto render_level(const LevelState& level){
   auto screen_scroll = 0.f;
   if (level.should_screen_scroll){
-    screen_scroll = level.player_state.position.x - config::PlayerPositionToScroll;
+    screen_scroll = level.player.position.x - config::PlayerPositionToScroll;
   }
 
   renderer::draw(Drawable{
@@ -264,12 +264,12 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
-    render_player(level.player_state, screen_scroll);
+    render_player(level.player, screen_scroll);
 
     if (level.load_delay > 0.f){
       render_loading_screen(level);
     }
-    render_stats(level.stats_state);
+    render_stats(level.stats);
   });
 
   //Points particles

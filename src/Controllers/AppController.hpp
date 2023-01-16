@@ -7,7 +7,7 @@
 #include "config.hpp"
 
 auto app_controller(AppState& app_state){
-  const auto& player = app_state.current_level_state.player_state;
+  const auto& player = app_state.current_level.player;
 
   if (player.position.y > config::PlayerPositionToRestartLevel){
     app_state.should_restart_current_frame = true;
