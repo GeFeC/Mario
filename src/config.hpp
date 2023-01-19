@@ -9,7 +9,7 @@ namespace config{
   static constexpr auto BlocksInRow = 20;
   static constexpr auto BlocksInColumn = 12;
 
-  static constexpr auto MaxLevelSize = 120;
+  static constexpr auto MaxLevelSize = 200;
 
   static constexpr auto InitialWindowWidth = BlocksInRow * BlockSize;
   static constexpr auto InitialWindowHeight = BlocksInColumn * BlockSize;

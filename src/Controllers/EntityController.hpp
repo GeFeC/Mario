@@ -21,11 +21,19 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
   if (entity.fall_from_edge) return;
 
-  for (const auto& block : level.blocks.entity_hitbox_blocks){
-    if (!block.is_solid) continue;
+  //Checking if entity should change direction not to fall from edge
+  const auto x = entity.position.x / config::BlockSize;
+  const auto y = (entity.position.y + entity.size.y) / config::BlockSize;
 
-    const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
-    callable(collision_state);
+  if (x + 1 >= config::MaxLevelSize || x - 1 <= 0) return;
+  if (y >= config::BlocksInColumn || y - 1 <= 0) return;
+
+  if (!level.hitbox_grid[x + 1][y] && entity.direction == EntityState::DirectionRight){
+    entity.acceleration.left = entity.acceleration.right = 0.f;
+  }
+
+  if (!level.hitbox_grid[x][y] && entity.direction == EntityState::DirectionLeft){
+    entity.acceleration.left = entity.acceleration.right = 0.f;
   }
 };
 

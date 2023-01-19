@@ -190,7 +190,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
 }
 
 static auto block_entity_interactions(MonsterState& entity, LevelState& level, int reward){
-  for (const auto& block : level.blocks.bricks){
+  util::multi_for([&](const auto& block){
     if (block.bounce_state.is_bouncing){
       if (entity.is_dead || !entity.should_collide) return;
 
@@ -200,7 +200,7 @@ static auto block_entity_interactions(MonsterState& entity, LevelState& level, i
         entity_bounce_die(entity, level, reward);
       }
     }
-  }
+  }, level.blocks.bricks, level.blocks.q_blocks);
 }
 
 static auto level_controller(LevelState& level){

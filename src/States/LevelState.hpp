@@ -27,6 +27,8 @@ struct StatsState{
 };
 
 struct LevelState{
+  util::vector2d<int> hitbox_grid;
+
   StatsState stats;
   PlayerState player;
 
@@ -60,17 +62,23 @@ struct LevelState{
   float load_delay = 3.f;
   bool should_screen_scroll = false;
 
-  LevelState() : fireball_counter(4.f, 20.f) {}
+  LevelState() : fireball_counter(4.f, 20.f) {
+    hitbox_grid.resize(config::MaxLevelSize, std::vector<int>(config::BlocksInColumn, 0));
+  }
 
-  auto put_entity_hitbox_block(const glm::vec2& position){
-    blocks.entity_hitbox_blocks.push_back(BlockState(position, &textures::dirt));
+  auto& get_hitbox_grid_element(const glm::vec2& position){
+    return hitbox_grid[position.x][position.y];
   }
 
   auto put_dirt(const glm::vec2& position){
+    get_hitbox_grid_element(position) = 1;
+
     blocks.normal.push_back(BlockState(position, &textures::dirt));
   }
 
   auto put_bricks(const glm::vec2& position){
+    get_hitbox_grid_element(position) = 1;
+
     put_dirt(position);
     blocks.normal.back().is_visible = false;
     blocks.bricks.push_back(BricksBlockState(position));
@@ -78,17 +86,23 @@ struct LevelState{
   }
 
   auto put_mushroom_bot(const glm::vec2& position){
+    get_hitbox_grid_element(position) = 1;
+
     blocks.normal.push_back(BlockState(position, &textures::mushroom_bot));
     blocks.normal.back().is_solid = false;
   }
 
   auto put_mushroom_head(const glm::vec2& position, int size){
+    get_hitbox_grid_element(position) = 1;
+
     blocks.normal.push_back(BlockState(position, &textures::mushroom_left));
 
     for (int i = 0; i < size; ++i){
+      get_hitbox_grid_element(position + glm::vec2(i + 1, 0)) = 1;
       blocks.normal.push_back(BlockState(position + glm::vec2(i + 1, 0), &textures::mushroom_center));
     }
 
+    get_hitbox_grid_element(position + glm::vec2(size + 1, 0)) = 1;
     blocks.normal.push_back(BlockState(position + glm::vec2(size + 1, 0), &textures::mushroom_right));
   }
   

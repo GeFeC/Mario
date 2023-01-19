@@ -11,6 +11,8 @@
 static auto bricks_controller(BricksBlockState& block, PlayerState& player, LevelState& level){
   if (player_hit_block_above(player, block) && block.is_solid){
     if (player.growth == PlayerState::Growth::Big){
+      level.get_hitbox_grid_element(block.position / config::BlockSize) = 0;
+
       block.is_visible = false;
       block.is_solid = false;
       block.are_particles_active = true;

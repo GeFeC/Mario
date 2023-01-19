@@ -89,11 +89,6 @@ static auto run_frame_level11(AppState& app){
     }
 
     level.put_red_goomba({ 42, 3 });
-    level.put_entity_hitbox_block({ 39, 3 });
-    level.put_entity_hitbox_block({ 45, 3 });
-
-    level.put_entity_hitbox_block({ 30, 5 });
-    level.put_entity_hitbox_block({ 36, 5 });
 
     level.put_qblock_with_mushroom({ 11, 4 }, EntityState::DirectionRight);
     level.put_qblock_with_coins({ 22, 9 }, 1);
@@ -102,9 +97,6 @@ static auto run_frame_level11(AppState& app){
       level.put_goomba({ 13 + i * 3, 10 });
     }
     level.put_red_koopa({ 9.f, 5.5f }, EntityState::DirectionRight);
-
-    level.put_entity_hitbox_block({ 8.f, 6.f });
-    level.put_entity_hitbox_block({ 14.f, 6.f });
 
     level.put_red_goomba({ 35, 5 });
 
@@ -120,12 +112,6 @@ static auto run_frame_level11(AppState& app){
     level.put_qblock_with_coins({ 76, 7 }, 3);
     level.put_yellow_goomba({ 79, 10 });
     level.put_red_pipe({ 80, 10 }, 3);
-
-    level.put_entity_hitbox_block({ 84, 6 });
-    level.put_entity_hitbox_block({ 94, 6 });
-
-    level.put_entity_hitbox_block({ 85, 3 });
-    level.put_entity_hitbox_block({ 93, 3 });
 
     level.put_red_goomba({ 93, 6 });
     level.put_red_goomba({ 92, 3 });
@@ -152,8 +138,6 @@ static auto run_frame_level11(AppState& app){
     level.put_qblock_with_mushroom({ 89, 4 });
     level.put_qblock_with_coins({ 91, 4 });
 
-    level.put_entity_hitbox_block({ 49, 10 });
-
     level.put_goomba({ 64, 7 });
     level.put_goomba({ 66, 4 });
     level.put_red_goomba({ 68, 10 });
@@ -162,8 +146,6 @@ static auto run_frame_level11(AppState& app){
       level.put_mushroom_bot({ 106, 11 - i });
     }
     level.put_mushroom_head({ 104, 7 }, 3);
-    level.put_entity_hitbox_block({ 103, 6 });
-    level.put_entity_hitbox_block({ 109, 6 });
     level.put_red_goomba({ 108, 6 });
 
     for (int i = 0; i < 3; ++i){
@@ -174,8 +156,6 @@ static auto run_frame_level11(AppState& app){
       level.put_mushroom_bot({ 116, 11 - i });
     }
     level.put_mushroom_head({ 113, 6 }, 5);
-    level.put_entity_hitbox_block({ 112, 5 });
-    level.put_entity_hitbox_block({ 120, 5 });
     level.put_yellow_goomba({ 119, 5 });
 
     for (int i = 0; i < 5; ++i){
@@ -186,8 +166,6 @@ static auto run_frame_level11(AppState& app){
       level.put_mushroom_bot({ 125, 11 - i });
     }
     level.put_mushroom_head({ 122, 7 }, 5);
-    level.put_entity_hitbox_block({ 121, 6 });
-    level.put_entity_hitbox_block({ 129, 6 });
     level.put_red_goomba({ 128, 6 }, EntityState::DirectionLeft, true);
     level.put_red_goomba({ 122, 6 }, EntityState::DirectionRight, true);
 
@@ -204,8 +182,6 @@ static auto run_frame_level11(AppState& app){
       level.put_qblock_with_coins({ 139.f + i, 3 }, 5);
     }
     level.put_mushroom_head({ 138.f, 7 }, 3);
-    level.put_entity_hitbox_block({ 137.f, 6 });
-    level.put_entity_hitbox_block({ 143.f, 6 });
     level.put_yellow_goomba({ 138.f, 6 }, EntityState::DirectionRight);
     level.put_red_goomba({ 142.f, 6 }, EntityState::DirectionLeft, true);
 
