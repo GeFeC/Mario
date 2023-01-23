@@ -164,6 +164,7 @@ namespace textures{
   inline auto beetle_dead = Texture("entity/beetle/dead.png");
 
   inline auto mushroom = Texture("entity/mushroom/mushroom.png");
+  inline auto green_mushroom = Texture("entity/mushroom/green.png");
 
   inline auto mini_coin = Texture("mini.png");
 }

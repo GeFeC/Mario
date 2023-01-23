@@ -21,17 +21,24 @@ struct PointsParticlesState{
     text.position.y = config::BigValue;
   }
 
-  PointsParticlesState(int label, const glm::vec2& position){
-    text = Text(&fonts::small, std::to_string(label));
+  PointsParticlesState(const std::string& label, const glm::vec2& position){
+    text = Text(&fonts::small, label);
     text.set_position(position);
     text.is_visible = false;
   }
 
-  auto set_active(int reward, const glm::vec2& position){
-    text.set_text(std::to_string(reward));
+  PointsParticlesState(int label, const glm::vec2& position)
+  : PointsParticlesState(std::to_string(label), position) {}
+
+  auto set_active(const std::string& reward, const glm::vec2& position){
+    text.set_text(reward);
     text.position = position;
     text.is_visible = true;
     is_active = true;
+  }
+
+  auto set_active(int reward, const glm::vec2& position){
+    set_active(std::to_string(reward), position);
   }
 
   auto as_block() const{

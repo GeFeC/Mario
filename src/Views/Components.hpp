@@ -15,12 +15,14 @@ static auto is_component_on_screen(const util::Rect& component, float offset_x =
   using config::BlockSize, config::BlocksInRow, config::BlocksInColumn;
 
   const auto is_x = component.position.x + component.size.x - offset_x | util::in_range(0, (BlocksInRow + 1) * BlockSize);
-  const auto is_y = component.position.y + component.size.y | util::in_range(0, BlocksInColumn * BlockSize);
+  const auto is_y = component.position.y + component.size.y | util::in_range(0, (BlocksInColumn + 1) * BlockSize);
 
   return is_x && is_y;
 }
 
 static auto render_entity(const EntityState& entity, float offset_x = 0.f){
+  if (!is_component_on_screen(entity, offset_x)) return;
+
   renderer::draw(Drawable{
     entity.position - glm::vec2(offset_x, 0),
     entity.size,

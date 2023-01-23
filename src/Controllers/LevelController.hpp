@@ -154,6 +154,24 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
     );
   }
 
+  for (auto& mushroom : level.entities.green_mushrooms){
+    if (collision::is_hovering(player, mushroom) && mushroom.is_active){
+      auto& points = mushroom.points_manager.get_points_particles();
+
+      points.set_active(config::GreenMushroomEatMessage, mushroom.position);
+      mushroom.is_active = false;
+      mushroom.is_visible = false;
+      mushroom.position.y = config::BigValue;
+      level.stats.hp++;
+    }
+
+    const auto block = BouncingBlockState(mushroom.position / config::BlockSize);
+    if (player_hit_block_above(player, block)){
+      mushroom.should_be_pushed_out = true;
+      mushroom.is_visible = true;
+    } 
+  }
+
   for (auto& mushroom : level.entities.mushrooms){
     if (collision::is_hovering(player, mushroom) && mushroom.is_active){
       auto& points = mushroom.points_manager.get_points_particles();
@@ -222,6 +240,10 @@ static auto level_controller(LevelState& level){
   player_controller(player, level);
 
   for (auto& mushroom : level.entities.mushrooms){
+    mushroom_controller(mushroom, level);
+  }
+
+  for (auto& mushroom : level.entities.green_mushrooms){
     mushroom_controller(mushroom, level);
   }
 

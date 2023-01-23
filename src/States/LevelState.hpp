@@ -50,6 +50,7 @@ struct LevelState{
     std::vector<KoopaState> red_koopas;
     std::vector<BeetleState> beetles;
     std::vector<MushroomState> mushrooms;
+    std::vector<MushroomState> green_mushrooms;
   } entities;
 
   struct Background{
@@ -236,6 +237,20 @@ struct LevelState{
     entities.mushrooms.back().is_visible = false;
   }
 
+  auto put_green_mushroom(const glm::vec2& position, EntityState::Direction direction = EntityState::DirectionLeft){
+    put_entity(
+      entities.green_mushrooms,
+      position,
+      glm::vec2(config::BlockSize),
+      direction,
+      config::RewardForEatingMushroom,
+      config::MushroomWalkSpeed,
+      &textures::green_mushroom
+    );
+
+    entities.green_mushrooms.back().is_visible = false;
+  }
+
   auto put_green_koopa(const glm::vec2& position, Direction direction = DirectionLeft){
     put_entity(
       entities.green_koopas,
@@ -285,6 +300,11 @@ struct LevelState{
   auto put_qblock_with_mushroom(const glm::vec2& position, Direction direction = DirectionLeft){
     put_qblock(position, 1);
     put_mushroom(position, direction);
+  }
+
+  auto put_qblock_with_green_mushroom(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_qblock(position, 1);
+    put_green_mushroom(position, direction);
   }
 
   auto put_red_pipe(const glm::vec2& position, int size){

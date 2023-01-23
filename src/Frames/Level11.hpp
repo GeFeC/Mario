@@ -14,6 +14,7 @@ static auto run_frame_level11(AppState& app){
     &textures::mushroom_bg,
     &textures::mini_coin,
     &textures::mushroom,
+    &textures::green_mushroom,
     texture_allocators::bricks,
     texture_allocators::mario,
     texture_allocators::coin,
@@ -179,11 +180,14 @@ static auto run_frame_level11(AppState& app){
 
     for (int i = 0; i < 3; ++i){
       level.put_mushroom_bot({ 140.f, 10 - i });
-      level.put_qblock_with_coins({ 139.f + i, 3 }, 5);
     }
     level.put_mushroom_head({ 138.f, 7 }, 3);
     level.put_yellow_goomba({ 138.f, 6 }, EntityState::DirectionRight);
     level.put_red_goomba({ 142.f, 6 }, EntityState::DirectionLeft, true);
+
+    level.put_qblock_with_coins({ 139.f, 3 }, 5);
+    level.put_qblock_with_green_mushroom({ 140.f, 3 });
+    level.put_qblock_with_coins({ 141.f, 3 }, 5);
 
     level.put_red_koopa({ 146.f, 9.5f });
 

@@ -22,6 +22,8 @@ namespace config{
   static constexpr auto RewardForEatingMushroom = 1000;
   static constexpr auto RewardForEatingFireFlower = 1000;
 
+  static constexpr auto GreenMushroomEatMessage = "+1 HP";
+
   static constexpr auto GoombaWalkSpeed = 2;
   static constexpr auto FastGoombaWalkSpeed = 5;
   static constexpr auto MushroomWalkSpeed = 3;

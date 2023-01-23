@@ -133,6 +133,10 @@ static auto render_entities(const LevelState& level, float screen_scroll){
     render_entity(mushroom, screen_scroll);
   }
 
+  for (const auto& mushroom : level.entities.green_mushrooms){
+    render_entity(mushroom, screen_scroll);
+  }
+
   for (const auto& beetle : level.entities.beetles){
     render_entity(beetle, screen_scroll);
   }
@@ -164,6 +168,10 @@ static auto render_all_points_particles(const LevelState& level, float screen_sc
   }
 
   for (const auto& mushroom : level.entities.mushrooms){
+    render_points_particles(mushroom.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& mushroom : level.entities.green_mushrooms){
     render_points_particles(mushroom.points_manager.points, screen_scroll);
   }
 
