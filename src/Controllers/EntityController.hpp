@@ -12,6 +12,10 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
     return;
   }
 
+  using config::BlockSize;
+  const auto& position = entity.position;
+  const auto& size = entity.size;
+
   for (const auto& block : level.blocks.normal){
     if (!block.is_solid) continue;
 
