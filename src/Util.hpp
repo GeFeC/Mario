@@ -11,8 +11,12 @@ namespace util{
   template<typename T>
   using vector2d = std::vector<std::vector<T>>;
 
-  inline auto rng_once = std::mt19937(0);
   inline auto rng = std::mt19937(static_cast<std::mt19937::result_type>(std::time(0)));
+
+  inline auto random_value(int min, int max){
+    auto engine = std::uniform_int_distribution{ min, max };
+    return engine(rng);
+  }
 
   struct Rect{
     glm::vec2 position;
@@ -34,16 +38,6 @@ namespace util{
 
   inline auto in_range(float min, float max){
     return Interval{ min, max };
-  }
-
-  inline auto random_value(int min, int max){
-    auto engine = std::uniform_int_distribution{ min, max };
-    return engine(rng);
-  }
-
-  inline auto const_random_value(int min, int max){
-    auto engine = std::uniform_int_distribution{ min, max };
-    return engine(rng_once);
   }
 
   template<typename T>
@@ -80,16 +74,16 @@ namespace util{
       }
     });
   }
-}
 
-inline auto operator|(float value, const util::Interval interval){
-  const auto [min, max] = interval;
-  return value >= min && value <= max;
-}
+  inline auto operator|(float value, const util::Interval& interval){
+    const auto [min, max] = interval;
+    return value >= min && value <= max;
+  }
 
-template<typename T>
-inline auto operator|(const std::vector<T>& vec, const util::Contains<T>& target){
-  return std::all_of(target.targets.begin(), target.targets.end(), [&vec = vec](auto target){
-    return std::find(vec.begin(), vec.end(), target) != vec.end();
-  });
+  template<typename T>
+  inline auto operator|(const std::vector<T>& vec, const util::Contains<T>& target){
+    return std::all_of(target.targets.begin(), target.targets.end(), [&vec = vec](auto target){
+      return std::find(vec.begin(), vec.end(), target) != vec.end();
+    });
+  }
 }
