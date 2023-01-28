@@ -3,12 +3,13 @@ cmake_minimum_required(VERSION 3.10)
 project(mario)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB_RECURSE sources src/*.cpp src/*.hpp src/glad.c)
+file(GLOB_RECURSE sources src/*.cpp src/glad.c)
 
 add_executable(${PROJECT_NAME} ${sources}) 
 
-set(includes 
+set(include_dirs
   src
   vendor/glfw/include 
   vendor/freetype/include
@@ -23,7 +24,7 @@ set(libs
   freetype
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${includes})
+target_include_directories(${PROJECT_NAME} PUBLIC ${include_dirs})
 target_link_directories(${PROJECT_NAME} PUBLIC ${lib_dirs})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${libs})
 
