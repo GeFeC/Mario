@@ -168,6 +168,11 @@ namespace textures{
     Texture("entity/spike/1.png")
   };
 
+  inline auto plant = std::array<Texture, 2>{
+    Texture("entity/plant/0.png"),
+    Texture("entity/plant/1.png")
+  };
+
   inline auto mushroom = Texture("entity/mushroom/mushroom.png");
   inline auto green_mushroom = Texture("entity/mushroom/green.png");
 

@@ -52,6 +52,8 @@ struct LevelState{
     std::vector<SpikeState> spikes;
     std::vector<MushroomState> mushrooms;
     std::vector<MushroomState> green_mushrooms;
+
+    std::vector<PlantState> plants;
   } entities;
 
   struct Background{
@@ -165,7 +167,6 @@ struct LevelState{
       const glm::vec2& position,
       const glm::vec2& size,
       Direction direction,
-      int reward,
       int walk_speed,
       Texture* texture
   ){
@@ -185,7 +186,6 @@ struct LevelState{
       position, 
       glm::vec2(config::BlockSize),
       direction, 
-      config::RewardForKillingGoomba, 
       config::GoombaWalkSpeed,
       &textures::goomba_walk[0]
     );
@@ -201,7 +201,6 @@ struct LevelState{
       position, 
       glm::vec2(config::BlockSize),
       direction, 
-      config::RewardForKillingGoomba, 
       config::GoombaWalkSpeed,
       &textures::red_goomba_walk[0]
     );
@@ -216,7 +215,6 @@ struct LevelState{
       position, 
       glm::vec2(config::BlockSize),
       direction, 
-      config::RewardForKillingGoomba, 
       config::FastGoombaWalkSpeed,
       &textures::yellow_goomba_walk[0]
     );
@@ -231,7 +229,6 @@ struct LevelState{
       position,
       glm::vec2(config::BlockSize),
       direction,
-      config::RewardForEatingMushroom,
       config::MushroomWalkSpeed,
       &textures::mushroom
     );
@@ -245,7 +242,6 @@ struct LevelState{
       position,
       glm::vec2(config::BlockSize),
       direction,
-      config::RewardForEatingMushroom,
       config::MushroomWalkSpeed,
       &textures::green_mushroom
     );
@@ -259,7 +255,6 @@ struct LevelState{
       position,
       glm::vec2(config::BlockSize, config::BlockSize * 1.5f),
       direction,
-      0,
       config::KoopaWalkSpeed,
       &textures::green_koopa_walk[0]
     );
@@ -274,7 +269,6 @@ struct LevelState{
       position,
       glm::vec2(config::BlockSize, config::BlockSize * 1.5f),
       direction,
-      0,
       config::KoopaWalkSpeed,
       &textures::red_koopa_walk[0]
     );
@@ -290,7 +284,6 @@ struct LevelState{
       position,
       glm::vec2(config::BlockSize),
       direction,
-      0,
       config::BeetleWalkSpeed,
       &textures::beetle_walk[0]
     );
@@ -305,7 +298,6 @@ struct LevelState{
       position,
       glm::vec2(config::BlockSize),
       direction,
-      0,
       config::SpikeWalkSpeed,
       &textures::spike_walk[0]
     );
@@ -313,6 +305,19 @@ struct LevelState{
     auto& spike = entities.spikes.back();
     spike.texture_flip = Drawable::Flip::UseFlip;
     spike.can_be_stomped = false;
+  }
+
+  auto put_plant(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.plants,
+      position,
+      glm::vec2(config::BlockSize, config::BlockSize * 11 / 8),
+      direction,
+      0,
+      &textures::plant[0]
+    );
+
+    entities.plants.back().can_be_stomped = false;
   }
 
   auto put_qblock_with_mushroom(const glm::vec2& position, Direction direction = DirectionLeft){

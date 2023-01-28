@@ -108,6 +108,12 @@ static auto render_stats(const StatsState& stats){
   });
 }
 
+static auto render_plants(const LevelState& level, float screen_scroll){
+  for (const auto& plant : level.entities.plants){
+    render_entity(plant, screen_scroll);
+  }
+}
+
 static auto render_entities(const LevelState& level, float screen_scroll){
   for (const auto& goomba : level.entities.goombas){
     render_entity(goomba, screen_scroll);
@@ -147,6 +153,10 @@ static auto render_entities(const LevelState& level, float screen_scroll){
 }
 
 static auto render_all_points_particles(const LevelState& level, float screen_scroll){
+  for (const auto& plant : level.entities.plants){
+    render_points_particles(plant.points_manager.points, screen_scroll);
+  }
+
   for (const auto& koopa : level.entities.green_koopas){
     render_points_particles(koopa.points_manager.points, screen_scroll);
   }
@@ -261,6 +271,10 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     render_clouds(screen_scroll);
     render_bushes(level.background.bushes, screen_scroll);
+  });
+
+  renderer::draw_with_shadow([&]{
+    render_plants(level, screen_scroll);
   });
 
   renderer::draw_with_shadow([&]{

@@ -20,6 +20,8 @@ namespace config{
   static constexpr auto RewardForKillingKoopa = 100;
   static constexpr auto RewardForKillingBeetle = 100;
   static constexpr auto RewardForKillingSpike = 100;
+  static constexpr auto RewardForKillingPlant = 100;
+
   static constexpr auto RewardForEatingMushroom = 1000;
   static constexpr auto RewardForEatingFireFlower = 1000;
 

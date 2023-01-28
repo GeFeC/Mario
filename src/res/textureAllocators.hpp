@@ -57,6 +57,11 @@ namespace texture_allocators{
     &textures::spike_walk[1]
   });
 
+  inline auto plant = TextureAllocator({
+    &textures::plant[0],
+    &textures::plant[1]
+  });
+
   inline auto q_block = TextureAllocator({
     &textures::q_block[0],
     &textures::q_block[1],
