@@ -31,7 +31,8 @@ static auto run_frame_level11(AppState& app){
     texture_allocators::fire_flower,
     texture_allocators::green_koopa,
     texture_allocators::red_koopa,
-    texture_allocators::beetle
+    texture_allocators::beetle,
+    texture_allocators::spike
   };
 
   const auto setup = [](auto& app){
@@ -97,7 +98,7 @@ static auto run_frame_level11(AppState& app){
     for (int i = 0; i < 3; ++i){
       level.put_goomba({ 13 + i * 3, 10 });
     }
-    level.put_red_koopa({ 9.f, 5.5f }, EntityState::DirectionRight);
+    level.put_spike({ 9.f, 6.f }, EntityState::DirectionRight);
 
     level.put_red_goomba({ 35, 5 });
 

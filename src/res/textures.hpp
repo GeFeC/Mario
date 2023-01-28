@@ -163,6 +163,11 @@ namespace textures{
   };
   inline auto beetle_dead = Texture("entity/beetle/dead.png");
 
+  inline auto spike_walk = std::array<Texture, 2>{
+    Texture("entity/spike/0.png"),
+    Texture("entity/spike/1.png")
+  };
+
   inline auto mushroom = Texture("entity/mushroom/mushroom.png");
   inline auto green_mushroom = Texture("entity/mushroom/green.png");
 

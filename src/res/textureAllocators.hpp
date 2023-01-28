@@ -52,6 +52,11 @@ namespace texture_allocators{
     &textures::beetle_walk[1]
   });
 
+  inline auto spike = TextureAllocator({
+    &textures::spike_walk[0],
+    &textures::spike_walk[1]
+  });
+
   inline auto q_block = TextureAllocator({
     &textures::q_block[0],
     &textures::q_block[1],

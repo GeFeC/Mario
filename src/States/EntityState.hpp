@@ -30,6 +30,7 @@ struct EntityState{
   float gravity = 0.f;
   float death_delay = 1.f;
 
+  bool can_be_stomped = true;
   bool is_visible = true;
   bool is_on_ground = false;
   bool is_dead = false;

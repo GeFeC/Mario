@@ -10,6 +10,7 @@ struct MonsterState : EntityState{
 };
 
 struct GoombaState : MonsterState{};
+struct SpikeState : MonsterState{};
 
 struct MushroomState : MonsterState{
   float offset = 0.f;

@@ -19,11 +19,13 @@ namespace config{
   static constexpr auto RewardForKillingFastGoomba = 300;
   static constexpr auto RewardForKillingKoopa = 100;
   static constexpr auto RewardForKillingBeetle = 100;
+  static constexpr auto RewardForKillingSpike = 100;
   static constexpr auto RewardForEatingMushroom = 1000;
   static constexpr auto RewardForEatingFireFlower = 1000;
 
   static constexpr auto GreenMushroomEatMessage = "+1 HP";
 
+  static constexpr auto SpikeWalkSpeed = 2;
   static constexpr auto GoombaWalkSpeed = 2;
   static constexpr auto FastGoombaWalkSpeed = 5;
   static constexpr auto MushroomWalkSpeed = 3;

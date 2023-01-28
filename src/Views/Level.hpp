@@ -140,6 +140,10 @@ static auto render_entities(const LevelState& level, float screen_scroll){
   for (const auto& beetle : level.entities.beetles){
     render_entity(beetle, screen_scroll);
   }
+
+  for (const auto& spike : level.entities.spikes){
+    render_entity(spike, screen_scroll);
+  }
 }
 
 static auto render_all_points_particles(const LevelState& level, float screen_scroll){
@@ -165,6 +169,10 @@ static auto render_all_points_particles(const LevelState& level, float screen_sc
 
   for (const auto& beetle : level.entities.beetles){
     render_points_particles(beetle.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& spike : level.entities.spikes){
+    render_points_particles(spike.points_manager.points, screen_scroll);
   }
 
   for (const auto& mushroom : level.entities.mushrooms){

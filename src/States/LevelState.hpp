@@ -49,6 +49,7 @@ struct LevelState{
     std::vector<KoopaState> green_koopas;
     std::vector<KoopaState> red_koopas;
     std::vector<BeetleState> beetles;
+    std::vector<SpikeState> spikes;
     std::vector<MushroomState> mushrooms;
     std::vector<MushroomState> green_mushrooms;
   } entities;
@@ -112,6 +113,7 @@ struct LevelState{
   }
 
   auto put_spinning_coin(const glm::vec2& position, int hits_required_to_bounce){
+    bool can_be_stomped = true;
     blocks.spinning_coins.push_back(SpinningCoinState(position));
 
     blocks.spinning_coins.back().bounce_state.initial_power = -20.f;
@@ -295,6 +297,22 @@ struct LevelState{
 
     auto& beetle = entities.beetles.back();
     beetle.texture_flip = Drawable::Flip::UseFlip;
+  }
+
+  auto put_spike(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.spikes,
+      position,
+      glm::vec2(config::BlockSize),
+      direction,
+      0,
+      config::SpikeWalkSpeed,
+      &textures::spike_walk[0]
+    );
+
+    auto& spike = entities.spikes.back();
+    spike.texture_flip = Drawable::Flip::UseFlip;
+    spike.can_be_stomped = false;
   }
 
   auto put_qblock_with_mushroom(const glm::vec2& position, Direction direction = DirectionLeft){

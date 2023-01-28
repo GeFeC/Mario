@@ -18,6 +18,7 @@
 #include "Controllers/BricksController.hpp"
 #include "Controllers/FireFlowerController.hpp"
 #include "Controllers/ShellMonsterController.hpp"
+#include "Controllers/SpikeController.hpp"
 
 #include "Util.hpp"
 #include "config.hpp"
@@ -64,6 +65,10 @@ static auto level_entities_controller(LevelState& level){
     goomba_controller(goomba, level, textures::goomba_walk);
   }
 
+  for (auto& spike : level.entities.spikes){
+    spike_controller(spike, level, textures::spike_walk);
+  }
+
   for (auto& goomba : level.entities.red_goombas){
     goomba_controller(goomba, level, textures::red_goomba_walk);
   }
@@ -87,6 +92,12 @@ static auto level_entities_controller(LevelState& level){
 
 static auto player_entity_interactions(PlayerState& player, LevelState& level){
   auto& entities = level.entities;
+
+  for (auto& spike : level.entities.spikes){
+    entity_kill_player_on_touch(spike, player);
+    entity_become_active_when_seen(spike, player);
+    entity_die_when_hit_by_fireball(spike, player, level, config::RewardForKillingSpike);
+  }
 
   for (auto& goomba : level.entities.goombas){
     entity_kill_player_on_touch(goomba, player);

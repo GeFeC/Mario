@@ -312,6 +312,8 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
 }
 
 auto player_stomp_on_entity(const EntityState& player, const EntityState& entity) -> bool{
+  if (!entity.can_be_stomped) return false;
+
   if (collision::is_hovering_in_x(player, entity) && !entity.is_dead && player.gravity > 0){
     return entity.position.y - player.position.y - player.size.y | util::in_range(-45, 0);
   }
