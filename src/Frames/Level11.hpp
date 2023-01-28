@@ -202,8 +202,9 @@ static auto run_frame_level11(AppState& app){
   };
 
   const auto loop = [](auto& app){
-    level_controller(app.current_level);
+    level_controller(app, app.current_level);
     render_level(app.current_level);
+
   };
 
   run_frame(app, AppState::Frame::Level11, textures, setup, loop);

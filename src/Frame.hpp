@@ -28,7 +28,6 @@ static auto run_frame(
     glClearColor(0, 0, 0, 0);
 
     loop(app_state);
-    app_controller(app_state);
 
     window::update();
     window::delta_time = glfwGetTime() - frame_start_time;

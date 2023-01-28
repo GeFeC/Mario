@@ -2,14 +2,20 @@
 
 #include "States/AppState.hpp"
 #include "Controllers/LevelController.hpp"
+#include "Frames/Level11.hpp"
 
 #include "Util.hpp"
 #include "config.hpp"
 
-auto app_controller(AppState& app_state){
-  const auto& player = app_state.current_level.player;
+static auto app_controller(AppState& app){
+  auto& frame = app.current_frame;
 
-  if (player.position.y > config::PlayerPositionToRestartLevel){
-    app_state.should_restart_current_frame = true;
+  if (frame == AppState::Frame::Level11){
+    run_frame_level11(app);
+
+    const auto player_hp = app.current_level.stats.hp - 1;
+
+    app.current_level = LevelState{};
+    app.current_level.stats.hp = player_hp;
   }
 }

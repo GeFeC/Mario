@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Controllers/CollisionController.hpp"
 #include "States/LevelState.hpp"
 #include "States/LoopedCounter.hpp"
+#include "States/AppState.hpp"
 
+#include "Controllers/CollisionController.hpp"
 #include "Controllers/PlayerController.hpp"
 #include "Controllers/BlinkController.hpp"
 #include "Controllers/CoinController.hpp"
@@ -242,7 +243,7 @@ static auto block_entity_interactions(MonsterState& entity, LevelState& level, i
   }, level.blocks.bricks, level.blocks.q_blocks);
 }
 
-static auto level_controller(LevelState& level){
+static auto level_controller(AppState& app, LevelState& level){
   if (level.load_delay > 0.f) {
     level.load_delay -= window::delta_time;
     return;
@@ -255,6 +256,10 @@ static auto level_controller(LevelState& level){
   level.should_screen_scroll = false;
   if (player.position.x > config::PlayerPositionToScroll){
     level.should_screen_scroll = true;
+  }
+
+  if (player.position.y > config::PlayerPositionToRestartLevel){
+    app.should_restart_current_frame = true;
   }
 
   stats_controller(level.stats);
