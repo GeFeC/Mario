@@ -76,8 +76,6 @@ static auto entity_handle_shell(
     float new_size,
     const Texture& dead_texture
 ){
-  entity_become_active_when_seen(entity, player);
-
   if (entity.in_shell){
     entity.fall_from_edge = true;
   }
@@ -143,6 +141,10 @@ static auto entity_handle_shell(
   }
 
   for (auto& target : entities.beetles){
+    shell_kill_entity(target, config::RewardForKillingBeetle);
+  }
+
+  for (auto& target : entities.spikes){
     shell_kill_entity(target, config::RewardForKillingBeetle);
   }
 };

@@ -12,18 +12,6 @@ struct MonsterState : EntityState{
 struct GoombaState : MonsterState{};
 struct SpikeState : MonsterState{};
 
-struct PlantState : MonsterState{
-  static constexpr auto StartCooldown = 1.f;
-  static constexpr auto MaxOffset = config::BlockSize * 11 / 8;
-  float offset = 0.f;
-  float cooldown = 0.f;
-
-  enum class Direction{
-    GoingUp,
-    GoingDown
-  } direction = Direction::GoingUp;
-};
-
 struct MushroomState : MonsterState{
   float offset = 0.f;
   bool should_be_pushed_out = false;
@@ -39,6 +27,11 @@ struct KoopaState : ShellMonsterState{
   KoopaState(){
     current_walk_speed = config::KoopaWalkSpeed;
   }
+};
+
+struct FlyingKoopaState : KoopaState{
+  bool has_wings = true;
+  FlyingKoopaState() : KoopaState() {}
 };
 
 struct BeetleState : ShellMonsterState{

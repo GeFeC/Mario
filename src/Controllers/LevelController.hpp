@@ -87,6 +87,21 @@ static auto level_entities_controller(LevelState& level){
     shell_monster_controller(koopa, level, textures::green_koopa_walk);
   }
 
+  for (auto& koopa : level.entities.green_flying_koopas){
+    if (koopa.has_wings && koopa.is_on_ground){
+      static constexpr auto FlyingKoopaJumpHeight = -15;
+      koopa.gravity = FlyingKoopaJumpHeight;
+      koopa.is_on_ground = false;
+    }
+
+    if (koopa.has_wings){
+      shell_monster_controller(koopa, level, textures::green_flying_koopa_walk);
+    }
+    else{
+      shell_monster_controller(koopa, level, textures::green_koopa_walk);
+    }
+  }
+
   for (auto& koopa : level.entities.red_koopas){
     shell_monster_controller(koopa, level, textures::red_koopa_walk);
   }
@@ -139,6 +154,32 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
 
   for (auto& koopa : level.entities.green_koopas){
     entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
+    entity_become_active_when_seen(koopa, player);
+    entity_handle_shell(
+      koopa,
+      player,
+      level,
+      config::RewardForKillingKoopa, 
+      config::KoopaShellWalkSpeed,
+      config::BlockSize * 7.f / 8.f,
+      textures::green_koopa_dead
+    );
+  }
+
+  for (auto& koopa : level.entities.green_flying_koopas){
+    entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
+    entity_become_active_when_seen(koopa, player);
+    entity_kill_player_on_touch(koopa, player);
+
+    if (player_stomp_on_entity(player, koopa) && koopa.has_wings){
+      koopa.has_wings = false;
+      player.gravity = -15;
+      koopa.gravity = 0;
+      continue;
+    }
+
+    if (koopa.has_wings) continue;
+
     entity_handle_shell(
       koopa,
       player,
@@ -152,6 +193,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
 
   for (auto& koopa : level.entities.red_koopas){
     entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
+    entity_become_active_when_seen(koopa, player);
     entity_handle_shell(
       koopa, 
       player,
@@ -165,6 +207,7 @@ static auto player_entity_interactions(PlayerState& player, LevelState& level){
 
   for (auto& beetle : level.entities.beetles){
     entity_endure_fireball(beetle, player);
+    entity_become_active_when_seen(beetle, player);
     entity_handle_shell(
       beetle,
       player,

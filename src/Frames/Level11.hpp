@@ -30,6 +30,7 @@ static auto run_frame_level11(AppState& app){
     texture_groups::yellow_goomba,
     texture_groups::fire_flower,
     texture_groups::green_koopa,
+    texture_groups::green_flying_koopa,
     texture_groups::red_koopa,
     texture_groups::beetle,
     texture_groups::spike,
@@ -92,6 +93,7 @@ static auto run_frame_level11(AppState& app){
     }
 
     level.put_red_goomba({ 42, 3 });
+    level.put_green_flying_koopa({ 10, 9.5 });
 
     level.put_qblock_with_mushroom({ 11, 4 }, EntityState::DirectionRight);
     level.put_qblock_with_coins({ 22, 9 }, 1);

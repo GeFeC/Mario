@@ -8,6 +8,7 @@
 #include "States/LoopedCounter.hpp"
 #include "States/QBlockState.hpp"
 #include "States/FireFlowerState.hpp"
+#include "States/PlantState.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -47,6 +48,7 @@ struct LevelState{
     std::vector<GoombaState> red_goombas;
     std::vector<GoombaState> yellow_goombas;
     std::vector<KoopaState> green_koopas;
+    std::vector<FlyingKoopaState> green_flying_koopas;
     std::vector<KoopaState> red_koopas;
     std::vector<BeetleState> beetles;
     std::vector<SpikeState> spikes;
@@ -260,6 +262,20 @@ struct LevelState{
     );
 
     auto& koopa = entities.green_koopas.back();
+    koopa.texture_flip = Drawable::Flip::UseFlip;
+  }
+
+  auto put_green_flying_koopa(const glm::vec2& position, Direction direction = DirectionLeft){
+    put_entity(
+      entities.green_flying_koopas,
+      position,
+      glm::vec2(config::BlockSize, config::BlockSize * 1.5f),
+      direction,
+      config::KoopaWalkSpeed,
+      &textures::green_flying_koopa_walk[0]
+    );
+
+    auto& koopa = entities.green_flying_koopas.back();
     koopa.texture_flip = Drawable::Flip::UseFlip;
   }
 
