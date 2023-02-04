@@ -4,36 +4,36 @@
 #include "Views/Level.hpp"
 #include "Controllers/LevelController.hpp"
 #include "Frame.hpp"
-#include "res/textureAllocators.hpp"
+#include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
 static auto run_frame_level11(AppState& app){
-  const auto textures = std::vector<TextureAllocator>{
+  const auto textures = std::vector<TextureGroup>{
     &textures::black,
     &textures::dirt,
     &textures::mushroom_bg,
     &textures::mini_coin,
     &textures::mushroom,
     &textures::green_mushroom,
-    texture_allocators::bricks,
-    texture_allocators::mario,
-    texture_allocators::coin,
-    texture_allocators::goomba,
-    texture_allocators::mushroom,
-    texture_allocators::q_block,
-    texture_allocators::red_cloud,
-    texture_allocators::spinning_coin,
-    texture_allocators::red_bush,
-    texture_allocators::red_hill,
-    texture_allocators::red_pipe,
-    texture_allocators::red_goomba,
-    texture_allocators::yellow_goomba,
-    texture_allocators::fire_flower,
-    texture_allocators::green_koopa,
-    texture_allocators::red_koopa,
-    texture_allocators::beetle,
-    texture_allocators::spike,
-    texture_allocators::plant
+    texture_groups::bricks,
+    texture_groups::mario,
+    texture_groups::coin,
+    texture_groups::goomba,
+    texture_groups::mushroom,
+    texture_groups::q_block,
+    texture_groups::red_cloud,
+    texture_groups::spinning_coin,
+    texture_groups::red_bush,
+    texture_groups::red_hill,
+    texture_groups::red_pipe,
+    texture_groups::red_goomba,
+    texture_groups::yellow_goomba,
+    texture_groups::fire_flower,
+    texture_groups::green_koopa,
+    texture_groups::red_koopa,
+    texture_groups::beetle,
+    texture_groups::spike,
+    texture_groups::plant
   };
 
   const auto setup = [](auto& app){

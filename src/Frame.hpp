@@ -11,7 +11,7 @@ template<typename SetupFunction, typename LoopFunction>
 static auto run_frame(
     AppState& app_state,
     AppState::Frame frame, 
-    const std::vector<TextureAllocator>& textures, 
+    const std::vector<TextureGroup>& textures, 
     const SetupFunction& setup, 
     const LoopFunction& loop
 ){

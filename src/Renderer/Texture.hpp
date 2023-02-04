@@ -29,15 +29,15 @@ public:
   auto bind() const noexcept -> void;
 };
 
-struct TextureAllocator{
+struct TextureGroup{
 private:
   std::vector<Texture*> textures;
 public:
-  TextureAllocator(Texture* texture){
+  TextureGroup(Texture* texture){
     textures.push_back(texture);
   }
 
-  TextureAllocator(const std::vector<Texture*>& textures)
+  TextureGroup(const std::vector<Texture*>& textures)
   : textures(textures){}
 
   auto allocate(){

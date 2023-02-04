@@ -6,7 +6,9 @@
 
 namespace textures{
   inline auto black = Texture("black.png");
+  inline auto mushroom_bg = Texture("mushroom_background.png");
 
+  //Blocks and Background objects
   inline auto bricks_particles_normal = Texture("bricks_particle/normal.png");
 
   inline auto bricks = Texture("tile/bricks.png");  
@@ -57,17 +59,9 @@ namespace textures{
     Texture("spinning_coin/3.png"),
   };
 
-  inline auto fire_flower = std::array<Texture, 4>{
-    Texture("flower/0.png"),
-    Texture("flower/1.png"),
-    Texture("flower/2.png"),
-    Texture("flower/3.png")
-  };
-
   inline auto null_block = Texture("q_block/used.png");
 
-  inline auto mushroom_bg = Texture("mushroom_background.png");
-
+  //Player
   inline auto small_mario = Texture("player/mario/small/normal/mario.png");
   inline auto small_mario_dead = Texture("player/mario/small/normal/dead.png");
   inline auto small_mario_jumping = Texture("player/mario/small/normal/jumping.png");
@@ -114,6 +108,7 @@ namespace textures{
 
   inline auto medium_mario = Texture("player/mario/growing.png");
 
+  //Entities:
   inline auto fireball = std::array<Texture, 4>{
     Texture("fireball/1.png"),
     Texture("fireball/2.png"),
@@ -125,6 +120,13 @@ namespace textures{
     Texture("fireball/explosion1.png"),
     Texture("fireball/explosion2.png"),
     Texture("fireball/explosion3.png")
+  };
+
+  inline auto fire_flower = std::array<Texture, 4>{
+    Texture("flower/0.png"),
+    Texture("flower/1.png"),
+    Texture("flower/2.png"),
+    Texture("flower/3.png")
   };
 
   inline auto goomba_walk = std::array<Texture, 2>{
@@ -151,6 +153,12 @@ namespace textures{
   };
   inline auto green_koopa_dead = Texture("entity/koopa/greendead.png");
   
+  inline auto green_flying_koopa_walk = std::array<Texture, 2>{
+    Texture("entity/koopa/green_flying1.png"),
+    Texture("entity/koopa/green_flying2.png")
+  };
+  inline auto green_flying_koopa_dead = Texture("entity/koopa/greendead.png");
+
   inline auto red_koopa_walk = std::array<Texture, 2>{
     Texture("entity/koopa/red1.png"),
     Texture("entity/koopa/red2.png")
