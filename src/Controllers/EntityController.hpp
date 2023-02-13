@@ -81,7 +81,12 @@ static auto entity_gravity(EntityState& entity, const LevelState& level, int gra
   detect_entity_collision_with_level(entity, level, [&](const auto& collision_state){
     if (entity.death_delay <= 0.f) return;
 
-    if (collision_state.distance_below < position_increaser && collision_state.distance_below > -CollisionOffset){
+    if (collision_state.distance_above < -position_increaser){
+      position_increaser = -collision_state.distance_above + 1.f;
+      entity.gravity = 0.f;
+    }
+
+    if (collision_state.distance_below == util::in_range(-CollisionOffset, position_increaser)){
       entity.is_on_ground = true;
       position_increaser = collision_state.distance_below;
     }

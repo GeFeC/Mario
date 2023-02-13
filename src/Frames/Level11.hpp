@@ -173,6 +173,8 @@ static auto run_frame_level11(AppState& app){
     player.is_active = true;
     player.current_texture = &textures::small_mario;
 
+    entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 12, 9.5 }));
+
     for (int i = 0; i < 27; ++i){
       put_dirt(level, { i, 11 });
     }
@@ -205,7 +207,6 @@ static auto run_frame_level11(AppState& app){
     }
 
     entities.red_goombas.push_back(GoombaState::make_red({ 42, 3 }));
-    entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 18, 9.5 }));
     entities.red_koopas.push_back(KoopaState::make_red({ 9, 5.5 }));
 
     put_qblock_with_mushroom(level, { 11, 4 }, EntityState::DirectionRight);
