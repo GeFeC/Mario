@@ -37,6 +37,9 @@ static auto flying_koopa_controller(
     koopa.has_wings = false;
     player.gravity = PlayerState::BouncePower;
     koopa.gravity = 0;
+
+    koopa.spawn_points(player.mobs_killed_in_row);
+    level.stats.score += koopa.reward_for_killing * player.mobs_killed_in_row;
     return;
   }
 
