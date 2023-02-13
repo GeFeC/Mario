@@ -90,16 +90,16 @@ static auto entity_gravity(EntityState& entity, const LevelState& level, int gra
   entity.position.y += position_increaser;
 }
 
-static auto entity_turn_around(EntityState& entity, int speed){
+static auto entity_turn_around(MonsterState& entity){
   if (entity.acceleration.left == 0 && entity.acceleration.right == 0){
     entity.direction = -entity.direction;
 
     if (entity.direction == EntityState::DirectionLeft){
-      entity.acceleration.left = speed;
+      entity.acceleration.left = entity.walk_speed;
     }
 
     if (entity.direction == EntityState::DirectionRight){
-      entity.acceleration.right = speed;
+      entity.acceleration.right = entity.walk_speed;
     }
   }
 }
@@ -128,8 +128,7 @@ static auto entity_die_when_stomped(
     MonsterState& entity, 
     const util::Rect& hitbox, 
     PlayerState& player, 
-    LevelState& level,
-    int reward, 
+    StatsState& stats,
     Function set_entity_dead
 ){
   auto entity_hitbox = EntityState();
@@ -139,11 +138,16 @@ static auto entity_die_when_stomped(
 
   if (player_stomp_on_entity(player, entity_hitbox) && !player.is_dead && !entity.is_dead && entity.should_collide){
     set_entity_dead();
-    player.gravity = -15.f;
+    player.gravity = PlayerState::BouncePower;
 
-    level.stats.score += reward * player.mobs_killed_in_row;
+    stats.score += entity.reward_for_killing * player.mobs_killed_in_row;
     entity.points_manager.make_next_points_particles();
-    entity.points_manager.get_points_particles().set_active(reward * player.mobs_killed_in_row, entity.position);
+
+    auto& points_particles = entity.points_manager.get_points_particles();
+    points_particles.set_active(
+      entity.reward_for_killing * player.mobs_killed_in_row, 
+      entity.position
+    );
 
     ++player.mobs_killed_in_row;
 
@@ -157,11 +161,10 @@ template<typename Function>
 static auto entity_die_when_stomped(
     MonsterState& entity, 
     PlayerState& player, 
-    LevelState& level, 
-    int reward, 
+    StatsState& stats, 
     Function set_entity_dead
 ){
-  entity_die_when_stomped(entity, util::Rect(entity), player, level, reward, set_entity_dead);
+  entity_die_when_stomped(entity, util::Rect(entity), player, stats, set_entity_dead);
 };
 
 static auto entity_become_active_when_seen(MonsterState& entity, const PlayerState& player){
@@ -173,23 +176,23 @@ static auto entity_become_active_when_seen(MonsterState& entity, const PlayerSta
   }
 };
 
-static auto entity_bounce_die(MonsterState& entity, LevelState& level, int reward){
-  entity.gravity = -20.f;
+static auto entity_bounce_die(MonsterState& entity, StatsState& stats){
+  entity.gravity = MonsterState::BounceDiePower;
   entity.should_collide = false;
   entity.vertical_flip = Drawable::Flip::UseFlip;
 
-  level.stats.score += reward;
-  entity.points_manager.get_points_particles().set_active(reward, entity.position);
+  stats.score += entity.reward_for_killing;
+  entity.points_manager.get_points_particles().set_active(entity.reward_for_killing, entity.position);
 }
 
 static auto entity_is_hit_by_fireball(MonsterState& entity, FireballState& fireball){
   return collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active && entity.should_collide;
 }
 
-static auto entity_die_when_hit_by_fireball(MonsterState& entity, PlayerState& player, LevelState& level, int reward){
+static auto entity_die_when_hit_by_fireball(MonsterState& entity, PlayerState& player, StatsState& stats){
   for (auto& fireball : player.fireballs){
     if (entity_is_hit_by_fireball(entity, fireball)){
-      entity_bounce_die(entity, level, reward);
+      entity_bounce_die(entity, stats);
 
       fireball.acceleration.left = fireball.acceleration.right = 0.f;
     }
@@ -203,3 +206,46 @@ static auto entity_endure_fireball(MonsterState& entity, PlayerState& player){
     }
   } 
 };  
+
+template<typename Reaction>
+static auto entity_react_when_on_bouncing_block(
+    MonsterState& entity, 
+    const LevelState& level,
+    Reaction reaction 
+){
+  const auto& blocks = level.blocks;
+
+  util::multi_for([&](const auto& block){
+    if (block.bounce_state.is_bouncing){
+      if (entity.is_dead || !entity.should_collide) return;
+
+      const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
+      
+      if (collision_state.distance_below == util::in_range(-15.f, 0.f)){
+        reaction();
+      }
+    }
+  },
+    blocks.bricks,
+    blocks.q_blocks
+  );
+}
+
+static auto entity_die_when_on_bouncing_block(MonsterState& entity, LevelState& level){
+  entity_react_when_on_bouncing_block(entity, level, [&]{
+    entity_bounce_die(entity, level.stats);
+  });
+}
+
+//For mushrooms:
+static auto entity_bounce_when_on_bouncing_block(MonsterState& entity, LevelState& level){
+  entity_react_when_on_bouncing_block(entity, level, [&]{
+    entity.gravity = MonsterState::BouncePower;
+    entity.is_on_ground = false;
+  });
+}
+
+static auto entity_run_movement_animation(MonsterState& entity, const std::array<Texture, 2>& walk_frames){
+  const auto counter = glfwGetTime() * 8.f | util::as<int>;
+  entity.current_texture = &walk_frames[counter % 2];
+}

@@ -4,6 +4,8 @@
 #include "States/PointsParticlesState.hpp"
 
 struct FireFlowerState : BlockBase{
+  static constexpr auto RewardForEating = 1000;
+
   float offset = 0.f;
   bool should_be_pushed_out = false;
   int points_index = -1;

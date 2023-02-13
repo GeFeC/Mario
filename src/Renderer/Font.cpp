@@ -1,5 +1,6 @@
 #include "Font.hpp"
 #include "config.hpp"
+#include "Util.hpp"
 
 #include <stdexcept>
 
@@ -26,7 +27,7 @@ auto Font::allocate(int font_size, int glyphs_count) -> void{
 
   for (int c = 0; c < glyphs_count; c++){
     if (FT_Load_Char(face, c, FT_LOAD_RENDER)){
-      throw std::runtime_error("Failed to load glyph: " + std::string{ static_cast<char>(c) });
+      throw std::runtime_error("Failed to load glyph: " + std::string{ c | util::as<char> });
     }
 
     const auto texture_id = create_texture_from_face_(face);

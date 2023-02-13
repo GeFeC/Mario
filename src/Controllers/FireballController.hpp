@@ -37,5 +37,5 @@ static auto fireball_controller(FireballState& fireball, const LevelState& level
     reset_fireball(fireball);
   }
 
-  fireball.current_texture = &textures::fireball[level.fireball_counter.as_int()];
+  fireball.current_texture = &textures::fireball[level.fireball_counter.int_value()];
 }

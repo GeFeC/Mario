@@ -29,12 +29,12 @@ auto collision_controller(const Rect& object1, const Rect& object2) -> Collision
 
 auto collision::is_hovering_in_x(const Rect& object1, const Rect& object2) -> bool{
   return object1.position.x - object2.position.x 
-    | util::in_range(-object1.size.x + CollisionOffset, object2.size.x - CollisionOffset);
+    == util::in_range(-object1.size.x + CollisionOffset, object2.size.x - CollisionOffset);
 }
 
 auto collision::is_hovering_in_y(const Rect& object1, const Rect& object2) -> bool{
   return object1.position.y - object2.position.y 
-    | util::in_range(-object1.size.y + CollisionOffset, object2.size.y - CollisionOffset);
+    == util::in_range(-object1.size.y + CollisionOffset, object2.size.y - CollisionOffset);
 }
 
 auto collision::is_hovering(const Rect& object1, const Rect& object2) -> bool{

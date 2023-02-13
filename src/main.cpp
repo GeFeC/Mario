@@ -16,20 +16,23 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
 
-auto window_resize_callback(GLFWwindow*, int width, int height){
-  const auto ratio = static_cast<float>(width) / height;
+auto window_resize_callback(GLFWwindow*, int window_width, int window_height){
+  const auto ratio = (window_width | util::as<float>) / window_height;
 
-  auto new_width = width;
-  auto new_height = height;
+  auto game_screen_width = window_width;
+  auto game_screen_height = window_height;
 
-  if (ratio > static_cast<float>(config::BlocksInRow) / config::BlocksInColumn){
-    new_width = height * config::BlocksInRow / config::BlocksInColumn;
+  if (ratio > (config::BlocksInRow | util::as<float>) / config::BlocksInColumn){
+    game_screen_width = window_height * config::BlocksInRow / config::BlocksInColumn;
   }
   else{
-    new_height = width * config::BlocksInColumn / config::BlocksInRow;
+    game_screen_height = window_width * config::BlocksInColumn / config::BlocksInRow;
   }
 
-  glViewport((width - new_width) / 2, (height - new_height) / 2, new_width, new_height);
+  const auto center_x = (window_width - game_screen_width) / 2;
+  const auto center_y = (window_height - game_screen_height) / 2;
+
+  glViewport(center_x, center_y, game_screen_width, game_screen_height);
 }
 
 auto main() -> int{

@@ -22,6 +22,8 @@ namespace util{
     glm::vec2 position;
     glm::vec2 size;
 
+    Rect() = default;
+
     template<typename T>
     Rect(const T& t){
       position = t.position;
@@ -39,21 +41,6 @@ namespace util{
   inline auto in_range(float min, float max){
     return Interval{ min, max };
   }
-
-  template<typename T>
-  struct Contains{
-    std::vector<T> targets;
-  };
-
-  template<typename T, typename... Ts>
-  inline auto contains(const T& t, const Ts&... targets){
-    auto c = Contains<T>();
-    c.targets = { t, targets... };
-    return c;
-  }
-
-  template<typename...>
-  struct TD;
 
   template<std::size_t N = 0, typename Callable, typename... Ts>
   inline auto tuple_for_each(std::tuple<Ts...>& tuple, const Callable& callable){
@@ -75,15 +62,23 @@ namespace util{
     });
   }
 
-  inline auto operator|(float value, const util::Interval& interval){
+  inline auto operator==(float value, const util::Interval& interval){
     const auto [min, max] = interval;
     return value >= min && value <= max;
   }
 
+  inline auto operator!=(float value, const util::Interval& interval){
+    return !(value == interval);
+  }
+
   template<typename T>
-  inline auto operator|(const std::vector<T>& vec, const util::Contains<T>& target){
-    return std::all_of(target.targets.begin(), target.targets.end(), [&vec = vec](auto target){
-      return std::find(vec.begin(), vec.end(), target) != vec.end();
-    });
+  struct As{};
+
+  template<typename T>
+  As<T> as;
+
+  template<typename Obj, typename T>
+  auto operator|(const Obj& obj, const As<T>& as){
+    return static_cast<T>(obj);
   }
 }

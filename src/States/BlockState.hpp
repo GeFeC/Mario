@@ -13,11 +13,9 @@
 #include <array>
 
 struct BlockBase{
-  static constexpr auto Size = 60;
-
   Texture* texture;
   glm::vec2 position = { 0.f, 0.f };
-  glm::vec2 size = glm::vec2(Size);
+  glm::vec2 size = glm::vec2(config::BlockSize);
 
   bool is_visible = true;
   bool is_solid = true;
@@ -50,7 +48,7 @@ struct BackgroundObjectState{
 
 struct BlockState : BlockBase{
   BlockState(const glm::vec2& position, Texture* texture){
-    this->position = position * 60.f;
+    this->position = position * config::BlockSize;
     this->texture = texture;
   }
 };
@@ -58,13 +56,13 @@ struct BlockState : BlockBase{
 struct BouncingBlockState : BlockBase, BouncingBlockBase{
   BouncingBlockState() = default;
   BouncingBlockState(const glm::vec2& position){
-    this->position = position * 60.f;
+    this->position = position * config::BlockSize;
   }
 };
 
 struct CoinBlockState : BlockBase, BlinkingBlockBase{
   CoinBlockState(const glm::vec2& position){
-    this->position = position * 60.f;
+    this->position = position * config::BlockSize;
     this->texture = &textures::coin[0];
   }
 };
@@ -88,17 +86,19 @@ struct BricksBlockState : BouncingBlockState{
   }
 
   BricksBlockState(const glm::vec2& position) : BricksBlockState(){
-    this->position = position * 60.f;
+    this->position = position * config::BlockSize;
 
     for (auto& particle : particles){
-      particle.position = this->position + size / 2.f - particle.size / 2.f;
+      const auto center_position = this->position + size / 2.f - particle.size / 2.f;
+      particle.position = center_position;
     }
   }
 };
 
 struct SpinningCoinState : BouncingBlockState{
   SpinningCoinState(const glm::vec2& position){
-    this->position = position * 60.f;
-    this->texture = &textures::spinning_coin[0];
+    this->position = position * config::BlockSize;
+    texture = &textures::spinning_coin[0];
+    bounce_state.initial_power = -20.f;
   }
 };

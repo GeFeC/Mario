@@ -8,7 +8,9 @@
 
 #include "Window.hpp"
 
-static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player){
+static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player, StatsState& stats){
+  flower.texture = &textures::fire_flower[LevelState::fire_flower_blink_counter.int_value()];
+
   for (auto& p : flower.points_manager.points){
     points_particles_controller(p);
   }
@@ -23,5 +25,19 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player)
 
     flower.offset += value;
     flower.position.y -= value * 60.f;
+  }
+
+  //Interaction with player
+  const auto is_player_big = player.growth == PlayerState::Growth::Big;
+  if (collision::is_hovering(player, flower) && flower.is_visible && is_player_big){
+    flower.points_manager.get_points_particles().set_active(
+      FireFlowerState::RewardForEating,
+      flower.position
+    );
+    stats.score += FireFlowerState::RewardForEating;
+  
+    flower.is_visible = false;
+    flower.position.y = config::BigValue;
+    player.is_changing_to_fire = true;
   }
 }

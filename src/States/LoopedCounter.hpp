@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.hpp"
+#include "Util.hpp"
 
 struct LoopedCounter{
   float value = 0;
@@ -14,8 +15,8 @@ struct LoopedCounter{
   LoopedCounter(float limit, float step, int max_loops)
   : limit(limit), step(step), max_loops(max_loops) {}
 
-  auto as_int() const{
-    return static_cast<int>(value); 
+  auto int_value() const{
+    return value | util::as<int>; 
   }
 
   auto stopped_counting() const{

@@ -21,339 +21,165 @@
 #include "Controllers/ShellMonsterController.hpp"
 #include "Controllers/SpikeController.hpp"
 #include "Controllers/PlantController.hpp"
+#include "Controllers/FlyingKoopaController.hpp"
+#include "Controllers/BeetleController.hpp"
+#include "Controllers/KoopaController.hpp"
 
 #include "Util.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
 
-static auto level_blocks_controller(LevelState& level, int blink_state){
+static auto level_blocks_controller(LevelState& level){
   auto& player = level.player;
   auto& blocks = level.blocks;
 
-  for (auto& block : level.blocks.q_blocks){
-    bounce_controller(block);
+  for (auto& block : blocks.q_blocks){
     q_block_controller(block, player, level.stats);
-
-    if (block.bounce_state.can_bounce){
-      block.texture = &textures::q_block[blink_state];
-    } 
   }
 
-  for (auto& block : level.blocks.bricks){
-    bounce_controller(block);
+  for (auto& block : blocks.bricks){
     bricks_controller(block, player, level);
   }
 
-  static auto spin_counter = InfiniteCounter(4.f, 20.f);
-  spin_counter.run();
-
-  for (auto& block : level.blocks.spinning_coins){
-    block.texture = &textures::spinning_coin[spin_counter.as_int()];
+  for (auto& block : blocks.spinning_coins){
     spinning_coin_controller(block, player, level.stats);
-    bounce_controller(block);
   }
 
-  for (auto& block : level.blocks.coins){
-    block.texture = &textures::coin[blink_state];
+  for (auto& block : blocks.coins){
     coin_controller(block, player, level.stats);
   }
-
 }
 
 static auto level_entities_controller(LevelState& level){
   auto& entities = level.entities;
+  auto& player = level.player;
 
   for (auto& goomba : level.entities.goombas){
-    goomba_controller(goomba, level, textures::goomba_walk);
-  }
-
-  for (auto& spike : level.entities.spikes){
-    spike_controller(spike, level, textures::spike_walk);
-  }
-
-  for (auto& plant : level.entities.plants){
-    plant_controller(plant);
+    normal_goomba_controller(goomba, player, level);
   }
 
   for (auto& goomba : level.entities.red_goombas){
-    goomba_controller(goomba, level, textures::red_goomba_walk);
+    red_goomba_controller(goomba, player, level);
   }
 
   for (auto& goomba : level.entities.yellow_goombas){
-    goomba_controller(goomba, level, textures::yellow_goomba_walk, config::FastGoombaWalkSpeed);
+    yellow_goomba_controller(goomba, player, level);
+  }
+
+  for (auto& spike : level.entities.spikes){
+    spike_controller(spike, player, level);
+  }
+
+  for (auto& plant : level.entities.plants){
+    plant_controller(plant, player, level.stats);
   }
 
   for (auto& koopa : level.entities.green_koopas){
-    shell_monster_controller(koopa, level, textures::green_koopa_walk);
+    green_koopa_controller(koopa, player, level);
   }
 
   for (auto& koopa : level.entities.green_flying_koopas){
-    if (koopa.has_wings && koopa.is_on_ground){
-      static constexpr auto FlyingKoopaJumpHeight = -15;
-      koopa.gravity = FlyingKoopaJumpHeight;
-      koopa.is_on_ground = false;
-    }
-
-    if (koopa.has_wings){
-      shell_monster_controller(koopa, level, textures::green_flying_koopa_walk);
-    }
-    else{
-      shell_monster_controller(koopa, level, textures::green_koopa_walk);
-    }
+    green_flying_koopa_controller(koopa, player, level);
   }
 
   for (auto& koopa : level.entities.red_koopas){
-    shell_monster_controller(koopa, level, textures::red_koopa_walk);
+    red_koopa_controller(koopa, player, level);
   }
 
   for (auto& koopa : level.entities.beetles){
-    shell_monster_controller(koopa, level, textures::beetle_walk);
+    beetle_controller(koopa, player, level);
   }
 }
 
-static auto player_entity_interactions(PlayerState& player, LevelState& level){
+static auto level_block_entity_interactions(LevelState& level){
+  const auto interact_with_block = [&](auto& entity, const auto& block){
+    
+  };
+
   auto& entities = level.entities;
+  auto& goombas = entities.goombas;
+  auto& red_goombas = entities.red_goombas;
+  auto& yellow_goombas = entities.yellow_goombas;
+  auto& red_koopas = entities.red_koopas;
+  auto& green_koopas = entities.green_koopas;
+  auto& green_flying_koopas = entities.green_flying_koopas;
+  auto& mushrooms = entities.mushrooms;
+  auto& beetles = entities.beetles;
+  auto& spikes = entities.spikes;
 
-  for (auto& spike : level.entities.spikes){
-    entity_kill_player_on_touch(spike, player);
-    entity_become_active_when_seen(spike, player);
-    entity_die_when_hit_by_fireball(spike, player, level, config::RewardForKillingSpike);
-  }
-
-  for (auto& plant : level.entities.plants){
-    entity_kill_player_on_touch(plant, player);
-    entity_die_when_hit_by_fireball(plant, player, level, config::RewardForKillingPlant);
-  }
-
-  for (auto& goomba : level.entities.goombas){
-    entity_kill_player_on_touch(goomba, player);
-    entity_become_active_when_seen(goomba, player);
-    entity_die_when_hit_by_fireball(goomba, player, level, config::RewardForKillingGoomba);
-    entity_die_when_stomped(goomba, player, level, config::RewardForKillingGoomba, [&]{ 
-      goomba_set_dead(goomba, &textures::goomba_dead);
-    });
-  }
-
-  for (auto& goomba : level.entities.red_goombas){
-    entity_kill_player_on_touch(goomba, player);
-    entity_become_active_when_seen(goomba, player);
-    entity_die_when_hit_by_fireball(goomba, player, level, config::RewardForKillingGoomba);
-    entity_die_when_stomped(goomba, player, level, config::RewardForKillingGoomba, [&]{ 
-      goomba_set_dead(goomba, &textures::red_goomba_dead);
-    });
-  }
-
-  for (auto& goomba : level.entities.yellow_goombas){
-    entity_kill_player_on_touch(goomba, player);
-    entity_become_active_when_seen(goomba, player);
-    entity_die_when_hit_by_fireball(goomba, player, level, config::RewardForKillingFastGoomba);
-    entity_die_when_stomped(goomba, player, level, config::RewardForKillingFastGoomba, [&]{ 
-      goomba_set_dead(goomba, &textures::yellow_goomba_dead);
-    });
-  }
-
-  for (auto& koopa : level.entities.green_koopas){
-    entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
-    entity_become_active_when_seen(koopa, player);
-    entity_handle_shell(
-      koopa,
-      player,
-      level,
-      config::RewardForKillingKoopa, 
-      config::KoopaShellWalkSpeed,
-      config::BlockSize * 7.f / 8.f,
-      textures::green_koopa_dead
+  util::multi_for([&](const auto& block){
+    util::multi_for([&](auto& entity){
+      interact_with_block(entity, block);
+    }, 
+      goombas, 
+      red_goombas, 
+      red_koopas, 
+      green_koopas, 
+      green_flying_koopas, 
+      yellow_goombas, 
+      beetles,
+      spikes
     );
-  }
+  }, 
+    level.blocks.bricks, 
+    level.blocks.q_blocks
+  ); 
+}
 
-  for (auto& koopa : level.entities.green_flying_koopas){
-    entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
-    entity_become_active_when_seen(koopa, player);
-    entity_kill_player_on_touch(koopa, player);
+static auto level_mushrooms_controller(LevelState& level){
+  auto& player = level.player;
 
-    if (player_stomp_on_entity(player, koopa) && koopa.has_wings){
-      koopa.has_wings = false;
-      player.gravity = -15;
-      koopa.gravity = 0;
-      continue;
-    }
-
-    if (koopa.has_wings) continue;
-
-    entity_handle_shell(
-      koopa,
-      player,
-      level,
-      config::RewardForKillingKoopa, 
-      config::KoopaShellWalkSpeed,
-      config::BlockSize * 7.f / 8.f,
-      textures::green_koopa_dead
-    );
-  }
-
-  for (auto& koopa : level.entities.red_koopas){
-    entity_die_when_hit_by_fireball(koopa, player, level, config::RewardForKillingKoopa);
-    entity_become_active_when_seen(koopa, player);
-    entity_handle_shell(
-      koopa, 
-      player,
-      level,
-      config::RewardForKillingKoopa, 
-      config::KoopaShellWalkSpeed, 
-      config::BlockSize * 7.f / 8.f,
-      textures::red_koopa_dead
-    );
-  }
-
-  for (auto& beetle : level.entities.beetles){
-    entity_endure_fireball(beetle, player);
-    entity_become_active_when_seen(beetle, player);
-    entity_handle_shell(
-      beetle,
-      player,
-      level,
-      config::RewardForKillingBeetle, 
-      config::BeetleShellWalkSpeed,
-      config::BlockSize,
-      textures::beetle_dead
-    );
+  for (auto& mushroom : level.entities.mushrooms){
+    red_mushroom_controller(mushroom, player, level);
   }
 
   for (auto& mushroom : level.entities.green_mushrooms){
-    if (collision::is_hovering(player, mushroom) && mushroom.is_active){
-      auto& points = mushroom.points_manager.get_points_particles();
-
-      points.set_active(config::GreenMushroomEatMessage, mushroom.position);
-      mushroom.is_active = false;
-      mushroom.is_visible = false;
-      mushroom.position.y = config::BigValue;
-      level.stats.hp++;
-    }
-
-    const auto block = BouncingBlockState(mushroom.position / config::BlockSize);
-    if (player_hit_block_above(player, block)){
-      mushroom.should_be_pushed_out = true;
-      mushroom.is_visible = true;
-    } 
-  }
-
-  for (auto& mushroom : level.entities.mushrooms){
-    if (collision::is_hovering(player, mushroom) && mushroom.is_active){
-      auto& points = mushroom.points_manager.get_points_particles();
-      points.set_active(config::RewardForEatingMushroom, mushroom.position);
-      level.stats.score += config::RewardForEatingMushroom;
-    
-      mushroom.is_active = false;
-      mushroom.is_visible = false;
-      mushroom.position.y = config::BigValue;
-      player.is_growing_up = true;
-    }
-
-    const auto block = BouncingBlockState(mushroom.position / config::BlockSize);
-    if (player_hit_block_above(player, block)){
-      mushroom.should_be_pushed_out = true;
-      mushroom.is_visible = true;
-    } 
-  }
-
-  for (auto& flower : level.blocks.fire_flowers){
-    const auto is_player_big = player.growth == PlayerState::Growth::Big;
-    if (collision::is_hovering(player, flower) && flower.is_visible && is_player_big){
-      flower.points_manager.get_points_particles().set_active(
-        config::RewardForEatingFireFlower,
-        flower.position
-      );
-      level.stats.score += config::RewardForEatingFireFlower;
-    
-      flower.is_visible = false;
-      flower.position.y = config::BigValue;
-      player.is_changing_to_fire = true;
-    }
+    green_mushroom_controller(mushroom, player, level);
   }
 }
 
-static auto block_entity_interactions(MonsterState& entity, LevelState& level, int reward){
-  util::multi_for([&](const auto& block){
-    if (block.bounce_state.is_bouncing){
-      if (entity.is_dead || !entity.should_collide) return;
-
-      const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
-      
-      if (collision_state.distance_below | util::in_range(-15.f, 0.f)){
-        entity_bounce_die(entity, level, reward);
-      }
-    }
-  }, level.blocks.bricks, level.blocks.q_blocks);
+static auto level_screen_scroll(LevelState& level){
+  level.should_screen_scroll = false;
+  if (level.player.position.x > config::PlayerPositionToScroll){
+    level.should_screen_scroll = true;
+  }
 }
 
 static auto level_controller(AppState& app, LevelState& level){
+  //Level loading
   if (level.load_delay > 0.f) {
     level.load_delay -= window::delta_time;
     return;
   }
 
+  //Falling under the level
+  if (level.player.position.y > config::PlayerPositionToRestartLevel){
+    app.should_restart_current_frame = true;
+  }
+
+  //Blinking and counters
+  LevelState::blink_state = blink_controller();
+  LevelState::coin_spin_counter.run();
+  LevelState::fire_flower_blink_counter.run();
+
   level.fireball_counter.run();
 
   auto& player = level.player;
 
-  level.should_screen_scroll = false;
-  if (player.position.x > config::PlayerPositionToScroll){
-    level.should_screen_scroll = true;
-  }
-
-  if (player.position.y > config::PlayerPositionToRestartLevel){
-    app.should_restart_current_frame = true;
-  }
-
   stats_controller(level.stats);
   player_controller(player, level);
+  level_mushrooms_controller(level);
 
-  for (auto& mushroom : level.entities.mushrooms){
-    mushroom_controller(mushroom, level);
-  }
-
-  for (auto& mushroom : level.entities.green_mushrooms){
-    mushroom_controller(mushroom, level);
-  }
-
-  static auto flower_blink_counter = InfiniteCounter(4.f, 15.f);
-  flower_blink_counter.run();
-  
   for (auto& block : level.blocks.fire_flowers){
-    block.texture = &textures::fire_flower[flower_blink_counter.as_int()];
-    fire_flower_controller(block, player);
+    fire_flower_controller(block, player, level.stats);
   }
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
 
-  const auto blink_state = blink_controller();
+  level_screen_scroll(level);
 
-  level_blocks_controller(level, blink_state);
+  level_blocks_controller(level);
   level_entities_controller(level);
 
-  player_entity_interactions(player, level);
-
-  auto& goombas = level.entities.goombas;
-  auto& red_goombas = level.entities.red_goombas;
-  auto& yellow_goombas = level.entities.yellow_goombas;
-  auto& red_koopas = level.entities.red_koopas;
-  auto& green_koopas = level.entities.green_koopas;
-  auto& mushrooms = level.entities.mushrooms;
-  auto& beetles = level.entities.beetles;
-
-  util::multi_for([&](auto& entity){
-    block_entity_interactions(entity, level, config::RewardForKillingGoomba);
-  }, goombas, red_goombas);
-
-  util::multi_for([&](auto& entity){
-    block_entity_interactions(entity, level, config::RewardForKillingKoopa);
-  }, red_koopas, green_koopas);
-
-  util::multi_for([&](auto& entity){
-    block_entity_interactions(entity, level, config::RewardForKillingFastGoomba);
-  }, yellow_goombas);
-
-  util::multi_for([&](auto& entity){
-    block_entity_interactions(entity, level, config::RewardForKillingBeetle);
-  }, beetles);
+  level_block_entity_interactions(level);
 }

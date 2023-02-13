@@ -8,18 +8,24 @@
 
 static auto spike_controller(
     SpikeState& spike, 
-    LevelState& level, 
-    const std::array<Texture, 2>& walk_textures,
-    int speed = config::GoombaWalkSpeed
+    PlayerState& player,
+    LevelState& level
 ){
   entity_gravity(spike, level);
   entity_movement(spike, level);
-  entity_turn_around(spike, speed);
+  entity_turn_around(spike);
 
   for (auto& p : spike.points_manager.points){
     points_particles_controller(p);
   }
 
-  const auto counter = static_cast<int>(glfwGetTime() * 8.f);
-  spike.current_texture = &walk_textures[counter % 2];
+  entity_run_movement_animation(spike, textures::spike_walk);
+
+  //Interaction with blocks
+  entity_die_when_on_bouncing_block(spike, level);
+
+  //Interaction with player
+  entity_kill_player_on_touch(spike, player);
+  entity_become_active_when_seen(spike, player);
+  entity_die_when_hit_by_fireball(spike, player, level.stats);
 }

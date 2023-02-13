@@ -1,4 +1,5 @@
 #include "Shader.hpp"
+#include "Util.hpp"
 
 #include <array>
 #include <vector>
@@ -6,7 +7,7 @@
 #include <stdexcept>
 
 auto Shader::create(ShaderType type, String_t& script) -> void{
-  shader_id = glCreateShader(static_cast<int>(type)); 
+  shader_id = glCreateShader(type | util::as<int>); 
   glShaderSource(shader_id, 1, &script, nullptr);
   
   compile();

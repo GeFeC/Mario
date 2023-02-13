@@ -9,10 +9,20 @@
 
 #include "Window.hpp"
 
-static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
+static auto mushroom_controller(MushroomState& mushroom, PlayerState& player, LevelState& level){
+  //Interaction with blocks
+  entity_bounce_when_on_bouncing_block(mushroom, level);
+
+  //Interaction with player
+  const auto mushroom_block = BouncingBlockState(mushroom.position / config::BlockSize);
+  if (player_hit_block_above(player, mushroom_block)){
+    mushroom.should_be_pushed_out = true;
+    mushroom.is_visible = true;
+  } 
+
   entity_gravity(mushroom, level);
   entity_movement(mushroom, level);
-  entity_turn_around(mushroom, config::MushroomWalkSpeed);
+  entity_turn_around(mushroom);
 
   for (auto& p : mushroom.points_manager.points){
     points_particles_controller(p);
@@ -30,4 +40,31 @@ static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
   if (mushroom.offset >= 1.f){
     mushroom.is_active = true;
   }
+}
+
+static auto green_mushroom_controller(MushroomState& mushroom, PlayerState& player, LevelState& level){
+  if (collision::is_hovering(player, mushroom) && mushroom.is_active){
+    auto& points = mushroom.points_manager.get_points_particles();
+    points.set_active("+1 HP", mushroom.position);
+
+    mushroom.disappear();
+
+    level.stats.hp++;
+  }
+
+  mushroom_controller(mushroom, player, level);
+}
+
+static auto red_mushroom_controller(MushroomState& mushroom, PlayerState& player, LevelState& level){
+  if (collision::is_hovering(player, mushroom) && mushroom.is_active){
+    auto& points = mushroom.points_manager.get_points_particles();
+    points.set_active(mushroom.reward_for_killing, mushroom.position);
+  
+    mushroom.disappear();
+
+    player.is_growing_up = true;
+    level.stats.score += mushroom.reward_for_killing;
+  }
+
+  mushroom_controller(mushroom, player, level);
 }

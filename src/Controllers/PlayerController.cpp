@@ -16,7 +16,7 @@
 #include <algorithm>
 
 static auto to_grid_coords(const glm::vec2& normal_coords){
-  return glm::ivec2(normal_coords.x / 60, normal_coords.y / 60);
+  return glm::ivec2(normal_coords.x / config::BlockSize, normal_coords.y / config::BlockSize);
 }
 
 static auto player_jump(PlayerState& player, LevelState& level){
@@ -72,17 +72,17 @@ static auto player_movement(PlayerState& player, LevelState& level){
   }
 
   //Calculating max speed
-  static auto max_speed = config::PlayerMaxSpeedWithoutSprint;
+  static auto max_speed = PlayerState::MaxSpeedWithoutSprint;
 
   if (!player.is_squating){
     if (window::is_key_pressed(GLFW_KEY_LEFT_CONTROL)){
-      max_speed = config::PlayerMaxSpeedWithSprint;
+      max_speed = PlayerState::MaxSpeedWithSprint;
     }
-    else if (max_speed > config::PlayerMaxSpeedWithoutSprint){
+    else if (max_speed > PlayerState::MaxSpeedWithoutSprint){
       max_speed -= speed_boost;
     }
     else{
-      max_speed = config::PlayerMaxSpeedWithoutSprint;
+      max_speed = PlayerState::MaxSpeedWithoutSprint;
     }
   }
 
@@ -96,7 +96,7 @@ static auto player_movement(PlayerState& player, LevelState& level){
 
 static auto player_grow_up(PlayerState& player){
   player.growth_counter.run();
-  player.grow_state = player.growth_counter.as_int();
+  player.grow_state = player.growth_counter.int_value();
 
   if(player.growth_counter.stopped_counting()){
     player.is_growing_up = false;
@@ -107,7 +107,7 @@ static auto player_grow_up(PlayerState& player){
 static auto player_shrink_down(PlayerState& player){
   player.form = PlayerState::Form::Normal;
   player.growth_counter.run();
-  player.grow_state = 2 - player.growth_counter.as_int();
+  player.grow_state = 2 - player.growth_counter.int_value();
 
   if (player.growth_counter.stopped_counting()){
     player.is_shrinking = false;
@@ -124,7 +124,7 @@ static auto player_invincibility(PlayerState& player){
     return;
   }
 
-  const auto invincibility = static_cast<int>(player.invincibility_delay * 100);
+  const auto invincibility = player.invincibility_delay * 100 | util::as<int>;
   if (invincibility % 3 == 0){
     player.is_visible = !player.is_visible;
   }
@@ -135,7 +135,7 @@ static auto player_invincibility(PlayerState& player){
 static auto player_update_growth(PlayerState& player){
   if (!player.is_growing_up && !player.is_shrinking) return;
 
-  const auto grow_state = static_cast<int>(player.grow_state);
+  const auto grow_state = player.grow_state | util::as<int>;
 
   const auto set_grow_state = [&](auto growth, auto new_player_size){
     player.growth = growth;
@@ -161,7 +161,7 @@ static auto player_update_growth(PlayerState& player){
 
 auto player_transform_to_fire(PlayerState& player){
   player.transformation_counter.run();
-  const auto transformation_state = player.transformation_counter.as_int();
+  const auto transformation_state = player.transformation_counter.int_value();
 
   if (transformation_state == 1) player.form = PlayerState::Form::Black;
   else if (transformation_state == 0) player.form = PlayerState::Form::Fire;
@@ -220,7 +220,7 @@ static auto player_death(EntityState& player){
 
   static constexpr auto VerySmallValue = -1000.f;
 
-  if (player.death_delay | util::in_range(VerySmallValue, 0.f)){
+  if (player.death_delay == util::in_range(VerySmallValue, 0.f)){
     player.gravity = -15;
     player.death_delay = VerySmallValue - 1;
   }
@@ -233,7 +233,7 @@ auto player_squat(PlayerState& player, LevelState& level){
 
   auto is_forced_to_squat = false;
   detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
-    if (collision_state.distance_above | util::in_range(0, 20) && player.is_squating){
+    if (collision_state.distance_above == util::in_range(0, 20) && player.is_squating){
       is_forced_to_squat = true;
     }
   });
@@ -296,8 +296,9 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
     player_shrink_down(player);
   }
   else{
-    player_movement(player, level);
     entity_movement(player, level);
+
+    player_movement(player, level);
     player_jump(player, level);
     player_gravity(player, level);
     player_squat(player, level);
@@ -315,8 +316,28 @@ auto player_stomp_on_entity(const EntityState& player, const EntityState& entity
   if (!entity.can_be_stomped) return false;
 
   if (collision::is_hovering_in_x(player, entity) && !entity.is_dead && player.gravity > 0){
-    return entity.position.y - player.position.y - player.size.y | util::in_range(-45, 0);
+    return entity.position.y - player.position.y - player.size.y == util::in_range(-45, 0);
   }
 
   return false;
+}
+
+auto player_can_hit_block_above(const EntityState& player, const BouncingBlockState& block) -> bool{
+  if (player.direction == EntityState::DirectionLeft){
+    return player.position.x - block.position.x 
+      == util::in_range(-CollisionOffset, block.size.x - CollisionOffset);
+  }
+
+  return player.position.x - block.position.x 
+    == util::in_range(-player.size.x + CollisionOffset, CollisionOffset);
+}
+
+auto player_hit_block_above(const EntityState& player, const BouncingBlockState& block) -> bool{
+  const auto was_block_hit_by_player 
+    = (player.position.y - block.position.y - block.size.y) == util::in_range(-10, -5);
+
+  return 
+    player_can_hit_block_above(player, block) && 
+    was_block_hit_by_player && 
+    !block.bounce_state.is_bouncing;
 }

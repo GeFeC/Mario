@@ -14,8 +14,8 @@
 static auto is_component_on_screen(const util::Rect& component, float offset_x = 0.f){
   using config::BlockSize, config::BlocksInRow, config::BlocksInColumn;
 
-  const auto is_x = component.position.x + component.size.x - offset_x | util::in_range(0, (BlocksInRow + 1) * BlockSize);
-  const auto is_y = component.position.y + component.size.y | util::in_range(0, (BlocksInColumn + 1) * BlockSize);
+  const auto is_x = component.position.x + component.size.x - offset_x == util::in_range(0, (BlocksInRow + 1) * BlockSize);
+  const auto is_y = component.position.y + component.size.y == util::in_range(0, (BlocksInColumn + 1) * BlockSize);
 
   return is_x && is_y;
 }
@@ -43,7 +43,7 @@ static auto render_block(const BlockBase& block, float offset_x = 0.f){
 
   renderer::draw(Drawable{
     block.position - glm::vec2(offset_x, 0),
-    glm::vec2(BlockState::Size),
+    glm::vec2(config::BlockSize),
     block.texture,
     { Drawable::Flip::NoFlip, Drawable::Flip::NoFlip },
     block.is_visible

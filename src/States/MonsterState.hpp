@@ -2,40 +2,28 @@
 
 #include "States/EntityState.hpp"
 #include "States/PointsParticlesState.hpp"
+#include "Util.hpp"
 
 #include <algorithm>
 
 struct MonsterState : EntityState{
+  static constexpr auto BounceDiePower = -20.f;
+  static constexpr auto BouncePower = -15.f;
+
+  int reward_for_killing = 0;
+  int walk_speed = 0.f;
+
   PointsParticlesManager points_manager;
-};
 
-struct GoombaState : MonsterState{};
-struct SpikeState : MonsterState{};
-
-struct MushroomState : MonsterState{
-  float offset = 0.f;
-  bool should_be_pushed_out = false;
+  auto set_direction(Direction direction){
+    EntityState::set_direction(direction, walk_speed);
+  }
 };
 
 struct ShellMonsterState : MonsterState{
   bool in_shell = false;
+  float shell_speed = 0.f;
   float shell_push_cooldown = 0.f;
-  float current_walk_speed = 0;
+  float shell_height = 0.f;
 };
 
-struct KoopaState : ShellMonsterState{
-  KoopaState(){
-    current_walk_speed = config::KoopaWalkSpeed;
-  }
-};
-
-struct FlyingKoopaState : KoopaState{
-  bool has_wings = true;
-  FlyingKoopaState() : KoopaState() {}
-};
-
-struct BeetleState : ShellMonsterState{
-  BeetleState(){
-    current_walk_speed = config::BeetleWalkSpeed;
-  }
-};

@@ -9,17 +9,18 @@
 #include "Util.hpp"
 
 inline auto coin_controller(CoinBlockState& coin, EntityState& player, StatsState& stats){
+  coin.texture = &textures::coin[LevelState::blink_state];
+
   static constexpr auto CollisionPadding = 5;
 
   const auto hovers_in_x = player.position.x - coin.position.x
-    | util::in_range(-player.size.x + CollisionPadding, coin.size.x - CollisionPadding); 
+    == util::in_range(-player.size.x + CollisionPadding, coin.size.x - CollisionPadding); 
 
   const auto hovers_in_y = player.position.y - coin.position.y 
-    | util::in_range(-player.size.y + CollisionPadding, coin.size.y - CollisionPadding); 
+    == util::in_range(-player.size.y + CollisionPadding, coin.size.y - CollisionPadding); 
 
-  static constexpr auto BigValue = 10000;
   if (hovers_in_x && hovers_in_y){
-    coin.position.y = BigValue;
+    coin.position.y = config::BigValue;
     ++stats.coins;
   }
 }
