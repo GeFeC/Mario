@@ -49,11 +49,9 @@ static auto entity_push_shell_on_player_touch(
   entity.walk_speed = entity.shell_speed;
 
   if (entity.position.y > player.position.y + 10.f){
-    entity.points_manager.make_next_points_particles();
-    auto& points = entity.points_manager.get_points_particles();
+    entity.spawn_points(player.mobs_killed_in_row);
 
     const auto total_reward = entity.reward_for_killing * player.mobs_killed_in_row;
-    points.set_active(total_reward, entity.position);
     stats.score += total_reward;
   }
 

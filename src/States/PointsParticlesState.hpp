@@ -60,18 +60,18 @@ struct PointsParticlesManager{
     current_points_index = 0;
   };
 
-  auto make_next_points_particles(){
-    const auto free_points = std::find_if(points.begin(), points.end(), [](const auto& p){
+  auto make_next_points_particles_if_needed(){
+    const auto available_points = std::find_if(points.begin(), points.end(), [](const auto& p){
       return !p.is_active;
     });
 
-    if (free_points == points.end()){
+    if (available_points == points.end()){
       points.emplace_back();
       current_points_index = points.size() - 1;
       return;
     }
 
-    current_points_index = free_points - points.begin();
+    current_points_index = available_points - points.begin();
  }
 
   auto& get_points_particles(){

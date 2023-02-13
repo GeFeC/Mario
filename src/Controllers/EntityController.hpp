@@ -140,14 +140,10 @@ static auto entity_die_when_stomped(
     set_entity_dead();
     player.gravity = PlayerState::BouncePower;
 
-    stats.score += entity.reward_for_killing * player.mobs_killed_in_row;
-    entity.points_manager.make_next_points_particles();
+    const auto total_reward = entity.reward_for_killing * player.mobs_killed_in_row;
+    stats.score += total_reward;
 
-    auto& points_particles = entity.points_manager.get_points_particles();
-    points_particles.set_active(
-      entity.reward_for_killing * player.mobs_killed_in_row, 
-      entity.position
-    );
+    entity.spawn_points(player.mobs_killed_in_row);
 
     ++player.mobs_killed_in_row;
 

@@ -18,6 +18,11 @@ struct MonsterState : EntityState{
   auto set_direction(Direction direction){
     EntityState::set_direction(direction, walk_speed);
   }
+
+  auto spawn_points(int multiplier = 1){
+    points_manager.make_next_points_particles_if_needed();
+    points_manager.get_points_particles().set_active(reward_for_killing * multiplier, position);
+  }
 };
 
 struct ShellMonsterState : MonsterState{
