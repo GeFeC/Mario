@@ -21,7 +21,7 @@
 #include "Controllers/ShellMonsterController.hpp"
 #include "Controllers/SpikeController.hpp"
 #include "Controllers/PlantController.hpp"
-#include "Controllers/FlyingKoopaController.hpp"
+#include "Controllers/JumpingKoopaController.hpp"
 #include "Controllers/BeetleController.hpp"
 #include "Controllers/KoopaController.hpp"
 
@@ -78,16 +78,16 @@ static auto level_entities_controller(LevelState& level){
     green_koopa_controller(koopa, player, level);
   }
 
-  for (auto& koopa : level.entities.green_flying_koopas){
-    green_flying_koopa_controller(koopa, player, level);
+  for (auto& koopa : level.entities.green_jumping_koopas){
+    green_jumping_koopa_controller(koopa, player, level);
   }
 
   for (auto& koopa : level.entities.red_koopas){
     red_koopa_controller(koopa, player, level);
   }
 
-  for (auto& koopa : level.entities.red_flying_koopas){
-    red_flying_koopa_controller(koopa, player, level);
+  for (auto& koopa : level.entities.red_jumping_koopas){
+    red_jumping_koopa_controller(koopa, player, level);
   }
 
   for (auto& koopa : level.entities.beetles){
@@ -106,7 +106,7 @@ static auto level_block_entity_interactions(LevelState& level){
   auto& yellow_goombas = entities.yellow_goombas;
   auto& red_koopas = entities.red_koopas;
   auto& green_koopas = entities.green_koopas;
-  auto& green_flying_koopas = entities.green_flying_koopas;
+  auto& green_jumping_koopas = entities.green_jumping_koopas;
   auto& mushrooms = entities.mushrooms;
   auto& beetles = entities.beetles;
   auto& spikes = entities.spikes;
@@ -119,7 +119,7 @@ static auto level_block_entity_interactions(LevelState& level){
       red_goombas, 
       red_koopas, 
       green_koopas, 
-      green_flying_koopas, 
+      green_jumping_koopas, 
       yellow_goombas, 
       beetles,
       spikes

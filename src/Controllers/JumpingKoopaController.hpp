@@ -5,17 +5,17 @@
 #include "Controllers/ShellMonsterController.hpp"
 #include "res/textures.hpp"
 
-static auto flying_koopa_controller(
-    FlyingKoopaState& koopa, 
+static auto jumping_koopa_controller(
+    JumpingKoopaState& koopa, 
     PlayerState& player, 
     LevelState& level, 
     const std::array<Texture, 2>& walk_frames_with_wings,
     const std::array<Texture, 2>& walk_frames_without_wings
 ){
   if (koopa.has_wings && koopa.is_on_ground){
-    static constexpr auto FlyingKoopaJumpHeight = -15;
+    static constexpr auto KoopaJumpHeight = -15;
 
-    koopa.gravity = FlyingKoopaJumpHeight;
+    koopa.gravity = KoopaJumpHeight;
     koopa.is_on_ground = false;
   }
 
@@ -50,8 +50,8 @@ static auto flying_koopa_controller(
 
 }
 
-static auto green_flying_koopa_controller(FlyingKoopaState& koopa, PlayerState& player, LevelState& level){
-  flying_koopa_controller(
+static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, PlayerState& player, LevelState& level){
+  jumping_koopa_controller(
     koopa,
     player,
     level,
@@ -67,8 +67,8 @@ static auto green_flying_koopa_controller(FlyingKoopaState& koopa, PlayerState& 
   );
 }
 
-static auto red_flying_koopa_controller(FlyingKoopaState& koopa, PlayerState& player, LevelState& level){
-  flying_koopa_controller(
+static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, PlayerState& player, LevelState& level){
+  jumping_koopa_controller(
     koopa,
     player,
     level,
