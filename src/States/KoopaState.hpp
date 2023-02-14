@@ -47,5 +47,13 @@ struct FlyingKoopaState : KoopaState{
 
     return koopa;
   }
+
+  static auto make_red(const glm::vec2& position, Direction direction = DirectionLeft){
+    auto koopa = KoopaState::make<FlyingKoopaState>(position, direction);
+    koopa.current_texture = &textures::red_flying_koopa_walk[0];
+    koopa.fall_from_edge = false;
+
+    return koopa;
+  }
 };
 

@@ -140,6 +140,7 @@ static auto run_frame_level11(AppState& app){
     texture_groups::green_koopa,
     texture_groups::green_flying_koopa,
     texture_groups::red_koopa,
+    texture_groups::red_flying_koopa,
     texture_groups::beetle,
     texture_groups::spike,
     texture_groups::plant
@@ -173,7 +174,7 @@ static auto run_frame_level11(AppState& app){
     player.is_active = true;
     player.current_texture = &textures::small_mario;
 
-    entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 12, 9.5 }));
+    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 12, 9.5 }));
 
     for (int i = 0; i < 27; ++i){
       put_dirt(level, { i, 11 });

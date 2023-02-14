@@ -26,17 +26,26 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   if (entity.fall_from_edge) return;
 
   //Checking if entity should change direction not to fall from edge
-  const auto x = entity.position.x / config::BlockSize;
-  const auto y = (entity.position.y + entity.size.y) / config::BlockSize;
+  
+  static constexpr auto Offset = 20.f;
 
-  if (x + 1 >= config::MaxLevelSize || x - 1 <= 0) return;
+  const auto x = (entity.position.x) / config::BlockSize;
+  const auto y = (entity.position.y + entity.size.y + Offset) / config::BlockSize;
+  const auto left_x = (entity.position.x + Offset) / config::BlockSize;
+  const auto right_x = (entity.position.x + config::BlockSize - Offset) / config::BlockSize;
+
+  if (!entity.is_on_ground) return;
+
+  if (left_x + 1 >= config::MaxLevelSize || left_x - 1 <= 0) return;
+  if (right_x + 1 >= config::MaxLevelSize || right_x - 1 <= 0) return;
   if (y >= config::BlocksInColumn || y - 1 <= 0) return;
 
-  if (!level.hitbox_grid[x + 1][y] && entity.direction == EntityState::DirectionRight){
+  static constexpr auto Air = 0;
+  if (level.hitbox_grid[right_x][y] == Air && entity.direction == EntityState::DirectionRight){
     entity.acceleration.left = entity.acceleration.right = 0.f;
   }
 
-  if (!level.hitbox_grid[x][y] && entity.direction == EntityState::DirectionLeft){
+  if (level.hitbox_grid[left_x][y] == Air && entity.direction == EntityState::DirectionLeft){
     entity.acceleration.left = entity.acceleration.right = 0.f;
   }
 };

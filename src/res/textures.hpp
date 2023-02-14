@@ -157,13 +157,17 @@ namespace textures{
     Texture("entity/koopa/green_flying1.png"),
     Texture("entity/koopa/green_flying2.png")
   };
-  inline auto green_flying_koopa_dead = Texture("entity/koopa/greendead.png");
 
   inline auto red_koopa_walk = std::array<Texture, 2>{
     Texture("entity/koopa/red1.png"),
     Texture("entity/koopa/red2.png")
   };
   inline auto red_koopa_dead = Texture("entity/koopa/reddead.png");
+
+  inline auto red_flying_koopa_walk = std::array<Texture, 2>{
+    Texture("entity/koopa/red_flying1.png"),
+    Texture("entity/koopa/red_flying2.png")
+  };
 
   inline auto beetle_walk = std::array<Texture, 2>{
     Texture("entity/beetle/0.png"),

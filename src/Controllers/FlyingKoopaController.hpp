@@ -48,12 +48,6 @@ static auto flying_koopa_controller(
     return;
   }
 
-  entity_handle_shell(
-    koopa,
-    player,
-    level,
-    textures::green_koopa_dead
-  );
 }
 
 static auto green_flying_koopa_controller(FlyingKoopaState& koopa, PlayerState& player, LevelState& level){
@@ -63,5 +57,29 @@ static auto green_flying_koopa_controller(FlyingKoopaState& koopa, PlayerState& 
     level,
     textures::green_flying_koopa_walk,
     textures::green_koopa_walk
+  );
+
+  entity_handle_shell(
+    koopa,
+    player,
+    level,
+    textures::green_koopa_dead
+  );
+}
+
+static auto red_flying_koopa_controller(FlyingKoopaState& koopa, PlayerState& player, LevelState& level){
+  flying_koopa_controller(
+    koopa,
+    player,
+    level,
+    textures::red_flying_koopa_walk,
+    textures::red_koopa_walk
+  );
+
+  entity_handle_shell(
+    koopa,
+    player,
+    level,
+    textures::red_koopa_dead
   );
 }

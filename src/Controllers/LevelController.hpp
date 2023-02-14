@@ -86,6 +86,10 @@ static auto level_entities_controller(LevelState& level){
     red_koopa_controller(koopa, player, level);
   }
 
+  for (auto& koopa : level.entities.red_flying_koopas){
+    red_flying_koopa_controller(koopa, player, level);
+  }
+
   for (auto& koopa : level.entities.beetles){
     beetle_controller(koopa, player, level);
   }
