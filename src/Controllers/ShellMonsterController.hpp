@@ -133,6 +133,22 @@ static auto entity_handle_shell(
     shell_kill_entity(target);
   }
 
+  for (auto& target : entities.green_jumping_koopas){
+    shell_kill_entity(target);
+  }
+
+  for (auto& target : entities.red_jumping_koopas){
+    shell_kill_entity(target);
+  }
+
+  for (auto& target : entities.green_flying_koopas){
+    shell_kill_entity(target);
+  }
+
+  for (auto& target : entities.red_flying_koopas){
+    shell_kill_entity(target);
+  }
+
   for (auto& target : entities.beetles){
     shell_kill_entity(target);
   }

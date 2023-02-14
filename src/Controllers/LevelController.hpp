@@ -22,6 +22,7 @@
 #include "Controllers/SpikeController.hpp"
 #include "Controllers/PlantController.hpp"
 #include "Controllers/JumpingKoopaController.hpp"
+#include "Controllers/FlyingKoopaController.hpp"
 #include "Controllers/BeetleController.hpp"
 #include "Controllers/KoopaController.hpp"
 
@@ -82,6 +83,10 @@ static auto level_entities_controller(LevelState& level){
     green_jumping_koopa_controller(koopa, player, level);
   }
 
+  for (auto& koopa : level.entities.green_flying_koopas){
+    green_flying_koopa_controller(koopa, level);
+  }
+
   for (auto& koopa : level.entities.red_koopas){
     red_koopa_controller(koopa, player, level);
   }
@@ -90,44 +95,13 @@ static auto level_entities_controller(LevelState& level){
     red_jumping_koopa_controller(koopa, player, level);
   }
 
+  for (auto& koopa : level.entities.red_flying_koopas){
+    red_flying_koopa_controller(koopa, level);
+  }
+
   for (auto& koopa : level.entities.beetles){
     beetle_controller(koopa, player, level);
   }
-}
-
-static auto level_block_entity_interactions(LevelState& level){
-  const auto interact_with_block = [&](auto& entity, const auto& block){
-    
-  };
-
-  auto& entities = level.entities;
-  auto& goombas = entities.goombas;
-  auto& red_goombas = entities.red_goombas;
-  auto& yellow_goombas = entities.yellow_goombas;
-  auto& red_koopas = entities.red_koopas;
-  auto& green_koopas = entities.green_koopas;
-  auto& green_jumping_koopas = entities.green_jumping_koopas;
-  auto& mushrooms = entities.mushrooms;
-  auto& beetles = entities.beetles;
-  auto& spikes = entities.spikes;
-
-  util::multi_for([&](const auto& block){
-    util::multi_for([&](auto& entity){
-      interact_with_block(entity, block);
-    }, 
-      goombas, 
-      red_goombas, 
-      red_koopas, 
-      green_koopas, 
-      green_jumping_koopas, 
-      yellow_goombas, 
-      beetles,
-      spikes
-    );
-  }, 
-    level.blocks.bricks, 
-    level.blocks.q_blocks
-  ); 
 }
 
 static auto level_mushrooms_controller(LevelState& level){
@@ -165,6 +139,7 @@ static auto level_controller(AppState& app, LevelState& level){
   LevelState::blink_state = blink_controller();
   LevelState::coin_spin_counter.run();
   LevelState::fire_flower_blink_counter.run();
+  FlyingKoopaState::timer += window::delta_time;
 
   level.fireball_counter.run();
 
@@ -184,6 +159,4 @@ static auto level_controller(AppState& app, LevelState& level){
 
   level_blocks_controller(level);
   level_entities_controller(level);
-
-  level_block_entity_interactions(level);
 }

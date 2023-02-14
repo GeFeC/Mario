@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/KoopaState.hpp"
+#include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/ShellMonsterController.hpp"
 #include "res/textures.hpp"
@@ -13,9 +14,7 @@ static auto jumping_koopa_controller(
     const std::array<Texture, 2>& walk_frames_without_wings
 ){
   if (koopa.has_wings && koopa.is_on_ground){
-    static constexpr auto KoopaJumpHeight = -15;
-
-    koopa.gravity = KoopaJumpHeight;
+    koopa.gravity = -15;
     koopa.is_on_ground = false;
   }
 

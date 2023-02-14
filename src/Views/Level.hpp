@@ -135,11 +135,19 @@ static auto render_entities(const LevelState& level, float screen_scroll){
     render_entity(koopa, screen_scroll);
   }
 
-  for (const auto& koopa : level.entities.red_jumping_koopas){
+  for (const auto& koopa : level.entities.green_flying_koopas){
     render_entity(koopa, screen_scroll);
   }
 
   for (const auto& koopa : level.entities.red_koopas){
+    render_entity(koopa, screen_scroll);
+  }
+
+  for (const auto& koopa : level.entities.red_jumping_koopas){
+    render_entity(koopa, screen_scroll);
+  }
+
+  for (const auto& koopa : level.entities.red_flying_koopas){
     render_entity(koopa, screen_scroll);
   }
 
@@ -173,11 +181,19 @@ static auto render_all_points_particles(const LevelState& level, float screen_sc
     render_points_particles(koopa.points_manager.points, screen_scroll);
   }
 
+  for (const auto& koopa : level.entities.green_flying_koopas){
+    render_points_particles(koopa.points_manager.points, screen_scroll);
+  }
+
   for (const auto& koopa : level.entities.red_koopas){
     render_points_particles(koopa.points_manager.points, screen_scroll);
   }
 
   for (const auto& koopa : level.entities.red_jumping_koopas){
+    render_points_particles(koopa.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& koopa : level.entities.red_flying_koopas){
     render_points_particles(koopa.points_manager.points, screen_scroll);
   }
 
