@@ -8,7 +8,6 @@
 
 static auto spike_controller(
     SpikeState& spike, 
-    PlayerState& player,
     LevelState& level
 ){
   entity_gravity(spike, level);
@@ -25,6 +24,7 @@ static auto spike_controller(
   entity_die_when_on_bouncing_block(spike, level);
 
   //Interaction with player
+  auto& player = level.player;
   entity_kill_player_on_touch(spike, player);
   entity_become_active_when_seen(spike, player);
   entity_die_when_hit_by_fireball(spike, player, level.stats);

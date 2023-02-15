@@ -8,7 +8,6 @@
 
 static auto jumping_koopa_controller(
     JumpingKoopaState& koopa, 
-    PlayerState& player, 
     LevelState& level, 
     const std::array<Texture, 2>& walk_frames_with_wings,
     const std::array<Texture, 2>& walk_frames_without_wings
@@ -29,6 +28,7 @@ static auto jumping_koopa_controller(
   entity_die_when_on_bouncing_block(koopa, level);
 
   //Interaction with player
+  auto& player = level.player;
   entity_die_when_hit_by_fireball(koopa, player, level.stats);
   entity_become_active_when_seen(koopa, player);
 
@@ -49,10 +49,9 @@ static auto jumping_koopa_controller(
 
 }
 
-static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, PlayerState& player, LevelState& level){
+static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
   jumping_koopa_controller(
     koopa,
-    player,
     level,
     textures::green_flying_koopa_walk,
     textures::green_koopa_walk
@@ -60,16 +59,14 @@ static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, PlayerState
 
   entity_handle_shell(
     koopa,
-    player,
     level,
     textures::green_koopa_dead
   );
 }
 
-static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, PlayerState& player, LevelState& level){
+static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
   jumping_koopa_controller(
     koopa,
-    player,
     level,
     textures::red_flying_koopa_walk,
     textures::red_koopa_walk
@@ -77,7 +74,6 @@ static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, PlayerState& 
 
   entity_handle_shell(
     koopa,
-    player,
     level,
     textures::red_koopa_dead
   );

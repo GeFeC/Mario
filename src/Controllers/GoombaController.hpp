@@ -20,8 +20,9 @@ static auto goomba_run_walk_animation(GoombaState& goomba, const std::array<Text
   entity_run_movement_animation(goomba, walk_frames);
 }
 
-static auto goomba_controller(GoombaState& goomba, PlayerState& player, LevelState& level){
+static auto goomba_controller(GoombaState& goomba, LevelState& level){
   //Interactions with player
+  auto& player = level.player;
   entity_kill_player_on_touch(goomba, player);
   entity_become_active_when_seen(goomba, player);
   entity_die_when_hit_by_fireball(goomba, player, level.stats);
@@ -48,8 +49,9 @@ static auto goomba_controller(GoombaState& goomba, PlayerState& player, LevelSta
   } 
 }
 
-static auto normal_goomba_controller(GoombaState& goomba, PlayerState& player, LevelState& level){
-  goomba_controller(goomba, player, level);
+static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
+  auto& player = level.player;
+  goomba_controller(goomba, level);
   goomba_run_walk_animation(goomba, textures::goomba_walk);
 
   entity_die_when_stomped(goomba, player, level.stats, [&]{ 
@@ -57,8 +59,9 @@ static auto normal_goomba_controller(GoombaState& goomba, PlayerState& player, L
   });
 }
 
-static auto red_goomba_controller(GoombaState& goomba, PlayerState& player, LevelState& level){
-  goomba_controller(goomba, player, level);
+static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
+  auto& player = level.player;
+  goomba_controller(goomba, level);
   goomba_run_walk_animation(goomba, textures::red_goomba_walk);
 
   entity_die_when_stomped(goomba, player, level.stats, [&]{ 
@@ -66,8 +69,9 @@ static auto red_goomba_controller(GoombaState& goomba, PlayerState& player, Leve
   });
 }
 
-static auto yellow_goomba_controller(GoombaState& goomba, PlayerState& player, LevelState& level){
-  goomba_controller(goomba, player, level);
+static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
+  auto& player = level.player;
+  goomba_controller(goomba, level);
   goomba_run_walk_animation(goomba, textures::yellow_goomba_walk);
 
   entity_die_when_stomped(goomba, player, level.stats, [&]{ 

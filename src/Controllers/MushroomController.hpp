@@ -9,11 +9,12 @@
 
 #include "Window.hpp"
 
-static auto mushroom_controller(MushroomState& mushroom, PlayerState& player, LevelState& level){
+static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
   //Interaction with blocks
   entity_bounce_when_on_bouncing_block(mushroom, level);
 
   //Interaction with player
+  auto& player = level.player;
   const auto mushroom_block = BouncingBlockState(mushroom.position / config::BlockSize);
   if (player_hit_block_above(player, mushroom_block)){
     mushroom.should_be_pushed_out = true;
@@ -42,7 +43,8 @@ static auto mushroom_controller(MushroomState& mushroom, PlayerState& player, Le
   }
 }
 
-static auto green_mushroom_controller(MushroomState& mushroom, PlayerState& player, LevelState& level){
+static auto green_mushroom_controller(MushroomState& mushroom, LevelState& level){
+  auto& player = level.player;
   if (collision::is_hovering(player, mushroom) && mushroom.is_active){
     auto& points = mushroom.points_manager.get_points_particles();
     points.set_active("+1 HP", mushroom.position);
@@ -52,10 +54,11 @@ static auto green_mushroom_controller(MushroomState& mushroom, PlayerState& play
     level.stats.hp++;
   }
 
-  mushroom_controller(mushroom, player, level);
+  mushroom_controller(mushroom, level);
 }
 
-static auto red_mushroom_controller(MushroomState& mushroom, PlayerState& player, LevelState& level){
+static auto red_mushroom_controller(MushroomState& mushroom, LevelState& level){
+  auto& player = level.player;
   if (collision::is_hovering(player, mushroom) && mushroom.is_active){
     auto& points = mushroom.points_manager.get_points_particles();
     points.set_active(mushroom.reward_for_killing, mushroom.position);
@@ -66,5 +69,5 @@ static auto red_mushroom_controller(MushroomState& mushroom, PlayerState& player
     level.stats.score += mushroom.reward_for_killing;
   }
 
-  mushroom_controller(mushroom, player, level);
+  mushroom_controller(mushroom, level);
 }

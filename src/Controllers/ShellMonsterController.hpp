@@ -65,7 +65,6 @@ static auto entity_push_shell_on_player_touch(
 
 static auto entity_handle_shell(
     ShellMonsterState& entity, 
-    PlayerState& player,
     LevelState& level,
     const Texture& dead_texture
 ){
@@ -73,6 +72,7 @@ static auto entity_handle_shell(
     entity.fall_from_edge = true;
   }
 
+  auto& player = level.player;
   if (entity.in_shell && entity.walk_speed == 0.f){
     entity_push_shell_on_player_touch(entity, player, level.stats);
     return;

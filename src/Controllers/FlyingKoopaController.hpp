@@ -65,7 +65,6 @@ static auto green_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& l
 
   entity_handle_shell(
     koopa,
-    level.player,
     level,
     textures::green_koopa_dead
   );
@@ -81,7 +80,6 @@ static auto red_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& lev
 
   entity_handle_shell(
     koopa,
-    level.player,
     level,
     textures::red_koopa_dead
   );

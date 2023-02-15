@@ -35,19 +35,19 @@ static auto level_blocks_controller(LevelState& level){
   auto& blocks = level.blocks;
 
   for (auto& block : blocks.q_blocks){
-    q_block_controller(block, player, level.stats);
+    q_block_controller(block, level);
   }
 
   for (auto& block : blocks.bricks){
-    bricks_controller(block, player, level);
+    bricks_controller(block, level);
   }
 
   for (auto& block : blocks.spinning_coins){
-    spinning_coin_controller(block, player, level.stats);
+    spinning_coin_controller(block, level);
   }
 
   for (auto& block : blocks.coins){
-    coin_controller(block, player, level.stats);
+    coin_controller(block, level);
   }
 }
 
@@ -56,31 +56,31 @@ static auto level_entities_controller(LevelState& level){
   auto& player = level.player;
 
   for (auto& goomba : level.entities.goombas){
-    normal_goomba_controller(goomba, player, level);
+    normal_goomba_controller(goomba, level);
   }
 
   for (auto& goomba : level.entities.red_goombas){
-    red_goomba_controller(goomba, player, level);
+    red_goomba_controller(goomba, level);
   }
 
   for (auto& goomba : level.entities.yellow_goombas){
-    yellow_goomba_controller(goomba, player, level);
+    yellow_goomba_controller(goomba, level);
   }
 
   for (auto& spike : level.entities.spikes){
-    spike_controller(spike, player, level);
+    spike_controller(spike, level);
   }
 
   for (auto& plant : level.entities.plants){
-    plant_controller(plant, player, level.stats);
+    plant_controller(plant, level);
   }
 
   for (auto& koopa : level.entities.green_koopas){
-    green_koopa_controller(koopa, player, level);
+    green_koopa_controller(koopa, level);
   }
 
   for (auto& koopa : level.entities.green_jumping_koopas){
-    green_jumping_koopa_controller(koopa, player, level);
+    green_jumping_koopa_controller(koopa, level);
   }
 
   for (auto& koopa : level.entities.green_flying_koopas){
@@ -88,11 +88,11 @@ static auto level_entities_controller(LevelState& level){
   }
 
   for (auto& koopa : level.entities.red_koopas){
-    red_koopa_controller(koopa, player, level);
+    red_koopa_controller(koopa, level);
   }
 
   for (auto& koopa : level.entities.red_jumping_koopas){
-    red_jumping_koopa_controller(koopa, player, level);
+    red_jumping_koopa_controller(koopa, level);
   }
 
   for (auto& koopa : level.entities.red_flying_koopas){
@@ -100,7 +100,7 @@ static auto level_entities_controller(LevelState& level){
   }
 
   for (auto& koopa : level.entities.beetles){
-    beetle_controller(koopa, player, level);
+    beetle_controller(koopa, level);
   }
 }
 
@@ -108,11 +108,11 @@ static auto level_mushrooms_controller(LevelState& level){
   auto& player = level.player;
 
   for (auto& mushroom : level.entities.mushrooms){
-    red_mushroom_controller(mushroom, player, level);
+    red_mushroom_controller(mushroom, level);
   }
 
   for (auto& mushroom : level.entities.green_mushrooms){
-    green_mushroom_controller(mushroom, player, level);
+    green_mushroom_controller(mushroom, level);
   }
 }
 

@@ -8,11 +8,12 @@
 
 #include "Util.hpp"
 
-inline auto coin_controller(CoinBlockState& coin, EntityState& player, StatsState& stats){
+inline auto coin_controller(CoinBlockState& coin, LevelState& level){
   coin.texture = &textures::coin[LevelState::blink_state];
 
   static constexpr auto CollisionPadding = 5;
-
+  auto& player = level.player;
+  
   const auto hovers_in_x = player.position.x - coin.position.x
     == util::in_range(-player.size.x + CollisionPadding, coin.size.x - CollisionPadding); 
 
@@ -21,7 +22,6 @@ inline auto coin_controller(CoinBlockState& coin, EntityState& player, StatsStat
 
   if (hovers_in_x && hovers_in_y){
     coin.position.y = config::BigValue;
-    ++stats.coins;
+    ++level.stats.coins;
   }
 }
-

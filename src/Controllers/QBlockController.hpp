@@ -27,13 +27,14 @@ inline auto q_block_points_controller(PointsParticlesState& points, const Player
   }
 }
 
-inline auto q_block_controller(QBlockState& block, const PlayerState& player, StatsState& stats){
+inline auto q_block_controller(QBlockState& block, LevelState& level){
   bounce_controller(block);
 
   if (block.bounce_state.can_bounce){
     block.texture = &textures::q_block[LevelState::blink_state];
   } 
 
+  auto& player = level.player;
   if (player_hit_block_above(player, block) && !player.is_dead && block.bounce_state.can_bounce){
     bounce::start(block);
 

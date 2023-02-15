@@ -10,10 +10,11 @@
 
 #include <GLFW/glfw3.h>
 
-static auto plant_controller(PlantState& plant, PlayerState& player, StatsState& stats){
+static auto plant_controller(PlantState& plant, LevelState& level){
   //Interactions with player
+  auto& player = level.player;
   entity_kill_player_on_touch(plant, player);
-  entity_die_when_hit_by_fireball(plant, player, stats);
+  entity_die_when_hit_by_fireball(plant, player, level.stats);
 
   //Plant Movement
   entity_run_movement_animation(plant, textures::plant);

@@ -8,8 +8,10 @@
 #include "Controllers/BounceController.hpp"
 #include "Controllers/EntityController.hpp"
 
-static auto bricks_controller(BricksBlockState& block, PlayerState& player, LevelState& level){
+static auto bricks_controller(BricksBlockState& block, LevelState& level){
   bounce_controller(block);
+
+  auto& player = level.player;
   if (player_hit_block_above(player, block) && block.is_solid){
     if (player.growth == PlayerState::Growth::Big){
       level.get_hitbox_grid_element(block.position / config::BlockSize) = 0;
