@@ -14,6 +14,7 @@ struct EntityState{
 
   static constexpr auto DirectionLeft = -1;
   static constexpr auto DirectionRight = 1;
+  static constexpr auto GravityForce = 50.f;
 
   struct Acceleration{
     float left = 0.f, right = 0.f;
@@ -28,6 +29,7 @@ struct EntityState{
   int texture_flip = Flip::NoFlip;
   
   float gravity = 0.f;
+  float gravity_boost = 1.f;
   float death_delay = 1.f;
 
   bool can_be_stomped = true;
@@ -49,10 +51,6 @@ struct EntityState{
 
     acceleration.left = speed;
     acceleration.right = 0.f;
-  }
-
-  auto can_kill() const{
-    return !is_dead && should_collide;
   }
 };
 

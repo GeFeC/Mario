@@ -76,14 +76,14 @@ static auto entity_movement(EntityState& entity, const LevelState& level){
   entity_movement_helper(entity, level, detect_entity_collision_with_level);
 }
 
-static auto entity_gravity(EntityState& entity, const LevelState& level, int gravity_boost = 1){
+static auto entity_gravity(EntityState& entity, const LevelState& level){
   if (entity.is_dead && entity.death_delay > 0.f) return;
   if (!entity.is_active) return;
 
   if (entity.is_on_ground && !entity.is_dead && entity.should_collide) entity.gravity = 0.f;
   entity.is_on_ground = false;
 
-  entity.gravity += window::delta_time * 50 * gravity_boost;
+  entity.gravity += window::delta_time * EntityState::GravityForce * entity.gravity_boost;
 
   auto position_increaser = entity.gravity * window::delta_time * 60;
 
@@ -118,12 +118,23 @@ static auto entity_turn_around(MonsterState& entity){
   }
 }
 
-static auto entity_kill_player_on_touch(EntityState& entity, const util::Rect& entity_hitbox_rect, PlayerState& player){
-  auto entity_hitbox = EntityState();
-  entity_hitbox.position = entity_hitbox_rect.position;
-  entity_hitbox.size = entity_hitbox_rect.size;
+static auto entity_get_hitbox(EntityState& entity){
+  auto hitbox = EntityState();
+  hitbox.position = entity.position + glm::vec2(0, entity.size.y - config::BlockSize);
+  hitbox.size = glm::vec2(config::BlockSize);
+  hitbox.is_dead = entity.is_dead;
+  hitbox.should_collide = entity.should_collide;
 
-  if (!player_stomp_on_entity(player, entity) && collision::is_hovering(player, entity_hitbox) && entity.can_kill()){
+  return hitbox;
+}
+
+static auto entity_kill_player_on_touch(EntityState& entity, PlayerState& player){
+  if (entity.is_dead) return;
+  if (!entity.should_collide) return;
+
+  auto entity_hitbox = entity_get_hitbox(entity);
+
+  if (!player_is_on_entity(player, entity) && collision::is_hovering(player, entity_hitbox)){
     if (player.growth == PlayerState::Growth::Big){
       player.is_shrinking = true;
     }
@@ -133,26 +144,19 @@ static auto entity_kill_player_on_touch(EntityState& entity, const util::Rect& e
   }
 };
 
-static auto entity_kill_player_on_touch(MonsterState& entity, PlayerState& player){
-  entity_kill_player_on_touch(entity, util::Rect(entity), player);
-};
-
 template<typename Function>
 static auto entity_die_when_stomped(
     MonsterState& entity, 
-    const util::Rect& hitbox, 
     PlayerState& player, 
     StatsState& stats,
     Function set_entity_dead
 ){
-  auto entity_hitbox = EntityState();
-  entity_hitbox.position = hitbox.position;
-  entity_hitbox.size = hitbox.size;
-  entity_hitbox.is_dead = entity.is_dead;
+  auto entity_hitbox = entity_get_hitbox(entity);
 
-  if (player_stomp_on_entity(player, entity_hitbox) && !player.is_dead && !entity.is_dead && entity.should_collide){
+  if (player_stomp_on_entity(player, entity_hitbox)){
     set_entity_dead();
     player.gravity = PlayerState::BouncePower;
+    player.position.y = entity.position.y - player.size.y;
 
     const auto total_reward = entity.reward_for_killing * player.mobs_killed_in_row;
     stats.score += total_reward;
@@ -165,16 +169,6 @@ static auto entity_die_when_stomped(
   }
 
   return false;
-};
-
-template<typename Function>
-static auto entity_die_when_stomped(
-    MonsterState& entity, 
-    PlayerState& player, 
-    StatsState& stats, 
-    Function set_entity_dead
-){
-  entity_die_when_stomped(entity, util::Rect(entity), player, stats, set_entity_dead);
 };
 
 static auto entity_become_active_when_seen(MonsterState& entity, const PlayerState& player){

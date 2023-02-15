@@ -175,10 +175,10 @@ static auto run_frame_level11(AppState& app){
     player.is_active = true;
     player.current_texture = &textures::small_mario;
 
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 3, 6 }, { 0.f, -2.5f }));
-    entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 6, 6 }, { 0.f, 2.5f }));
+    //entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 3, 6 }, { 0.f, -2.5f }));
+    //entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 6, 6 }, { 0.f, 2.5f }));
 
-    entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 18, 7 }, { 2.5f, 0.f }));
+    entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ 18, 7 }));
 
     for (int i = 0; i < 27; ++i){
       put_dirt(level, { i, 11 });

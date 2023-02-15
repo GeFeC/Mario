@@ -39,13 +39,13 @@ static auto player_jump(PlayerState& player, LevelState& level){
   });
 }
 
-static auto player_gravity(EntityState& player, LevelState& level){
-  int gravity_boost = 1;
+static auto player_gravity(PlayerState& player, LevelState& level){
+  player.gravity_boost = 1.f;
   if (!player.is_dead && player.gravity < 0 && !window::is_key_pressed(GLFW_KEY_UP)){
-    gravity_boost = 2;
+    player.gravity_boost = 2.f;
   }
 
-  entity_gravity(player, level, gravity_boost);
+  entity_gravity(player, level);
 }
 
 static auto player_movement(PlayerState& player, LevelState& level){
@@ -213,7 +213,7 @@ static auto player_textures(PlayerState& player){
   }
 }
 
-static auto player_death(EntityState& player){
+static auto player_death(PlayerState& player){
   if (player.is_dead && player.death_delay > 0.f){
     player.death_delay -= window::delta_time;
   }
@@ -312,17 +312,25 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
   player_textures(player);
 }
 
-auto player_stomp_on_entity(const EntityState& player, const EntityState& entity) -> bool{
-  if (!entity.can_be_stomped) return false;
-
-  if (collision::is_hovering_in_x(player, entity) && !entity.is_dead && player.gravity > 0){
+auto player_is_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
+  if (collision::is_hovering_in_x(player, entity)){
     return entity.position.y - player.position.y - player.size.y == util::in_range(-45, 0);
   }
 
   return false;
 }
 
-auto player_can_hit_block_above(const EntityState& player, const BouncingBlockState& block) -> bool{
+auto player_stomp_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
+  if (!entity.can_be_stomped) return false;
+  if (!entity.should_collide) return false;
+  if (entity.is_dead) return false;
+  if (player.is_dead) return false;
+  if (player.gravity < 0) return false;
+
+  return player_is_on_entity(player, entity);
+}
+
+auto player_can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
   if (player.direction == EntityState::DirectionLeft){
     return player.position.x - block.position.x 
       == util::in_range(-CollisionOffset, block.size.x - CollisionOffset);
@@ -332,7 +340,9 @@ auto player_can_hit_block_above(const EntityState& player, const BouncingBlockSt
     == util::in_range(-player.size.x + CollisionOffset, CollisionOffset);
 }
 
-auto player_hit_block_above(const EntityState& player, const BouncingBlockState& block) -> bool{
+auto player_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
+  if (player.is_dead) return false;
+
   const auto was_block_hit_by_player 
     = (player.position.y - block.position.y - block.size.y) == util::in_range(-10, -5);
 

@@ -40,17 +40,12 @@ static auto flying_koopa_controller(
   entity_die_when_hit_by_fireball(koopa, player, level.stats);
   entity_become_active_when_seen(koopa, player);
 
-  if (player_stomp_on_entity(player, koopa) && koopa.has_wings && !player.is_dead){
-    koopa.has_wings = false;
-    player.gravity = PlayerState::BouncePower;
-    koopa.gravity = 0;
+  if (koopa.has_wings){
+    entity_die_when_stomped(koopa, player, level.stats, [&]{
+      koopa.has_wings = false;
+      koopa.gravity = 0;
+    });
 
-    koopa.spawn_points(player.mobs_killed_in_row);
-    level.stats.score += koopa.reward_for_killing * player.mobs_killed_in_row;
-    return;
-  }
-
-  if (koopa.has_wings) {
     entity_kill_player_on_touch(koopa, player);
   }
 }

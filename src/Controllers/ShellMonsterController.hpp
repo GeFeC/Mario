@@ -78,15 +78,8 @@ static auto entity_handle_shell(
     return;
   }
 
-  const auto entity_hitbox = entity.in_shell
-  ? util::Rect(entity.position, glm::vec2(config::BlockSize))
-  : util::Rect(
-      entity.position + glm::vec2(0, entity.size.y - entity.shell_height), 
-      glm::vec2(config::BlockSize)
-    );
-
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    entity_die_when_stomped(entity, entity_hitbox, player, level.stats, [&]{ 
+    entity_die_when_stomped(entity, player, level.stats, [&]{ 
       shell_monster_hide_in_shell(entity, dead_texture); 
     });
   }
@@ -97,7 +90,7 @@ static auto entity_handle_shell(
     if (distance < 0 && entity.acceleration.left == entity.shell_speed) return;
 
     if (entity.walk_speed > 0){
-      entity_kill_player_on_touch(entity, entity_hitbox, player);
+      entity_kill_player_on_touch(entity, player);
     }
   }(); 
 
