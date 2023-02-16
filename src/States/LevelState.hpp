@@ -16,6 +16,7 @@
 #include "States/MushroomState.hpp"
 #include "States/SpikeState.hpp"
 #include "States/BeetleState.hpp"
+#include "States/FireBarState.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -35,13 +36,14 @@ struct StatsState{
 };
 
 struct LevelState{
+  inline static auto blink_state = 0;
+  inline static auto coin_spin_counter = InfiniteCounter(4.f, 20.f);
+  inline static auto fire_flower_blink_counter = InfiniteCounter(4.f, 15.f);
+
   util::vector2d<int> hitbox_grid;
 
   StatsState stats;
   PlayerState player;
-  inline static auto blink_state = 0;
-  inline static auto coin_spin_counter = InfiniteCounter(4.f, 20.f);
-  inline static auto fire_flower_blink_counter = InfiniteCounter(4.f, 15.f);
 
   struct Blocks{
     std::vector<BlockState> entity_hitbox_blocks;
@@ -52,6 +54,8 @@ struct LevelState{
     std::vector<SpinningCoinState> spinning_coins;
     std::vector<FireFlowerState> fire_flowers;
   } blocks;
+
+  std::vector<FireBarState> fire_bars;
 
   struct Entities{
     std::vector<GoombaState> goombas;

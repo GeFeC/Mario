@@ -25,6 +25,7 @@
 #include "Controllers/FlyingKoopaController.hpp"
 #include "Controllers/BeetleController.hpp"
 #include "Controllers/KoopaController.hpp"
+#include "Controllers/FireBarController.hpp"
 
 #include "Util.hpp"
 #include "config.hpp"
@@ -151,6 +152,10 @@ static auto level_controller(AppState& app, LevelState& level){
 
   for (auto& block : level.blocks.fire_flowers){
     fire_flower_controller(block, player, level.stats);
+  }
+
+  for (auto& bar : level.fire_bars){
+    fire_bar_controller(bar, level);
   }
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;

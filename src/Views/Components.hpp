@@ -6,6 +6,8 @@
 #include "States/PlayerState.hpp"
 #include "States/BlockState.hpp"
 #include "States/PointsParticlesState.hpp"
+#include "States/FireBarState.hpp"
+
 #include "Util.hpp"
 
 #include "config.hpp"
@@ -65,4 +67,10 @@ static auto render_player(const PlayerState& player, float offset_x = 0.f){
   } 
 
   render_entity(player, offset_x);
+}
+
+static auto render_fire_bar(const FireBarState& bar, float offset_x = 0.f){
+  for (const auto& fireball : bar.fireballs){
+    render_entity(fireball, offset_x);
+  }
 }

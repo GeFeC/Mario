@@ -316,6 +316,10 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     render_entities(level, screen_scroll);
 
+    for (const auto& bar : level.fire_bars){
+      render_fire_bar(bar, screen_scroll);
+    }
+
     for (const auto& block : level.blocks.q_blocks){
       render_block(block, screen_scroll);
     }

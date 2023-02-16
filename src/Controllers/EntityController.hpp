@@ -120,8 +120,8 @@ static auto entity_turn_around(MonsterState& entity){
 
 static auto entity_get_hitbox(EntityState& entity){
   auto hitbox = EntityState();
-  hitbox.position = entity.position + glm::vec2(0, entity.size.y - config::BlockSize);
-  hitbox.size = glm::vec2(config::BlockSize);
+  hitbox.size = glm::min(glm::vec2(config::BlockSize), entity.size);
+  hitbox.position = entity.position + glm::vec2(0, entity.size.y - hitbox.size.y);
   hitbox.is_dead = entity.is_dead;
   hitbox.should_collide = entity.should_collide;
 
