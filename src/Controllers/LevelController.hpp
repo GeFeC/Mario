@@ -73,7 +73,11 @@ static auto level_entities_controller(LevelState& level){
   }
 
   for (auto& plant : level.entities.plants){
-    plant_controller(plant, level);
+    green_plant_controller(plant, level);
+  }
+
+  for (auto& plant : level.entities.red_plants){
+    red_plant_controller(plant, level);
   }
 
   for (auto& koopa : level.entities.green_koopas){

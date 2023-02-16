@@ -112,6 +112,10 @@ static auto render_plants(const LevelState& level, float screen_scroll){
   for (const auto& plant : level.entities.plants){
     render_entity(plant, screen_scroll);
   }
+
+  for (const auto& plant : level.entities.red_plants){
+    render_entity(plant, screen_scroll);
+  }
 }
 
 static auto render_entities(const LevelState& level, float screen_scroll){
@@ -170,6 +174,10 @@ static auto render_entities(const LevelState& level, float screen_scroll){
 
 static auto render_all_points_particles(const LevelState& level, float screen_scroll){
   for (const auto& plant : level.entities.plants){
+    render_points_particles(plant.points_manager.points, screen_scroll);
+  }
+
+  for (const auto& plant : level.entities.red_plants){
     render_points_particles(plant.points_manager.points, screen_scroll);
   }
 

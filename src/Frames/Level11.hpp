@@ -143,7 +143,8 @@ static auto run_frame_level11(AppState& app){
     texture_groups::red_flying_koopa,
     texture_groups::beetle,
     texture_groups::spike,
-    texture_groups::plant
+    texture_groups::plant,
+    texture_groups::red_plant
   };
 
   const auto setup = [](auto& app){
@@ -175,11 +176,7 @@ static auto run_frame_level11(AppState& app){
     player.is_active = true;
     player.current_texture = &textures::small_mario;
 
-    //entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 3, 6 }, { 0.f, -2.5f }));
-    //entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 6, 6 }, { 0.f, 2.5f }));
-
-    level.fire_bars.push_back(FireBarState({ 9, 7 }, 7));
-    entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ 18, 7 }));
+    level.fire_bars.push_back(FireBarState({ 9, 7 }, 4));
 
     for (int i = 0; i < 27; ++i){
       put_dirt(level, { i, 11 });
@@ -224,7 +221,7 @@ static auto run_frame_level11(AppState& app){
 
     entities.red_goombas.push_back(GoombaState::make_red({ 35, 5 }));
 
-    entities.plants.push_back(PlantState::make({ 25.5f, 8.f }));
+    entities.red_plants.push_back(PlantState::make_red({ 25.5f, 8.f }));
     put_red_pipe(level, { 25, 10 }, 2);
 
     for (int i = 0; i < 10; ++i){

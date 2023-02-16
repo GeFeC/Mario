@@ -16,10 +16,7 @@ static auto plant_controller(PlantState& plant, LevelState& level){
   entity_kill_player_on_touch(plant, player);
   entity_die_when_hit_by_fireball(plant, player, level.stats);
 
-  //Plant Movement
-  entity_run_movement_animation(plant, textures::plant);
-
-  const auto offset = window::delta_time * 50.f;
+  const auto offset = window::delta_time * plant.speed;
 
   using Direction = PlantState::Direction;
   if (plant.cooldown == 0.f){
@@ -30,7 +27,7 @@ static auto plant_controller(PlantState& plant, LevelState& level){
     }
     else{
       if (plant.direction == Direction::GoingUp){
-        plant.cooldown = PlantState::StartCooldown;
+        plant.cooldown = plant.cooldown_duration;
       }
 
       plant.direction = Direction::GoingDown;
@@ -43,11 +40,25 @@ static auto plant_controller(PlantState& plant, LevelState& level){
     }
     else{
       if (plant.direction == Direction::GoingDown){
-        plant.cooldown = PlantState::StartCooldown;
+        plant.cooldown = plant.cooldown_duration;
       }
 
       plant.direction = Direction::GoingUp;
     }
   }
   plant.cooldown = std::max(plant.cooldown - window::delta_time, 0.f);
+}
+
+static auto green_plant_controller(PlantState& plant, LevelState& level){
+  plant_controller(plant, level);
+  
+  //Plant Movement
+  entity_run_movement_animation(plant, textures::plant);
+}
+
+static auto red_plant_controller(PlantState& plant, LevelState& level){
+  plant_controller(plant, level);
+  
+  //Plant Movement
+  entity_run_movement_animation(plant, textures::red_plant);
 }

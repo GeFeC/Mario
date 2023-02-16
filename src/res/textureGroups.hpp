@@ -74,6 +74,11 @@ namespace texture_groups{
     &textures::plant[1]
   });
 
+  inline auto red_plant = TextureGroup({
+    &textures::red_plant[0],
+    &textures::red_plant[1]
+  });
+
   inline auto q_block = TextureGroup({
     &textures::q_block[0],
     &textures::q_block[1],

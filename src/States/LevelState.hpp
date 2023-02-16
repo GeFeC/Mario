@@ -72,8 +72,8 @@ struct LevelState{
     std::vector<SpikeState> spikes;
     std::vector<MushroomState> mushrooms;
     std::vector<MushroomState> green_mushrooms;
-
     std::vector<PlantState> plants;
+    std::vector<PlantState> red_plants;
   } entities;
 
   struct Background{
