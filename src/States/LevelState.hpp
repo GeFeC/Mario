@@ -36,6 +36,7 @@ struct StatsState{
 };
 
 struct LevelState{
+  inline static float timer = 0.f;
   inline static auto blink_state = 0;
   inline static auto coin_spin_counter = InfiniteCounter(4.f, 20.f);
   inline static auto fire_flower_blink_counter = InfiniteCounter(4.f, 15.f);

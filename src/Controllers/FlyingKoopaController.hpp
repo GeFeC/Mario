@@ -11,7 +11,7 @@ static auto flying_koopa_controller(
     const std::array<Texture, 2>& walk_frames_without_wings
 ){
   //Motion
-  const auto timer = FlyingKoopaState::timer - koopa.start_time;
+  const auto timer = LevelState::timer - koopa.start_time;
   if (koopa.has_wings && koopa.should_collide){
     const auto previous_x = koopa.position.x;
 
@@ -41,12 +41,13 @@ static auto flying_koopa_controller(
   entity_become_active_when_seen(koopa, player);
 
   if (koopa.has_wings){
-    entity_die_when_stomped(koopa, player, level.stats, [&]{
+    auto koopa_hitbox = shell_monster_get_hitbox(koopa);
+    entity_die_when_stomped(koopa_hitbox, player, level.stats, [&]{
       koopa.has_wings = false;
       koopa.gravity = 0;
     });
 
-    entity_kill_player_on_touch(koopa, player);
+    entity_kill_player_on_touch(koopa_hitbox, player);
   }
 }
 

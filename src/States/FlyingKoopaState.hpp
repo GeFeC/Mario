@@ -3,8 +3,6 @@
 #include "States/KoopaState.hpp"
 
 struct FlyingKoopaState : KoopaState{
-  inline static float timer = 0.f;
-
   bool has_wings = true;
   glm::vec2 initial_position;
   glm::vec2 movement_axis;

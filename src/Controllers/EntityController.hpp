@@ -118,23 +118,11 @@ static auto entity_turn_around(MonsterState& entity){
   }
 }
 
-static auto entity_get_hitbox(EntityState& entity){
-  auto hitbox = EntityState();
-  hitbox.size = glm::min(glm::vec2(config::BlockSize), entity.size);
-  hitbox.position = entity.position + glm::vec2(0, entity.size.y - hitbox.size.y);
-  hitbox.is_dead = entity.is_dead;
-  hitbox.should_collide = entity.should_collide;
-
-  return hitbox;
-}
-
 static auto entity_kill_player_on_touch(EntityState& entity, PlayerState& player){
   if (entity.is_dead) return;
   if (!entity.should_collide) return;
 
-  auto entity_hitbox = entity_get_hitbox(entity);
-
-  if (!player_is_on_entity(player, entity) && collision::is_hovering(player, entity_hitbox)){
+  if (!player_is_on_entity(player, entity) && collision::is_hovering(player, entity)){
     if (player.growth == PlayerState::Growth::Big){
       player.is_shrinking = true;
     }
@@ -151,9 +139,7 @@ static auto entity_die_when_stomped(
     StatsState& stats,
     Function set_entity_dead
 ){
-  auto entity_hitbox = entity_get_hitbox(entity);
-
-  if (player_stomp_on_entity(player, entity_hitbox)){
+  if (player_stomp_on_entity(player, entity)){
     set_entity_dead();
     player.gravity = PlayerState::BouncePower;
     player.position.y = entity.position.y - player.size.y;

@@ -140,7 +140,6 @@ static auto level_controller(AppState& app, LevelState& level){
   LevelState::blink_state = blink_controller();
   LevelState::coin_spin_counter.run();
   LevelState::fire_flower_blink_counter.run();
-  FlyingKoopaState::timer += window::delta_time;
 
   level.fireball_counter.run();
 
@@ -164,4 +163,6 @@ static auto level_controller(AppState& app, LevelState& level){
 
   level_blocks_controller(level);
   level_entities_controller(level);
+
+  LevelState::timer += window::delta_time;
 }

@@ -63,6 +63,16 @@ static auto entity_push_shell_on_player_touch(
   entity.set_direction(EntityState::DirectionLeft);
 };
 
+static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
+  auto hitbox = ShellMonsterState();
+  hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - config::BlockSize);
+  hitbox.size = glm::vec2(config::BlockSize);
+  hitbox.is_dead = entity.is_dead;
+  hitbox.should_collide = entity.should_collide;
+
+  return hitbox;
+}
+
 static auto entity_handle_shell(
     ShellMonsterState& entity, 
     LevelState& level,
@@ -78,8 +88,9 @@ static auto entity_handle_shell(
     return;
   }
 
+  auto entity_hitbox = shell_monster_get_hitbox(entity);
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    entity_die_when_stomped(entity, player, level.stats, [&]{ 
+    entity_die_when_stomped(entity_hitbox, player, level.stats, [&]{ 
       shell_monster_hide_in_shell(entity, dead_texture); 
     });
   }
@@ -90,7 +101,7 @@ static auto entity_handle_shell(
     if (distance < 0 && entity.acceleration.left == entity.shell_speed) return;
 
     if (entity.walk_speed > 0){
-      entity_kill_player_on_touch(entity, player);
+      entity_kill_player_on_touch(entity_hitbox, player);
     }
   }(); 
 

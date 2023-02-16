@@ -149,7 +149,7 @@ static auto run_frame_level11(AppState& app){
   const auto setup = [](auto& app){
     fonts::medium.allocate(32);
     fonts::small.allocate(16);
-    FlyingKoopaState::timer = 0.f;
+    LevelState::timer = 0.f;
 
     auto& level = app.current_level;
 
@@ -178,7 +178,7 @@ static auto run_frame_level11(AppState& app){
     //entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 3, 6 }, { 0.f, -2.5f }));
     //entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 6, 6 }, { 0.f, 2.5f }));
 
-    level.fire_bars.push_back(FireBarState({ 9, 7 }, 4));
+    level.fire_bars.push_back(FireBarState({ 9, 7 }, 7));
     entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ 18, 7 }));
 
     for (int i = 0; i < 27; ++i){

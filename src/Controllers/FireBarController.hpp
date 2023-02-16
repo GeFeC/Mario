@@ -11,8 +11,8 @@ static auto fire_bar_controller(FireBarState& bar, LevelState& level){
 
     const auto y = config::BlockSize * i * 0.8f;
     const auto rotation = glm::vec2(
-      -y * glm::sin(glfwGetTime() * FireBarState::RotationSpeed),
-      y * glm::cos(glfwGetTime() * FireBarState::RotationSpeed)
+      -y * glm::sin(LevelState::timer * FireBarState::RotationSpeed),
+      y * glm::cos(LevelState::timer * FireBarState::RotationSpeed)
     );
     fireball.position = bar.position + rotation;
 
