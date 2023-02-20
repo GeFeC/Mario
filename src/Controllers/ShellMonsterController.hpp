@@ -90,7 +90,7 @@ static auto entity_handle_shell(
 
   auto entity_hitbox = shell_monster_get_hitbox(entity);
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    entity_die_when_stomped(entity_hitbox, player, level.stats, [&]{ 
+    entity_die_when_stomped(entity, player, level.stats, [&]{ 
       shell_monster_hide_in_shell(entity, dead_texture); 
     });
   }
