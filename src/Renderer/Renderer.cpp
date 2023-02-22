@@ -41,9 +41,10 @@ static auto draw_element(const Drawable& drawable, bool is_glyph, float offset_x
   const auto flip_offset_x = drawable.size.x * (drawable.flip.horizontal - 1) / 2;
   const auto flip_offset_y = drawable.size.y * (drawable.flip.vertical - 1) / 2;
 
+  using renderer::ShadowOffset;
   program::set_uniform("rect", {
-    std::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * 5 - offset_x),
-    std::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * 5),
+    std::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * ShadowOffset - offset_x),
+    std::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * ShadowOffset),
     std::round(drawable.size.x * drawable.flip.horizontal),
     std::round(drawable.size.y * drawable.flip.vertical)
   });
@@ -55,8 +56,10 @@ static auto draw_element(const Drawable& drawable, bool is_glyph, float offset_x
 }
 
 auto renderer::draw(const Drawable& drawable, bool is_glyph) noexcept -> void{
-  drawable.texture->bind();
   drawable.texture->set_mag_filter(GL_NEAREST);
+  drawable.texture->set_min_filter(GL_NEAREST_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
   draw_element(drawable, is_glyph);
 }
@@ -73,9 +76,8 @@ auto renderer::print(const Text& text, float offset_x) -> void{
 
     const auto& current_glyph_texture = text.get_font()->glyphs[current_char].texture;
     
-    current_glyph_texture.bind();
     current_glyph_texture.set_mag_filter(GL_NEAREST);
-
+    current_glyph_texture.set_min_filter(GL_NEAREST_MIPMAP_NEAREST);
     draw_element(text.get_glyph(i), true, offset_x);
   }
 }

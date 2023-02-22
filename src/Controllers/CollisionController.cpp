@@ -1,11 +1,11 @@
 #include "CollisionController.hpp"
 #include "Util.hpp"
+#include "config.hpp"
 
 using util::Rect;
 
-static constexpr auto BigValue = 100'000.f;
-
 auto collision_controller(const Rect& object1, const Rect& object2) -> CollisionState{
+  using config::BigValue;
   auto collision_state = CollisionState{ BigValue, BigValue, BigValue, BigValue };
 
   if (collision::is_hovering_in_x(object1, object2)){
@@ -18,10 +18,10 @@ auto collision_controller(const Rect& object1, const Rect& object2) -> Collision
 
   if (collision::is_hovering_in_y(object1, object2)){
     collision_state.distance_left 
-      = std::abs(object1.position.x - (object2.size.x + object2.position.x - CollisionOffset + 0.1));
+      = (object1.position.x - (object2.size.x + object2.position.x - CollisionOffset + 0.1));
 
     collision_state.distance_right 
-      = std::abs(object2.position.x - (object1.size.x + object1.position.x - CollisionOffset + 0.1));
+      = (object2.position.x - (object1.size.x + object1.position.x - CollisionOffset + 0.1));
   }
 
   return collision_state;

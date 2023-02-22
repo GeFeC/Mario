@@ -26,8 +26,8 @@ inline auto bounce_controller(BounceBlock& block){
   auto& bounce_state = block.bounce_state;
 
   if (bounce_state.is_bouncing){
-    block.position.y += bounce_state.power * window::delta_time * 80.f;
-    bounce_state.power += window::delta_time * 60.f;
+    block.position.y += bounce_state.power * window::delta_time * 120.f;
+    bounce_state.power += window::delta_time * 60;
 
     if (block.position.y >= bounce_state.temp_y){
       bounce_state.is_bouncing = false;

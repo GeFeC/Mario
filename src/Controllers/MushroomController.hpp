@@ -35,7 +35,7 @@ static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
     const auto value = window::delta_time * 2;
 
     mushroom.offset += value;
-    mushroom.position.y -= value * 60.f;
+    mushroom.position.y -= value * config::BlockSize;
   }
 
   if (mushroom.offset >= 1.f){

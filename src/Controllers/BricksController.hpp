@@ -29,7 +29,7 @@ static auto bricks_controller(BricksBlockState& block, LevelState& level){
       for (auto& particle : block.particles){
         particle.is_active = true;
         particle.is_visible = true;
-        particle.gravity = util::random_value(-20, -14);
+        particle.gravity = util::random_value(-25, -20);
 
         const auto direction = util::random_value(0, 1) 
           ? EntityState::DirectionRight 

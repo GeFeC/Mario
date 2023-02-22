@@ -8,7 +8,7 @@ private:
     auto goomba = GoombaState();
     goomba.position = position * config::BlockSize;
     goomba.size = glm::vec2(config::BlockSize);
-    goomba.walk_speed = 2.f;
+    goomba.walk_speed = 3.f;
 
     return goomba;
   }
@@ -37,7 +37,7 @@ public:
   static auto make_yellow(const glm::vec2& position, Direction direction = DirectionLeft){
     auto goomba = make(position);
 
-    goomba.walk_speed = 5.f;
+    goomba.walk_speed = 8.f;
     goomba.set_direction(direction);
     goomba.current_texture = &textures::yellow_goomba_walk[0];
     goomba.fall_from_edge = false;

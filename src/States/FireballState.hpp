@@ -37,7 +37,6 @@ struct ExplosionState : BlockBase{
   auto finished() const{
     return !started || counter.stopped_counting();
   }
-
 };
 
 
@@ -45,7 +44,7 @@ struct FireballState : EntityState{
   ExplosionState explosion;
 
   FireballState(){
-    position = glm::vec2(0);
+    position = glm::vec2(-config::BigValue);
     size = glm::vec2(config::BlockSize / 2);
     current_texture = &textures::fireball[0];
     is_visible = false;

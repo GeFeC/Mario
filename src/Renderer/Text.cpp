@@ -6,7 +6,10 @@ Text::Text() {
   size = { 0.f, 0.f };
 }
 
-Text::Text(Font *font, const std::string& label) {
+Text::Text(Font *font, const std::string& label, float scale) {
+  position = { 0, 0 };
+
+  font_scale = scale;
   set_font(font);
   set_text(label);
 }
@@ -14,7 +17,7 @@ Text::Text(Font *font, const std::string& label) {
 auto Text::set_font(Font* font)  -> void{
   this->font = font;
 
-  font_size = font->size;
+  font_size = font->size * font_scale;
 
   const auto glyph_with_largest_bearing = std::max_element(
     font->glyphs.begin(), 
@@ -24,7 +27,7 @@ auto Text::set_font(Font* font)  -> void{
     }
   );
 
-  largest_glyph_bearing_y = glyph_with_largest_bearing->bearing.y;
+  largest_glyph_bearing_y = glyph_with_largest_bearing->bearing.y * font_scale;
 }
 
 auto Text::set_text(const std::string& text)  -> void{
@@ -37,9 +40,8 @@ auto Text::set_text(const std::string& text)  -> void{
     }
 
     auto& current_font_glyph = font->glyphs[text[i]];
-    auto& current_text_glyph = glyphs[i];
 
-    current_text_glyph = create_glyph_from_char_(text[i]);
+    glyphs[i] = create_glyph_from_char_(text[i]);
   }
 
   refresh();
@@ -49,14 +51,14 @@ auto Text::create_glyph_from_char_(char character) const  -> Glyph{
   auto new_text_glyph = Glyph{};
   auto& font_glyph = font->glyphs[character];
 
-  new_text_glyph.size = glm::round(font_glyph.size);
+  new_text_glyph.size = glm::round(font_glyph.size * font_scale);
 
   if (character == ' '){
-    new_text_glyph.size.x += font_glyph.advance >> 6;
+    new_text_glyph.size.x += (font_glyph.advance >> 6);
   }
 
-  new_text_glyph.bearing = font_glyph.bearing;
-  new_text_glyph.advance = static_cast<int>(font_glyph.advance);
+  new_text_glyph.bearing = font_glyph.bearing * font_scale;
+  new_text_glyph.advance = static_cast<int>(font_glyph.advance * font_scale);
 
   return new_text_glyph;
 }
@@ -78,6 +80,7 @@ static auto get_lines_count(const std::string& text){
 auto Text::set_position_for_every_glyph_(const glm::vec2& position)  -> void{
   auto y = position.y;
   auto x = position.x;
+
 
   for (int i = 0; i < glyphs.size(); ++i){
     auto& glyph = glyphs[i];
@@ -107,6 +110,7 @@ auto Text::set_position_for_every_glyph_(const glm::vec2& position)  -> void{
 
 auto Text::get_text_width_() -> float{
   if (glyphs.size() == 0){
+
     return 0.f;
   }
 

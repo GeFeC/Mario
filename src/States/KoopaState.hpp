@@ -3,16 +3,14 @@
 #include "States/MonsterState.hpp"
 
 struct KoopaState : ShellMonsterState{
-  static constexpr auto WalkSpeed = 2.f;
-
 protected:
   template<typename Entity>
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = Entity();
     koopa.position = position * config::BlockSize;
     koopa.size = glm::vec2(config::BlockSize, config::BlockSize * 1.5f);
-    koopa.walk_speed = 2.f;
-    koopa.shell_speed = 8.f;
+    koopa.walk_speed = 3.f;
+    koopa.shell_speed = 12.f;
     koopa.set_direction(direction);
     koopa.texture_flip = Drawable::Flip::UseFlip;
     koopa.reward_for_killing = 100.f;

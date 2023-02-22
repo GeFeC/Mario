@@ -60,6 +60,7 @@ auto window::should_close() -> bool{
 
 auto window::update() -> void{
   //VSync on:
+  glfwSwapInterval(1);
   glfwSwapBuffers(g_window);
   glfwPollEvents();
 }

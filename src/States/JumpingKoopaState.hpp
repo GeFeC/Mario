@@ -3,7 +3,7 @@
 #include "States/KoopaState.hpp"
 
 struct JumpingKoopaState : KoopaState{
-  static constexpr auto JumpForce = -14.f;
+  static constexpr auto JumpForce = -20.f;
   bool has_wings = true;
 
   static auto make_green(const glm::vec2& position, Direction direction = DirectionLeft){

@@ -148,8 +148,7 @@ static auto run_frame_level11(AppState& app){
   };
 
   const auto setup = [](auto& app){
-    fonts::medium.allocate(32);
-    fonts::small.allocate(16);
+    fonts::normal.allocate(16);
     LevelState::timer = 0.f;
 
     auto& level = app.current_level;
@@ -171,7 +170,7 @@ static auto run_frame_level11(AppState& app){
     };
 
     player.death_delay = 0.5f;
-    player.size = { 60.f, 60.f };
+    player.size = glm::vec2(config::BlockSize);
     player.position = { 60.f, 480.f };
     player.is_active = true;
     player.current_texture = &textures::small_mario;
@@ -213,11 +212,13 @@ static auto run_frame_level11(AppState& app){
     entities.red_koopas.push_back(KoopaState::make_red({ 9, 5.5 }));
 
     put_qblock_with_mushroom(level, { 11, 4 }, EntityState::DirectionRight);
-    put_qblock_with_coins(level, { 22, 9 }, 1);
+    put_qblock_with_coins(level, { 22, 9 });
     
-    for (int i = 0; i < 3; ++i){
-      entities.goombas.push_back(GoombaState::make_normal({ 13 + i * 3, 10 }));
-    }
+    entities.goombas.push_back(GoombaState::make_normal({ 13, 10 }));
+    entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ 16, 9.5 }));
+    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 4, 6 }, { 3.f, 3.f }));
+    entities.beetles.push_back(BeetleState::make({ 19, 10 }));
+    entities.spikes.push_back(SpikeState::make({ 22, 10 }));
 
     entities.red_goombas.push_back(GoombaState::make_red({ 35, 5 }));
 

@@ -14,7 +14,7 @@ struct EntityState{
 
   static constexpr auto DirectionLeft = -1;
   static constexpr auto DirectionRight = 1;
-  static constexpr auto GravityForce = 50.f;
+  static constexpr auto GravityForce = 70.f;
 
   struct Acceleration{
     float left = 0.f, right = 0.f;
@@ -22,8 +22,8 @@ struct EntityState{
   
   Texture const* current_texture = nullptr;
   Direction direction = DirectionRight;
-  glm::vec2 position = { 60.f, 0.f };
-  glm::vec2 size = { 60.f, 60.f };
+  glm::vec2 position = { 0.f, 0.f };
+  glm::vec2 size = { 0.f, 0.f };
   int vertical_flip = Flip::NoFlip;
 
   int texture_flip = Flip::NoFlip;

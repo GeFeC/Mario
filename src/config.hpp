@@ -5,7 +5,7 @@ namespace config{
   static constexpr auto TexturesSourceDir = "../res/textures/";
   static constexpr auto BigValue = 999999;
 
-  static constexpr auto BlockSize = 60.f;
+  static constexpr auto BlockSize = 96.f;
   static constexpr auto BlocksInRow = 20;
   static constexpr auto BlocksInColumn = 12;
 

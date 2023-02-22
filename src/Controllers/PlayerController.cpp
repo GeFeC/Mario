@@ -23,7 +23,7 @@ static auto player_jump(PlayerState& player, LevelState& level){
   if (player.is_dead) return;
 
   if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown){
-    player.gravity = -22;
+    player.gravity = PlayerState::JumpPower;
     player.is_on_ground = false;
     player.jump_cooldown = true;
   }
@@ -52,7 +52,7 @@ static auto player_movement(PlayerState& player, LevelState& level){
   const auto Right = EntityState::DirectionRight;
   const auto Left = EntityState::DirectionLeft;
 
-  const auto speed_boost = window::delta_time * 8;
+  const auto speed_boost = window::delta_time * 12;
 
   //Keyboard events:
   if (window::is_key_pressed(GLFW_KEY_RIGHT)){
@@ -86,7 +86,7 @@ static auto player_movement(PlayerState& player, LevelState& level){
     }
   }
 
-  if (player.is_squating && max_speed > 1.f){
+  if (player.is_squating && max_speed > PlayerState::MaxSpeedWhenSquating){
     max_speed -= speed_boost;
   }
 
@@ -296,9 +296,9 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
     player_shrink_down(player);
   }
   else{
+    player_movement(player, level);
     entity_movement(player, level);
 
-    player_movement(player, level);
     player_jump(player, level);
     player_gravity(player, level);
     player_squat(player, level);
@@ -316,7 +316,8 @@ auto player_is_on_entity(const PlayerState& player, const EntityState& entity) -
   if (!entity.can_be_stomped) return false;
 
   if (collision::is_hovering_in_x(player, entity)){
-    return entity.position.y - player.position.y - player.size.y == util::in_range(-45, 0);
+    const auto distance = entity.position.y - player.position.y - player.size.y;
+    return distance == util::in_range(-config::BlockSize * 2.f/3.f, 0);
   }
 
   return false;

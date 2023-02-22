@@ -6,6 +6,7 @@
 #include "States/LevelState.hpp"
 #include "Util.hpp"
 #include "Window.hpp"
+#include "config.hpp"
 
 static auto detect_entity_collision_with_level = [](EntityState& entity, const LevelState& level, auto callable){
   if (!entity.should_collide){
@@ -58,12 +59,23 @@ static auto entity_movement_helper(EntityState& entity, const LevelState& level,
   auto right_boost = window::delta_time * entity.acceleration.right * 100;
 
   detect_collisions(entity, level, [&](const auto& collision_state){
-    if (collision_state.distance_left < left_boost){
-      left_boost = collision_state.distance_left;
+    const auto distance_left = std::abs(collision_state.distance_left);
+    const auto distance_right = std::abs(collision_state.distance_right);
+
+    if (collision_state.distance_right == util::in_range(-1.f, 0.f)){
+      entity.position.x += collision_state.distance_right;
+    }
+
+    if (collision_state.distance_left == util::in_range(-1.f, 0.f)){
+      entity.position.x -= collision_state.distance_left;
+    }
+
+    if (distance_left < left_boost){
+      left_boost = distance_left;
       entity.acceleration.left = 0.f;
     }
-    if (collision_state.distance_right < right_boost){
-      right_boost = collision_state.distance_right;
+    if (distance_right < right_boost){
+      right_boost = distance_right;
       entity.acceleration.right = 0.f;
     }
   });
@@ -85,7 +97,7 @@ static auto entity_gravity(EntityState& entity, const LevelState& level){
 
   entity.gravity += window::delta_time * EntityState::GravityForce * entity.gravity_boost;
 
-  auto position_increaser = entity.gravity * window::delta_time * 60;
+  auto position_increaser = entity.gravity * window::delta_time * 70.f;
 
   detect_entity_collision_with_level(entity, level, [&](const auto& collision_state){
     if (entity.death_delay <= 0.f) return;

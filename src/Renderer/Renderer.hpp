@@ -4,6 +4,7 @@
 #include "Text.hpp"
 
 namespace renderer{
+  static constexpr auto ShadowOffset = 8.f;
   inline bool shadow_mode = false;
 
   auto init() -> void;

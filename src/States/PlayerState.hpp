@@ -9,9 +9,11 @@
 #include <array>
 
 struct PlayerState : EntityState{
-  static constexpr auto MaxSpeedWithoutSprint = 5.f;
-  static constexpr auto MaxSpeedWithSprint = 7.f;
-  static constexpr auto BouncePower = -15.f;
+  static constexpr auto MaxSpeedWithoutSprint = 7.f;
+  static constexpr auto MaxSpeedWithSprint = 10.f;
+  static constexpr auto MaxSpeedWhenSquating = 1.5f;
+  static constexpr auto BouncePower = -23.f;
+  static constexpr auto JumpPower = -30.f;
 
   enum class Growth{
     Small,

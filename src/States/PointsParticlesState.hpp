@@ -7,6 +7,7 @@
 
 struct PointsParticlesState{
   static constexpr auto MaxOffset = 180.f;
+  static constexpr auto TextSize = 2.f;
 
   Text text;
 
@@ -16,13 +17,13 @@ struct PointsParticlesState{
   bool can_be_activated = true;
 
   PointsParticlesState(){
-    text = Text(&fonts::small, "");
+    text = Text(&fonts::normal, "", TextSize);
     text.is_visible = false;
     text.position.y = config::BigValue;
   }
 
   PointsParticlesState(const std::string& label, const glm::vec2& position){
-    text = Text(&fonts::small, label);
+    text = Text(&fonts::normal, label, TextSize);
     text.set_position(position);
     text.is_visible = false;
   }
@@ -42,7 +43,7 @@ struct PointsParticlesState{
   }
 
   auto as_block() const{
-    return BouncingBlockState(text.get_position() / 60.f);
+    return BouncingBlockState(text.get_position() / config::BlockSize);
   }
 
   auto finished() const{

@@ -17,7 +17,7 @@ private:
     auto mushroom = MushroomState();
     mushroom.position = position * config::BlockSize;
     mushroom.size = glm::vec2(config::BlockSize);
-    mushroom.walk_speed = 3.f;
+    mushroom.walk_speed = 5.f;
     mushroom.set_direction(direction);
     mushroom.is_visible = false;
     mushroom.reward_for_killing = 500.f;

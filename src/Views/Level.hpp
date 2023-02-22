@@ -93,17 +93,23 @@ static auto render_stats(const StatsState& stats){
     << stats.level_major << '-' << stats.level_major << "     "
     << std::setw(3) << std::setfill('0') << stats.time;
 
-  auto text = Text(&fonts::medium, "MARIO           WORLD   TIME");
-  text.set_position(glm::vec2(154, 40));
+  const auto font_size = fonts::normal.size * 3.5f;
+
+  auto text = Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
+  const auto center_x = config::InitialWindowWidth / 2 - text.get_size().x / 2;
+  const auto step_y = 2.f / 3.f * config::BlockSize;
+
+  text.set_position({ center_x, step_y });
   renderer::print(text);
 
   text.set_text(body.str());
-  text.set_position(text.get_position() + glm::vec2(0.f, 40));
+  text.set_position(text.get_position() + glm::vec2(0.f, step_y));
   renderer::print(text);
 
+  //Mini coin
   renderer::draw(Drawable{
-    glm::vec2(440, 80),
-    glm::vec2(32),
+    glm::vec2(center_x + 9 * font_size, step_y * 2),
+    glm::vec2(font_size),
     &textures::mini_coin
   });
 }
@@ -243,6 +249,8 @@ static auto render_all_points_particles(const LevelState& level, float screen_sc
 }
 
 static auto render_loading_screen(const LevelState& level){
+  const auto font_size = fonts::normal.size * 3.5f;
+
   //Background;
   renderer::draw(Drawable{
     glm::vec2(0, 0),
@@ -252,24 +260,36 @@ static auto render_loading_screen(const LevelState& level){
 
   //Header:
 
-  const auto window_width = config::InitialWindowWidth;
+  static constexpr auto WindowWidth = config::InitialWindowWidth;
+  static constexpr auto WindowHeight = config::InitialWindowHeight;
 
   const auto& stats = level.stats;
-  auto text = Text(&fonts::medium, "WORLD " + std::to_string(stats.level_major) + "-" + std::to_string(stats.level_minor));
-  text.set_position(glm::vec2(460, 250));
+
+  auto text = Text(
+    &fonts::normal, 
+    "WORLD " + std::to_string(stats.level_major) + "-" + std::to_string(stats.level_minor),
+    font_size / fonts::normal.size
+  );
+
+  const auto center_pos = glm::vec2(WindowWidth, WindowHeight) / 2.f - text.get_size() * 0.5f;
+
+  text.set_position(center_pos - glm::vec2(0, font_size * 2.5f));
 
   renderer::print(text);
 
   //Mario:
   renderer::draw(Drawable{
-    glm::vec2(window_width / 2 - 90, 320),
-    glm::vec2(60),
+    glm::vec2(
+      WindowWidth / 2 - config::BlockSize * 1.5f, 
+      center_pos.y - (config::BlockSize - font_size * 1.f) 
+    ),
+    glm::vec2(config::BlockSize),
     &textures::small_mario
   });
 
   //HP:
   text.set_text("X " + std::to_string(stats.hp));
-  text.set_position(text.get_position() + glm::vec2(140, 100));
+  text.set_position(glm::vec2(WindowWidth / 2, center_pos.y));
 
   renderer::print(text);
 }

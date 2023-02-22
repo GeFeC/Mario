@@ -34,7 +34,7 @@ static auto jumping_koopa_controller(
 
   if (koopa.has_wings) {
     auto koopa_hitbox = shell_monster_get_hitbox(koopa);
-    entity_die_when_stomped(koopa_hitbox, player, level.stats, [&]{
+    entity_die_when_stomped(koopa, player, level.stats, [&]{
       koopa.has_wings = false;
       koopa.gravity = 0;
     });

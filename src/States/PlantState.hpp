@@ -29,7 +29,7 @@ public:
   static auto make_green(const glm::vec2& position){
     auto plant = make(position);
     plant.cooldown_duration = 2.f;
-    plant.speed = 50.f;
+    plant.speed = 75.f;
 
     return plant;
   }
@@ -37,7 +37,7 @@ public:
   static auto make_red(const glm::vec2& position){
     auto plant = make(position);
     plant.cooldown_duration = 1.f;
-    plant.speed = 200.f;
+    plant.speed = 300.f;
 
     return plant;
   }

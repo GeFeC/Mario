@@ -22,11 +22,12 @@ private:
   glm::vec4 color;
   Font* font;
 
-  std::vector<Glyph> glyphs{};
-  std::string text{};
+  std::vector<Glyph> glyphs;
+  std::string text;
   
-  float largest_glyph_bearing_y{};
-  float font_size{};
+  float largest_glyph_bearing_y = 0.f;
+  float font_size = 0.f;
+  float font_scale = 0.f;
 
   auto set_position_for_every_glyph_(const glm::vec2& position) -> void;
   auto get_text_width_() -> float;
@@ -35,7 +36,7 @@ private:
 
 public:
   Text();
-  Text(Font* font, const std::string& label);
+  Text(Font* font, const std::string& label, float scale = 1.f);
 
   auto set_position(const glm::vec2& position) -> void;
   auto set_text(const std::string& text) -> void;
