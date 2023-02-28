@@ -6,7 +6,7 @@
 #include "Controllers/BounceController.hpp"
 #include "Controllers/PlayerController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
 
@@ -47,7 +47,7 @@ inline auto q_block_controller(QBlockState& block, LevelState& level){
     }
   }
 
-  for (auto& p : block.points_manager.points){
+  for (auto& p : block.points_generator.items){
     q_block_points_controller(p, player);
   }
 }

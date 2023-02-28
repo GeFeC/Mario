@@ -2,7 +2,7 @@
 
 #include "States/CollisionState.hpp"
 #include "config.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include <algorithm>
 #include <utility>

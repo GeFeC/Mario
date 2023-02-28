@@ -2,6 +2,7 @@
 
 #include "States/BlockState.hpp"
 #include "States/PointsParticlesState.hpp"
+#include "Util/Generator.hpp"
 
 struct FireFlowerState : BlockBase{
   static constexpr auto RewardForEating = 1000;
@@ -10,7 +11,7 @@ struct FireFlowerState : BlockBase{
   bool should_be_pushed_out = false;
   int points_index = -1;
 
-  PointsParticlesManager points_manager;
+  util::Generator<PointsParticlesState> points_generator;
 
   FireFlowerState(const glm::vec2& position){
     this->position = position * 60.f;

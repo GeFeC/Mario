@@ -109,6 +109,13 @@ namespace textures{
   inline auto medium_mario = Texture("player/mario/growing.png");
 
   //Entities:
+  inline auto hammer = std::array<Texture, 4>{
+    Texture("entity/hammerbro/hammer1.png"),
+    Texture("entity/hammerbro/hammer2.png"),
+    Texture("entity/hammerbro/hammer3.png"),
+    Texture("entity/hammerbro/hammer4.png"),
+  };
+
   inline auto fireball = std::array<Texture, 4>{
     Texture("fireball/1.png"),
     Texture("fireball/2.png"),
@@ -178,6 +185,16 @@ namespace textures{
   inline auto spike_walk = std::array<Texture, 2>{
     Texture("entity/spike/0.png"),
     Texture("entity/spike/1.png")
+  };
+
+  inline auto hammerbro_walk = std::array<Texture, 2>{
+    Texture("entity/hammerbro/1.png"),
+    Texture("entity/hammerbro/2.png")
+  };
+
+  inline auto hammerbro_walk_with_hammer = std::array<Texture, 2>{
+    Texture("entity/hammerbro/3.png"),
+    Texture("entity/hammerbro/4.png")
   };
 
   inline auto plant = std::array<Texture, 2>{

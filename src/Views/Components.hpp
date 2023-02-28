@@ -7,8 +7,9 @@
 #include "States/BlockState.hpp"
 #include "States/PointsParticlesState.hpp"
 #include "States/FireBarState.hpp"
+#include "States/HammerBroState.hpp"
 
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include "config.hpp"
 #include "res/textures.hpp"
@@ -73,4 +74,12 @@ static auto render_fire_bar(const FireBarState& bar, float offset_x = 0.f){
   for (const auto& fireball : bar.fireballs){
     render_entity(fireball, offset_x);
   }
+}
+
+static auto render_hammerbro(const HammerBroState& bro, float offset_x = 0.f){
+  for (auto& item : bro.hammer_generator.items){
+    render_entity(item, offset_x);
+  }
+
+  render_entity(bro, offset_x);
 }

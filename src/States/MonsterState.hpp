@@ -2,7 +2,8 @@
 
 #include "States/EntityState.hpp"
 #include "States/PointsParticlesState.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
+#include "Util/Generator.hpp"
 
 #include <algorithm>
 
@@ -13,15 +14,15 @@ struct MonsterState : EntityState{
   int reward_for_killing = 0;
   int walk_speed = 0.f;
 
-  PointsParticlesManager points_manager;
+  util::Generator<PointsParticlesState> points_generator;
 
   auto set_direction(Direction direction){
     EntityState::set_direction(direction, walk_speed);
   }
 
   auto spawn_points(int multiplier = 1){
-    points_manager.make_next_points_particles_if_needed();
-    points_manager.get_points_particles().set_active(reward_for_killing * multiplier, position);
+    points_generator.make_item_if_needed();
+    points_generator.item().set_active(reward_for_killing * multiplier, position);
   }
 };
 

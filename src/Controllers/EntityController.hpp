@@ -2,9 +2,10 @@
 
 #include "Controllers/CollisionController.hpp"
 #include "Controllers/PlayerController.hpp"
+#include "Renderer/Drawable.hpp"
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
 
@@ -55,8 +56,8 @@ template<typename F>
 static auto entity_movement_helper(EntityState& entity, const LevelState& level, const F& detect_collisions){
   if (entity.is_dead || !entity.is_active) return;
 
-  auto left_boost = window::delta_time * entity.acceleration.left * 100;
-  auto right_boost = window::delta_time * entity.acceleration.right * 100;
+  auto left_boost = window::delta_time * entity.acceleration.left * EntityState::MovementSpeedMultiplier;
+  auto right_boost = window::delta_time * entity.acceleration.right * EntityState::MovementSpeedMultiplier;
 
   detect_collisions(entity, level, [&](const auto& collision_state){
     const auto distance_left = std::abs(collision_state.distance_left);
@@ -132,7 +133,7 @@ static auto entity_turn_around(MonsterState& entity){
 
 static auto entity_kill_player_on_touch(EntityState& entity, PlayerState& player){
   if (entity.is_dead) return;
-  if (!entity.should_collide) return;
+  if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
 
   if (!player_is_on_entity(player, entity) && collision::is_hovering(player, entity)){
     if (player.growth == PlayerState::Growth::Big){
@@ -178,13 +179,17 @@ static auto entity_become_active_when_seen(MonsterState& entity, const PlayerSta
   }
 };
 
-static auto entity_bounce_die(MonsterState& entity, StatsState& stats){
+static auto entity_bounce_out(MonsterState& entity){
   entity.gravity = MonsterState::BounceDiePower;
   entity.should_collide = false;
   entity.vertical_flip = Drawable::Flip::UseFlip;
+}
+
+static auto entity_bounce_die(MonsterState& entity, StatsState& stats){
+  entity_bounce_out(entity);
 
   stats.score += entity.reward_for_killing;
-  entity.points_manager.get_points_particles().set_active(entity.reward_for_killing, entity.position);
+  entity.points_generator.item().set_active(entity.reward_for_killing, entity.position);
 }
 
 static auto entity_is_hit_by_fireball(MonsterState& entity, FireballState& fireball){

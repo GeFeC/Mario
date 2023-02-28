@@ -6,7 +6,7 @@
 #include "States/BlockState.hpp"
 
 #include "Window.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include <iostream>
 

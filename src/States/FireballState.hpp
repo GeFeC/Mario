@@ -5,7 +5,7 @@
 #include "EntityState.hpp"
 
 struct ExplosionState : BlockBase{
-  LoopedCounter counter;
+  util::LoopedCounter counter;
 
   bool started = false;
 

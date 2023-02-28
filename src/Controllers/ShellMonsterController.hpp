@@ -17,7 +17,7 @@ static auto shell_monster_controller(
   entity_movement(entity, level);
   entity_turn_around(entity);
 
-  for (auto& p : entity.points_manager.points){
+  for (auto& p : entity.points_generator.items){
     points_particles_controller(p);
   }
 

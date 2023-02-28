@@ -14,7 +14,7 @@ static auto spike_controller(
   entity_movement(spike, level);
   entity_turn_around(spike);
 
-  for (auto& p : spike.points_manager.points){
+  for (auto& p : spike.points_generator.items){
     points_particles_controller(p);
   }
 

@@ -11,7 +11,7 @@
 static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player, StatsState& stats){
   flower.texture = &textures::fire_flower[LevelState::fire_flower_blink_counter.int_value()];
 
-  for (auto& p : flower.points_manager.points){
+  for (auto& p : flower.points_generator.items){
     points_particles_controller(p);
   }
 
@@ -30,7 +30,7 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player,
   //Interaction with player
   const auto is_player_big = player.growth == PlayerState::Growth::Big;
   if (collision::is_hovering(player, flower) && flower.is_visible && is_player_big){
-    flower.points_manager.get_points_particles().set_active(
+    flower.points_generator.item().set_active(
       FireFlowerState::RewardForEating,
       flower.position
     );

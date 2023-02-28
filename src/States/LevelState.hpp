@@ -17,12 +17,13 @@
 #include "States/SpikeState.hpp"
 #include "States/BeetleState.hpp"
 #include "States/FireBarState.hpp"
+#include "States/HammerBroState.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
 #include "res/fonts.hpp"
 #include "res/textures.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include <vector>
 
@@ -38,8 +39,8 @@ struct StatsState{
 struct LevelState{
   inline static float timer = 0.f;
   inline static auto blink_state = 0;
-  inline static auto coin_spin_counter = InfiniteCounter(4.f, 20.f);
-  inline static auto fire_flower_blink_counter = InfiniteCounter(4.f, 15.f);
+  inline static auto coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
+  inline static auto fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
 
   util::vector2d<int> hitbox_grid;
 
@@ -74,6 +75,7 @@ struct LevelState{
     std::vector<MushroomState> green_mushrooms;
     std::vector<PlantState> plants;
     std::vector<PlantState> red_plants;
+    std::vector<HammerBroState> hammerbros;
   } entities;
 
   struct Background{
@@ -81,12 +83,14 @@ struct LevelState{
     std::vector<BackgroundObjectState> bushes;
   } background;
 
-  InfiniteCounter fireball_counter;
+  util::InfiniteCounter fireball_counter;
+  util::InfiniteCounter hammer_counter;
 
   float load_delay = 3.f;
   bool should_screen_scroll = false;
 
-  LevelState() : fireball_counter(4.f, 20.f) {
+  LevelState() 
+  : fireball_counter(4.f, 20.f), hammer_counter(4.f, 10.f) {
     hitbox_grid.resize(config::MaxLevelSize, std::vector<int>(config::BlocksInColumn, 0));
   }
 

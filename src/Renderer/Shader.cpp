@@ -1,5 +1,5 @@
 #include "Shader.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include <array>
 #include <vector>

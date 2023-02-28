@@ -3,6 +3,7 @@
 //TEST LEVEL
 
 #include "States/AppState.hpp"
+#include "States/HammerBroState.hpp"
 #include "Views/Level.hpp"
 #include "Controllers/LevelController.hpp"
 #include "Frame.hpp"
@@ -78,7 +79,7 @@ auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, int coi
 
   put_qblock(level, position, coins);
 
-  auto& points = level.blocks.q_blocks.back().points_manager.points;
+  auto& points = level.blocks.q_blocks.back().points_generator.items;
   points.reserve(coins);
   for (int i = 0; i < coins; ++i){
     auto particle = PointsParticlesState(QBlockState::RewardInPoints, position * config::BlockSize);
@@ -144,7 +145,8 @@ static auto run_frame_level11(AppState& app){
     texture_groups::beetle,
     texture_groups::spike,
     texture_groups::plant,
-    texture_groups::red_plant
+    texture_groups::red_plant,
+    texture_groups::hammerbro
   };
 
   const auto setup = [](auto& app){
@@ -208,17 +210,22 @@ static auto run_frame_level11(AppState& app){
       put_coin(level, { 41 + i, 3 });
     }
 
+    entities.hammerbros.push_back(HammerBroState::make({ 11, 9 }));
     entities.red_goombas.push_back(GoombaState::make_red({ 42, 3 }));
-    entities.red_koopas.push_back(KoopaState::make_red({ 9, 5.5 }));
+    //entities.red_koopas.push_back(KoopaState::make_red({ 9, 5.5 }));
 
     put_qblock_with_mushroom(level, { 11, 4 }, EntityState::DirectionRight);
     put_qblock_with_coins(level, { 22, 9 });
     
-    entities.goombas.push_back(GoombaState::make_normal({ 13, 10 }));
-    entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ 16, 9.5 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 4, 6 }, { 3.f, 3.f }));
-    entities.beetles.push_back(BeetleState::make({ 19, 10 }));
-    entities.spikes.push_back(SpikeState::make({ 22, 10 }));
+    //entities.goombas.push_back(GoombaState::make_normal({ 13, 10 }));
+    //entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ 16, 9.5 }));
+    //entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 4, 6 }, { 3.f, 3.f }));
+    //entities.beetles.push_back(BeetleState::make({ 19, 10 }));
+    //entities.spikes.push_back(SpikeState::make({ 22, 10 }));
+
+    for (int i = 0; i < 3; ++i){
+      //entities.goombas.push_back(GoombaState::make_normal({ 12 + i * 3, 10 }));
+    }
 
     entities.red_goombas.push_back(GoombaState::make_red({ 35, 5 }));
 

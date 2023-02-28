@@ -26,8 +26,9 @@
 #include "Controllers/BeetleController.hpp"
 #include "Controllers/KoopaController.hpp"
 #include "Controllers/FireBarController.hpp"
+#include "Controllers/HammerBroController.hpp"
 
-#include "Util.hpp"
+#include "Util/Util.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
 
@@ -107,6 +108,10 @@ static auto level_entities_controller(LevelState& level){
   for (auto& koopa : level.entities.beetles){
     beetle_controller(koopa, level);
   }
+
+  for (auto& bro : level.entities.hammerbros){
+    hammerbro_controller(bro, level);
+  }
 }
 
 static auto level_mushrooms_controller(LevelState& level){
@@ -146,6 +151,7 @@ static auto level_controller(AppState& app, LevelState& level){
   LevelState::fire_flower_blink_counter.run();
 
   level.fireball_counter.run();
+  level.hammer_counter.run();
 
   auto& player = level.player;
 

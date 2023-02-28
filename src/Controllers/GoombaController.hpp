@@ -34,7 +34,7 @@ static auto goomba_controller(GoombaState& goomba, LevelState& level){
   entity_movement(goomba, level);
   entity_turn_around(goomba);
 
-  for (auto& p : goomba.points_manager.points){
+  for (auto& p : goomba.points_generator.items){
     points_particles_controller(p);
   }
 

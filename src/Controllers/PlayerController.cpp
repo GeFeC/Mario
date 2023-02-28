@@ -9,7 +9,7 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 #include "Window.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -221,7 +221,7 @@ static auto player_death(PlayerState& player){
   static constexpr auto VerySmallValue = -1000.f;
 
   if (player.death_delay == util::in_range(VerySmallValue, 0.f)){
-    player.gravity = -15;
+    player.gravity = PlayerState::DeathBouncePower;
     player.death_delay = VerySmallValue - 1;
   }
 }

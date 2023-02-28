@@ -1,6 +1,6 @@
 #include "Font.hpp"
 #include "config.hpp"
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 #include <stdexcept>
 

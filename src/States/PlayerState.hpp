@@ -13,6 +13,7 @@ struct PlayerState : EntityState{
   static constexpr auto MaxSpeedWithSprint = 10.f;
   static constexpr auto MaxSpeedWhenSquating = 1.5f;
   static constexpr auto BouncePower = -23.f;
+  static constexpr auto DeathBouncePower = -23.f;
   static constexpr auto JumpPower = -30.f;
 
   enum class Growth{
@@ -27,8 +28,8 @@ struct PlayerState : EntityState{
     Black
   } form = Form::Normal;
 
-  LoopedCounter growth_counter;
-  LoopedCounter transformation_counter;
+  util::LoopedCounter growth_counter;
+  util::LoopedCounter transformation_counter;
   std::array<FireballState, 2> fireballs;
 
   int mobs_killed_in_row = 1;

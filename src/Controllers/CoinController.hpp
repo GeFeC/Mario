@@ -6,7 +6,7 @@
 
 #include "Controllers/CollisionController.hpp"
 
-#include "Util.hpp"
+#include "Util/Util.hpp"
 
 inline auto coin_controller(CoinBlockState& coin, LevelState& level){
   coin.texture = &textures::coin[LevelState::blink_state];

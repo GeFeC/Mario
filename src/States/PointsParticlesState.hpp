@@ -51,35 +51,4 @@ struct PointsParticlesState{
   }
 };
 
-struct PointsParticlesManager{
-  std::vector<PointsParticlesState> points;
-  int current_points_index = 0;
 
-  PointsParticlesManager(){
-    points.reserve(8);
-    points.emplace_back();
-    current_points_index = 0;
-  };
-
-  auto make_next_points_particles_if_needed(){
-    const auto available_points = std::find_if(points.begin(), points.end(), [](const auto& p){
-      return !p.is_active;
-    });
-
-    if (available_points == points.end()){
-      points.emplace_back();
-      current_points_index = points.size() - 1;
-      return;
-    }
-
-    current_points_index = available_points - points.begin();
- }
-
-  auto& get_points_particles(){
-    return points[current_points_index];
-  }
-
-  const auto& get_points_particles() const{
-    return points[current_points_index];
-  }
-};

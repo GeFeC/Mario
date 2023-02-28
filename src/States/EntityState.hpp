@@ -12,6 +12,7 @@ struct EntityState{
   using Direction = int;
   using Flip = Drawable::Flip;
 
+  static constexpr auto MovementSpeedMultiplier = 100.f;
   static constexpr auto DirectionLeft = -1;
   static constexpr auto DirectionRight = 1;
   static constexpr auto GravityForce = 70.f;
