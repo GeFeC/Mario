@@ -79,8 +79,8 @@ struct LevelState{
   } entities;
 
   struct Background{
-    std::vector<BackgroundObjectState> hills;
-    std::vector<BackgroundObjectState> bushes;
+    std::vector<BlockState> hills;
+    std::vector<BlockState> bushes;
   } background;
 
   util::InfiniteCounter fireball_counter;

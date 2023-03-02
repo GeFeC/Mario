@@ -13,7 +13,8 @@ namespace textures{
 
   inline auto bricks = Texture("tile/bricks.png");  
   inline auto dirt = Texture("tile/dirt.png");
-  inline auto mushroom_bot = Texture("tile/mushroom_bot.png");
+  inline auto mushroom_bot1 = Texture("tile/mushroom_bot1.png");
+  inline auto mushroom_bot2 = Texture("tile/mushroom_bot2.png");
   inline auto mushroom_center = Texture("tile/mushroom_center.png");
   inline auto mushroom_left = Texture("tile/mushroom_left.png");
   inline auto mushroom_right = Texture("tile/mushroom_right.png");

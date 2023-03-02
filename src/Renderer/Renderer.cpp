@@ -43,10 +43,10 @@ static auto draw_element(const Drawable& drawable, bool is_glyph, float offset_x
 
   using renderer::ShadowOffset;
   program::set_uniform("rect", {
-    std::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * ShadowOffset - offset_x),
-    std::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * ShadowOffset),
-    std::round(drawable.size.x * drawable.flip.horizontal),
-    std::round(drawable.size.y * drawable.flip.vertical)
+    (drawable.position.x - flip_offset_x + renderer::shadow_mode * ShadowOffset - offset_x),
+    (drawable.position.y - flip_offset_y + renderer::shadow_mode * ShadowOffset),
+    (drawable.size.x * drawable.flip.horizontal),
+    (drawable.size.y * drawable.flip.vertical)
   });
 
   program::set_uniform("is_glyph", is_glyph);

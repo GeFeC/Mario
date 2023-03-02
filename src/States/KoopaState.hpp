@@ -31,6 +31,7 @@ public:
     auto koopa = make<KoopaState>(position, direction);
     koopa.current_texture = &textures::red_koopa_walk[0];
     koopa.fall_from_edge = false;
+    koopa.is_active = true;
 
     return koopa;
   }

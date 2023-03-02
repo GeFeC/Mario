@@ -139,7 +139,8 @@ namespace texture_groups{
 
   inline auto mushroom = TextureGroup({
     &textures::mushroom_center,
-    &textures::mushroom_bot,
+    &textures::mushroom_bot1,
+    &textures::mushroom_bot2,
     &textures::mushroom_left,
     &textures::mushroom_right
   });

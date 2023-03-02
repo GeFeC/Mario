@@ -13,7 +13,7 @@
 #include <array>
 
 struct BlockBase{
-  Texture* texture;
+  Texture const* texture;
   glm::vec2 position = { 0.f, 0.f };
   glm::vec2 size = glm::vec2(config::BlockSize);
 
@@ -39,15 +39,8 @@ struct BouncingBlockBase{
 
 struct BlinkingBlockBase{};
 
-struct BackgroundObjectState{
-  glm::vec2 position;
-  int size;
-
-  BackgroundObjectState(const glm::vec2& position, int size) : position(position), size(size) {}
-};
-
 struct BlockState : BlockBase{
-  BlockState(const glm::vec2& position, Texture* texture){
+  BlockState(const glm::vec2& position, Texture const* texture){
     this->position = position * config::BlockSize;
     this->texture = texture;
   }

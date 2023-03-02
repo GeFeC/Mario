@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <tuple>
 #include <glm/glm.hpp>
+#include <sstream>
+#include <fstream>
 
 namespace util{
   template<typename T>
@@ -80,5 +82,13 @@ namespace util{
   template<typename Obj, typename T>
   auto operator|(const Obj& obj, const As<T>& as){
     return static_cast<T>(obj);
+  }
+
+  static auto get_file_content(const std::string& path){
+    auto file = std::ifstream(path);
+    auto ss = std::stringstream();
+    ss << file.rdbuf();
+
+    return ss.str();
   }
 }

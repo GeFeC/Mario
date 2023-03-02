@@ -69,6 +69,7 @@ static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   hitbox.size = glm::vec2(config::BlockSize);
   hitbox.is_dead = entity.is_dead;
   hitbox.should_collide = entity.should_collide;
+  hitbox.vertical_flip = entity.vertical_flip;
 
   return hitbox;
 }
@@ -109,8 +110,11 @@ static auto entity_handle_shell(
 
   auto shell_kill_entity = [&](MonsterState& target_entity){
     if (&target_entity == &entity) return;
+    if (!target_entity.should_collide) return;
+    if (!target_entity.is_active) return;
+    if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
 
-    if (collision::is_hovering(entity, target_entity) && target_entity.should_collide && target_entity.is_active){
+    if (collision::is_hovering(entity, target_entity)){
       entity_bounce_die(target_entity, level.stats);
     }
   };
