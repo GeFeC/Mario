@@ -1,7 +1,5 @@
 #pragma once
 
-//TEST LEVEL
-
 #include "States/AppState.hpp"
 #include "States/HammerBroState.hpp"
 #include "Views/Level.hpp"
@@ -12,7 +10,7 @@
 #include "res/textures.hpp"
 
 
-static auto run_frame_level11(AppState& app){
+static auto run_frame_level12(AppState& app){
   const auto textures = std::vector<TextureGroup>{
     &textures::black,
     &textures::dirt,
@@ -55,7 +53,7 @@ static auto run_frame_level11(AppState& app){
 
     level.stats.time = 400;
     level.stats.level_major = 1;
-    level.stats.level_minor = 1;
+    level.stats.level_minor = 2;
     level_generator::generate_level(level, "../level11_tiles.csv");
     level_generator::generate_level(level, "../level11_Bushes.csv");
     level_generator::generate_level(level, "../level11_Hills.csv");
@@ -69,5 +67,5 @@ static auto run_frame_level11(AppState& app){
     render_level(app.current_level);
   };
 
-  run_frame(app, AppState::Frame::Level11, textures, setup, loop);
+  run_frame(app, AppState::Frame::Level12, textures, setup, loop);
 }

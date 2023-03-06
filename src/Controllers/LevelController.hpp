@@ -29,6 +29,7 @@
 #include "Controllers/HammerBroController.hpp"
 
 #include "Util/Util.hpp"
+#include "Window.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
 
@@ -133,6 +134,37 @@ static auto level_screen_scroll(LevelState& level){
   }
 }
 
+static auto level_finish(LevelState& level, AppState& app){
+  const auto [finish_x, finish_y] = LevelState::FinishingPipePosition; 
+  auto& player = level.player;
+
+  if (level.is_finished){
+    level.score_adding_after_finish_delay -= window::delta_time;
+    level.player.position.y += window::delta_time * config::BlockSize;
+
+    if (level.stats.time > 0) {
+      if (level.score_adding_after_finish_delay <= 0.f){
+        level.score_adding_after_finish_delay = 1.f / 60.f;
+        level.stats.time--;
+        level.stats.score += 50;
+      }
+    }
+    else{
+      level.finish_delay -= window::delta_time;
+
+      if (level.finish_delay <= 0.f){
+        app.should_restart_current_frame = true;
+        app.current_frame = AppState::Frame::Level12;
+      }
+    }
+  }
+
+  if (player.position.y / config::BlockSize < finish_y - 1) return;
+  if (player.position.x / config::BlockSize != util::in_range(finish_x, finish_x + 1)) return;
+
+  if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
+}
+
 static auto level_controller(AppState& app, LevelState& level){
   //Level loading
   if (level.load_delay > 0.f) {
@@ -143,6 +175,7 @@ static auto level_controller(AppState& app, LevelState& level){
   //Falling under the level
   if (level.player.position.y > config::PlayerPositionToRestartLevel){
     app.should_restart_current_frame = true;
+    level.stats.hp--;
   }
 
   //Blinking and counters
@@ -155,8 +188,11 @@ static auto level_controller(AppState& app, LevelState& level){
 
   auto& player = level.player;
 
-  stats_controller(level.stats);
-  player_controller(player, level);
+  if (!level.is_finished) {
+    stats_controller(level.stats);
+    player_controller(player, level);
+  }
+
   level_mushrooms_controller(level);
 
   for (auto& block : level.blocks.fire_flowers){
@@ -170,6 +206,7 @@ static auto level_controller(AppState& app, LevelState& level){
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
 
   level_screen_scroll(level);
+  level_finish(level, app);
 
   level_blocks_controller(level);
   level_entities_controller(level);

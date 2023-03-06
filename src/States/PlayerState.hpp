@@ -45,7 +45,14 @@ struct PlayerState : EntityState{
   bool is_changing_to_fire = false;
 
   PlayerState() 
-  : growth_counter(3.f, 10.f, 3), transformation_counter(2.f, 10.f, 3) {}
+  : growth_counter(3.f, 10.f, 3), transformation_counter(2.f, 10.f, 3) {
+
+    death_delay = 0.5f;
+    size = glm::vec2(config::BlockSize);
+    position = { 190.f * config::BlockSize, 480.f };
+    is_active = true;
+    current_texture = &textures::small_mario;
+  }
 
   auto default_texture() const{
     if (form == Form::Normal){

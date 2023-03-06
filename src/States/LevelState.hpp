@@ -37,6 +37,8 @@ struct StatsState{
 };
 
 struct LevelState{
+  inline static constexpr auto FinishingPipePosition = std::make_pair(197, 8);
+
   inline static float timer = 0.f;
   inline static auto blink_state = 0;
   inline static auto coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
@@ -87,7 +89,10 @@ struct LevelState{
   util::InfiniteCounter hammer_counter;
 
   float load_delay = 3.f;
+  float finish_delay = 2.f;
+  float score_adding_after_finish_delay = 0.f;
   bool should_screen_scroll = false;
+  bool is_finished = false;
 
   LevelState() 
   : fireball_counter(4.f, 20.f), hammer_counter(4.f, 10.f) {

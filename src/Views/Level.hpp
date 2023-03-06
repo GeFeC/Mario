@@ -27,7 +27,8 @@ static auto render_clouds(float screen_scroll){
 
   static auto cloud_offset = 0.f;
   cloud_offset += window::delta_time;
-  if (cloud_offset > 18.f) cloud_offset -= 18.f;
+
+  if (cloud_offset >= 180.f) cloud_offset -= 180.f;
 
   for (const auto [position, cloud_size] : clouds){
     const auto x = position.x - cloud_offset;
@@ -41,8 +42,8 @@ static auto render_clouds(float screen_scroll){
       render_block(BlockState({ (x + i + 1) , (y + 1)  }, &textures::red_cloud_bottom_center), screen_scroll);
     }
 
-    render_block(BlockState( { (x + cloud_size + 1) , y  }, &textures::red_cloud_top_right ), screen_scroll);
-    render_block(BlockState( { (x + cloud_size + 1) , (y + 1)  }, &textures::red_cloud_bottom_right ), screen_scroll);
+    render_block(BlockState({ (x + cloud_size + 1) , y  }, &textures::red_cloud_top_right), screen_scroll);
+    render_block(BlockState({ (x + cloud_size + 1) , (y + 1)  }, &textures::red_cloud_bottom_right), screen_scroll);
   }
 }
 
@@ -51,7 +52,7 @@ static auto render_stats(const StatsState& stats){
   body 
     << std::setw(6) << std::setfill('0') << stats.score << "    x"
     << std::setw(2) << std::setfill('0') << stats.coins << "    "
-    << stats.level_major << '-' << stats.level_major << "     "
+    << stats.level_major << '-' << stats.level_minor << "     "
     << std::setw(3) << std::setfill('0') << stats.time;
 
   const auto font_size = fonts::normal.size * 3.5f;
@@ -297,6 +298,8 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
+    if (level.is_finished) render_player(level.player, screen_scroll);
+
     for (const auto& hill : level.background.hills){
       render_block(hill, screen_scroll);
     }
@@ -334,7 +337,7 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
-    render_player(level.player, screen_scroll);
+    if (!level.is_finished) render_player(level.player, screen_scroll);
 
     if (level.load_delay > 0.f){
       render_loading_screen(level);
