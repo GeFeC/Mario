@@ -280,7 +280,7 @@ static auto player_fireballs(PlayerState& player, const LevelState& level){
 
   auto& fireball = *fireball_ptr;
   fireball.position = player.position + player.size / 2.f - fireball.size / 2.f;
-  fireball.set_direction(player.direction, 12.f);
+  fireball.set_direction(player.direction, PlayerState::FireballSpeed);
   fireball.is_active = true;
   fireball.is_visible = true;
 }

@@ -15,7 +15,7 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player,
     points_particles_controller(p);
   }
 
-  if (player_hit_block_above(player, BouncingBlockState(flower.position / 60.f))){
+  if (player_hit_block_above(player, BouncingBlockState(flower.position / config::BlockSize))){
     flower.should_be_pushed_out = true;
     flower.is_visible = true;
   } 
@@ -24,7 +24,7 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player,
     const auto value = window::delta_time * 2;
 
     flower.offset += value;
-    flower.position.y -= value * 60.f;
+    flower.position.y -= value * config::BlockSize;
   }
 
   //Interaction with player

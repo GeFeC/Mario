@@ -1,4 +1,5 @@
 #pragma once
+#include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Util/Util.hpp"
 #include "config.hpp"
@@ -88,19 +89,19 @@ auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, int coi
   }
 }
 
-auto put_qblock_with_flower(LevelState& level, const glm::vec2& position){
+static auto put_qblock_with_flower(LevelState& level, const glm::vec2& position){
   level.blocks.fire_flowers.push_back(FireFlowerState(position));
   level.blocks.fire_flowers.back().is_visible = false;
 
   put_qblock(level, position);
 }
 
-auto put_qblock_with_mushroom(LevelState& level, const glm::vec2& position, Direction direction = DirectionLeft){
+static auto put_qblock_with_mushroom(LevelState& level, const glm::vec2& position, Direction direction = DirectionLeft){
   put_qblock(level, position, 1);
   level.entities.mushrooms.push_back(MushroomState::make_red(position, direction));
 }
 
-auto put_qblock_with_green_mushroom(
+static auto put_qblock_with_green_mushroom(
     LevelState& level, 
     const glm::vec2& position, 
     Direction direction = DirectionLeft
@@ -155,6 +156,9 @@ static auto generate_level(LevelState& level, const std::string& level_file){
     if (tile_id == 50) level.background.hills.emplace_back(glm::vec2(x, y), &textures::red_hill_center);
     if (tile_id == 51) level.background.hills.emplace_back(glm::vec2(x, y), &textures::red_hill_center_dot);
 
+    if (tile_id == 60) entities.plants.push_back(PlantState::make_green({ x + 0.5f, y + 1 }));
+    if (tile_id == 63) entities.red_jumping_koopas.push_back(JumpingKoopaState::make_red({ x, y - 0.5f }));
+
     if (tile_id == 69) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_right);
     if (tile_id == 70) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_left);
     if (tile_id == 71) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_center);
@@ -168,6 +172,7 @@ static auto generate_level(LevelState& level, const std::string& level_file){
     if (tile_id == 75) put_qblock_with_mushroom(level, { x, y });
     if (tile_id == 76) put_qblock_with_green_mushroom(level, { x, y });
     if (tile_id == 77) put_qblock_with_coins(level, { x, y });
+    if (tile_id == 78) put_qblock_with_flower(level, { x, y });
     
     counter++;
   }

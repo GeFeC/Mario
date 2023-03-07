@@ -28,7 +28,7 @@ static auto render_clouds(float screen_scroll){
   static auto cloud_offset = 0.f;
   cloud_offset += window::delta_time;
 
-  if (cloud_offset >= 180.f) cloud_offset -= 180.f;
+  if (cloud_offset >= 18.f) cloud_offset -= 18.f;
 
   for (const auto [position, cloud_size] : clouds){
     const auto x = position.x - cloud_offset;

@@ -176,6 +176,11 @@ static auto level_controller(AppState& app, LevelState& level){
   if (level.player.position.y > config::PlayerPositionToRestartLevel){
     app.should_restart_current_frame = true;
     level.stats.hp--;
+
+    if (level.stats.hp == 0){
+      level.stats = StatsState{};
+      app.current_frame = AppState::Frame::Level11;
+    }
   }
 
   //Blinking and counters

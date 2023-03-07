@@ -28,8 +28,8 @@ private:
 public:
   static auto make_green(const glm::vec2& position){
     auto plant = make(position);
-    plant.cooldown_duration = 2.f;
-    plant.speed = 75.f;
+    plant.cooldown_duration = 3.f;
+    plant.speed = 150.f;
 
     return plant;
   }

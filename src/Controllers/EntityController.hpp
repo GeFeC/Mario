@@ -29,7 +29,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
   //Checking if entity should change direction not to fall from edge
   
-  static constexpr auto Offset = 20.f;
+  static constexpr auto Offset = config::BlockSize / 3.f;
 
   const auto x = (entity.position.x) / config::BlockSize;
   const auto y = (entity.position.y + entity.size.y + Offset) / config::BlockSize;
@@ -45,10 +45,12 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   static constexpr auto Air = 0;
   if (level.hitbox_grid[right_x][y] == Air && entity.direction == EntityState::DirectionRight){
     entity.acceleration.left = entity.acceleration.right = 0.f;
+    entity.position.x = (right_x - 1) * config::BlockSize + Offset;
   }
 
   if (level.hitbox_grid[left_x][y] == Air && entity.direction == EntityState::DirectionLeft){
     entity.acceleration.left = entity.acceleration.right = 0.f;
+    entity.position.x = left_x * config::BlockSize - Offset;
   }
 };
 
@@ -171,10 +173,13 @@ static auto entity_die_when_stomped(
 };
 
 static auto entity_become_active_when_seen(MonsterState& entity, const PlayerState& player){
-  const auto screen_scroll = config::PlayerPositionToScroll - player.position.x;
-  const auto view_extension = std::max(screen_scroll, 0.f);
+  using config::PlayerPositionToScroll;
+  const auto player_field_of_view = std::max(
+    config::BlocksInRow * config::BlockSize - config::PlayerPositionToScroll,
+    config::BlocksInRow * config::BlockSize - player.position.x
+  );
 
-  if (entity.position.x - player.position.x <= config::BlocksInRow * config::BlockSize + view_extension){
+  if (entity.position.x - player.position.x <= player_field_of_view){
     entity.is_active = true;
   }
 };

@@ -9,6 +9,7 @@
 #include <array>
 
 struct PlayerState : EntityState{
+  static constexpr auto FireballSpeed = 18.f;
   static constexpr auto MaxSpeedWithoutSprint = 7.f;
   static constexpr auto MaxSpeedWithSprint = 10.f;
   static constexpr auto MaxSpeedWhenSquating = 1.5f;
@@ -49,7 +50,7 @@ struct PlayerState : EntityState{
 
     death_delay = 0.5f;
     size = glm::vec2(config::BlockSize);
-    position = { 190.f * config::BlockSize, 480.f };
+    position = { config::BlockSize, 480.f };
     is_active = true;
     current_texture = &textures::small_mario;
   }

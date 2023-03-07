@@ -54,12 +54,14 @@ static auto run_frame_level12(AppState& app){
     level.stats.time = 400;
     level.stats.level_major = 1;
     level.stats.level_minor = 2;
-    level_generator::generate_level(level, "../level11_tiles.csv");
-    level_generator::generate_level(level, "../level11_Bushes.csv");
-    level_generator::generate_level(level, "../level11_Hills.csv");
-    level_generator::put_qblock_with_coins(level, { 77, 7 }, 5);
-    level_generator::put_qblock_with_coins(level, { 187, 3 }, 5);
-    level_generator::put_qblock_with_coins(level, { 189, 3 }, 5);
+    level_generator::generate_level(level, "../level12_1.csv");
+    level_generator::generate_level(level, "../level12_2.csv");
+
+    level_generator::put_qblock_with_coins(level, { 84, 0 }, 5);
+
+    level_generator::put_qblock_with_coins(level, { 178, 3 }, 5);
+    level_generator::put_qblock_with_coins(level, { 180, 3 }, 5);
+    level_generator::put_qblock_with_coins(level, { 182, 3 }, 5);
   };
 
   const auto loop = [](auto& app){
