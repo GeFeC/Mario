@@ -59,6 +59,8 @@ static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState&
 }
 
 static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
+  if (!koopa.has_wings && !koopa.in_shell) koopa.fall_from_edge = false;
+
   jumping_koopa_controller(
     koopa,
     level,

@@ -50,6 +50,7 @@ static auto run_frame_level12(AppState& app){
     auto& level = app.current_level;
 
     auto& player = level.player;
+    player.position = { config::BlockSize, 1 * config::BlockSize };
 
     level.stats.time = 400;
     level.stats.level_major = 1;
@@ -57,7 +58,7 @@ static auto run_frame_level12(AppState& app){
     level_generator::generate_level(level, "../level12_1.csv");
     level_generator::generate_level(level, "../level12_2.csv");
 
-    level_generator::put_qblock_with_coins(level, { 84, 0 }, 5);
+    level_generator::put_qblock_with_coins(level, { 84, 2 }, 5);
 
     level_generator::put_qblock_with_coins(level, { 178, 3 }, 5);
     level_generator::put_qblock_with_coins(level, { 180, 3 }, 5);

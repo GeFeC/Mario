@@ -52,6 +52,7 @@ static auto run_frame_level11(AppState& app){
     auto& level = app.current_level;
 
     auto& player = level.player;
+    player.position = { 190.f * config::BlockSize, config::BlockSize };
 
     level.stats.time = 400;
     level.stats.level_major = 1;

@@ -175,7 +175,7 @@ static auto entity_die_when_stomped(
 static auto entity_become_active_when_seen(MonsterState& entity, const PlayerState& player){
   using config::PlayerPositionToScroll;
   const auto player_field_of_view = std::max(
-    config::BlocksInRow * config::BlockSize - config::PlayerPositionToScroll,
+    config::BlocksInRow * config::BlockSize - config::PlayerPositionToScroll.x,
     config::BlocksInRow * config::BlockSize - player.position.x
   );
 

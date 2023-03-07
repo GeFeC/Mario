@@ -20,7 +20,6 @@ struct FlyingKoopaState : KoopaState{
   static auto make_red(const glm::vec2& position, const glm::vec2& axis, Direction direction = DirectionLeft){
     auto koopa = KoopaState::make<FlyingKoopaState>(position, direction);
     koopa.current_texture = &textures::red_flying_koopa_walk[0];
-    koopa.fall_from_edge = false;
     koopa.initial_position = position * config::BlockSize;
     koopa.movement_axis = axis;
 

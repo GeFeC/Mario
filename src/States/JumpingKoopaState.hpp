@@ -17,7 +17,6 @@ struct JumpingKoopaState : KoopaState{
   static auto make_red(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = KoopaState::make<JumpingKoopaState>(position, direction);
     koopa.current_texture = &textures::red_flying_koopa_walk[0];
-    koopa.fall_from_edge = false;
     koopa.gravity_boost = 0.7f;
 
     return koopa;

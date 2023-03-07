@@ -14,20 +14,20 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 
-static auto is_component_on_screen(const util::Rect& component, float offset_x = 0.f){
+static auto is_component_on_screen(const util::Rect& component, const glm::vec2& offset){
   using config::BlockSize, config::BlocksInRow, config::BlocksInColumn;
 
-  const auto is_x = component.position.x + component.size.x - offset_x == util::in_range(0, (BlocksInRow + 1) * BlockSize);
-  const auto is_y = component.position.y + component.size.y == util::in_range(0, (BlocksInColumn + 1) * BlockSize);
+  const auto is_x = component.position.x + component.size.x - offset.x == util::in_range(0, (BlocksInRow + 1) * BlockSize);
+  const auto is_y = component.position.y + component.size.y - offset.y == util::in_range(0, (BlocksInColumn + 1) * BlockSize);
 
   return is_x && is_y;
 }
 
-static auto render_entity(const EntityState& entity, float offset_x = 0.f){
-  if (!is_component_on_screen(entity, offset_x)) return;
+static auto render_entity(const EntityState& entity, const glm::vec2& offset){
+  if (!is_component_on_screen(entity, offset)) return;
 
   renderer::draw(Drawable{
-    entity.position - glm::vec2(offset_x, 0),
+    entity.position - offset,
     entity.size,
     entity.current_texture,
     { entity.direction * entity.texture_flip, entity.vertical_flip },
@@ -35,17 +35,17 @@ static auto render_entity(const EntityState& entity, float offset_x = 0.f){
   });
 }
 
-static auto render_points_particles(const std::vector<PointsParticlesState>& points, float offset_x = 0.f){
+static auto render_points_particles(const std::vector<PointsParticlesState>& points, const glm::vec2& offset){
   for (const auto& point : points){
-    renderer::print(point.text, offset_x);
+    renderer::print(point.text, offset);
   }
 }
 
-static auto render_block(const BlockBase& block, float offset_x = 0.f){
-  if (!is_component_on_screen(block, offset_x)) return;
+static auto render_block(const BlockBase& block, const glm::vec2& offset){
+  if (!is_component_on_screen(block, offset)) return;
 
   renderer::draw(Drawable{
-    block.position - glm::vec2(offset_x, 0),
+    block.position - offset,
     glm::vec2(config::BlockSize),
     block.texture,
     { Drawable::Flip::NoFlip, Drawable::Flip::NoFlip },
@@ -53,33 +53,33 @@ static auto render_block(const BlockBase& block, float offset_x = 0.f){
   });
 }
 
-static auto render_bricks(const BricksBlockState& block, float offset_x = 0.f){
+static auto render_bricks(const BricksBlockState& block, const glm::vec2& offset){
   for (const auto& particle : block.particles){
-    render_entity(particle, offset_x);
+    render_entity(particle, offset);
   }
 
-  render_block(block, offset_x);
+  render_block(block, offset);
 }
 
-static auto render_player(const PlayerState& player, float offset_x = 0.f){
+static auto render_player(const PlayerState& player, const glm::vec2& offset){
   for (const auto& fireball : player.fireballs){
-    render_entity(fireball, offset_x);
-    render_block(fireball.explosion, offset_x);
+    render_entity(fireball, offset);
+    render_block(fireball.explosion, offset);
   } 
 
-  render_entity(player, offset_x);
+  render_entity(player, offset);
 }
 
-static auto render_fire_bar(const FireBarState& bar, float offset_x = 0.f){
+static auto render_fire_bar(const FireBarState& bar, const glm::vec2& offset){
   for (const auto& fireball : bar.fireballs){
-    render_entity(fireball, offset_x);
+    render_entity(fireball, offset);
   }
 }
 
-static auto render_hammerbro(const HammerBroState& bro, float offset_x = 0.f){
+static auto render_hammerbro(const HammerBroState& bro, const glm::vec2& offset){
   for (auto& item : bro.hammer_generator.items){
-    render_entity(item, offset_x);
+    render_entity(item, offset);
   }
 
-  render_entity(bro, offset_x);
+  render_entity(bro, offset);
 }

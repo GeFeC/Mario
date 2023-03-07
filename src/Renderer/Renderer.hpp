@@ -9,7 +9,7 @@ namespace renderer{
 
   auto init() -> void;
   auto draw(const Drawable& drawable, bool is_glyph = false) noexcept -> void;
-  auto print(const Text& text, float offset_x = 0.f) -> void;
+  auto print(const Text& text, const glm::vec2& offset) -> void;
 
   template<typename F>
   auto draw_with_shadow(const F& callable){

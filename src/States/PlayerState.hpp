@@ -50,7 +50,6 @@ struct PlayerState : EntityState{
 
     death_delay = 0.5f;
     size = glm::vec2(config::BlockSize);
-    position = { config::BlockSize, 480.f };
     is_active = true;
     current_texture = &textures::small_mario;
   }

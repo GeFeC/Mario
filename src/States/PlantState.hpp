@@ -21,6 +21,8 @@ private:
     plant.size = glm::vec2(config::BlockSize, config::BlockSize * 11 / 8);
     plant.current_texture = &textures::plant[0];
     plant.can_be_stomped = false;
+    plant.is_active = true;
+    plant.reward_for_killing = 200;
 
     return plant;
   }

@@ -91,7 +91,6 @@ struct LevelState{
   float load_delay = 3.f;
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;
-  bool should_screen_scroll = false;
   bool is_finished = false;
 
   LevelState() 

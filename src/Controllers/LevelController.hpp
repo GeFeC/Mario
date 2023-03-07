@@ -127,13 +127,6 @@ static auto level_mushrooms_controller(LevelState& level){
   }
 }
 
-static auto level_screen_scroll(LevelState& level){
-  level.should_screen_scroll = false;
-  if (level.player.position.x > config::PlayerPositionToScroll){
-    level.should_screen_scroll = true;
-  }
-}
-
 static auto level_finish(LevelState& level, AppState& app){
   const auto [finish_x, finish_y] = LevelState::FinishingPipePosition; 
   auto& player = level.player;
@@ -144,9 +137,11 @@ static auto level_finish(LevelState& level, AppState& app){
 
     if (level.stats.time > 0) {
       if (level.score_adding_after_finish_delay <= 0.f){
+        const auto multiplier = std::min(5, level.stats.time);
+
         level.score_adding_after_finish_delay = 1.f / 60.f;
-        level.stats.time--;
-        level.stats.score += 50;
+        level.stats.time -= multiplier;
+        level.stats.score += 50 * multiplier;
       }
     }
     else{
@@ -210,7 +205,6 @@ static auto level_controller(AppState& app, LevelState& level){
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
 
-  level_screen_scroll(level);
   level_finish(level, app);
 
   level_blocks_controller(level);

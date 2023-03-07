@@ -35,7 +35,7 @@ auto renderer::init() -> void{
   program::set_uniform("projection", projection_matrix);
 }
 
-static auto draw_element(const Drawable& drawable, bool is_glyph, float offset_x = 0.f){
+static auto draw_element(const Drawable& drawable, bool is_glyph, const glm::vec2& offset){
   if (!drawable.is_visible) return;
 
   const auto flip_offset_x = drawable.size.x * (drawable.flip.horizontal - 1) / 2;
@@ -43,8 +43,8 @@ static auto draw_element(const Drawable& drawable, bool is_glyph, float offset_x
 
   using renderer::ShadowOffset;
   program::set_uniform("rect", {
-    glm::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * ShadowOffset - offset_x),
-    glm::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * ShadowOffset),
+    glm::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * ShadowOffset - offset.x),
+    glm::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * ShadowOffset - offset.y),
     glm::round(drawable.size.x * drawable.flip.horizontal),
     glm::round(drawable.size.y * drawable.flip.vertical)
   });
@@ -61,10 +61,10 @@ auto renderer::draw(const Drawable& drawable, bool is_glyph) noexcept -> void{
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-  draw_element(drawable, is_glyph);
+  draw_element(drawable, is_glyph, glm::vec2(0));
 }
 
-auto renderer::print(const Text& text, float offset_x) -> void{
+auto renderer::print(const Text& text, const glm::vec2& offset) -> void{
   if (!text.is_visible) return;
 
   for (int i = 0; i < text.get_length(); ++i){
@@ -78,6 +78,6 @@ auto renderer::print(const Text& text, float offset_x) -> void{
     
     current_glyph_texture.set_mag_filter(GL_NEAREST);
     current_glyph_texture.set_min_filter(GL_NEAREST_MIPMAP_NEAREST);
-    draw_element(text.get_glyph(i), true, offset_x);
+    draw_element(text.get_glyph(i), true, offset);
   }
 }

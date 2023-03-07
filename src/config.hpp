@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 namespace config{
   static constexpr auto FontsSourceDir = "../res/fonts/";
   static constexpr auto TexturesSourceDir = "../res/textures/";
@@ -14,7 +16,7 @@ namespace config{
   static constexpr auto InitialWindowWidth = BlocksInRow * BlockSize;
   static constexpr auto InitialWindowHeight = BlocksInColumn * BlockSize;
 
-  static constexpr auto PlayerPositionToScroll = 9 * BlockSize;
+  static constexpr auto PlayerPositionToScroll = glm::vec2(9 * BlockSize, 0.f);
 
   static constexpr auto PlayerPositionToRestartLevel = 10000.f;
 }

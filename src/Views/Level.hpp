@@ -14,7 +14,7 @@
 #include <sstream>
 #include <iomanip>
 
-static auto render_clouds(float screen_scroll){
+static auto render_clouds(const glm::vec2& screen_scroll){
   auto clouds = std::vector<std::pair<glm::vec2, int>>();
   clouds.reserve(64);
 
@@ -62,11 +62,11 @@ static auto render_stats(const StatsState& stats){
   const auto step_y = 2.f / 3.f * config::BlockSize;
 
   text.set_position({ center_x, step_y });
-  renderer::print(text);
+  renderer::print(text, glm::vec2(0));
 
   text.set_text(body.str());
   text.set_position(text.get_position() + glm::vec2(0.f, step_y));
-  renderer::print(text);
+  renderer::print(text, glm::vec2(0));
 
   //Mini coin
   renderer::draw(Drawable{
@@ -76,7 +76,7 @@ static auto render_stats(const StatsState& stats){
   });
 }
 
-static auto render_plants(const LevelState& level, float screen_scroll){
+static auto render_plants(const LevelState& level, const glm::vec2& screen_scroll){
   for (const auto& plant : level.entities.plants){
     render_entity(plant, screen_scroll);
   }
@@ -86,7 +86,7 @@ static auto render_plants(const LevelState& level, float screen_scroll){
   }
 }
 
-static auto render_entities(const LevelState& level, float screen_scroll){
+static auto render_entities(const LevelState& level, const glm::vec2& screen_scroll){
   for (const auto& goomba : level.entities.goombas){
     render_entity(goomba, screen_scroll);
   }
@@ -144,7 +144,7 @@ static auto render_entities(const LevelState& level, float screen_scroll){
   }
 }
 
-static auto render_all_points_particles(const LevelState& level, float screen_scroll){
+static auto render_all_points_particles(const LevelState& level, const glm::vec2& screen_scroll){
   for (const auto& plant : level.entities.plants){
     render_points_particles(plant.points_generator.items, screen_scroll);
   }
@@ -245,7 +245,7 @@ static auto render_loading_screen(const LevelState& level){
 
   text.set_position(center_pos - glm::vec2(0, font_size * 2.5f));
 
-  renderer::print(text);
+  renderer::print(text, glm::vec2(0));
 
   //Mario:
   renderer::draw(Drawable{
@@ -261,10 +261,10 @@ static auto render_loading_screen(const LevelState& level){
   text.set_text("X " + std::to_string(stats.hp));
   text.set_position(glm::vec2(WindowWidth / 2, center_pos.y));
 
-  renderer::print(text);
+  renderer::print(text, glm::vec2(0));
 }
 
-static auto render_blocks(const LevelState& level, float screen_scroll){
+static auto render_blocks(const LevelState& level, const glm::vec2& screen_scroll){
   for (const auto& block : level.blocks.normal){
     render_block(block, screen_scroll);
   }
@@ -282,14 +282,20 @@ static auto render_blocks(const LevelState& level, float screen_scroll){
   }
 }
 
-static auto render_level(const LevelState& level){
-  auto screen_scroll = 0.f;
-  if (level.should_screen_scroll){
-    screen_scroll = std::min(
-      level.player.position.x - config::PlayerPositionToScroll,
-      config::MaxLevelSize * config::BlockSize - (config::PlayerPositionToScroll + config::BlockSize) * 2
+static auto get_screen_scroll(const LevelState& level){
+  auto screen_scroll = glm::vec2(0.f);
+  if (level.player.position.x >= config::PlayerPositionToScroll.x){
+    screen_scroll.x = std::min(
+      level.player.position.x - config::PlayerPositionToScroll.x,
+      config::MaxLevelSize * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2
     );
   }
+
+  return screen_scroll;
+}
+
+static auto render_level(const LevelState& level){
+  const auto screen_scroll = get_screen_scroll(level);
 
   renderer::draw(Drawable{
     glm::vec2(0, 0),
