@@ -1,7 +1,5 @@
 #pragma once
 
-//TEST LEVEL
-
 #include "States/AppState.hpp"
 #include "States/HammerBroState.hpp"
 #include "Views/Level.hpp"
@@ -12,7 +10,7 @@
 #include "res/textures.hpp"
 
 
-static auto run_frame_level11(AppState& app){
+static auto run_frame_level13(AppState& app){
   const auto textures = std::vector<TextureGroup>{
     &textures::black,
     &textures::dirt,
@@ -50,23 +48,32 @@ static auto run_frame_level11(AppState& app){
     LevelState::timer = 0.f;
 
     auto& level = app.current_level;
+    level.type = LevelState::Type::Vertical;
     level.generate_hitbox_grid();
 
     auto& player = level.player;
-    player.position = { config::BlockSize, config::BlockSize };
+    player.position = { config::BlockSize, 195.f * config::BlockSize };
 
-    level.camera_offset_y = 0.f;
-    level.stats.time = 250;
+    level.stats.time = 600;
     level.stats.level_major = 1;
-    level.stats.level_minor = 1;
+    level.stats.level_minor = 3;
 
-    level_generator::generate_horizontal_level_clouds(level);
-    level_generator::generate_level(level, "../level11_tiles.csv");
-    level_generator::generate_level(level, "../level11_Bushes.csv");
-    level_generator::generate_level(level, "../level11_Hills.csv");
-    level_generator::put_qblock_with_coins(level, { 77, 7 }, 5);
-    level_generator::put_qblock_with_coins(level, { 187, 3 }, 5);
-    level_generator::put_qblock_with_coins(level, { 189, 3 }, 5);
+    level.fire_bars.push_back(FireBarState({ 13, 183 }, 3));
+    level.fire_bars.push_back(FireBarState({ 5, 154 }, 5));
+    level.fire_bars.push_back(FireBarState({ 6, 111 }, 3));
+    level.fire_bars.push_back(FireBarState({ 11, 108 }, 3));
+    level.fire_bars.push_back(FireBarState({ 16, 105 }, 3));
+    level.fire_bars.push_back(FireBarState({ 7, 95 }, 7));
+    level.fire_bars.push_back(FireBarState({ 7, 74 }, 5));
+    level.fire_bars.push_back(FireBarState({ 16, 39 }, 5));
+    level.fire_bars.push_back(FireBarState({ 4, 4 }, 7));
+
+    level_generator::put_qblock_with_coins(level, { 7, 25 }, 5);
+    level_generator::put_qblock_with_coins(level, { 4, 115 }, 5);
+
+    level_generator::generate_vertical_level_clouds(level);
+    level_generator::generate_level(level, "../level13_1.csv");
+    level_generator::generate_level(level, "../level13_2.csv");
   };
 
   const auto loop = [](auto& app){
@@ -74,5 +81,5 @@ static auto run_frame_level11(AppState& app){
     render_level(app.current_level);
   };
 
-  run_frame(app, AppState::Frame::Level11, textures, setup, loop);
+  run_frame(app, AppState::Frame::Level13, textures, setup, loop);
 }

@@ -14,10 +14,6 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
     return;
   }
 
-  using config::BlockSize;
-  const auto& position = entity.position;
-  const auto& size = entity.size;
-
   for (const auto& block : level.blocks.normal){
     if (!block.is_solid) continue;
 
@@ -38,9 +34,11 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
   if (!entity.is_on_ground) return;
 
-  if (left_x + 1 >= config::MaxLevelSize || left_x - 1 <= 0) return;
-  if (right_x + 1 >= config::MaxLevelSize || right_x - 1 <= 0) return;
-  if (y >= config::BlocksInColumn || y - 1 <= 0) return;
+  const auto level_size = level.get_size();
+
+  if (left_x >= level_size.x || left_x < 0) return;
+  if (right_x >= level_size.x || right_x < 0) return;
+  if (y >= level_size.y || y - 1 <= 0) return;
 
   static constexpr auto Air = 0;
   if (level.hitbox_grid[right_x][y] == Air && entity.direction == EntityState::DirectionRight){
@@ -54,14 +52,13 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   }
 };
 
-template<typename F>
-static auto entity_movement_helper(EntityState& entity, const LevelState& level, const F& detect_collisions){
+static auto entity_movement(EntityState& entity, const LevelState& level){
   if (entity.is_dead || !entity.is_active) return;
 
   auto left_boost = window::delta_time * entity.acceleration.left * EntityState::MovementSpeedMultiplier;
   auto right_boost = window::delta_time * entity.acceleration.right * EntityState::MovementSpeedMultiplier;
 
-  detect_collisions(entity, level, [&](const auto& collision_state){
+  detect_entity_collision_with_level(entity, level, [&](const auto& collision_state){
     const auto distance_left = std::abs(collision_state.distance_left);
     const auto distance_right = std::abs(collision_state.distance_right);
 
@@ -85,10 +82,6 @@ static auto entity_movement_helper(EntityState& entity, const LevelState& level,
 
   entity.position.x += right_boost;
   entity.position.x -= left_boost;
-}
-
-static auto entity_movement(EntityState& entity, const LevelState& level){
-  entity_movement_helper(entity, level, detect_entity_collision_with_level);
 }
 
 static auto entity_gravity(EntityState& entity, const LevelState& level){
@@ -172,16 +165,21 @@ static auto entity_die_when_stomped(
   return false;
 };
 
-static auto entity_become_active_when_seen(MonsterState& entity, const PlayerState& player){
+static auto entity_become_active_when_seen(MonsterState& entity, const LevelState& level){
   using config::PlayerPositionToScroll;
-  const auto player_field_of_view = std::max(
+  const auto& player = level.player;
+
+  const auto player_field_of_view_x = std::max(
     config::BlocksInRow * config::BlockSize - config::PlayerPositionToScroll.x,
     config::BlocksInRow * config::BlockSize - player.position.x
   );
 
-  if (entity.position.x - player.position.x <= player_field_of_view){
-    entity.is_active = true;
-  }
+  const auto player_field_of_view_y = player.position.y - level.camera_offset_y;
+
+  if (entity.position.x - player.position.x > player_field_of_view_x) return;
+  if (player.position.y - entity.position.y - entity.size.y > player_field_of_view_y) return;
+
+  entity.is_active = true;
 };
 
 static auto entity_bounce_out(MonsterState& entity){

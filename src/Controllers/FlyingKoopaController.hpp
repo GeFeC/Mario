@@ -38,7 +38,7 @@ static auto flying_koopa_controller(
   auto& player = level.player;
 
   entity_die_when_hit_by_fireball(koopa, player, level.stats);
-  entity_become_active_when_seen(koopa, player);
+  entity_become_active_when_seen(koopa, level);
 
   if (koopa.has_wings){
     auto koopa_hitbox = shell_monster_get_hitbox(koopa);

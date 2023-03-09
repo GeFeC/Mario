@@ -95,3 +95,5 @@ struct SpinningCoinState : BouncingBlockState{
     bounce_state.initial_power = -20.f;
   }
 };
+
+using CloudState = std::pair<glm::vec2, int>;

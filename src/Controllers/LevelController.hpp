@@ -149,7 +149,7 @@ static auto level_finish(LevelState& level, AppState& app){
 
       if (level.finish_delay <= 0.f){
         app.should_restart_current_frame = true;
-        app.current_frame = AppState::Frame::Level12;
+        app.current_frame = static_cast<AppState::Frame>(static_cast<int>(app.current_frame) + 1);
       }
     }
   }
@@ -160,6 +160,48 @@ static auto level_finish(LevelState& level, AppState& app){
   if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
 }
 
+static auto level_restart_when_player_fell_out(AppState& app){
+  auto& level = app.current_level;
+
+  const auto position_required_to_restart_level 
+    = config::PlayerPositionToRestartLevel 
+    + level.get_size().y 
+    * config::BlockSize;
+
+  if (level.player.position.y > position_required_to_restart_level){
+    app.should_restart_current_frame = true;
+    level.stats.hp--;
+    level.player.form = PlayerState::Form::Normal;
+    level.player.growth = PlayerState::Growth::Small;
+
+    if (level.stats.hp == 0){
+      level.stats = StatsState{};
+      app.current_frame = AppState::Frame::Level11;
+    }
+  }
+}
+
+static auto level_handle_vertical_scroll(LevelState& level){
+  static auto camera_change = 0.f;
+  auto& player = level.player;
+  auto player_y = player.position.y - config::BlockSize + player.size.y;
+  
+  if (player_y - level.camera_offset_y < 5 * config::BlockSize && player.gravity < 0.f){
+    level.camera_offset_y = player_y - 5 * config::BlockSize;
+  }
+
+  if (player_y - level.camera_offset_y > 9 * config::BlockSize && player.gravity > 0.f){
+    level.camera_offset_y = player_y - 9 * config::BlockSize;
+  }
+
+  if (camera_change < 0.f){
+    const auto change_speed = std::min(window::delta_time * 1600.f, -camera_change);
+
+    level.camera_offset_y -= change_speed;
+    camera_change += change_speed;
+  }
+}
+
 static auto level_controller(AppState& app, LevelState& level){
   //Level loading
   if (level.load_delay > 0.f) {
@@ -167,16 +209,11 @@ static auto level_controller(AppState& app, LevelState& level){
     return;
   }
 
-  //Falling under the level
-  if (level.player.position.y > config::PlayerPositionToRestartLevel){
-    app.should_restart_current_frame = true;
-    level.stats.hp--;
-
-    if (level.stats.hp == 0){
-      level.stats = StatsState{};
-      app.current_frame = AppState::Frame::Level11;
-    }
+  if (level.type == LevelState::Type::Vertical){
+    level_handle_vertical_scroll(level);
   }
+
+  level_restart_when_player_fell_out(app);
 
   //Blinking and counters
   LevelState::blink_state = blink_controller();

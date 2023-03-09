@@ -4,6 +4,7 @@
 #include "Controllers/LevelController.hpp"
 #include "Frames/Level11.hpp"
 #include "Frames/Level12.hpp"
+#include "Frames/Level13.hpp"
 
 #include "Util/Util.hpp"
 #include "config.hpp"
@@ -30,6 +31,11 @@ static auto app_controller(AppState& app){
 
   if (frame == AppState::Frame::Level12){
     run_frame_level12(app);
+    app_update_level(app);
+  }
+
+  if (frame == AppState::Frame::Level13){
+    run_frame_level13(app);
     app_update_level(app);
   }
 }

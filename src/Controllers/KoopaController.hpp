@@ -10,7 +10,7 @@ static auto koopa_controller(KoopaState& koopa, LevelState& level){
   //Interaction with player
   auto& player = level.player;
   entity_die_when_hit_by_fireball(koopa, player, level.stats);
-  entity_become_active_when_seen(koopa, player);
+  entity_become_active_when_seen(koopa, level);
   
   //Interaction with blocks
   entity_die_when_on_bouncing_block(koopa, level);

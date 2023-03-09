@@ -38,11 +38,17 @@ struct StatsState{
 
 struct LevelState{
   inline static constexpr auto FinishingPipePosition = std::make_pair(197, 8);
+  inline static constexpr auto MaxLevelScrollY = 188.f * config::BlockSize;
 
   inline static float timer = 0.f;
   inline static auto blink_state = 0;
   inline static auto coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
   inline static auto fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
+
+  enum class Type{
+    Horizontal,
+    Vertical
+  } type = Type::Horizontal;
 
   util::vector2d<int> hitbox_grid;
 
@@ -83,19 +89,42 @@ struct LevelState{
   struct Background{
     std::vector<BlockState> hills;
     std::vector<BlockState> bushes;
+    std::vector<CloudState> clouds;
   } background;
 
   util::InfiniteCounter fireball_counter;
   util::InfiniteCounter hammer_counter;
+
+  float camera_offset_y = MaxLevelScrollY;
 
   float load_delay = 3.f;
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;
   bool is_finished = false;
 
-  LevelState() 
-  : fireball_counter(4.f, 20.f), hammer_counter(4.f, 10.f) {
-    hitbox_grid.resize(config::MaxLevelSize, std::vector<int>(config::BlocksInColumn, 0));
+  LevelState() : fireball_counter(4.f, 20.f), hammer_counter(4.f, 10.f) {}
+
+  auto generate_hitbox_grid(){
+    if (type == Type::Horizontal){
+      hitbox_grid.resize(config::HorizontalLevelWidth, std::vector<int>(config::BlocksInColumn, 0));
+      return;
+    } 
+
+    hitbox_grid.resize(config::VerticalLevelWidth, std::vector<int>(config::HorizontalLevelWidth, 0));
+  }
+
+  auto get_size() const{
+    if (type == Type::Horizontal){
+      return glm::vec2(
+        config::HorizontalLevelWidth,
+        config::BlocksInColumn
+      );
+    }
+
+    return glm::vec2(
+      config::VerticalLevelWidth,
+      config::HorizontalLevelWidth
+    );
   }
 
   auto& get_hitbox_grid_element(const glm::vec2& position){

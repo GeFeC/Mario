@@ -26,6 +26,6 @@ static auto spike_controller(
   //Interaction with player
   auto& player = level.player;
   entity_kill_player_on_touch(spike, player);
-  entity_become_active_when_seen(spike, player);
+  entity_become_active_when_seen(spike, level);
   entity_die_when_hit_by_fireball(spike, player, level.stats);
 }

@@ -14,7 +14,7 @@ static auto beetle_controller(BeetleState& beetle, LevelState& level){
   //Interaction with player
   auto& player = level.player;
   entity_endure_fireball(beetle, player);
-  entity_become_active_when_seen(beetle, player);
+  entity_become_active_when_seen(beetle, level);
   entity_handle_shell(
     beetle,
     level,

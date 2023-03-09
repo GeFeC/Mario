@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Controllers/PointsParticlesController.hpp"
 #include "States/MonsterState.hpp"
 #include "States/PlantState.hpp"
 #include "States/PlayerState.hpp"
@@ -11,10 +12,15 @@
 #include <GLFW/glfw3.h>
 
 static auto plant_controller(PlantState& plant, LevelState& level){
+  //Points
+  for (auto& p : plant.points_generator.items){
+    points_particles_controller(p);
+  }
+
   //Interactions with player
   auto& player = level.player;
-  entity_kill_player_on_touch(plant, player);
 
+  entity_kill_player_on_touch(plant, player);
   entity_die_when_hit_by_fireball(plant, player, level.stats);
   const auto is_hit_by_fireball = plant.vertical_flip == Drawable::Flip::UseFlip;
   if (is_hit_by_fireball) plant.is_visible = false;

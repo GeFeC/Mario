@@ -14,16 +14,8 @@
 #include <sstream>
 #include <iomanip>
 
-static auto render_clouds(const glm::vec2& screen_scroll){
-  auto clouds = std::vector<std::pair<glm::vec2, int>>();
-  clouds.reserve(64);
-
-  for (int i = 0; i < 16; ++i){
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, 2), 3));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 1), 2));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, 2), 1));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, 1), 1));
-  }
+static auto render_clouds(const LevelState& level, const glm::vec2& screen_scroll){
+  auto& clouds = level.background.clouds;
 
   static auto cloud_offset = 0.f;
   cloud_offset += window::delta_time;
@@ -283,12 +275,20 @@ static auto render_blocks(const LevelState& level, const glm::vec2& screen_scrol
 }
 
 static auto get_screen_scroll(const LevelState& level){
+  static constexpr auto CameraOffsetFromPlayer = config::BlockSize * 6.f;
+
   auto screen_scroll = glm::vec2(0.f);
-  if (level.player.position.x >= config::PlayerPositionToScroll.x){
+  auto& player = level.player;
+
+  if (player.position.x >= config::PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
     screen_scroll.x = std::min(
-      level.player.position.x - config::PlayerPositionToScroll.x,
-      config::MaxLevelSize * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2
+      player.position.x - config::PlayerPositionToScroll.x,
+      config::HorizontalLevelWidth * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2
     );
+  }
+
+  if (level.type == LevelState::Type::Vertical){
+    screen_scroll.y = std::clamp(level.camera_offset_y, 0.f, LevelState::MaxLevelScrollY);
   }
 
   return screen_scroll;
@@ -312,7 +312,7 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
-    render_clouds(screen_scroll);
+    render_clouds(level, screen_scroll);
     for (const auto& bush : level.background.bushes){
       render_block(bush, screen_scroll);
     }
@@ -329,10 +329,6 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     render_entities(level, screen_scroll);
 
-    for (const auto& bar : level.fire_bars){
-      render_fire_bar(bar, screen_scroll);
-    }
-
     for (const auto& block : level.blocks.q_blocks){
       render_block(block, screen_scroll);
     }
@@ -340,6 +336,11 @@ static auto render_level(const LevelState& level){
     for (const auto& block : level.blocks.bricks){
       render_bricks(block, screen_scroll);
     }
+
+    for (const auto& bar : level.fire_bars){
+      render_fire_bar(bar, screen_scroll);
+    }
+
   });
 
   renderer::draw_with_shadow([&]{

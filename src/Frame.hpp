@@ -30,7 +30,7 @@ static auto run_frame(
     loop(app_state);
 
     window::update();
-    window::delta_time = std::min(glfwGetTime() - frame_start_time, 0.5);
+    window::delta_time = std::min(glfwGetTime() - frame_start_time, 1000.0 / 30);
   }
 
   app_state.should_restart_current_frame = false;

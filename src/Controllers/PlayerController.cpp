@@ -317,7 +317,7 @@ auto player_is_on_entity(const PlayerState& player, const EntityState& entity) -
 
   if (collision::is_hovering_in_x(player, entity)){
     const auto distance = entity.position.y - player.position.y - player.size.y;
-    return distance == util::in_range(-config::BlockSize * 2.f/3.f, 0);
+    return distance == util::in_range(-config::BlockSize * 5.f/6.f, 0);
   }
 
   return false;

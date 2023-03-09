@@ -48,13 +48,17 @@ static auto run_frame_level12(AppState& app){
     LevelState::timer = 0.f;
 
     auto& level = app.current_level;
+    level.generate_hitbox_grid();
 
     auto& player = level.player;
     player.position = { config::BlockSize, 1 * config::BlockSize };
 
-    level.stats.time = 400;
+    level.camera_offset_y = 0.f;
+    level.stats.time = 300;
     level.stats.level_major = 1;
     level.stats.level_minor = 2;
+
+    level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "../level12_1.csv");
     level_generator::generate_level(level, "../level12_2.csv");
 

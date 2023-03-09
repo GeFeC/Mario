@@ -16,6 +16,37 @@ namespace level_generator{
 using Direction = EntityState::Direction;
 static constexpr auto DirectionLeft = EntityState::DirectionLeft;
 
+static auto generate_horizontal_level_clouds(LevelState& level){
+  auto& clouds = level.background.clouds;
+  clouds.reserve(64);
+
+  for (int i = 0; i < 16; ++i){
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, 2), 3));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 1), 2));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, 2), 1));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, 1), 1));
+  }
+}
+
+static auto generate_vertical_level_clouds(LevelState& level){
+  auto& clouds = level.background.clouds;
+  clouds.reserve(14 * 2 * 2 * 3);
+
+  for (int j = 0; j < 14; ++j){
+    for (int i = 0; i < 2; ++i){
+      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 4, 2 + j * 14), 2));
+      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 9, 3 + j * 14), 3));
+      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, 1 + j * 14), 1));
+    }
+
+    for (int i = 0; i < 2; ++i){
+      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 4 - 2, 2 + j * 14 + 7), 2));
+      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 9 - 2, 3 + j * 14 + 7), 3));
+      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15 - 2, 1 + j * 14 + 7), 1));
+    }
+  }
+}
+
 static auto put_solid(LevelState& level, const glm::vec2& position, const Texture& texture){
   level.get_hitbox_grid_element(position) = 1;
   level.blocks.normal.push_back(BlockState(position, &texture));
@@ -131,9 +162,13 @@ static auto generate_level(LevelState& level, const std::string& level_file){
   auto ss = std::istringstream(file_content);
   auto tile_id = 0;
   auto counter = 0;
+
+  const auto lines = std::count(file_content.begin(), file_content.end(), '\n');
+  const auto level_width = lines == 200 ? config::VerticalLevelWidth : config::HorizontalLevelWidth;
+
   while(ss >> tile_id){
-    const auto x = counter % config::MaxLevelSize;
-    const auto y = counter / config::MaxLevelSize;
+    const auto x = counter % level_width;
+    const auto y = counter / level_width;
 
     auto& entities = level.entities;
     using config::BlockSize;
@@ -173,6 +208,7 @@ static auto generate_level(LevelState& level, const std::string& level_file){
     if (tile_id == 76) put_qblock_with_green_mushroom(level, { x, y });
     if (tile_id == 77) put_qblock_with_coins(level, { x, y });
     if (tile_id == 78) put_qblock_with_flower(level, { x, y });
+    if (tile_id == 79) { put_solid(level, { x, y }, textures::dirt); level.blocks.normal.back().is_visible = false; }
     
     counter++;
   }

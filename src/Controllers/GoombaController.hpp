@@ -24,7 +24,7 @@ static auto goomba_controller(GoombaState& goomba, LevelState& level){
   //Interactions with player
   auto& player = level.player;
   entity_kill_player_on_touch(goomba, player);
-  entity_become_active_when_seen(goomba, player);
+  entity_become_active_when_seen(goomba, level);
   entity_die_when_hit_by_fireball(goomba, player, level.stats);
 
   //Interaction with blocks
