@@ -10,8 +10,6 @@
 #include "States/AppState.hpp"
 #include "Frame.hpp"
 
-#include "Frames/Level11.hpp"
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
@@ -42,7 +40,7 @@ auto main() -> int{
   renderer::init();
 
   auto app = AppState();
-  app.current_frame = AppState::Frame::Level11;
+  app.current_frame = AppState::Frame::Level12;
 
   window::show();
 

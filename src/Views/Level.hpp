@@ -304,6 +304,10 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
+    render_clouds(level, screen_scroll);
+  });
+
+  renderer::draw_with_shadow([&]{
     if (level.is_finished) render_player(level.player, screen_scroll);
 
     for (const auto& hill : level.background.hills){
@@ -312,7 +316,6 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
-    render_clouds(level, screen_scroll);
     for (const auto& bush : level.background.bushes){
       render_block(bush, screen_scroll);
     }

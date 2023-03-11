@@ -17,15 +17,15 @@ namespace level_generator{
 using Direction = EntityState::Direction;
 static constexpr auto DirectionLeft = EntityState::DirectionLeft;
 
-static auto generate_horizontal_level_clouds(LevelState& level){
+static auto generate_horizontal_level_clouds(LevelState& level, int spread = 2){
   auto& clouds = level.background.clouds;
   clouds.reserve(64);
 
   for (int i = 0; i < 16; ++i){
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, 2), 3));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, spread / 2), 3));
     clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 1), 2));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, 2), 1));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, 1), 1));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, spread), 1));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, spread / 3), 1));
   }
 }
 

@@ -21,7 +21,7 @@ static auto run_frame_level12(AppState& app){
   run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
 
-    level_generator::generate_horizontal_level_clouds(level);
+    level_generator::generate_horizontal_level_clouds(level, 10);
     level_generator::generate_level(level, "../level12_1.csv");
     level_generator::generate_level(level, "../level12_2.csv");
 
