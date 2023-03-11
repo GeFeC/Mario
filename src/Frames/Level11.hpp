@@ -10,55 +10,20 @@
 #include "LevelGenerator.hpp"
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
-
+#include "Frames/LevelBase.hpp"
 
 static auto run_frame_level11(AppState& app){
-  const auto textures = std::vector<TextureGroup>{
-    &textures::black,
-    &textures::dirt,
-    &textures::mushroom_bg,
-    &textures::mini_coin,
-    &textures::mushroom,
-    &textures::green_mushroom,
-    texture_groups::bricks,
-    texture_groups::mario,
-    texture_groups::coin,
-    texture_groups::goomba,
-    texture_groups::mushroom,
-    texture_groups::q_block,
+  auto level = LevelFrameSharedData{};
+  level.frame = AppState::Frame::Level11;
+  level.type = LevelState::Type::Horizontal;
+  level.number = { 1, 1 };
+  level.extra_textures = {
     texture_groups::red_cloud,
-    texture_groups::spinning_coin,
-    texture_groups::red_bush,
-    texture_groups::red_hill,
-    texture_groups::red_pipe,
-    texture_groups::red_goomba,
-    texture_groups::yellow_goomba,
-    texture_groups::fire_flower,
-    texture_groups::green_koopa,
-    texture_groups::green_flying_koopa,
-    texture_groups::red_koopa,
-    texture_groups::red_flying_koopa,
-    texture_groups::beetle,
-    texture_groups::spike,
-    texture_groups::plant,
-    texture_groups::red_plant,
-    texture_groups::hammerbro
+    &textures::mushroom_bg
   };
 
-  const auto setup = [](auto& app){
-    fonts::normal.allocate(16);
-    LevelState::timer = 0.f;
-
+  run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
-    level.generate_hitbox_grid();
-
-    auto& player = level.player;
-    player.position = { config::BlockSize, config::BlockSize };
-
-    level.camera_offset_y = 0.f;
-    level.stats.time = 400;
-    level.stats.level_major = 1;
-    level.stats.level_minor = 1;
 
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "../level11_tiles.csv");
@@ -67,12 +32,5 @@ static auto run_frame_level11(AppState& app){
     level_generator::put_qblock_with_coins(level, { 77, 7 }, 5);
     level_generator::put_qblock_with_coins(level, { 187, 3 }, 5);
     level_generator::put_qblock_with_coins(level, { 189, 3 }, 5);
-  };
-
-  const auto loop = [](auto& app){
-    level_controller(app, app.current_level);
-    render_level(app.current_level);
-  };
-
-  run_frame(app, AppState::Frame::Level11, textures, setup, loop);
+  });
 }

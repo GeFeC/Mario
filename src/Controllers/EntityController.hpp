@@ -109,6 +109,9 @@ static auto entity_gravity(EntityState& entity, const LevelState& level){
     }
   });
 
+  static constexpr auto MaxGravityForce = 100.f;
+
+  position_increaser = std::min(position_increaser, MaxGravityForce);
   entity.position.y += position_increaser;
 }
 

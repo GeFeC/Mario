@@ -11,6 +11,10 @@ Texture::Texture(const std::string& path) noexcept{
 }
 
 auto Texture::allocate() -> void{
+  if (allocated) return;
+
+  allocated = true;
+
   glGenTextures(1, &id);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, id);
@@ -59,5 +63,6 @@ auto Texture::bind() const noexcept -> void{
 }
 
 auto Texture::free() noexcept -> void{
+  allocated = false;
   glDeleteTextures(1, &this->id);
 }

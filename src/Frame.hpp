@@ -15,11 +15,11 @@ static auto run_frame(
     const SetupFunction& setup, 
     const LoopFunction& loop
 ){
+  setup(app_state);
+
   for (auto texture : textures){
     texture.allocate();
   }  
-
-  setup(app_state);
 
   while(!window::should_close() && app_state.current_frame == frame && !app_state.should_restart_current_frame){
     const auto frame_start_time = glfwGetTime();

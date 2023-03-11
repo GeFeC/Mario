@@ -128,7 +128,7 @@ static auto level_mushrooms_controller(LevelState& level){
 }
 
 static auto level_finish(LevelState& level, AppState& app){
-  const auto [finish_x, finish_y] = LevelState::FinishingPipePosition; 
+  const auto finish = level.get_finishing_pipe_position();
   auto& player = level.player;
 
   if (level.is_finished){
@@ -148,14 +148,13 @@ static auto level_finish(LevelState& level, AppState& app){
       level.finish_delay -= window::delta_time;
 
       if (level.finish_delay <= 0.f){
-        app.should_restart_current_frame = true;
         app.current_frame = static_cast<AppState::Frame>(static_cast<int>(app.current_frame) + 1);
       }
     }
   }
 
-  if (player.position.y / config::BlockSize < finish_y - 1) return;
-  if (player.position.x / config::BlockSize != util::in_range(finish_x, finish_x + 1)) return;
+  if (player.position.y / config::BlockSize < finish.y - 1) return;
+  if (player.position.x / config::BlockSize != util::in_range(finish.x, finish.x + 1)) return;
 
   if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
 }
@@ -251,8 +250,8 @@ static auto level_controller(AppState& app, LevelState& level){
   if (level.stats.coins >= 100) {
     level.stats.coins -= 100;
     level.stats.hp++;
-  }
 
+  }
 
   LevelState::timer += window::delta_time;
 }

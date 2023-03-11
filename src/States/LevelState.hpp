@@ -37,7 +37,6 @@ struct StatsState{
 };
 
 struct LevelState{
-  inline static constexpr auto FinishingPipePosition = std::make_pair(197, 8);
   inline static constexpr auto MaxLevelScrollY = 188.f * config::BlockSize;
 
   inline static float timer = 0.f;
@@ -125,6 +124,11 @@ struct LevelState{
       config::VerticalLevelWidth,
       config::HorizontalLevelWidth
     );
+  }
+
+  auto get_finishing_pipe_position() const{
+    if (type == Type::Horizontal) return glm::vec2(197, 8);
+    return glm::vec2(16, 4);
   }
 
   auto& get_hitbox_grid_element(const glm::vec2& position){

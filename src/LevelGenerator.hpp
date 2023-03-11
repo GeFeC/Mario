@@ -3,13 +3,14 @@
 #include "States/LevelState.hpp"
 #include "Util/Util.hpp"
 #include "config.hpp"
+#include "res/textureGroups.hpp"
 
 #include <string>
 #include <fstream>
 #include <stdexcept>
 #include <sstream>
 #include <iostream>
-
+#include <unordered_set>
 
 namespace level_generator{
 
@@ -151,6 +152,94 @@ auto put_red_pipe(LevelState& level, const glm::vec2& position, int size){
   level.blocks.normal.push_back(BlockState({ position.x + 1, position.y - size }, &textures::red_pipe_top_right));
 }
 
+static auto index_to_texture = std::vector<TextureGroup>{
+  &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+  &textures::mushroom_right,
+  &textures::mushroom_left,
+  &textures::mushroom_center,
+  &textures::mushroom_bot2,
+  &textures::mushroom_bot1,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+  texture_groups::bricks,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+  texture_groups::q_block,  
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+  &textures::red_pipe_top_right,
+  &textures::red_pipe_bottom_right,
+  &textures::red_pipe_top_left,
+  &textures::red_pipe_bottom_left,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+  &textures::red_hill_top, 
+  &textures::red_hill_right,
+  &textures::red_hill_left,
+  &textures::red_hill_center,
+  &textures::red_hill_center_dot,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+    &textures::dirt,
+  texture_groups::yellow_goomba,
+  texture_groups::red_goomba,
+  texture_groups::goomba,
+  texture_groups::spike,
+  texture_groups::plant,
+  texture_groups::red_plant,
+  texture_groups::red_koopa,
+  texture_groups::red_flying_koopa,
+  texture_groups::green_koopa,
+  texture_groups::green_flying_koopa,
+  texture_groups::hammerbro,
+  texture_groups::beetle,
+    &textures::dirt,
+  &textures::red_bush_right,
+  &textures::red_bush_left,
+  &textures::red_bush_center,
+    &textures::dirt,
+    &textures::dirt,
+  texture_groups::coin,
+  &textures::mushroom,
+  &textures::green_mushroom,
+  texture_groups::spinning_coin,
+  texture_groups::fire_flower,
+  &textures::dirt
+};
+
+static auto allocate_texture_if_needed(int texture_id){
+  index_to_texture[texture_id].allocate();
+}
+
+static auto allocated_textures = std::unordered_set<int>{};
 
 static auto generate_level(LevelState& level, const std::string& level_file){
   auto file = std::ifstream(level_file);
@@ -167,6 +256,10 @@ static auto generate_level(LevelState& level, const std::string& level_file){
   const auto level_width = lines == 200 ? config::VerticalLevelWidth : config::HorizontalLevelWidth;
 
   while(ss >> tile_id){
+    if (tile_id >= 0){
+      allocated_textures.insert(tile_id);
+    }
+
     const auto x = counter % level_width;
     const auto y = counter / level_width;
 

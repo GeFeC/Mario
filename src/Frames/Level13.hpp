@@ -9,54 +9,18 @@
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
-
 static auto run_frame_level13(AppState& app){
-  const auto textures = std::vector<TextureGroup>{
-    &textures::black,
-    &textures::dirt,
-    &textures::mushroom_bg,
-    &textures::mini_coin,
-    &textures::mushroom,
-    &textures::green_mushroom,
-    texture_groups::bricks,
-    texture_groups::mario,
-    texture_groups::coin,
-    texture_groups::goomba,
-    texture_groups::mushroom,
-    texture_groups::q_block,
+  auto level = LevelFrameSharedData{};
+  level.frame = AppState::Frame::Level13;
+  level.type = LevelState::Type::Vertical;
+  level.number = { 1, 3 };
+  level.extra_textures = {
     texture_groups::red_cloud,
-    texture_groups::spinning_coin,
-    texture_groups::red_bush,
-    texture_groups::red_hill,
-    texture_groups::red_pipe,
-    texture_groups::red_goomba,
-    texture_groups::yellow_goomba,
-    texture_groups::fire_flower,
-    texture_groups::green_koopa,
-    texture_groups::green_flying_koopa,
-    texture_groups::red_koopa,
-    texture_groups::red_flying_koopa,
-    texture_groups::beetle,
-    texture_groups::spike,
-    texture_groups::plant,
-    texture_groups::red_plant,
-    texture_groups::hammerbro
+    &textures::mushroom_bg
   };
 
-  const auto setup = [](auto& app){
-    fonts::normal.allocate(16);
-    LevelState::timer = 0.f;
-
+  run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
-    level.type = LevelState::Type::Vertical;
-    level.generate_hitbox_grid();
-
-    auto& player = level.player;
-    player.position = { config::BlockSize, 195.f * config::BlockSize };
-
-    level.stats.time = 600;
-    level.stats.level_major = 1;
-    level.stats.level_minor = 3;
 
     level.fire_bars.push_back(FireBarState({ 13, 183 }, 3));
     level.fire_bars.push_back(FireBarState({ 5, 154 }, 5));
@@ -74,12 +38,5 @@ static auto run_frame_level13(AppState& app){
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "../level13_1.csv");
     level_generator::generate_level(level, "../level13_2.csv");
-  };
-
-  const auto loop = [](auto& app){
-    level_controller(app, app.current_level);
-    render_level(app.current_level);
-  };
-
-  run_frame(app, AppState::Frame::Level13, textures, setup, loop);
+  });
 }
