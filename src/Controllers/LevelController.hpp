@@ -208,7 +208,7 @@ static auto level_controller(AppState& app, LevelState& level){
     level.load_delay -= window::delta_time;
     return;
   }
-
+  
   if (level.type == LevelState::Type::Vertical){
     level_handle_vertical_scroll(level);
   }
@@ -246,6 +246,13 @@ static auto level_controller(AppState& app, LevelState& level){
 
   level_blocks_controller(level);
   level_entities_controller(level);
+
+  //Counting coins
+  if (level.stats.coins >= 100) {
+    level.stats.coins -= 100;
+    level.stats.hp++;
+  }
+
 
   LevelState::timer += window::delta_time;
 }

@@ -16,9 +16,12 @@ static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
   //Interaction with player
   auto& player = level.player;
   const auto mushroom_block = BouncingBlockState(mushroom.position / config::BlockSize);
-  if (player_hit_block_above(player, mushroom_block)){
+  if (player_hit_block_above(player, mushroom_block) && !mushroom.should_be_pushed_out){
     mushroom.should_be_pushed_out = true;
     mushroom.is_visible = true;
+
+    if (player.position.x < mushroom_block.position.x) mushroom.set_direction(EntityState::DirectionRight);
+    if (player.position.x > mushroom_block.position.x) mushroom.set_direction(EntityState::DirectionLeft);
   } 
 
   entity_gravity(mushroom, level);

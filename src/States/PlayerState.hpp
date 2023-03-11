@@ -35,7 +35,7 @@ struct PlayerState : EntityState{
 
   int mobs_killed_in_row = 1;
 
-  float invincibility_delay = 100000.f;
+  float invincibility_delay = 0.f;
   float grow_state = 0.f;
   
   bool jump_cooldown = false;

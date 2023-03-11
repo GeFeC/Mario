@@ -56,7 +56,7 @@ static auto run_frame_level11(AppState& app){
     player.position = { config::BlockSize, config::BlockSize };
 
     level.camera_offset_y = 0.f;
-    level.stats.time = 250;
+    level.stats.time = 400;
     level.stats.level_major = 1;
     level.stats.level_minor = 1;
 
