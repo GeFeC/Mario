@@ -28,7 +28,7 @@
 #include <vector>
 
 struct StatsState{
-  int hp = 3;
+  int hp = 5;
   int score = 0;
   int time = 400;
   int coins = 0;

@@ -286,6 +286,8 @@ static auto generate_level(LevelState& level, const std::string& level_file){
 
     if (tile_id == 60) entities.plants.push_back(PlantState::make_green({ x + 0.5f, y + 1 }));
     if (tile_id == 63) entities.red_jumping_koopas.push_back(JumpingKoopaState::make_red({ x, y - 0.5f }));
+    if (tile_id == 65) entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green({ x, y - 0.5f }));
+    if (tile_id == 66) entities.hammerbros.push_back(HammerBroState::make({ x, y - 1.f }));
 
     if (tile_id == 69) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_right);
     if (tile_id == 70) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_left);
