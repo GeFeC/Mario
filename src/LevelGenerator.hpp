@@ -232,7 +232,8 @@ static auto index_to_texture = std::vector<TextureGroup>{
   &textures::green_mushroom,
   texture_groups::spinning_coin,
   texture_groups::fire_flower,
-  &textures::dirt
+    &textures::dirt,
+    &textures::dirt
 };
 
 static auto allocate_texture_if_needed(int texture_id){
@@ -304,6 +305,7 @@ static auto generate_level(LevelState& level, const std::string& level_file){
     if (tile_id == 77) put_qblock_with_coins(level, { x, y });
     if (tile_id == 78) put_qblock_with_flower(level, { x, y });
     if (tile_id == 79) { put_solid(level, { x, y }, textures::dirt); level.blocks.normal.back().is_visible = false; }
+    if (tile_id == 80) level.checkpoints.push_back({ x * config::BlockSize, y * config::BlockSize });
     
     counter++;
   }

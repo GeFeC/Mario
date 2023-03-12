@@ -41,8 +41,11 @@ static auto run_frame_levelbase(
       level.camera_offset_y = 0.f;
     }
 
-    player.position = { config::BlockSize, (level.get_size().y - 3.f) * config::BlockSize };
+    if (level.current_checkpoint == LevelState::CheckpointNotSet){
+      level.current_checkpoint = { config::BlockSize, (level.get_size().y - 3.f) * config::BlockSize };
+    }
 
+    player.position = level.current_checkpoint;
     level.stats.level_major = level_data.number.major;
     level.stats.level_minor = level_data.number.minor;
 

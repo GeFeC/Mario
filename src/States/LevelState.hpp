@@ -38,6 +38,7 @@ struct StatsState{
 
 struct LevelState{
   inline static constexpr auto MaxLevelScrollY = 188.f * config::BlockSize;
+  inline static constexpr auto CheckpointNotSet = glm::vec2(-1);
 
   inline static float timer = 0.f;
   inline static auto blink_state = 0;
@@ -90,6 +91,9 @@ struct LevelState{
     std::vector<BlockState> bushes;
     std::vector<CloudState> clouds;
   } background;
+
+  std::vector<glm::vec2> checkpoints;
+  glm::vec2 current_checkpoint = CheckpointNotSet;
 
   util::InfiniteCounter fireball_counter;
   util::InfiniteCounter hammer_counter;

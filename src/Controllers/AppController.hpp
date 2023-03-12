@@ -14,12 +14,14 @@ static auto app_update_level(AppState& app){
   const auto stats = app.current_level.stats;
   const auto player_form = app.current_level.player.form;
   const auto player_growth = app.current_level.player.growth;
+  const auto current_checkpoint = app.current_level.current_checkpoint;
 
   app.current_level = LevelState{};
 
   app.current_level.stats = stats;
   app.current_level.player.form = player_form;
   app.current_level.player.growth = player_growth;
+  app.current_level.current_checkpoint = current_checkpoint;
 }
 
 static auto app_controller(AppState& app){

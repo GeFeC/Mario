@@ -30,8 +30,6 @@ static auto run_frame_level14(AppState& app){
     level.fire_bars.push_back(FireBarState({ 184, 7 }, 5));
 
     level_generator::put_qblock_with_coins(level, { 121, 3 }, 5);
-
-    level.player.position.x = config::BlockSize;
   });
 
 }

@@ -149,6 +149,7 @@ static auto level_finish(LevelState& level, AppState& app){
 
       if (level.finish_delay <= 0.f){
         app.current_frame = static_cast<AppState::Frame>(static_cast<int>(app.current_frame) + 1);
+        app.current_level.current_checkpoint = LevelState::CheckpointNotSet;
       }
     }
   }
@@ -176,6 +177,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
     if (level.stats.hp == 0){
       level.stats = StatsState{};
       app.current_frame = AppState::Frame::Level11;
+      level.current_checkpoint = LevelState::CheckpointNotSet;
     }
   }
 }
@@ -201,6 +203,20 @@ static auto level_handle_vertical_scroll(LevelState& level){
   }
 }
 
+static auto level_checkpoints_controller(LevelState& level){
+  auto& player = level.player;
+
+  for (const auto& checkpoint : level.checkpoints){
+    if (level.type == LevelState::Type::Horizontal && player.position.x >= checkpoint.x){
+      level.current_checkpoint = checkpoint;
+    }
+
+    if (level.type == LevelState::Type::Vertical && player.position.y <= checkpoint.y){
+      level.current_checkpoint = checkpoint;
+    }
+  }
+}
+
 static auto level_controller(AppState& app, LevelState& level){
   //Level loading
   if (level.load_delay > 0.f) {
@@ -213,6 +229,7 @@ static auto level_controller(AppState& app, LevelState& level){
   }
 
   level_restart_when_player_fell_out(app);
+  level_checkpoints_controller(level);
 
   //Blinking and counters
   LevelState::blink_state = blink_controller();
