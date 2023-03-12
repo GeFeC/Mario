@@ -25,7 +25,7 @@ static auto hammerbro_controller(HammerBroState& hammerbro, LevelState& level){
 
   auto walk_frames = &textures::hammerbro_walk;
 
-  if (hammerbro.throw_delay <= 0.f){
+  if (hammerbro.throw_delay <= 0.f && hammerbro.vertical_flip == Drawable::Flip::NoFlip){
     hammerbro.throw_counter.run();
 
     const auto spawn_hammer_if_can = [&](int value){
