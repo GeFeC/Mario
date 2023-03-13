@@ -7,7 +7,7 @@
 
 static auto fireball_controller(FireballState& fireball, const LevelState& level){
   if (fireball.is_on_ground){
-    fireball.gravity = -8.f;
+    fireball.gravity = FireballState::BouncePower;
     fireball.is_on_ground = false;
   }
 

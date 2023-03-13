@@ -7,7 +7,7 @@
 #include "Util/Generator.hpp"
 
 struct HammerBroState : MonsterState{
-  static constexpr auto MaxWalkDistance = config::BlockSize * 2.f;
+  static constexpr auto MaxWalkDistance = config::BlockSize * 1.f;
   static constexpr auto JumpPower = -30.f;
   static constexpr auto WeakJumpPower = -20.f;
   static constexpr auto HammerThrowForce = -25.f;

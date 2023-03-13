@@ -41,6 +41,8 @@ struct ExplosionState : BlockBase{
 
 
 struct FireballState : EntityState{
+  inline static constexpr auto BouncePower = -12.f;
+
   ExplosionState explosion;
 
   FireballState(){

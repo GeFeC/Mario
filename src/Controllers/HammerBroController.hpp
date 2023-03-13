@@ -58,6 +58,7 @@ static auto hammerbro_controller(HammerBroState& hammerbro, LevelState& level){
   entity_run_movement_animation(hammerbro, *walk_frames);
 
   //Interaction with player
+  entity_die_when_hit_by_fireball(hammerbro, level.player, level.stats);
   entity_die_when_on_bouncing_block(hammerbro, level);
   entity_kill_player_on_touch(hammerbro, level.player);
   entity_die_when_stomped(hammerbro, level.player, level.stats, [&]{

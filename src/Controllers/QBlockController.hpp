@@ -37,6 +37,7 @@ inline auto q_block_controller(QBlockState& block, LevelState& level){
   auto& player = level.player;
   if (player_hit_block_above(player, block) && !player.is_dead && block.bounce_state.can_bounce){
     bounce::start(block);
+    block.is_visible = true;
 
     block.texture = &textures::null_block;
     --block.bounce_state.bounces_count;

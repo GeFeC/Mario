@@ -21,13 +21,13 @@ struct PlayerState : EntityState{
     Small,
     Medium,
     Big
-  } growth = Growth::Small;
+  } growth = Growth::Big;
 
   enum class Form{
     Normal,
     Fire,
     Black
-  } form = Form::Normal;
+  } form = Form::Fire;
 
   util::LoopedCounter growth_counter;
   util::LoopedCounter transformation_counter;
@@ -38,6 +38,7 @@ struct PlayerState : EntityState{
   float invincibility_delay = 0.f;
   float grow_state = 0.f;
   
+  bool can_move = true;
   bool jump_cooldown = false;
   bool is_growing_up = false;
   bool is_squating = false;
