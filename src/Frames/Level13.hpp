@@ -30,7 +30,7 @@ static auto run_frame_level13(AppState& app){
     level.fire_bars.push_back(FireBarState({ 7, 95 }, 7));
     level.fire_bars.push_back(FireBarState({ 7, 74 }, 5));
     level.fire_bars.push_back(FireBarState({ 16, 39 }, 5));
-    level.fire_bars.push_back(FireBarState({ 4, 4 }, 7));
+    level.fire_bars.push_back(FireBarState({ 4, 54 }, 7));
 
     level_generator::put_qblock_with_coins(level, { 7, 25 }, 5);
     level_generator::put_qblock_with_coins(level, { 4, 115 }, 5);

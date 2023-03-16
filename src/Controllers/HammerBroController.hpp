@@ -13,14 +13,30 @@
 static auto hammer_controller(HammerState& hammer, LevelState& level){
   hammer.current_texture = &textures::hammer[level.hammer_counter.int_value()];
 
+  if (!hammer.is_active) return;
+
   entity_kill_player_on_touch(hammer, level.player);
   entity_movement(hammer, level);
   entity_gravity(hammer, level);
 
-  if (hammer.position.y > config::InitialWindowHeight) hammer.is_active = false;
+  if (hammer.position.y > level.camera_offset_y + config::BlocksInColumn * config::BlockSize) {
+    hammer.is_active = false;
+    hammer.is_visible = false;
+  }
 }
 
 static auto hammerbro_controller(HammerBroState& hammerbro, LevelState& level){
+  for (auto& hammer : hammerbro.hammer_generator.items){
+    hammer_controller(hammer, level);
+  }
+
+  if (level.player.position.y - hammerbro.position.y >= config::BlockSize * config::BlocksInColumn){
+    hammerbro.is_active = false;
+  }
+
+  entity_become_active_when_seen(hammerbro, level);
+  if (!hammerbro.is_active) return;
+
   hammerbro.throw_delay -= window::delta_time;
 
   auto walk_frames = &textures::hammerbro_walk;
@@ -46,10 +62,6 @@ static auto hammerbro_controller(HammerBroState& hammerbro, LevelState& level){
 
   for (auto& p : hammerbro.points_generator.items){
     points_particles_controller(p);
-  }
-
-  for (auto& hammer : hammerbro.hammer_generator.items){
-    hammer_controller(hammer, level);
   }
 
   auto copy = textures::hammerbro_walk[0];

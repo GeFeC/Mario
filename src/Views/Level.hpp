@@ -288,7 +288,7 @@ static auto get_screen_scroll(const LevelState& level){
   }
 
   if (level.type == LevelState::Type::Vertical){
-    screen_scroll.y = std::clamp(level.camera_offset_y, 0.f, LevelState::MaxLevelScrollY);
+    screen_scroll.y = std::clamp(level.camera_offset_y, 50.f * config::BlockSize, LevelState::MaxLevelScrollY + 50.f * config::BlockSize);
   }
 
   return screen_scroll;

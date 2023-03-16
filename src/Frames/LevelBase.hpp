@@ -37,10 +37,6 @@ static auto run_frame_levelbase(
 
     auto& player = level.player;
 
-    if (level.type == LevelState::Type::Horizontal) {
-      level.camera_offset_y = 0.f;
-    }
-
     if (level.current_checkpoint == LevelState::CheckpointNotSet){
       level.current_checkpoint = { config::BlockSize, (level.get_size().y - 3.f) * config::BlockSize };
     }
@@ -49,7 +45,14 @@ static auto run_frame_levelbase(
     level.stats.level_major = level_data.number.major;
     level.stats.level_minor = level_data.number.minor;
 
-    level.stats.time = level.type == LevelState::Type::Horizontal ? 400 : 600;
+    level.stats.time = 400.f;
+
+    if (level.type == LevelState::Type::Horizontal) {
+      level.camera_offset_y = 0.f;
+    }
+    else{
+      level.camera_offset_y = player.position.y - config::BlocksInColumn / 2.f * config::BlockSize;
+    }
 
     extra_setup(app);
 

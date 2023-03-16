@@ -42,6 +42,8 @@ namespace texture_groups{
 
   inline auto green_flying_koopa = TextureGroup({
     &textures::green_koopa_dead,
+    &textures::green_koopa_walk[0],
+    &textures::green_koopa_walk[1],
     &textures::green_flying_koopa_walk[0],
     &textures::green_flying_koopa_walk[1]
   });
@@ -54,6 +56,8 @@ namespace texture_groups{
 
   inline auto red_flying_koopa = TextureGroup({
     &textures::red_koopa_dead,
+    &textures::red_koopa_walk[0],
+    &textures::red_koopa_walk[1],
     &textures::red_flying_koopa_walk[0],
     &textures::red_flying_koopa_walk[1]
   });

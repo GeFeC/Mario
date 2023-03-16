@@ -21,13 +21,13 @@ struct PlayerState : EntityState{
     Small,
     Medium,
     Big
-  } growth = Growth::Big;
+  } growth = Growth::Small;
 
   enum class Form{
     Normal,
     Fire,
     Black
-  } form = Form::Fire;
+  } form = Form::Normal;
 
   util::LoopedCounter growth_counter;
   util::LoopedCounter transformation_counter;

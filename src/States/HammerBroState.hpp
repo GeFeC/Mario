@@ -46,7 +46,6 @@ struct HammerBroState : MonsterState{
     bro.set_direction(DirectionLeft);
     bro.jump_delay = new_jump_delay();
     bro.throw_delay = new_throw_delay();
-    bro.is_active = true;
     bro.reward_for_killing = 500;
 
     return bro;

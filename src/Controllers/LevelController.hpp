@@ -133,7 +133,10 @@ static auto level_finish(LevelState& level, AppState& app){
 
   if (level.is_finished){
     level.score_adding_after_finish_delay -= window::delta_time;
-    level.player.position.y += window::delta_time * config::BlockSize;
+
+    if (level.player.position.y / config::BlockSize < finish.y + 1){
+      level.player.position.y += window::delta_time * config::BlockSize;
+    }
 
     if (level.stats.time > 0) {
       if (level.score_adding_after_finish_delay <= 0.f){
@@ -141,20 +144,20 @@ static auto level_finish(LevelState& level, AppState& app){
 
         level.score_adding_after_finish_delay = 1.f / 60.f;
         level.stats.time -= multiplier;
-        level.stats.score += 50 * multiplier;
+        level.stats.score += 10 * multiplier;
       }
     }
     else{
       level.finish_delay -= window::delta_time;
 
       if (level.finish_delay <= 0.f){
-        app.current_frame = static_cast<AppState::Frame>(static_cast<int>(app.current_frame) + 1);
+        app.current_frame = (app.current_frame | util::as<int>) + 1 | util::as<AppState::Frame>;
         app.current_level.current_checkpoint = LevelState::CheckpointNotSet;
       }
     }
   }
 
-  if (player.position.y / config::BlockSize < finish.y - 1) return;
+  if (player.position.y / config::BlockSize > finish.y - 1) return;
   if (player.position.x / config::BlockSize != util::in_range(finish.x, finish.x + 1)) return;
 
   if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
@@ -183,23 +186,15 @@ static auto level_restart_when_player_fell_out(AppState& app){
 }
 
 static auto level_handle_vertical_scroll(LevelState& level){
-  static auto camera_change = 0.f;
   auto& player = level.player;
   auto player_y = player.position.y - config::BlockSize + player.size.y;
   
-  if (player_y - level.camera_offset_y < 5 * config::BlockSize && player.gravity < 0.f){
-    level.camera_offset_y = player_y - 5 * config::BlockSize;
+  if (player_y - level.camera_offset_y < LevelState::MinPlayerRelativeY && player.gravity < 0.f){
+    level.camera_offset_y = player_y - LevelState::MinPlayerRelativeY;
   }
 
-  if (player_y - level.camera_offset_y > 9 * config::BlockSize && player.gravity > 0.f){
-    level.camera_offset_y = player_y - 9 * config::BlockSize;
-  }
-
-  if (camera_change < 0.f){
-    const auto change_speed = std::min(window::delta_time * 1600.f, -camera_change);
-
-    level.camera_offset_y -= change_speed;
-    camera_change += change_speed;
+  if (player_y - level.camera_offset_y > LevelState::MaxPlayerRelativeY && player.gravity > 0.f){
+    level.camera_offset_y = player_y - LevelState::MaxPlayerRelativeY;
   }
 }
 

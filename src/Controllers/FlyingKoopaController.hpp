@@ -15,9 +15,14 @@ static auto flying_koopa_controller(
   if (koopa.has_wings && koopa.should_collide){
     const auto previous_x = koopa.position.x;
 
+    auto distance = glm::sqrt(
+      glm::pow(koopa.movement_axis.x, 2) +
+      glm::pow(koopa.movement_axis.y, 2)
+    );
+
     koopa.position = glm::vec2(
-      koopa.initial_position.x + glm::sin(timer) * config::BlockSize * koopa.movement_axis.x,
-      koopa.initial_position.y + glm::sin(timer) * config::BlockSize * koopa.movement_axis.y
+      koopa.initial_position.x + glm::sin(timer / distance * 5) * config::BlockSize * koopa.movement_axis.x,
+      koopa.initial_position.y + glm::sin(timer / distance * 5) * config::BlockSize * koopa.movement_axis.y
     );
 
     if (previous_x - koopa.position.x >= 0.f){

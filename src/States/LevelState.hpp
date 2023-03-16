@@ -37,8 +37,11 @@ struct StatsState{
 };
 
 struct LevelState{
-  inline static constexpr auto MaxLevelScrollY = 188.f * config::BlockSize;
+  inline static constexpr auto VerticalLevelHeight = 150.f;
+  inline static constexpr auto MaxLevelScrollY = (VerticalLevelHeight - config::BlocksInColumn) * config::BlockSize;
   inline static constexpr auto CheckpointNotSet = glm::vec2(-1);
+  inline static constexpr auto MinPlayerRelativeY = 5 * config::BlockSize;
+  inline static constexpr auto MaxPlayerRelativeY = 9 * config::BlockSize;
 
   inline static float timer = 0.f;
   inline static auto blink_state = 0;
@@ -132,7 +135,7 @@ struct LevelState{
 
   auto get_finishing_pipe_position() const{
     if (type == Type::Horizontal) return glm::vec2(197, 8);
-    return glm::vec2(16, 4);
+    return glm::vec2(16, 55);
   }
 
   auto& get_hitbox_grid_element(const glm::vec2& position){
