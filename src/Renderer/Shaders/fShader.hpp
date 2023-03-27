@@ -11,8 +11,10 @@ namespace shaders{
     uniform sampler2D pixel_map;
     uniform vec4 f_color;
 
+    uniform int is_texture = 1;
     uniform int is_glyph = 0;
     uniform int is_shadow = 0;
+    uniform int is_highlighted = 0;
 
     out vec4 color;
 
@@ -22,8 +24,10 @@ namespace shaders{
 
       const float shadow = 0.1;
       vec4 face_color = 
-        texture_pixel * (1 - is_glyph) * (1 - is_shadow)
-        + vec4(shadow, shadow, shadow, texture_pixel.a * 0.5) * is_shadow * (1 - is_glyph);
+        texture_pixel * (1 - is_glyph) * (1 - is_shadow) * (is_texture)
+        + f_color * (1 - is_texture) * (1 - is_shadow)
+        + vec4(shadow, shadow, shadow, texture_pixel.a * 0.5) * is_shadow * (1 - is_glyph)
+        + vec4(1, 1, 1, texture_pixel.a) * is_highlighted * (1 - is_shadow);
 
       vec4 glyph_color = 
         is_glyph * vec4(1.0, 1.0, 1.0, alpha) * (1 - is_shadow)

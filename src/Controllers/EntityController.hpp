@@ -84,7 +84,8 @@ static auto entity_movement(EntityState& entity, const LevelState& level){
   entity.position.x -= left_boost;
 }
 
-static auto entity_gravity(EntityState& entity, const LevelState& level){
+template<typename Callable>
+static auto entity_gravity_base(EntityState& entity, const LevelState& level, const Callable& collision_callback){
   if (entity.is_dead && entity.death_delay > 0.f) return;
   if (!entity.is_active) return;
 
@@ -96,6 +97,17 @@ static auto entity_gravity(EntityState& entity, const LevelState& level){
   auto position_increaser = entity.gravity * window::delta_time * 70.f;
 
   detect_entity_collision_with_level(entity, level, [&](const auto& collision_state){
+    collision_callback(collision_state, position_increaser);
+  });
+
+  static constexpr auto MaxGravityForce = 100.f;
+
+  position_increaser = std::min(position_increaser, MaxGravityForce);
+  entity.position.y += position_increaser;
+}
+
+static auto entity_gravity(EntityState& entity, const LevelState& level){
+  entity_gravity_base(entity, level, [&](const auto& collision_state, auto& position_increaser){
     if (entity.death_delay <= 0.f) return;
 
     if (collision_state.distance_above < -position_increaser){
@@ -108,11 +120,6 @@ static auto entity_gravity(EntityState& entity, const LevelState& level){
       position_increaser = collision_state.distance_below;
     }
   });
-
-  static constexpr auto MaxGravityForce = 100.f;
-
-  position_increaser = std::min(position_increaser, MaxGravityForce);
-  entity.position.y += position_increaser;
 }
 
 static auto entity_turn_around(MonsterState& entity){
@@ -202,14 +209,21 @@ static auto entity_is_hit_by_fireball(MonsterState& entity, FireballState& fireb
   return collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active && entity.should_collide;
 }
 
-static auto entity_die_when_hit_by_fireball(MonsterState& entity, PlayerState& player, StatsState& stats){
+template<typename Callable>
+static auto entity_react_when_hit_by_fireball(MonsterState& entity, PlayerState& player, StatsState& stats, const Callable& callback){
   for (auto& fireball : player.fireballs){
     if (entity_is_hit_by_fireball(entity, fireball)){
-      entity_bounce_die(entity, stats);
-
-      fireball.acceleration.left = fireball.acceleration.right = 0.f;
+      callback(fireball);
     }
   } 
+}
+
+static auto entity_die_when_hit_by_fireball(MonsterState& entity, PlayerState& player, StatsState& stats){
+  entity_react_when_hit_by_fireball(entity, player, stats, [&](FireballState& fireball){
+    entity_bounce_die(entity, stats);
+
+    fireball.acceleration.left = fireball.acceleration.right = 0.f;
+  });
 };  
 
 static auto entity_endure_fireball(MonsterState& entity, PlayerState& player){

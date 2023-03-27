@@ -15,6 +15,11 @@ namespace texture_groups{
     &textures::spinning_coin[2],
     &textures::spinning_coin[3]
   });
+  
+  inline auto king_goomba = TextureGroup({
+    &textures::king_goomba_walk[0],
+    &textures::king_goomba_walk[1]
+  });
 
   inline auto goomba = TextureGroup({
     &textures::goomba_dead,

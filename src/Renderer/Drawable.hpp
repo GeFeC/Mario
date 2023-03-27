@@ -19,3 +19,9 @@ struct Drawable{
 
   bool is_visible = true;
 };
+
+struct PlainDrawable{
+  glm::vec2 position;
+  glm::vec2 size;
+  glm::vec4 color;
+};

@@ -7,6 +7,7 @@
 #include "Frames/Level13.hpp"
 #include "Frames/Level14.hpp"
 #include "Frames/Level15.hpp"
+#include "Frames/Level16.hpp"
 
 #include "Util/Util.hpp"
 #include "config.hpp"
@@ -20,6 +21,7 @@ static auto app_update_level(AppState& app){
   app.current_level = LevelState{};
 
   app.current_level.stats = stats;
+  app.current_level.stats.boss_hp = nullptr;
   app.current_level.player.form = player_form;
   app.current_level.player.growth = player_growth;
   app.current_level.current_checkpoint = current_checkpoint;
@@ -50,6 +52,11 @@ static auto app_controller(AppState& app){
 
   if (frame == AppState::Frame::Level15){
     run_frame_level15(app);
+    app_update_level(app);
+  }
+
+  if (frame == AppState::Frame::Level16){
+    run_frame_level16(app);
     app_update_level(app);
   }
 }

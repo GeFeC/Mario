@@ -66,7 +66,7 @@ static auto run_frame_levelbase(
   };
 
   const auto loop = [](auto& app){
-    level_controller(app, app.current_level);
+    level_controller(app);
     render_level(app.current_level);
   };
 

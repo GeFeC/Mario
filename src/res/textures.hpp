@@ -137,6 +137,11 @@ namespace textures{
     Texture("flower/3.png")
   };
 
+  inline auto king_goomba_walk = std::array<Texture, 2>{
+    Texture("entity/goomba/king0.png"),
+    Texture("entity/goomba/king1.png")
+  };
+
   inline auto goomba_walk = std::array<Texture, 2>{
     Texture("entity/goomba/0.png"),
     Texture("entity/goomba/1.png")

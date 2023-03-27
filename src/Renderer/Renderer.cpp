@@ -51,17 +51,36 @@ static auto draw_element(const Drawable& drawable, bool is_glyph, const glm::vec
 
   program::set_uniform("is_glyph", is_glyph);
   program::set_uniform("is_shadow", renderer::shadow_mode);
+  program::set_uniform("is_highlighted", renderer::highlight_mode);
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-auto renderer::draw(const Drawable& drawable, bool is_glyph) noexcept -> void{
+auto renderer::draw(const Drawable& drawable, bool is_glyph) -> void{
   drawable.texture->set_mag_filter(GL_NEAREST);
   drawable.texture->set_min_filter(GL_NEAREST_MIPMAP_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
   draw_element(drawable, is_glyph, glm::vec2(0));
+}
+
+auto renderer::draw_plain(const PlainDrawable& drawable) -> void{
+  program::set_uniform("f_color", drawable.color);
+  program::set_uniform("is_texture", 0);
+
+  program::set_uniform("rect", {
+    glm::round(drawable.position.x + renderer::shadow_mode * ShadowOffset),
+    glm::round(drawable.position.y + renderer::shadow_mode * ShadowOffset),
+    glm::round(drawable.size.x),
+    glm::round(drawable.size.y)
+  });
+
+  program::set_uniform("is_shadow", renderer::shadow_mode);
+  program::set_uniform("is_glyph", false);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+
+  program::set_uniform("is_texture", 1);
 }
 
 auto renderer::print(const Text& text, const glm::vec2& offset) -> void{

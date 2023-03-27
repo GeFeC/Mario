@@ -39,7 +39,9 @@ static auto render_clouds(const LevelState& level, const glm::vec2& screen_scrol
   }
 }
 
-static auto render_stats(const StatsState& stats){
+static auto render_stats(const LevelState& level){
+  const auto& stats = level.stats;
+
   auto body = std::ostringstream(); 
   body 
     << std::setw(6) << std::setfill('0') << stats.score << "    x"
@@ -48,9 +50,10 @@ static auto render_stats(const StatsState& stats){
     << std::setw(3) << std::setfill('0') << stats.time;
 
   const auto font_size = fonts::normal.size * 3.5f;
+  static constexpr auto WindowWidth = config::InitialWindowWidth;
 
   auto text = Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
-  const auto center_x = config::InitialWindowWidth / 2 - text.get_size().x / 2;
+  const auto center_x = WindowWidth / 2 - text.get_size().x / 2;
   const auto step_y = 2.f / 3.f * config::BlockSize;
 
   text.set_position({ center_x, step_y });
@@ -66,6 +69,21 @@ static auto render_stats(const StatsState& stats){
     glm::vec2(font_size),
     &textures::mini_coin
   });
+
+  if (level.type == LevelState::Type::Boss && stats.boss_hp != nullptr){
+    text.set_text("BOSS");
+    text.set_position(glm::vec2(WindowWidth / 2.f - text.get_size().x / 2.f, step_y * 4));
+
+    renderer::print(text, glm::vec2(0));
+
+    static constexpr auto MaxBossBarSize = glm::vec2(100.f * 6.f, 50.f);
+
+    renderer::draw_plain(PlainDrawable{
+      glm::vec2(WindowWidth / 2 - MaxBossBarSize.x / 2, step_y * 5),
+      glm::vec2(*stats.boss_hp * MaxBossBarSize.x / stats.max_boss_hp, MaxBossBarSize.y),
+      glm::vec4(1.f)
+    });
+  }
 }
 
 static auto render_plants(const LevelState& level, const glm::vec2& screen_scroll){
@@ -221,7 +239,6 @@ static auto render_loading_screen(const LevelState& level){
   });
 
   //Header:
-
   static constexpr auto WindowWidth = config::InitialWindowWidth;
   static constexpr auto WindowHeight = config::InitialWindowHeight;
 
@@ -347,12 +364,18 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
+    if (level.type == LevelState::Type::Boss){
+      render_boss(*level.bosses.king_goomba, screen_scroll);
+    }
+  });
+
+  renderer::draw_with_shadow([&]{
     if (!level.is_finished) render_player(level.player, screen_scroll);
 
     if (level.load_delay > 0.f){
       render_loading_screen(level);
     }
-    render_stats(level.stats);
+    render_stats(level);
   });
 
   //Points particles

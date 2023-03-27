@@ -18,6 +18,7 @@
 #include "States/BeetleState.hpp"
 #include "States/FireBarState.hpp"
 #include "States/HammerBroState.hpp"
+#include "States/BossState.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -25,6 +26,7 @@
 #include "res/textures.hpp"
 #include "Util/Util.hpp"
 
+#include <memory>
 #include <vector>
 
 struct StatsState{
@@ -34,6 +36,9 @@ struct StatsState{
   int coins = 0;
   int level_major = 1;
   int level_minor = 1;
+
+  int max_boss_hp = 0;
+  int* boss_hp = nullptr;
 };
 
 struct LevelState{
@@ -50,7 +55,8 @@ struct LevelState{
 
   enum class Type{
     Horizontal,
-    Vertical
+    Vertical,
+    Boss
   } type = Type::Horizontal;
 
   util::vector2d<int> hitbox_grid;
@@ -89,6 +95,10 @@ struct LevelState{
     std::vector<HammerBroState> hammerbros;
   } entities;
 
+  struct Bosses{
+    std::unique_ptr<KingGoombaState> king_goomba; 
+  } bosses;
+
   struct Background{
     std::vector<BlockState> hills;
     std::vector<BlockState> bushes;
@@ -110,19 +120,17 @@ struct LevelState{
 
   LevelState() : fireball_counter(4.f, 20.f), hammer_counter(4.f, 10.f) {}
 
-  auto generate_hitbox_grid(){
-    if (type == Type::Horizontal){
-      hitbox_grid.resize(config::HorizontalLevelWidth, std::vector<int>(config::BlocksInColumn, 0));
-      return;
-    } 
-
-    hitbox_grid.resize(config::VerticalLevelWidth, std::vector<int>(config::HorizontalLevelWidth, 0));
-  }
-
   auto get_size() const{
     if (type == Type::Horizontal){
       return glm::vec2(
         config::HorizontalLevelWidth,
+        config::BlocksInColumn
+      );
+    }
+
+    if (type == Type::Boss){
+      return glm::vec2(
+        config::BlocksInRow,
         config::BlocksInColumn
       );
     }
@@ -133,9 +141,14 @@ struct LevelState{
     );
   }
 
+  auto generate_hitbox_grid(){
+    hitbox_grid.resize(get_size().x, std::vector<int>(get_size().y, 0));
+  }
+
   auto get_finishing_pipe_position() const{
     if (type == Type::Horizontal) return glm::vec2(197, 8);
-    return glm::vec2(16, 55);
+    if (type == Type::Vertical) return glm::vec2(16, 55);
+    return glm::vec2(-1, -1);
   }
 
   auto& get_hitbox_grid_element(const glm::vec2& position){

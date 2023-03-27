@@ -8,6 +8,7 @@
 #include "States/PointsParticlesState.hpp"
 #include "States/FireBarState.hpp"
 #include "States/HammerBroState.hpp"
+#include "States/BossState.hpp"
 
 #include "Util/Util.hpp"
 
@@ -17,8 +18,11 @@
 static auto is_component_on_screen(const util::Rect& component, const glm::vec2& offset){
   using config::BlockSize, config::BlocksInRow, config::BlocksInColumn;
 
-  const auto is_x = component.position.x + component.size.x - offset.x == util::in_range(0, (BlocksInRow + 1) * BlockSize);
-  const auto is_y = component.position.y + component.size.y - offset.y == util::in_range(0, (BlocksInColumn + 1) * BlockSize);
+  const auto& position = component.position;
+  const auto& size = component.size;
+
+  const auto is_x = position.x - offset.x == util::in_range(-size.x, BlocksInRow * BlockSize);
+  const auto is_y = position.y - offset.y == util::in_range(-size.y, BlocksInColumn * BlockSize);
 
   return is_x && is_y;
 }
@@ -33,6 +37,12 @@ static auto render_entity(const EntityState& entity, const glm::vec2& offset){
     { entity.direction * entity.texture_flip, entity.vertical_flip },
     entity.is_visible
   });
+}
+
+static auto render_boss(const BossState& boss, const glm::vec2& offset){
+  renderer::highlight_mode = boss.is_highlighted;
+  render_entity(boss, offset);
+  renderer::highlight_mode = false;
 }
 
 static auto render_points_particles(const std::vector<PointsParticlesState>& points, const glm::vec2& offset){

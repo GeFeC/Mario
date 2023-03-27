@@ -13,7 +13,7 @@
 
 class Text :public Drawable{
 private:
-  struct Glyph :public Drawable{
+  struct Glyph : Drawable{
     glm::vec4 color;
     glm::vec2 bearing;
     int advance;
@@ -27,7 +27,6 @@ private:
   
   float largest_glyph_bearing_y = 0.f;
   float font_size = 0.f;
-  float font_scale = 0.f;
 
   auto set_position_for_every_glyph_(const glm::vec2& position) -> void;
   auto get_text_width_() -> float;
@@ -35,6 +34,8 @@ private:
   auto setup_text_height_() -> void;
 
 public:
+  float font_scale = 0.f;
+
   Text();
   Text(Font* font, const std::string& label, float scale = 1.f);
 

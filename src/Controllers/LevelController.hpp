@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Controllers/KingGoombaController.hpp"
 #include "States/LevelState.hpp"
 #include "States/LoopedCounter.hpp"
 #include "States/AppState.hpp"
@@ -212,7 +213,18 @@ static auto level_checkpoints_controller(LevelState& level){
   }
 }
 
-static auto level_controller(AppState& app, LevelState& level){
+static auto level_bosses(AppState& app){
+  auto& level = app.current_level;
+
+  switch(app.current_frame){
+    case AppState::Frame::Level16: king_goomba_controller(*level.bosses.king_goomba, level); break;
+    default: break;
+  }
+}
+
+static auto level_controller(AppState& app){
+  auto& level = app.current_level;
+
   //Level loading
   if (level.load_delay > 0.f) {
     level.load_delay -= window::delta_time;
@@ -262,7 +274,11 @@ static auto level_controller(AppState& app, LevelState& level){
   if (level.stats.coins >= 100) {
     level.stats.coins -= 100;
     level.stats.hp++;
+  }
 
+  //Bosses
+  if (level.type == LevelState::Type::Boss){
+    level_bosses(app);
   }
 
   LevelState::timer += window::delta_time;

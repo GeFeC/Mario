@@ -30,7 +30,7 @@ static auto run_frame(
     loop(app_state);
 
     window::update();
-    window::delta_time = std::min(glfwGetTime() - frame_start_time, 1.0 / 30.0);
+    window::delta_time = std::min(glfwGetTime() - frame_start_time, 1.0 / 30.0); //Min 30 FPS
   }
 
   app_state.should_restart_current_frame = false;

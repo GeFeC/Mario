@@ -4,7 +4,7 @@
 
 struct AppState{
   enum class Frame{
-    Level11, Level12, Level13, Level14, Level15
+    Level11, Level12, Level13, Level14, Level15, Level16
   };
 
   bool should_restart_current_frame = false;

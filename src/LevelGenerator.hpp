@@ -253,16 +253,13 @@ static auto generate_level(LevelState& level, const std::string& level_file){
   auto tile_id = 0;
   auto counter = 0;
 
-  const auto lines = std::count(file_content.begin(), file_content.end(), '\n');
-  const auto level_width = lines == 200 ? config::VerticalLevelWidth : config::HorizontalLevelWidth;
-
   while(ss >> tile_id){
     if (tile_id >= 0){
       allocated_textures.insert(tile_id);
     }
 
-    const auto x = counter % level_width;
-    const auto y = counter / level_width;
+    const auto x = counter % (level.get_size().x | util::as<int>);
+    const auto y = counter / (level.get_size().x | util::as<int>);
 
     auto& entities = level.entities;
     using config::BlockSize;

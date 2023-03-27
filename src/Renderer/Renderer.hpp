@@ -6,9 +6,11 @@
 namespace renderer{
   static constexpr auto ShadowOffset = 8.f;
   inline bool shadow_mode = false;
+  inline bool highlight_mode = false;
 
   auto init() -> void;
-  auto draw(const Drawable& drawable, bool is_glyph = false) noexcept -> void;
+  auto draw(const Drawable& drawable, bool is_glyph = false) -> void;
+  auto draw_plain(const PlainDrawable& drawable) -> void;
   auto print(const Text& text, const glm::vec2& offset) -> void;
 
   template<typename F>
