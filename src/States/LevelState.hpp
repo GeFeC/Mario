@@ -32,7 +32,7 @@
 struct StatsState{
   int hp = 5;
   int score = 0;
-  int time = 400;
+  int time = 100;
   int coins = 0;
   int level_major = 1;
   int level_minor = 1;

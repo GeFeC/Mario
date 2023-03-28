@@ -5,6 +5,7 @@
 namespace config{
   static constexpr auto FontsSourceDir = "../res/fonts/";
   static constexpr auto TexturesSourceDir = "../res/textures/";
+  static constexpr auto LevelsSourceDir = "../res/levels/";
   static constexpr auto BigValue = 999999;
 
   static constexpr auto BlockSize = 96.f;

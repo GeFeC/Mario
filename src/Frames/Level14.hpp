@@ -17,9 +17,9 @@ static auto run_frame_level14(AppState& app){
     auto& level = app.current_level;
 
     level_generator::generate_horizontal_level_clouds(level);
-    level_generator::generate_level(level, "../level14_1.csv");
-    level_generator::generate_level(level, "../level14_2.csv");
-    level_generator::generate_level(level, "../level14_3.csv");
+    level_generator::generate_level(level, "level14_1.csv");
+    level_generator::generate_level(level, "level14_2.csv");
+    level_generator::generate_level(level, "level14_3.csv");
 
     level.fire_bars.push_back(FireBarState({ 10, 8 }, 3));
     level.fire_bars.push_back(FireBarState({ 17, 6 }, 3));

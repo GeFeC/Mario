@@ -54,7 +54,7 @@ static auto run_frame_level15(AppState& app){
     level_generator::put_qblock_with_coins(level, { 13, 63 }, 10);
 
     level_generator::generate_vertical_level_clouds(level);
-    level_generator::generate_level(level, "../level15_1.csv");
-    level_generator::generate_level(level, "../level15_2.csv");
+    level_generator::generate_level(level, "level15_1.csv");
+    level_generator::generate_level(level, "level15_2.csv");
   });
 }

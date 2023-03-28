@@ -138,6 +138,7 @@ static auto entity_turn_around(MonsterState& entity){
 
 static auto entity_kill_player_on_touch(EntityState& entity, PlayerState& player){
   if (entity.is_dead) return;
+  if (player.is_dead) return;
   if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
 
   if (!player_is_on_entity(player, entity) && collision::is_hovering(player, entity)){

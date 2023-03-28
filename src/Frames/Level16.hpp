@@ -36,7 +36,7 @@ static auto run_frame_level16(AppState& app){
     level.player.position.x = 7 * config::BlockSize;
 
     level_generator::generate_horizontal_level_clouds(level);
-    level_generator::generate_level(level, "../level16_1.csv");
-    level_generator::generate_level(level, "../level16_2.csv");
+    level_generator::generate_level(level, "level16_1.csv");
+    level_generator::generate_level(level, "level16_2.csv");
   });
 }

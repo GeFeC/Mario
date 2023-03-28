@@ -21,7 +21,7 @@ auto window_resize_callback(GLFWwindow*, int window_width, int window_height){
   auto game_screen_width = window_width;
   auto game_screen_height = window_height;
 
-  if (ratio > (config::BlocksInRow | util::as<float>) / config::BlocksInColumn){
+  if (ratio > (config::BlocksInRow | util::as<float>) / config::BlocksInColumn){                                   
     game_screen_width = window_height * config::BlocksInRow / config::BlocksInColumn;
   }
   else{
@@ -41,7 +41,7 @@ auto main() -> int{
   renderer::init();
 
   auto app = AppState();
-  app.current_frame = AppState::Frame::Level16;
+  app.current_frame = AppState::Frame::Level11;
 
   window::show();
 

@@ -28,8 +28,7 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player,
   }
 
   //Interaction with player
-  const auto is_player_big = player.growth == PlayerState::Growth::Big;
-  if (collision::is_hovering(player, flower) && flower.is_visible && is_player_big){
+  if (collision::is_hovering(player, flower) && flower.is_visible){
     flower.points_generator.item().set_active(
       FireFlowerState::RewardForEating,
       flower.position
@@ -38,6 +37,13 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player,
   
     flower.is_visible = false;
     flower.position.y = config::BigValue;
-    player.is_changing_to_fire = true;
+
+    const auto is_player_big = player.growth == PlayerState::Growth::Big;
+    if (is_player_big){
+      player.is_changing_to_fire = true;
+    }
+    else{
+      player.is_growing_up = true;
+    }
   }
 }

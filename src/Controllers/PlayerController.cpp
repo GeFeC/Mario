@@ -45,8 +45,6 @@ static auto player_gravity(PlayerState& player, LevelState& level){
     player.gravity_boost = 2.f;
   }
 
-  if (player.position.y > (level.get_size().y + 1) * config::BlockSize) player.can_move = false;
-
   entity_gravity(player, level);
 }
 

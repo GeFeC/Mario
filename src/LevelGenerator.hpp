@@ -242,7 +242,8 @@ static auto allocate_texture_if_needed(int texture_id){
 
 static auto allocated_textures = std::unordered_set<int>{};
 
-static auto generate_level(LevelState& level, const std::string& level_file){
+static auto generate_level(LevelState& level, const std::string& file_path){
+  const auto level_file = config::LevelsSourceDir + file_path; 
   auto file = std::ifstream(level_file);
   if (!file) throw std::runtime_error("Error while loading level from: " + level_file);
 

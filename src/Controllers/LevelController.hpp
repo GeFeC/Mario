@@ -141,11 +141,12 @@ static auto level_finish(LevelState& level, AppState& app){
 
     if (level.stats.time > 0) {
       if (level.score_adding_after_finish_delay <= 0.f){
-        const auto multiplier = std::min(5, level.stats.time);
+        const auto multiplier = std::min(2, level.stats.time);
 
         level.score_adding_after_finish_delay = 1.f / 60.f;
         level.stats.time -= multiplier;
-        level.stats.score += 10 * multiplier;
+        static constexpr auto PointsForEachTimeUnit = 10;
+        level.stats.score += PointsForEachTimeUnit * multiplier;
       }
     }
     else{
@@ -166,17 +167,24 @@ static auto level_finish(LevelState& level, AppState& app){
 
 static auto level_restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
+  auto& player = level.player;
+
+  if (player.position.y > (level.get_size().y + 1) * config::BlockSize) {
+    player.can_move = false;
+    //set speed to 0
+    player.set_direction(EntityState::DirectionLeft, 0);
+  }
 
   const auto position_required_to_restart_level 
     = config::PlayerPositionToRestartLevel 
     + level.get_size().y 
     * config::BlockSize;
 
-  if (level.player.position.y > position_required_to_restart_level){
+  if (player.position.y > position_required_to_restart_level){
     app.should_restart_current_frame = true;
     level.stats.hp--;
-    level.player.form = PlayerState::Form::Normal;
-    level.player.growth = PlayerState::Growth::Small;
+    player.form = PlayerState::Form::Normal;
+    player.growth = PlayerState::Growth::Small;
 
     if (level.stats.hp == 0){
       level.stats = StatsState{};
@@ -235,8 +243,8 @@ static auto level_controller(AppState& app){
     level_handle_vertical_scroll(level);
   }
 
-  level_restart_when_player_fell_out(app);
   level_checkpoints_controller(level);
+  level_restart_when_player_fell_out(app);
 
   //Blinking and counters
   LevelState::blink_state = blink_controller();
@@ -251,6 +259,10 @@ static auto level_controller(AppState& app){
   if (!level.is_finished) {
     stats_controller(level.stats);
     player_controller(player, level);
+
+    if (level.stats.time <= 0){
+      player.is_dead = true;
+    }
   }
 
   level_mushrooms_controller(level);
