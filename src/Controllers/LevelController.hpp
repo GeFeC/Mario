@@ -87,6 +87,10 @@ static auto level_entities_controller(LevelState& level){
     green_koopa_controller(koopa, level);
   }
 
+  for (auto& koopa : level.entities.purple_koopas){
+    purple_koopa_controller(koopa, level);
+  }
+
   for (auto& koopa : level.entities.green_jumping_koopas){
     green_jumping_koopa_controller(koopa, level);
   }
@@ -251,6 +255,7 @@ static auto level_controller(AppState& app){
   LevelState::coin_spin_counter.run();
   LevelState::fire_flower_blink_counter.run();
 
+  level.purple_koopa_counter.run();
   level.fireball_counter.run();
   level.hammer_counter.run();
 

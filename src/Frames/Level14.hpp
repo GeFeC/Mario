@@ -15,6 +15,7 @@ static auto run_frame_level14(AppState& app){
 
   run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
+    level.background_texture = &textures::mushroom_bg;
 
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "level14_1.csv");

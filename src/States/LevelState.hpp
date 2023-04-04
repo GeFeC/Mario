@@ -61,6 +61,7 @@ struct LevelState{
 
   util::vector2d<int> hitbox_grid;
 
+  Texture const* background_texture = nullptr;
   StatsState stats;
   PlayerState player;
 
@@ -81,6 +82,7 @@ struct LevelState{
     std::vector<GoombaState> red_goombas;
     std::vector<GoombaState> yellow_goombas;
     std::vector<KoopaState> green_koopas;
+    std::vector<KoopaState> purple_koopas;
     std::vector<JumpingKoopaState> green_jumping_koopas;
     std::vector<FlyingKoopaState> green_flying_koopas;
     std::vector<KoopaState> red_koopas;
@@ -110,6 +112,7 @@ struct LevelState{
 
   util::InfiniteCounter fireball_counter;
   util::InfiniteCounter hammer_counter;
+  util::InfiniteCounter purple_koopa_counter;
 
   float camera_offset_y = MaxLevelScrollY;
 
@@ -118,7 +121,10 @@ struct LevelState{
   float score_adding_after_finish_delay = 0.f;
   bool is_finished = false;
 
-  LevelState() : fireball_counter(4.f, 20.f), hammer_counter(4.f, 10.f) {}
+  LevelState() : 
+    fireball_counter(4.f, 20.f), 
+    hammer_counter(4.f, 10.f),
+    purple_koopa_counter(10.f, 10.f) {}
 
   auto get_size() const{
     if (type == Type::Horizontal){

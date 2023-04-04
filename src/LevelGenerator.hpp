@@ -4,6 +4,7 @@
 #include "Util/Util.hpp"
 #include "config.hpp"
 #include "res/textureGroups.hpp"
+#include "res/textures.hpp"
 
 #include <string>
 #include <fstream>
@@ -58,7 +59,7 @@ static auto put_nonsolid(LevelState& level, const glm::vec2& position, const Tex
   level.blocks.normal.back().is_solid = false;
 }
 
-auto put_bricks(LevelState& level, const glm::vec2& position){
+static auto put_bricks(LevelState& level, const glm::vec2& position){
   level.get_hitbox_grid_element(position) = 1;
 
   put_solid(level, position, textures::dirt);
@@ -67,7 +68,7 @@ auto put_bricks(LevelState& level, const glm::vec2& position){
   level.blocks.bricks.back().hitbox_block_index = level.blocks.normal.size() - 1;
 };
 
-auto put_mushroom_head(LevelState& level, const glm::vec2& position, int size){
+static auto put_mushroom_head(LevelState& level, const glm::vec2& position, int size){
   level.get_hitbox_grid_element(position) = 1;
 
   level.blocks.normal.push_back(BlockState(position, &textures::mushroom_left));
@@ -81,11 +82,11 @@ auto put_mushroom_head(LevelState& level, const glm::vec2& position, int size){
   level.blocks.normal.push_back(BlockState(position + glm::vec2(size + 1, 0), &textures::mushroom_right));
 }
 
-auto put_coin(LevelState& level, const glm::vec2& position){
+static auto put_coin(LevelState& level, const glm::vec2& position){
   level.blocks.coins.push_back(CoinBlockState(position));
 }
 
-auto put_spinning_coin(LevelState& level, const glm::vec2& position, int hits_required_to_bounce){
+static auto put_spinning_coin(LevelState& level, const glm::vec2& position, int hits_required_to_bounce){
   level.blocks.spinning_coins.push_back(SpinningCoinState(position));
 
   level.blocks.spinning_coins.back().bounce_state.initial_power = -20.f;
@@ -96,7 +97,7 @@ auto put_spinning_coin(LevelState& level, const glm::vec2& position, int hits_re
   }
 }
 
-auto put_qblock(LevelState& level, const glm::vec2& position, int bounces = 1){
+static auto put_qblock(LevelState& level, const glm::vec2& position, int bounces = 1){
   put_solid(level, position, textures::dirt);
   level.blocks.normal.back().is_visible = false;
 
@@ -104,7 +105,7 @@ auto put_qblock(LevelState& level, const glm::vec2& position, int bounces = 1){
   level.blocks.q_blocks.back().bounce_state.bounces_count = bounces;
 }
 
-auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, int coins = 1){
+static auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, int coins = 1){
   for (int i = 0; i < coins; ++i){
     put_spinning_coin(level, position, i + 1);
   }
@@ -142,7 +143,7 @@ static auto put_qblock_with_green_mushroom(
   level.entities.green_mushrooms.push_back(MushroomState::make_green(position, direction));
 }
 
-auto put_red_pipe(LevelState& level, const glm::vec2& position, int size){
+static auto put_red_pipe(LevelState& level, const glm::vec2& position, int size){
   for (int i = 0; i < size; ++i){
     level.blocks.normal.push_back(BlockState({ position.x, position.y - i }, &textures::red_pipe_bottom_left));
     level.blocks.normal.push_back(BlockState({ position.x + 1, position.y - i }, &textures::red_pipe_bottom_right));
@@ -164,6 +165,7 @@ static auto index_to_texture = std::vector<TextureGroup>{
   &textures::mushroom_bot2,
   &textures::mushroom_bot1,
     &textures::dirt,
+
     &textures::dirt,
     &textures::dirt,
     &textures::dirt,
@@ -174,6 +176,7 @@ static auto index_to_texture = std::vector<TextureGroup>{
     &textures::dirt,
     &textures::dirt,
   texture_groups::q_block,  
+
     &textures::dirt,
     &textures::dirt,
     &textures::dirt,
@@ -184,6 +187,7 @@ static auto index_to_texture = std::vector<TextureGroup>{
     &textures::dirt,
     &textures::dirt,
     &textures::dirt,
+
   &textures::red_pipe_top_right,
   &textures::red_pipe_bottom_right,
   &textures::red_pipe_top_left,
@@ -194,26 +198,29 @@ static auto index_to_texture = std::vector<TextureGroup>{
     &textures::dirt,
     &textures::dirt,
     &textures::dirt,
+
     &textures::dirt,
     &textures::dirt,
     &textures::dirt,
     &textures::dirt,
-    &textures::dirt,
-    &textures::dirt,
+  &textures::green_hill_top,
+  &textures::green_hill_right,
   &textures::red_hill_top, 
   &textures::red_hill_right,
   &textures::red_hill_left,
   &textures::red_hill_center,
+
   &textures::red_hill_center_dot,
-    &textures::dirt,
-    &textures::dirt,
-    &textures::dirt,
+  &textures::green_hill_left,
+  &textures::green_hill_center,
+  &textures::green_hill_center_dot,
     &textures::dirt,
   texture_groups::yellow_goomba,
   texture_groups::red_goomba,
   texture_groups::goomba,
   texture_groups::spike,
   texture_groups::plant,
+
   texture_groups::red_plant,
   texture_groups::red_koopa,
   texture_groups::red_flying_koopa,
@@ -221,23 +228,32 @@ static auto index_to_texture = std::vector<TextureGroup>{
   texture_groups::green_flying_koopa,
   texture_groups::hammerbro,
   texture_groups::beetle,
-    &textures::dirt,
+    &textures::green_bush_right,
   &textures::red_bush_right,
+
   &textures::red_bush_left,
   &textures::red_bush_center,
-    &textures::dirt,
-    &textures::dirt,
+    &textures::green_bush_left,
+    &textures::green_bush_center,
   texture_groups::coin,
   &textures::mushroom,
   &textures::green_mushroom,
   texture_groups::spinning_coin,
   texture_groups::fire_flower,
     &textures::dirt,
-    &textures::dirt
+    &textures::dirt,
+
+  &textures::stone,
+  texture_groups::purple_koopa
 };
 
 static auto allocate_texture_if_needed(int texture_id){
   index_to_texture[texture_id].allocate();
+}
+
+static auto put_hitbox_block(LevelState& level, const glm::vec2& position){
+  put_solid(level, position, textures::dirt);
+  level.blocks.normal.back().is_visible = false;
 }
 
 static auto allocated_textures = std::unordered_set<int>{};
@@ -277,6 +293,12 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     if (tile_id == 33) put_solid(level, { x, y }, textures::red_pipe_top_left);
     if (tile_id == 34) put_solid(level, { x, y }, textures::red_pipe_bottom_left);
 
+    if (tile_id == 45) level.background.hills.emplace_back(glm::vec2(x, y), &textures::green_hill_top);
+    if (tile_id == 46) level.background.hills.emplace_back(glm::vec2(x, y), &textures::green_hill_right);
+    if (tile_id == 52) level.background.hills.emplace_back(glm::vec2(x, y), &textures::green_hill_left);
+    if (tile_id == 53) level.background.hills.emplace_back(glm::vec2(x, y), &textures::green_hill_center);
+    if (tile_id == 54) level.background.hills.emplace_back(glm::vec2(x, y), &textures::green_hill_center_dot);
+
     if (tile_id == 47) level.background.hills.emplace_back(glm::vec2(x, y), &textures::red_hill_top);
     if (tile_id == 48) level.background.hills.emplace_back(glm::vec2(x, y), &textures::red_hill_right);
     if (tile_id == 49) level.background.hills.emplace_back(glm::vec2(x, y), &textures::red_hill_left);
@@ -292,19 +314,28 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     if (tile_id == 70) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_left);
     if (tile_id == 71) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::red_bush_center);
 
+    if (tile_id == 68) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::green_bush_right);
+    if (tile_id == 72) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::green_bush_left);
+    if (tile_id == 73) level.background.bushes.emplace_back(glm::vec2(x, y), &textures::green_bush_center);
+
     if (tile_id == 56) entities.yellow_goombas.push_back(GoombaState::make_yellow({ x, y }));
     if (tile_id == 57) entities.red_goombas.push_back(GoombaState::make_red({ x, y }));
     if (tile_id == 58) entities.goombas.push_back(GoombaState::make_normal({ x, y }));
     if (tile_id == 62) entities.red_koopas.push_back(KoopaState::make_red({ x, y - 0.5f }));
     if (tile_id == 64) entities.green_koopas.push_back(KoopaState::make_green({ x, y - 0.5f }));
+    if (tile_id == 82) entities.purple_koopas.push_back(KoopaState::make_purple({ x, y - 0.5f }));
+
     if (tile_id == 74) put_coin(level, { x, y });
+
     if (tile_id == 75) put_qblock_with_mushroom(level, { x, y });
     if (tile_id == 76) put_qblock_with_green_mushroom(level, { x, y });
     if (tile_id == 77) put_qblock_with_coins(level, { x, y });
     if (tile_id == 78) put_qblock_with_flower(level, { x, y });
-    if (tile_id == 79) { put_solid(level, { x, y }, textures::dirt); level.blocks.normal.back().is_visible = false; }
-    if (tile_id == 80) level.checkpoints.push_back({ x * config::BlockSize, y * config::BlockSize });
+
+    if (tile_id == 79) put_hitbox_block(level, { x, y });
+    if (tile_id == 81) put_solid(level, { x, y }, textures::stone);
     
+    if (tile_id == 80) level.checkpoints.push_back({ x * config::BlockSize, y * config::BlockSize });
     counter++;
   }
 }

@@ -31,7 +31,14 @@ public:
     auto koopa = make<KoopaState>(position, direction);
     koopa.current_texture = &textures::red_koopa_walk[0];
     koopa.fall_from_edge = false;
-    koopa.is_active = true;
+
+    return koopa;
+  }
+
+  static auto make_purple(const glm::vec2& position, Direction direction = DirectionLeft){
+    auto koopa = make<KoopaState>(position, direction);
+    koopa.current_texture = &textures::purple_koopa_walk[0];
+    koopa.fall_from_edge = false;
 
     return koopa;
   }

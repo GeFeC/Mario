@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/KoopaState.hpp"
+#include "States/LoopedCounter.hpp"
 #include "States/PlayerState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/EntityController.hpp"
@@ -34,4 +35,24 @@ static auto red_koopa_controller(KoopaState& koopa, LevelState& level){
     level,
     textures::red_koopa_dead 
   );
+}
+
+static auto purple_koopa_controller(KoopaState& koopa, LevelState& level){
+  shell_monster_controller(koopa, level, textures::purple_koopa_walk);
+  koopa_controller(koopa, level);
+  entity_handle_shell(
+    koopa,
+    level,
+    textures::purple_koopa_dead 
+  );
+
+  if (koopa.in_shell) return;
+
+  if (level.purple_koopa_counter.value > 8.f){
+    koopa.walk_speed = 10.f;
+  }
+  else{
+    koopa.walk_speed = 3.f;
+  }
+  koopa.set_direction(koopa.direction);
 }

@@ -21,6 +21,7 @@ static auto run_frame_level16(AppState& app){
 
   run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
+    level.background_texture = &textures::mushroom_bg;
 
     auto& boss = level.bosses.king_goomba; 
     boss = std::make_unique<KingGoombaState>();

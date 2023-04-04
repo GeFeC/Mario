@@ -7,12 +7,15 @@
 namespace textures{
   inline auto black = Texture("black.png");
   inline auto mushroom_bg = Texture("mushroom_background.png");
+  inline auto bg = Texture("normal_background.png");
 
   //Blocks and Background objects
   inline auto bricks_particles_normal = Texture("bricks_particle/normal.png");
 
   inline auto bricks = Texture("tile/bricks.png");  
   inline auto dirt = Texture("tile/dirt.png");
+  inline auto stone = Texture("tile/stone.png");
+
   inline auto mushroom_bot1 = Texture("tile/mushroom_bot1.png");
   inline auto mushroom_bot2 = Texture("tile/mushroom_bot2.png");
   inline auto mushroom_center = Texture("tile/mushroom_center.png");
@@ -35,6 +38,16 @@ namespace textures{
   inline auto red_hill_left = Texture("hill/mush_left.png");
   inline auto red_hill_right = Texture("hill/mush_right.png");
   inline auto red_hill_top = Texture("hill/mush_top.png");
+
+  inline auto green_bush_center = Texture("bush/center.png");
+  inline auto green_bush_left = Texture("bush/left.png");
+  inline auto green_bush_right = Texture("bush/right.png");
+
+  inline auto green_hill_center = Texture("hill/center.png");
+  inline auto green_hill_center_dot = Texture("hill/center_dot.png");
+  inline auto green_hill_left = Texture("hill/left.png");
+  inline auto green_hill_right = Texture("hill/right.png");
+  inline auto green_hill_top = Texture("hill/top.png");
 
   inline auto red_pipe_top_left = Texture("pipe/red_left_top.png");
   inline auto red_pipe_top_right = Texture("pipe/red_right_top.png");
@@ -159,6 +172,12 @@ namespace textures{
     Texture("entity/goomba/yellow1.png")
   };
   inline auto yellow_goomba_dead = Texture("entity/goomba/yellowdead.png");
+
+  inline auto purple_koopa_walk = std::array<Texture, 2>{
+    Texture("entity/koopa/purple1.png"),
+    Texture("entity/koopa/purple2.png")
+  };
+  inline auto purple_koopa_dead = Texture("entity/koopa/purpledead.png");
 
   inline auto green_koopa_walk = std::array<Texture, 2>{
     Texture("entity/koopa/green1.png"),
