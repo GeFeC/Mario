@@ -9,7 +9,7 @@
 #include "Util/Util.hpp"
 
 inline auto coin_controller(CoinBlockState& coin, LevelState& level){
-  coin.texture = &textures::coin[LevelState::blink_state];
+  coin.texture = &textures::coin[level.blink_state];
 
   static constexpr auto CollisionPadding = 5;
   auto& player = level.player;

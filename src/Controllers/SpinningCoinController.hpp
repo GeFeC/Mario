@@ -6,7 +6,7 @@
 #include "Controllers/BounceController.hpp"
 
 inline auto spinning_coin_controller(SpinningCoinState& coin, LevelState& level){
-  coin.texture = &textures::spinning_coin[LevelState::coin_spin_counter.int_value()];
+  coin.texture = &textures::spinning_coin[level.coin_spin_counter.int_value()];
 
   bounce_controller(coin);
 

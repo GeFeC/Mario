@@ -5,7 +5,6 @@
 #include "Views/Level.hpp"
 #include "Controllers/LevelController.hpp"
 #include "Frame.hpp"
-#include "LevelGenerator.hpp"
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 #include "Frames/LevelBase.hpp"
@@ -23,7 +22,7 @@ static auto run_frame_level11(AppState& app){
   run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
-
+    
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "level11_1.csv");
     level_generator::generate_level(level, "level11_2.csv");

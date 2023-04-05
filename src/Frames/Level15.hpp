@@ -3,8 +3,7 @@
 #include "States/AppState.hpp"
 #include "Views/Level.hpp"
 #include "Controllers/LevelController.hpp"
-#include "Frame.hpp"
-#include "LevelGenerator.hpp"
+#include "Frames/LevelBase.hpp"
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 

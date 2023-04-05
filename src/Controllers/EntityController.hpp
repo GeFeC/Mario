@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Controllers/CollisionController.hpp"
-#include "Controllers/PlayerController.hpp"
 #include "Renderer/Drawable.hpp"
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
@@ -136,7 +135,18 @@ static auto entity_turn_around(MonsterState& entity){
   }
 }
 
-static auto entity_kill_player_on_touch(EntityState& entity, PlayerState& player){
+static auto player_is_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
+  if (!entity.can_be_stomped) return false;
+
+  if (collision::is_hovering_in_x(player, entity)){
+    const auto distance = entity.position.y - player.position.y - player.size.y;
+    return distance == util::in_range(-config::BlockSize * 5.f/6.f, 0);
+  }
+
+  return false;
+}
+
+static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& player){
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
@@ -151,20 +161,31 @@ static auto entity_kill_player_on_touch(EntityState& entity, PlayerState& player
   }
 };
 
+static auto player_stomp_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
+  if (!entity.can_be_stomped) return false;
+  if (!entity.should_collide) return false;
+  if (entity.is_dead) return false;
+  if (player.is_dead) return false;
+  if (player.gravity < 0) return false;
+
+  return player_is_on_entity(player, entity);
+}
+
 template<typename Function>
 static auto entity_die_when_stomped(
     MonsterState& entity, 
-    PlayerState& player, 
-    StatsState& stats,
+    LevelState& level,
     Function set_entity_dead
 ){
+  auto& player = level.player;
+  auto& stats = level.stats;
+
   if (player_stomp_on_entity(player, entity)){
     set_entity_dead();
     player.gravity = PlayerState::BouncePower;
     player.position.y = entity.position.y - player.size.y;
 
-    const auto total_reward = entity.reward_for_killing * player.mobs_killed_in_row;
-    stats.score += total_reward;
+    stats.score += entity.reward_for_killing * player.mobs_killed_in_row;
 
     entity.spawn_points(player.mobs_killed_in_row);
 
@@ -211,17 +232,17 @@ static auto entity_is_hit_by_fireball(MonsterState& entity, FireballState& fireb
 }
 
 template<typename Callable>
-static auto entity_react_when_hit_by_fireball(MonsterState& entity, PlayerState& player, StatsState& stats, const Callable& callback){
-  for (auto& fireball : player.fireballs){
+static auto entity_react_when_hit_by_fireball(MonsterState& entity, LevelState& level, const Callable& callback){
+  for (auto& fireball : level.player.fireballs){
     if (entity_is_hit_by_fireball(entity, fireball)){
       callback(fireball);
     }
   } 
 }
 
-static auto entity_die_when_hit_by_fireball(MonsterState& entity, PlayerState& player, StatsState& stats){
-  entity_react_when_hit_by_fireball(entity, player, stats, [&](FireballState& fireball){
-    entity_bounce_die(entity, stats);
+static auto entity_die_when_hit_by_fireball(MonsterState& entity, LevelState& level){
+  entity_react_when_hit_by_fireball(entity, level, [&](FireballState& fireball){
+    entity_bounce_die(entity, level.stats);
 
     fireball.acceleration.left = fireball.acceleration.right = 0.f;
   });

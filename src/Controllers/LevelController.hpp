@@ -163,8 +163,8 @@ static auto level_finish(LevelState& level, AppState& app){
     }
   }
 
-  if (player.position.y / config::BlockSize > finish.y - 1) return;
-  if (player.position.x / config::BlockSize != util::in_range(finish.x, finish.x + 1)) return;
+  if (player.position.y / config::BlockSize - finish.y != util::in_range(-1, 0)) return;
+  if (player.position.x / config::BlockSize - finish.x != util::in_range(0.25, 0.75)) return;
 
   if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
 }
@@ -251,9 +251,9 @@ static auto level_controller(AppState& app){
   level_restart_when_player_fell_out(app);
 
   //Blinking and counters
-  LevelState::blink_state = blink_controller();
-  LevelState::coin_spin_counter.run();
-  LevelState::fire_flower_blink_counter.run();
+  level.blink_state = blink_controller();
+  level.coin_spin_counter.run();
+  level.fire_flower_blink_counter.run();
 
   level.purple_koopa_counter.run();
   level.fireball_counter.run();
@@ -273,7 +273,7 @@ static auto level_controller(AppState& app){
   level_mushrooms_controller(level);
 
   for (auto& block : level.blocks.fire_flowers){
-    fire_flower_controller(block, player, level.stats);
+    fire_flower_controller(block, level);
   }
 
   for (auto& bar : level.fire_bars){
@@ -288,8 +288,9 @@ static auto level_controller(AppState& app){
   level_entities_controller(level);
 
   //Counting coins
-  if (level.stats.coins >= 100) {
-    level.stats.coins -= 100;
+  static constexpr auto CoinsAmountToGetHP = 100;
+  if (level.stats.coins >= CoinsAmountToGetHP) {
+    level.stats.coins -= CoinsAmountToGetHP;
     level.stats.hp++;
   }
 

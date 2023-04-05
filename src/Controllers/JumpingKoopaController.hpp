@@ -29,12 +29,12 @@ static auto jumping_koopa_controller(
 
   //Interaction with player
   auto& player = level.player;
-  entity_die_when_hit_by_fireball(koopa, player, level.stats);
+  entity_die_when_hit_by_fireball(koopa, level);
   entity_become_active_when_seen(koopa, level);
 
   if (koopa.has_wings) {
     auto koopa_hitbox = shell_monster_get_hitbox(koopa);
-    entity_die_when_stomped(koopa, player, level.stats, [&]{
+    entity_die_when_stomped(koopa, level, [&]{
       koopa.has_wings = false;
       koopa.gravity = 0;
     });

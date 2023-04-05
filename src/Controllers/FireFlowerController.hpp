@@ -8,13 +8,14 @@
 
 #include "Window.hpp"
 
-static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player, StatsState& stats){
-  flower.texture = &textures::fire_flower[LevelState::fire_flower_blink_counter.int_value()];
+static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
+  flower.texture = &textures::fire_flower[level.fire_flower_blink_counter.int_value()];
 
   for (auto& p : flower.points_generator.items){
     points_particles_controller(p);
   }
 
+  auto& player = level.player;
   if (player_hit_block_above(player, BouncingBlockState(flower.position / config::BlockSize))){
     flower.should_be_pushed_out = true;
     flower.is_visible = true;
@@ -33,7 +34,7 @@ static auto fire_flower_controller(FireFlowerState& flower, PlayerState& player,
       FireFlowerState::RewardForEating,
       flower.position
     );
-    stats.score += FireFlowerState::RewardForEating;
+    level.stats.score += FireFlowerState::RewardForEating;
   
     flower.is_visible = false;
     flower.position.y = config::BigValue;

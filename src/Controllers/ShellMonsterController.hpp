@@ -40,9 +40,10 @@ static auto shell_monster_hide_in_shell(ShellMonsterState& entity, const Texture
 
 static auto entity_push_shell_on_player_touch(
     ShellMonsterState& entity, 
-    PlayerState& player, 
-    StatsState& stats 
+    LevelState& level
 ){
+  auto& player = level.player;
+
   if (!collision::is_hovering(player, entity) || entity.is_dead || !entity.should_collide) return;
 
   entity.shell_push_cooldown = glfwGetTime();
@@ -52,7 +53,7 @@ static auto entity_push_shell_on_player_touch(
     entity.spawn_points(player.mobs_killed_in_row);
 
     const auto total_reward = entity.reward_for_killing * player.mobs_killed_in_row;
-    stats.score += total_reward;
+    level.stats.score += total_reward;
   }
 
   if (entity.position.x - player.position.x > 0){
@@ -85,13 +86,13 @@ static auto entity_handle_shell(
 
   auto& player = level.player;
   if (entity.in_shell && entity.walk_speed == 0.f){
-    entity_push_shell_on_player_touch(entity, player, level.stats);
+    entity_push_shell_on_player_touch(entity, level);
     return;
   }
 
   auto entity_hitbox = shell_monster_get_hitbox(entity);
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    entity_die_when_stomped(entity, player, level.stats, [&]{ 
+    entity_die_when_stomped(entity, level, [&]{ 
       shell_monster_hide_in_shell(entity, dead_texture); 
     });
   }

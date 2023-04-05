@@ -49,9 +49,6 @@ struct LevelState{
   inline static constexpr auto MaxPlayerRelativeY = 9 * config::BlockSize;
 
   inline static float timer = 0.f;
-  inline static auto blink_state = 0;
-  inline static auto coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
-  inline static auto fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
 
   enum class Type{
     Horizontal,
@@ -98,7 +95,7 @@ struct LevelState{
   } entities;
 
   struct Bosses{
-    std::unique_ptr<KingGoombaState> king_goomba; 
+    std::shared_ptr<KingGoombaState> king_goomba; 
   } bosses;
 
   struct Background{
@@ -110,9 +107,12 @@ struct LevelState{
   std::vector<glm::vec2> checkpoints;
   glm::vec2 current_checkpoint = CheckpointNotSet;
 
-  util::InfiniteCounter fireball_counter;
-  util::InfiniteCounter hammer_counter;
-  util::InfiniteCounter purple_koopa_counter;
+  int blink_state = 0;
+  util::InfiniteCounter coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
+  util::InfiniteCounter fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
+  util::InfiniteCounter fireball_counter = util::InfiniteCounter(4.f, 20.f);
+  util::InfiniteCounter hammer_counter = util::InfiniteCounter(4.f, 10.f);
+  util::InfiniteCounter purple_koopa_counter = util::InfiniteCounter(10.f, 10.f);
 
   float camera_offset_y = MaxLevelScrollY;
 
@@ -120,11 +120,6 @@ struct LevelState{
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;
   bool is_finished = false;
-
-  LevelState() : 
-    fireball_counter(4.f, 20.f), 
-    hammer_counter(4.f, 10.f),
-    purple_koopa_counter(10.f, 10.f) {}
 
   auto get_size() const{
     if (type == Type::Horizontal){

@@ -31,7 +31,7 @@ inline auto q_block_controller(QBlockState& block, LevelState& level){
   bounce_controller(block);
 
   if (block.bounce_state.can_bounce){
-    block.texture = &textures::q_block[LevelState::blink_state];
+    block.texture = &textures::q_block[level.blink_state];
   } 
 
   auto& player = level.player;

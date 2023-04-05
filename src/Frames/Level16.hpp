@@ -1,6 +1,5 @@
 #pragma once
 
-#include "LevelGenerator.hpp"
 #include "States/AppState.hpp"
 #include "Frames/LevelBase.hpp"
 #include "States/BossState.hpp"

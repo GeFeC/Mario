@@ -25,7 +25,7 @@ static auto goomba_controller(GoombaState& goomba, LevelState& level){
   auto& player = level.player;
   entity_kill_player_on_touch(goomba, player);
   entity_become_active_when_seen(goomba, level);
-  entity_die_when_hit_by_fireball(goomba, player, level.stats);
+  entity_die_when_hit_by_fireball(goomba, level);
 
   //Interaction with blocks
   entity_die_when_on_bouncing_block(goomba, level);
@@ -54,7 +54,7 @@ static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
   goomba_controller(goomba, level);
   goomba_run_walk_animation(goomba, textures::goomba_walk);
 
-  entity_die_when_stomped(goomba, player, level.stats, [&]{ 
+  entity_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::goomba_dead);
   });
 }
@@ -64,7 +64,7 @@ static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
   goomba_controller(goomba, level);
   goomba_run_walk_animation(goomba, textures::red_goomba_walk);
 
-  entity_die_when_stomped(goomba, player, level.stats, [&]{ 
+  entity_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::red_goomba_dead);
   });
 }
@@ -74,7 +74,7 @@ static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
   goomba_controller(goomba, level);
   goomba_run_walk_animation(goomba, textures::yellow_goomba_walk);
 
-  entity_die_when_stomped(goomba, player, level.stats, [&]{ 
+  entity_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::yellow_goomba_dead);
   });
 }

@@ -34,12 +34,24 @@ struct TextureGroup{
 private:
   std::vector<Texture*> textures;
 public:
+  TextureGroup() = default;
+
   TextureGroup(Texture* texture){
     textures.push_back(texture);
   }
 
-  TextureGroup(const std::vector<Texture*>& textures)
+  explicit TextureGroup(const std::vector<Texture*>& textures)
   : textures(textures){}
+
+  auto with(const std::vector<Texture*>& textures) const{
+    auto textures_copy = this->textures;
+
+    for (const auto& texture : textures){
+      textures_copy.push_back(texture);
+    }
+
+    return TextureGroup(textures_copy);
+  }
 
   auto allocate(){
     for (auto t : textures){
@@ -51,5 +63,9 @@ public:
     for (auto t : textures){
       t->free();
     }
+  }
+
+  const auto& front() const{
+    return *textures[0];
   }
 };

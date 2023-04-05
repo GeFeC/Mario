@@ -1,6 +1,8 @@
 #pragma once
+#include "LevelGenerator/Builder.hpp"
 #include "States/AppState.hpp"
-#include "LevelGenerator.hpp"
+#include "LevelGenerator/LevelGenerator.hpp"
+#include "config.hpp"
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
@@ -56,8 +58,8 @@ static auto run_frame_levelbase(
 
     extra_setup(app);
 
-    for (const auto texture_id : level_generator::allocated_textures){
-      textures.push_back(level_generator::index_to_texture[texture_id]);
+    for (const auto texture : level_generator::allocated_textures){
+      textures.push_back(level_generator::id_to_texture.at(texture));
     }
 
     for (const auto& texture : level_data.extra_textures){

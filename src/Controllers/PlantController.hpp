@@ -21,7 +21,8 @@ static auto plant_controller(PlantState& plant, LevelState& level){
   auto& player = level.player;
 
   entity_kill_player_on_touch(plant, player);
-  entity_die_when_hit_by_fireball(plant, player, level.stats);
+  entity_die_when_hit_by_fireball(plant, level);
+
   const auto is_hit_by_fireball = plant.vertical_flip == Drawable::Flip::UseFlip;
   if (is_hit_by_fireball) plant.is_visible = false;
 
