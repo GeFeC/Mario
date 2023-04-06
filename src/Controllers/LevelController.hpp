@@ -95,6 +95,10 @@ static auto level_entities_controller(LevelState& level){
     green_jumping_koopa_controller(koopa, level);
   }
 
+  for (auto& koopa : level.entities.purple_jumping_koopas){
+    purple_jumping_koopa_controller(koopa, level);
+  }
+
   for (auto& koopa : level.entities.green_flying_koopas){
     green_flying_koopa_controller(koopa, level);
   }
@@ -169,6 +173,13 @@ static auto level_finish(LevelState& level, AppState& app){
   if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
 }
 
+static auto get_worlds_first_level(AppState::Frame level){
+  static constexpr auto LevelsInWorld = 6;
+  const auto level_number = level | util::as<int>;
+
+  return ((level_number / LevelsInWorld) * LevelsInWorld) | util::as<AppState::Frame>;
+}
+
 static auto level_restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
@@ -192,7 +203,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
 
     if (level.stats.hp == 0){
       level.stats = StatsState{};
-      app.current_frame = AppState::Frame::Level11;
+      app.current_frame = get_worlds_first_level(app.current_frame);
       level.current_checkpoint = LevelState::CheckpointNotSet;
     }
   }

@@ -79,11 +79,12 @@ struct LevelState{
     std::vector<GoombaState> red_goombas;
     std::vector<GoombaState> yellow_goombas;
     std::vector<KoopaState> green_koopas;
+    std::vector<KoopaState> red_koopas;
     std::vector<KoopaState> purple_koopas;
     std::vector<JumpingKoopaState> green_jumping_koopas;
-    std::vector<FlyingKoopaState> green_flying_koopas;
-    std::vector<KoopaState> red_koopas;
     std::vector<JumpingKoopaState> red_jumping_koopas;
+    std::vector<JumpingKoopaState> purple_jumping_koopas;
+    std::vector<FlyingKoopaState> green_flying_koopas;
     std::vector<FlyingKoopaState> red_flying_koopas;
     std::vector<BeetleState> beetles;
     std::vector<SpikeState> spikes;

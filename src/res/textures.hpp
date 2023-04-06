@@ -22,6 +22,11 @@ namespace textures{
   inline auto mushroom_left = Texture("tile/mushroom_left.png");
   inline auto mushroom_right = Texture("tile/mushroom_right.png");
 
+  inline auto grass_bot = Texture("tile/grass_bot.png");
+  inline auto grass_center = Texture("tile/grass_center.png");
+  inline auto grass_left = Texture("tile/grass_left.png");
+  inline auto grass_right = Texture("tile/grass_right.png");
+
   inline auto red_cloud_top_left = Texture("cloud/left_top.png");
   inline auto red_cloud_top_center = Texture("cloud/center_top.png");
   inline auto red_cloud_top_right = Texture("cloud/right_top.png");
@@ -53,6 +58,11 @@ namespace textures{
   inline auto red_pipe_top_right = Texture("pipe/red_right_top.png");
   inline auto red_pipe_bottom_left = Texture("pipe/red_left_bot.png");
   inline auto red_pipe_bottom_right = Texture("pipe/red_right_bot.png");
+
+  inline auto green_pipe_top_left = Texture("pipe/green_left_top.png");
+  inline auto green_pipe_top_right = Texture("pipe/green_right_top.png");
+  inline auto green_pipe_bottom_left = Texture("pipe/green_left_bottom.png");
+  inline auto green_pipe_bottom_right = Texture("pipe/green_right_bottom.png");
 
   inline auto coin = std::array<Texture, 3>{
     Texture("coin/0.png"),
@@ -178,6 +188,11 @@ namespace textures{
     Texture("entity/koopa/purple2.png")
   };
   inline auto purple_koopa_dead = Texture("entity/koopa/purpledead.png");
+
+  inline auto purple_flying_koopa_walk = std::array<Texture, 2>{
+    Texture("entity/koopa/purple_flying1.png"),
+    Texture("entity/koopa/purple_flying2.png")
+  };
 
   inline auto green_koopa_walk = std::array<Texture, 2>{
     Texture("entity/koopa/green1.png"),

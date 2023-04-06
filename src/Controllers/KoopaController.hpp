@@ -37,6 +37,18 @@ static auto red_koopa_controller(KoopaState& koopa, LevelState& level){
   );
 }
 
+static auto purple_koopa_movement_controller(KoopaState& koopa, const LevelState& level){
+  if (koopa.in_shell || koopa.vertical_flip == Drawable::Flip::UseFlip) return;
+
+  if (level.purple_koopa_counter.value > 8.f){
+    koopa.walk_speed = 10.f;
+  }
+  else{
+    koopa.walk_speed = 3.f;
+  }
+  koopa.set_direction(koopa.direction);
+}
+
 static auto purple_koopa_controller(KoopaState& koopa, LevelState& level){
   shell_monster_controller(koopa, level, textures::purple_koopa_walk);
   koopa_controller(koopa, level);
@@ -46,13 +58,5 @@ static auto purple_koopa_controller(KoopaState& koopa, LevelState& level){
     textures::purple_koopa_dead 
   );
 
-  if (koopa.in_shell) return;
-
-  if (level.purple_koopa_counter.value > 8.f){
-    koopa.walk_speed = 10.f;
-  }
-  else{
-    koopa.walk_speed = 3.f;
-  }
-  koopa.set_direction(koopa.direction);
+  purple_koopa_movement_controller(koopa, level);
 }

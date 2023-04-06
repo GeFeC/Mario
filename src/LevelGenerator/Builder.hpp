@@ -145,6 +145,10 @@ static auto put_red_koopa_with_wings(LevelState& level, const glm::vec2& positio
   level.entities.red_jumping_koopas.push_back(JumpingKoopaState::make_red(position - glm::vec2(0, 0.5)));
 }
 
+static auto put_purple_koopa_with_wings(LevelState& level, const glm::vec2& position){
+  level.entities.purple_jumping_koopas.push_back(JumpingKoopaState::make_purple(position - glm::vec2(0, 0.5)));
+}
+
 static auto put_plant(LevelState& level, const glm::vec2& position){
   level.entities.plants.push_back(PlantState::make_green(position + glm::vec2(0.5, 1.f)));
 }

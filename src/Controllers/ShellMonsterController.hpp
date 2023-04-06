@@ -165,6 +165,18 @@ static auto entity_handle_shell(
   for (auto& target : entities.spikes){
     shell_kill_entity(target);
   }
+
+  for (auto& target : entities.hammerbros){
+    shell_kill_entity(target);
+  }
+
+  for (auto& target : entities.purple_koopas){
+    shell_kill_entity(target);
+  }
+
+  for (auto& target : entities.purple_jumping_koopas){
+    shell_kill_entity(target);
+  }
 };
 
 

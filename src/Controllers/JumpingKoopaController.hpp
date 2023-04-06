@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Controllers/KoopaController.hpp"
 #include "States/KoopaState.hpp"
 #include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
@@ -73,4 +74,23 @@ static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& l
     level,
     textures::red_koopa_dead
   );
+}
+
+static auto purple_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
+  if (!koopa.has_wings && !koopa.in_shell) koopa.fall_from_edge = false;
+
+  jumping_koopa_controller(
+    koopa,
+    level,
+    textures::purple_flying_koopa_walk,
+    textures::purple_koopa_walk
+  );
+
+  entity_handle_shell(
+    koopa,
+    level,
+    textures::purple_koopa_dead
+  );
+
+  purple_koopa_movement_controller(koopa, level);
 }

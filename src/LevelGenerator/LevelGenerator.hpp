@@ -77,6 +77,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
 
     if (tile == Tile::MushroomBot2) put_nonsolid(level, { x, y }, textures::mushroom_bot2);
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);
+    else if (tile == Tile::GrassBot) put_nonsolid(level, { x, y }, textures::grass_bot);
     else if (tile == Tile::Bricks) put_bricks(level, { x, y });
 
     else if (any_tile(HillTiles, tile)) put_hill(level, { x, y }, tile);
@@ -90,6 +91,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::PurpleKoopa) put_purple_koopa(level, { x, y });
     else if (tile == Tile::RedKoopaWings) put_red_koopa_with_wings(level, { x, y });
     else if (tile == Tile::GreenKoopaWings) put_green_koopa_with_wings(level, { x, y });
+    else if (tile == Tile::PurpleKoopaWings) put_purple_koopa_with_wings(level, { x, y });
     else if (tile == Tile::GreenPlant) put_plant(level, { x, y });
     else if (tile == Tile::Hammerbro) put_hammerbro(level, { x, y });
 

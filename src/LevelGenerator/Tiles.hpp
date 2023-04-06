@@ -14,7 +14,10 @@ enum class Tile{
   MushroomLeft = 6,
   MushroomBot1 = 9,
   MushroomBot2 = 8,
-  MushroomBot3 = 10,
+  GrassCenter = 83,
+  GrassLeft = 84,
+  GrassRight = 85,
+  GrassBot = 10,
   Cloud = 15,
   Bricks = 16,
   Coin = 74,
@@ -23,41 +26,58 @@ enum class Tile{
   QBlockGreenMushroom = 76,
   QBlockCoins = 77,
   QBlockFireFlower = 78,
+
+  GreenPipeTopRight = 35,
+  GreenPipeBottomRight = 37,
+  GreenPipeTopLeft = 39,
+  GreenPipeBottomLeft = 41,
+
   RedPipeTopRight = 31,
   RedPipeBottomRight = 32,
   RedPipeTopLeft = 33,
   RedPipeBottomLeft = 34,
+
   GreenHillTop = 45,
   GreenHillLeft = 52,
   GreenHillRight = 46,
   GreenHillCenter = 53,
   GreenHillCenter2 = 54,
+
   RedHillTop = 47,
   RedHillLeft = 49,
   RedHillRight = 48,
   RedHillCenter = 50,
   RedHillCenter2 = 51,
+
   Fireball = 55,
+
   Goomba = 58,
   RedGoomba = 57,
   YellowGoomba = 56,
-  Spike = 59,
+
   GreenPlant = 60,
   RedPlant = 61,
+
   RedKoopa = 62,
   RedKoopaWings = 63,
   GreenKoopa = 64,
   GreenKoopaWings = 65,
   PurpleKoopa = 82,
+  PurpleKoopaWings = 86,
+
   Hammerbro = 66,
   Beetle = 67,
+  Spike = 59,
+
   GreenBushRight = 68,
   GreenBushLeft = 72,
   GreenBushCenter = 73,
+
   RedBushRight = 69,
   RedBushLeft = 70,
   RedBushCenter = 71,
-  Stone = 81,
+
+  Stone = 81
 };
 
 static constexpr Tile HillTiles[] = {

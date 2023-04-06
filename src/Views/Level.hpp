@@ -121,6 +121,10 @@ static auto render_entities(const LevelState& level, const glm::vec2& screen_scr
     render_entity(koopa, screen_scroll);
   }
 
+  for (const auto& koopa : level.entities.purple_jumping_koopas){
+    render_entity(koopa, screen_scroll);
+  }
+
   for (const auto& koopa : level.entities.green_flying_koopas){
     render_entity(koopa, screen_scroll);
   }
@@ -176,6 +180,10 @@ static auto render_all_points_particles(const LevelState& level, const glm::vec2
   }
 
   for (const auto& koopa : level.entities.green_jumping_koopas){
+    render_points_particles(koopa.points_generator.items, screen_scroll);
+  }
+
+  for (const auto& koopa : level.entities.purple_jumping_koopas){
     render_points_particles(koopa.points_generator.items, screen_scroll);
   }
 

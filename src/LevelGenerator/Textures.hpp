@@ -23,10 +23,15 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::MushroomBot2, &textures::mushroom_bot2),
   pair(Tile::MushroomBot1, &textures::mushroom_bot1),
 
+  pair(Tile::GrassCenter, &textures::grass_center),
+  pair(Tile::GrassLeft, &textures::grass_left), 
+  pair(Tile::GrassRight, &textures::grass_right),
+  pair(Tile::GrassBot, &textures::grass_bot),
+
   pair(Tile::Bricks, texture_groups::bricks),
   pair(Tile::QBlock, no_texture),
-  pair(Tile::QBlockMushroom, &textures::mushroom),
-  pair(Tile::QBlockGreenMushroom, &textures::green_mushroom),
+  pair(Tile::QBlockMushroom, texture_groups::mushroom),
+  pair(Tile::QBlockGreenMushroom, texture_groups::green_mushroom),
   pair(Tile::QBlockCoins, texture_groups::spinning_coin),
   pair(Tile::QBlockFireFlower, texture_groups::fire_flower),
 
@@ -34,6 +39,11 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::RedPipeBottomRight, &textures::red_pipe_bottom_right),
   pair(Tile::RedPipeTopLeft, &textures::red_pipe_top_left),
   pair(Tile::RedPipeBottomLeft, &textures::red_pipe_bottom_left),
+
+  pair(Tile::GreenPipeTopRight, &textures::green_pipe_top_right),
+  pair(Tile::GreenPipeBottomRight, &textures::green_pipe_bottom_right),
+  pair(Tile::GreenPipeTopLeft, &textures::green_pipe_top_left),
+  pair(Tile::GreenPipeBottomLeft, &textures::green_pipe_bottom_left),
 
   pair(Tile::GreenHillTop, &textures::green_hill_top),
   pair(Tile::GreenHillRight, &textures::green_hill_right),
@@ -58,6 +68,8 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::RedKoopaWings, texture_groups::red_flying_koopa),
   pair(Tile::GreenKoopa, texture_groups::green_koopa),
   pair(Tile::GreenKoopaWings, texture_groups::green_flying_koopa),
+  pair(Tile::PurpleKoopa, texture_groups::purple_koopa),
+  pair(Tile::PurpleKoopaWings, texture_groups::purple_flying_koopa),
   pair(Tile::Hammerbro, texture_groups::hammerbro),
   pair(Tile::Beetle, texture_groups::beetle),
 
@@ -70,7 +82,6 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::Coin, texture_groups::coin),
 
   pair(Tile::Stone, &textures::stone),
-  pair(Tile::PurpleKoopa, texture_groups::purple_koopa)
 };
 
 static auto allocate_texture_if_needed(Tile tile){
