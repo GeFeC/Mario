@@ -86,10 +86,10 @@ static auto render_fire_bar(const FireBarState& bar, const glm::vec2& offset){
   }
 }
 
-static auto render_hammerbro(const HammerBroState& bro, const glm::vec2& offset){
+static auto render_entity(const HammerBroState& bro, const glm::vec2& offset){
   for (auto& item : bro.hammer_generator.items){
     render_entity(item, offset);
   }
 
-  render_entity(bro, offset);
+  render_entity(EntityState(bro), offset);
 }

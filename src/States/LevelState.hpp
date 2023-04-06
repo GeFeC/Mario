@@ -93,6 +93,26 @@ struct LevelState{
     std::vector<PlantState> plants;
     std::vector<PlantState> red_plants;
     std::vector<HammerBroState> hammerbros;
+
+    template<typename Function>
+    auto for_each(const Function& function){
+      util::multi_for(
+        function,
+        goombas, red_goombas, yellow_goombas,
+        green_koopas, red_koopas, purple_koopas,
+        green_jumping_koopas, red_jumping_koopas, purple_jumping_koopas,
+        green_flying_koopas, red_flying_koopas, 
+        beetles, spikes,
+        mushrooms, green_mushrooms,
+        plants, red_plants,
+        hammerbros
+      );
+    }
+
+    template<typename Function>
+    auto for_each(const Function& function) const{
+      const_cast<Entities*>(this)->for_each([&](const auto& x){ function(x); });
+    }
   } entities;
 
   struct Bosses{

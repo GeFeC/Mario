@@ -121,62 +121,9 @@ static auto entity_handle_shell(
   };
 
   //Killing Entities with shell
-  auto& entities = level.entities;
-  for (auto& target : entities.goombas){
+  level.entities.for_each([&](auto& target){
     shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.red_goombas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.yellow_goombas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.green_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.red_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.green_jumping_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.red_jumping_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.green_flying_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.red_flying_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.beetles){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.spikes){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.hammerbros){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.purple_koopas){
-    shell_kill_entity(target);
-  }
-
-  for (auto& target : entities.purple_jumping_koopas){
-    shell_kill_entity(target);
-  }
+  });
 };
 
 
