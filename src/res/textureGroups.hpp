@@ -179,6 +179,15 @@ namespace texture_groups{
     &textures::red_cloud_bottom_center
   });
 
+  inline const auto blue_cloud = TextureGroup({
+    &textures::blue_cloud_top_left,
+    &textures::blue_cloud_top_right,
+    &textures::blue_cloud_top_center,
+    &textures::blue_cloud_bottom_left,
+    &textures::blue_cloud_bottom_right,
+    &textures::blue_cloud_bottom_center
+  });
+
   inline const auto red_bush = TextureGroup({
     &textures::red_bush_left,
     &textures::red_bush_right,

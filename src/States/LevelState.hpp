@@ -59,11 +59,12 @@ struct LevelState{
   util::vector2d<int> hitbox_grid;
 
   Texture const* background_texture = nullptr;
+  TextureGroup const* cloud_textures = nullptr;
+
   StatsState stats;
   PlayerState player;
 
   struct Blocks{
-    std::vector<BlockState> entity_hitbox_blocks;
     std::vector<BlockState> normal;
     std::vector<CoinBlockState> coins;
     std::vector<QBlockState> q_blocks;
@@ -86,6 +87,7 @@ struct LevelState{
     std::vector<JumpingKoopaState> purple_jumping_koopas;
     std::vector<FlyingKoopaState> green_flying_koopas;
     std::vector<FlyingKoopaState> red_flying_koopas;
+    std::vector<FlyingKoopaState> purple_flying_koopas;
     std::vector<BeetleState> beetles;
     std::vector<SpikeState> spikes;
     std::vector<MushroomState> mushrooms;
@@ -101,7 +103,7 @@ struct LevelState{
         goombas, red_goombas, yellow_goombas,
         green_koopas, red_koopas, purple_koopas,
         green_jumping_koopas, red_jumping_koopas, purple_jumping_koopas,
-        green_flying_koopas, red_flying_koopas, 
+        green_flying_koopas, red_flying_koopas, purple_flying_koopas,
         beetles, spikes,
         mushrooms, green_mushrooms,
         plants, red_plants,
@@ -125,10 +127,16 @@ struct LevelState{
     std::vector<CloudState> clouds;
   } background;
 
+  glm::vec2 size;
+  static constexpr auto HorizontalLevelSize = glm::vec2(config::HorizontalLevelWidth, config::HorizontalLevelHeight);
+  static constexpr auto VerticalLevelSize = glm::vec2(config::VerticalLevelWidth, config::VerticalLevelHeight);
+  static constexpr auto BossLevelSize = glm::vec2(config::BlocksInRow, config::BlocksInColumn);
+
   std::vector<glm::vec2> checkpoints;
   glm::vec2 current_checkpoint = CheckpointNotSet;
 
   int blink_state = 0;
+  float purple_flying_koopa_timer = 0.f;
   util::InfiniteCounter coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
   util::InfiniteCounter fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
   util::InfiniteCounter fireball_counter = util::InfiniteCounter(4.f, 20.f);
@@ -142,29 +150,8 @@ struct LevelState{
   float score_adding_after_finish_delay = 0.f;
   bool is_finished = false;
 
-  auto get_size() const{
-    if (type == Type::Horizontal){
-      return glm::vec2(
-        config::HorizontalLevelWidth,
-        config::BlocksInColumn
-      );
-    }
-
-    if (type == Type::Boss){
-      return glm::vec2(
-        config::BlocksInRow,
-        config::BlocksInColumn
-      );
-    }
-
-    return glm::vec2(
-      config::VerticalLevelWidth,
-      config::HorizontalLevelWidth
-    );
-  }
-
   auto generate_hitbox_grid(){
-    hitbox_grid.resize(get_size().x, std::vector<int>(get_size().y, 0));
+    hitbox_grid.resize(size.x, std::vector<int>(size.y, 0));
   }
 
   auto get_finishing_pipe_position() const{

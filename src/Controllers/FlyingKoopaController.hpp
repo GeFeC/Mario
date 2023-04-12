@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Controllers/KoopaController.hpp"
 #include "States/FlyingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/ShellMonsterController.hpp"
+#include "Window.hpp"
 
 static auto flying_koopa_controller(
     FlyingKoopaState& koopa, 
@@ -11,7 +13,6 @@ static auto flying_koopa_controller(
     const std::array<Texture, 2>& walk_frames_without_wings
 ){
   //Motion
-  const auto timer = LevelState::timer - koopa.start_time;
   if (koopa.has_wings && koopa.should_collide){
     const auto previous_x = koopa.position.x;
 
@@ -20,11 +21,20 @@ static auto flying_koopa_controller(
       glm::pow(koopa.movement_axis.y, 2)
     );
 
-    koopa.position = glm::vec2(
-      koopa.initial_position.x + glm::sin(timer / distance * 5) * config::BlockSize * koopa.movement_axis.x,
-      koopa.initial_position.y + glm::sin(timer / distance * 5) * config::BlockSize * koopa.movement_axis.y
-    );
+    static constexpr auto FlightSpeedMultiplier = 2.f;
+    static auto previous_walk_speed = 0;
 
+    auto& timer = level.purple_flying_koopa_timer;
+    if (previous_walk_speed != koopa.walk_speed) {
+      timer = timer * previous_walk_speed / koopa.walk_speed;
+    }
+
+    const auto sin = glm::sin(timer / distance * koopa.walk_speed * FlightSpeedMultiplier) | util::as<float>;
+    koopa.position = koopa.initial_position + koopa.movement_axis * sin * config::BlockSize;
+
+    previous_walk_speed = koopa.walk_speed;
+
+    //Turning around
     if (previous_x - koopa.position.x >= 0.f){
       koopa.direction = EntityState::DirectionLeft;
     }
@@ -84,4 +94,21 @@ static auto red_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& lev
     level,
     textures::red_koopa_dead
   );
+}
+
+static auto purple_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
+  flying_koopa_controller(
+    koopa,
+    level,
+    textures::purple_flying_koopa_walk,
+    textures::purple_koopa_walk
+  );
+
+  entity_handle_shell(
+    koopa,
+    level,
+    textures::purple_koopa_dead
+  );
+
+  purple_koopa_movement_controller(koopa, level);
 }

@@ -68,4 +68,8 @@ public:
   const auto& front() const{
     return *textures[0];
   }
+
+  const auto& operator[](int index) const{
+    return *textures[index];
+  }
 };

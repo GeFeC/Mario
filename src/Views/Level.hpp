@@ -2,6 +2,7 @@
 
 #include "States/LevelState.hpp"
 #include "Renderer/Renderer.hpp"
+#include "Controllers/LevelController.hpp"
 
 #include "Views/Components.hpp"
 
@@ -15,7 +16,15 @@
 #include <iomanip>
 
 static auto render_clouds(const LevelState& level, const glm::vec2& screen_scroll){
-  auto& clouds = level.background.clouds;
+  const auto& clouds = level.background.clouds;
+  const auto& cloud_textures = *level.cloud_textures;
+
+  const auto& top_left = cloud_textures[0];
+  const auto& top_right = cloud_textures[1];
+  const auto& top_center = cloud_textures[2];
+  const auto& bottom_left = cloud_textures[3];
+  const auto& bottom_right = cloud_textures[4];
+  const auto& bottom_center = cloud_textures[5];
 
   static auto cloud_offset = 0.f;
   cloud_offset += window::delta_time;
@@ -26,16 +35,16 @@ static auto render_clouds(const LevelState& level, const glm::vec2& screen_scrol
     const auto x = position.x - cloud_offset;
     const auto y = position.y;
 
-    render_block(BlockState({ x , y  }, &textures::red_cloud_top_left), screen_scroll);
-    render_block(BlockState({ x , (y + 1)  }, &textures::red_cloud_bottom_left), screen_scroll);
+    render_block(BlockState({ x , y  }, &top_left), screen_scroll);
+    render_block(BlockState({ x , (y + 1)  }, &bottom_left), screen_scroll);
 
     for (int i = 0; i < cloud_size; ++i){
-      render_block(BlockState({ (x + i + 1) , y  }, &textures::red_cloud_top_center), screen_scroll);
-      render_block(BlockState({ (x + i + 1) , (y + 1)  }, &textures::red_cloud_bottom_center), screen_scroll);
+      render_block(BlockState({ (x + i + 1) , y  }, &top_center), screen_scroll);
+      render_block(BlockState({ (x + i + 1) , (y + 1)  }, &bottom_center), screen_scroll);
     }
 
-    render_block(BlockState({ (x + cloud_size + 1) , y  }, &textures::red_cloud_top_right), screen_scroll);
-    render_block(BlockState({ (x + cloud_size + 1) , (y + 1)  }, &textures::red_cloud_bottom_right), screen_scroll);
+    render_block(BlockState({ (x + cloud_size + 1) , y  }, &top_right), screen_scroll);
+    render_block(BlockState({ (x + cloud_size + 1) , (y + 1)  }, &bottom_right), screen_scroll);
   }
 }
 
@@ -182,28 +191,8 @@ static auto render_blocks(const LevelState& level, const glm::vec2& screen_scrol
   }
 }
 
-static auto get_screen_scroll(const LevelState& level){
-  static constexpr auto CameraOffsetFromPlayer = config::BlockSize * 6.f;
-
-  auto screen_scroll = glm::vec2(0.f);
-  auto& player = level.player;
-
-  if (player.position.x >= config::PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
-    screen_scroll.x = std::min(
-      player.position.x - config::PlayerPositionToScroll.x,
-      config::HorizontalLevelWidth * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2
-    );
-  }
-
-  if (level.type == LevelState::Type::Vertical){
-    screen_scroll.y = std::clamp(level.camera_offset_y, 50.f * config::BlockSize, LevelState::MaxLevelScrollY + 50.f * config::BlockSize);
-  }
-
-  return screen_scroll;
-}
-
 static auto render_level(const LevelState& level){
-  const auto screen_scroll = get_screen_scroll(level);
+  const auto screen_scroll = level_get_screen_scroll(level);
 
   renderer::draw(Drawable{
     glm::vec2(0, 0),

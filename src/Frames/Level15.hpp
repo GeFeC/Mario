@@ -22,6 +22,7 @@ static auto run_frame_level15(AppState& app){
   run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
+    level.cloud_textures = &texture_groups::red_cloud;
 
     level.fire_bars.push_back(FireBarState({ 7, 152 }, 3));
     level.fire_bars.push_back(FireBarState({ 10, 152 }, 3));

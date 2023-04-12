@@ -38,15 +38,19 @@ static auto red_koopa_controller(KoopaState& koopa, LevelState& level){
 }
 
 static auto purple_koopa_movement_controller(KoopaState& koopa, const LevelState& level){
-  if (koopa.in_shell || koopa.vertical_flip == Drawable::Flip::UseFlip) return;
+  if (koopa.in_shell || koopa.vertical_flip == Drawable::Flip::UseFlip) return false;
 
+  auto is_fast = false;
   if (level.purple_koopa_counter.value > 8.f){
     koopa.walk_speed = 10.f;
+    is_fast = true;
   }
   else{
     koopa.walk_speed = 3.f;
   }
   koopa.set_direction(koopa.direction);
+
+  return is_fast;
 }
 
 static auto purple_koopa_controller(KoopaState& koopa, LevelState& level){

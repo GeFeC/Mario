@@ -103,6 +103,10 @@ static auto level_entities_controller(LevelState& level){
     green_flying_koopa_controller(koopa, level);
   }
 
+  for (auto& koopa : level.entities.purple_flying_koopas){
+    purple_flying_koopa_controller(koopa, level);
+  }
+
   for (auto& koopa : level.entities.red_koopas){
     red_koopa_controller(koopa, level);
   }
@@ -184,7 +188,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
 
-  if (player.position.y > (level.get_size().y + 1) * config::BlockSize) {
+  if (player.position.y > (level.size.y + 1) * config::BlockSize) {
     player.can_move = false;
     //set speed to 0
     player.set_direction(EntityState::DirectionLeft, 0);
@@ -192,7 +196,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
 
   const auto position_required_to_restart_level 
     = config::PlayerPositionToRestartLevel 
-    + level.get_size().y 
+    + level.size.y 
     * config::BlockSize;
 
   if (player.position.y > position_required_to_restart_level){
@@ -209,7 +213,28 @@ static auto level_restart_when_player_fell_out(AppState& app){
   }
 }
 
-static auto level_handle_vertical_scroll(LevelState& level){
+static auto level_get_screen_scroll(const LevelState& level){
+  static constexpr auto CameraOffsetFromPlayer = config::BlockSize * 6.f;
+
+  auto screen_scroll = glm::vec2(0.f);
+  auto& player = level.player;
+
+  if (player.position.x >= config::PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
+    screen_scroll.x = std::min(
+      player.position.x - config::PlayerPositionToScroll.x,
+      config::HorizontalLevelWidth * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2
+    );
+  }
+
+  const auto max_scroll_y = level.size.y - config::BlocksInColumn;
+  if (level.type == LevelState::Type::Vertical){
+    screen_scroll.y = std::clamp(level.camera_offset_y, 50.f * config::BlockSize, max_scroll_y * config::BlockSize);
+  }
+
+  return screen_scroll;
+}
+
+static auto level_handle_vertical_camera(LevelState& level){
   auto& player = level.player;
   auto player_y = player.position.y - config::BlockSize + player.size.y;
   
@@ -255,7 +280,7 @@ static auto level_controller(AppState& app){
   }
   
   if (level.type == LevelState::Type::Vertical){
-    level_handle_vertical_scroll(level);
+    level_handle_vertical_camera(level);
   }
 
   level_checkpoints_controller(level);
@@ -310,5 +335,7 @@ static auto level_controller(AppState& app){
     level_bosses(app);
   }
 
+  //Timers
   LevelState::timer += window::delta_time;
+  level.purple_flying_koopa_timer += window::delta_time;
 }

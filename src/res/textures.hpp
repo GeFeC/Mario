@@ -34,6 +34,13 @@ namespace textures{
   inline auto red_cloud_bottom_center = Texture("cloud/center_bottom.png");
   inline auto red_cloud_bottom_right = Texture("cloud/right_bottom.png");
 
+  inline auto blue_cloud_top_left = Texture("cloud/blue_left_top.png");
+  inline auto blue_cloud_top_center = Texture("cloud/blue_center_top.png");
+  inline auto blue_cloud_top_right = Texture("cloud/blue_right_top.png");
+  inline auto blue_cloud_bottom_left = Texture("cloud/blue_left_bottom.png");
+  inline auto blue_cloud_bottom_center = Texture("cloud/blue_center_bottom.png");
+  inline auto blue_cloud_bottom_right = Texture("cloud/blue_right_bottom.png");
+
   inline auto red_bush_center = Texture("bush/mush_center.png");
   inline auto red_bush_left = Texture("bush/mush_left.png");
   inline auto red_bush_right = Texture("bush/mush_right.png");

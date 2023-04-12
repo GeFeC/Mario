@@ -9,6 +9,7 @@
 #include "Frames/Level15.hpp"
 #include "Frames/Level16.hpp"
 #include "Frames/Level21.hpp"
+#include "Frames/Level22.hpp"
 
 #include "Util/Util.hpp"
 #include "config.hpp"
@@ -39,6 +40,7 @@ static auto app_frame_functions = std::unordered_map{
   std::make_pair(AppState::Frame::Level15, run_frame_level15),
   std::make_pair(AppState::Frame::Level16, run_frame_level16),
   std::make_pair(AppState::Frame::Level21, run_frame_level21),
+  std::make_pair(AppState::Frame::Level22, run_frame_level22),
 };
 
 static auto app_controller(AppState& app){

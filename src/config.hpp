@@ -13,7 +13,9 @@ namespace config{
   static constexpr auto BlocksInColumn = 12;
 
   static constexpr auto HorizontalLevelWidth = 200;
+  static constexpr auto HorizontalLevelHeight = 12;
   static constexpr auto VerticalLevelWidth = 20;
+  static constexpr auto VerticalLevelHeight = 200;
 
   static constexpr auto InitialWindowWidth = BlocksInRow * BlockSize;
   static constexpr auto InitialWindowHeight = BlocksInColumn * BlockSize;

@@ -21,6 +21,11 @@ static auto run_frame_level16(AppState& app){
   run_frame_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
+    level.cloud_textures = &texture_groups::red_cloud;
+
+    level_generator::generate_horizontal_level_clouds(level);
+    level_generator::generate_level(level, "level16_1.csv");
+    level_generator::generate_level(level, "level16_2.csv");
 
     auto& boss = level.bosses.king_goomba; 
     boss = std::make_unique<KingGoombaState>();
@@ -34,9 +39,5 @@ static auto run_frame_level16(AppState& app){
     level.player.growth = PlayerState::Growth::Big;
     level.player.form = PlayerState::Form::Fire;
     level.player.position.x = 7 * config::BlockSize;
-
-    level_generator::generate_horizontal_level_clouds(level);
-    level_generator::generate_level(level, "level16_1.csv");
-    level_generator::generate_level(level, "level16_2.csv");
   });
 }

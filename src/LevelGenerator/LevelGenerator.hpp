@@ -62,6 +62,14 @@ static auto generate_level(LevelState& level, const std::string& file_path){
   auto tile_id = 0;
   auto counter = 0;
 
+  const auto level_size = [&]{
+    switch(level.type){
+      default: return LevelState::VerticalLevelSize;
+      case LevelState::Type::Horizontal: return LevelState::HorizontalLevelSize;
+      case LevelState::Type::Boss: return LevelState::BossLevelSize;
+    }
+  }();
+
   while(ss >> tile_id){
     const auto tile = tile_id | util::as<level_generator::Tile>;
 
@@ -69,8 +77,8 @@ static auto generate_level(LevelState& level, const std::string& file_path){
       allocated_textures.insert(tile);
     }
 
-    const auto x = counter % (level.get_size().x | util::as<int>);
-    const auto y = counter / (level.get_size().x | util::as<int>);
+    const auto x = counter % (level_size.x | util::as<int>);
+    const auto y = counter / (level_size.x | util::as<int>);
 
     auto& entities = level.entities;
     using config::BlockSize;

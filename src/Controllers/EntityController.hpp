@@ -33,7 +33,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
   if (!entity.is_on_ground) return;
 
-  const auto level_size = level.get_size();
+  const auto level_size = level.size;
 
   if (left_x >= level_size.x || left_x < 0) return;
   if (right_x >= level_size.x || right_x < 0) return;
