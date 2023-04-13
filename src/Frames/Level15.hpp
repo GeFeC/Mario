@@ -24,35 +24,35 @@ static auto run_frame_level15(AppState& app){
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
 
-    level.fire_bars.push_back(FireBarState({ 7, 152 }, 3));
-    level.fire_bars.push_back(FireBarState({ 10, 152 }, 3));
-    level.fire_bars.push_back(FireBarState({ 13, 152 }, 3));
+    level.fire_bars.push_back(FireBarState({ 7, 102 }, 3));
+    level.fire_bars.push_back(FireBarState({ 10, 102 }, 3));
+    level.fire_bars.push_back(FireBarState({ 13, 102 }, 3));
 
-    level.fire_bars.push_back(FireBarState({ 9, 126 }, 6));
-    level.fire_bars.push_back(FireBarState({ 9, 133 }, 6));
+    level.fire_bars.push_back(FireBarState({ 9, 76 }, 6));
+    level.fire_bars.push_back(FireBarState({ 9, 83 }, 6));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 148 }, { 0, 3 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 98 }, { 0, 3 }));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 14, 117 }, { 3, 0 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 14, 67 }, { 3, 0 }));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 87 }, { 0, 3 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 87 }, { 0, -3 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, 3 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, -3 }));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 76 }, { 0, 3 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 76 }, { 0, -3 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, 3 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, -3 }));
 
     const auto r = 8;
     const auto r2 = r / 1.414f;
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { 0, r }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { 0, -r }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { r, 0 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { -r, 0 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { r2, r2 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { -r2, r2 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { r2, -r2 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 63 }, { -r2, -r2 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, r }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, -r }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r, 0 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r, 0 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, r2 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, r2 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, -r2 }));
+    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, -r2 }));
 
-    level_generator::put_qblock_with_coins(level, { 13, 63 }, 10);
+    level_generator::put_qblock_with_coins(level, { 13, 13 }, 10);
 
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level15_1.csv");

@@ -9,7 +9,6 @@
 struct LevelFrameSharedData{
   LevelState::Type type;
   AppState::Frame frame;
-  glm::vec2 size = { 0, 0 };
   std::vector<TextureGroup> extra_textures;
 
   struct LevelNumber{
@@ -37,48 +36,44 @@ static auto run_frame_levelbase(
 
     level.type = level_data.type;
 
-    if (level_data.size != glm::vec2(0, 0)){
-      level.size = level_data.size;
-    }
-    else if (level.type == LevelState::Type::Horizontal) level.size = LevelState::HorizontalLevelSize;
-    else if (level.type == LevelState::Type::Vertical) level.size = LevelState::VerticalLevelSize;
-    else if (level.type == LevelState::Type::Boss) level.size = LevelState::BossLevelSize;
-
     level.stats.level_major = level_data.number.major;
     level.stats.level_minor = level_data.number.minor;
 
     level.stats.time = 400.f;
 
-    level.camera_offset_y = 0.f;
+    level.camera_offset.y = 0.f;
     auto& player = level.player;
 
+    //Checkpoints:
     if (level.current_checkpoint == LevelState::CheckpointNotSet){
-      level.current_checkpoint = { config::BlockSize, (level.size.y - 3.f) * config::BlockSize };
+      const auto level_height = level.max_size().y;
+      level.current_checkpoint = { config::BlockSize, (level_height - 3.f) * config::BlockSize };
     }
     player.position = level.current_checkpoint;
 
+    //Generating Level:
     level.generate_hitbox_grid();
-
     extra_setup(app);
 
     //Camera:
     if (level.type == LevelState::Type::Vertical){
-      level.camera_offset_y = player.position.y - config::BlocksInColumn / 2.f * config::BlockSize;
+      level.camera_offset.y = player.position.y - config::BlocksInColumn / 2.f * config::BlockSize;
     }
 
-    //Borders:
+    //Hitbox Borders:
     if (level.type == LevelState::Type::Vertical){
-      for (int i = 0; i < config::VerticalLevelHeight; ++i){
+      for (int i = 0; i < LevelState::MaxVerticalLevelSize.y; ++i){
         auto& normal_blocks = level.blocks.normal;
 
-        normal_blocks.push_back(BlockState({ -1, i }, level_generator::no_texture));
+        normal_blocks.emplace_back(glm::vec2(-1, i), level_generator::no_texture);
         normal_blocks.back().is_visible = false; 
 
-        normal_blocks.push_back(BlockState({ config::VerticalLevelWidth, i }, level_generator::no_texture));
+        normal_blocks.emplace_back(glm::vec2(LevelState::MaxVerticalLevelSize.x, i), level_generator::no_texture);
         normal_blocks.back().is_visible = false; 
       }
     }
 
+    //Textures:
     for (const auto texture : level_generator::allocated_textures){
       textures.push_back(level_generator::id_to_texture.at(texture));
     }

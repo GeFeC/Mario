@@ -141,7 +141,7 @@ static auto level_mushrooms_controller(LevelState& level){
 }
 
 static auto level_finish(LevelState& level, AppState& app){
-  const auto finish = level.get_finishing_pipe_position();
+  const auto finish = level.finish_position; 
   auto& player = level.player;
 
   if (level.is_finished){
@@ -188,7 +188,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
 
-  if (player.position.y > (level.size.y + 1) * config::BlockSize) {
+  if (player.position.y > (level.max_size().y + 1) * config::BlockSize) {
     player.can_move = false;
     //set speed to 0
     player.set_direction(EntityState::DirectionLeft, 0);
@@ -196,7 +196,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
 
   const auto position_required_to_restart_level 
     = config::PlayerPositionToRestartLevel 
-    + level.size.y 
+    + level.max_size().y 
     * config::BlockSize;
 
   if (player.position.y > position_required_to_restart_level){
@@ -213,37 +213,39 @@ static auto level_restart_when_player_fell_out(AppState& app){
   }
 }
 
-static auto level_get_screen_scroll(const LevelState& level){
-  static constexpr auto CameraOffsetFromPlayer = config::BlockSize * 6.f;
-
-  auto screen_scroll = glm::vec2(0.f);
-  auto& player = level.player;
-
-  if (player.position.x >= config::PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
-    screen_scroll.x = std::min(
-      player.position.x - config::PlayerPositionToScroll.x,
-      config::HorizontalLevelWidth * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2
-    );
-  }
-
-  const auto max_scroll_y = level.size.y - config::BlocksInColumn;
-  if (level.type == LevelState::Type::Vertical){
-    screen_scroll.y = std::clamp(level.camera_offset_y, 50.f * config::BlockSize, max_scroll_y * config::BlockSize);
-  }
-
-  return screen_scroll;
-}
-
-static auto level_handle_vertical_camera(LevelState& level){
+static auto level_camera(LevelState& level){
   auto& player = level.player;
   auto player_y = player.position.y - config::BlockSize + player.size.y;
   
-  if (player_y - level.camera_offset_y < LevelState::MinPlayerRelativeY && player.gravity < 0.f){
-    level.camera_offset_y = player_y - LevelState::MinPlayerRelativeY;
-  }
+  //Vertical level scroll
+  if (level.type == LevelState::Type::Vertical){
+    if (player_y - level.camera_offset.y < LevelState::MinPlayerRelativeY && player.gravity < 0.f){
+      level.camera_offset.y = player_y - LevelState::MinPlayerRelativeY;
+    }
 
-  if (player_y - level.camera_offset_y > LevelState::MaxPlayerRelativeY && player.gravity > 0.f){
-    level.camera_offset_y = player_y - LevelState::MaxPlayerRelativeY;
+    if (player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY && player.gravity > 0.f){
+      level.camera_offset.y = player_y - LevelState::MaxPlayerRelativeY;
+    }
+
+    const auto max_scroll_y = (level.max_size().y - config::BlocksInColumn) * config::BlockSize;
+    const auto min_scroll_y = (level.finish_position.y - 5) * config::BlockSize;
+    if (level.type == LevelState::Type::Vertical){
+      level.camera_offset.y = std::clamp(level.camera_offset.y, min_scroll_y, max_scroll_y);
+    }
+  }
+  //Horizontal level scroll
+  else if (level.type == LevelState::Type::Horizontal){
+    static constexpr auto HorizontalLevelWidth = LevelState::HorizontalLevelSize.x;
+
+    const auto player_position_to_stop_scrolling 
+      = HorizontalLevelWidth * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2;
+
+    if (player.position.x >= config::PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
+      level.camera_offset.x = std::min(
+        player.position.x - config::PlayerPositionToScroll.x,
+        player_position_to_stop_scrolling
+      );
+    }
   }
 }
 
@@ -278,10 +280,6 @@ static auto level_controller(AppState& app){
     level.load_delay -= window::delta_time;
     return;
   }
-  
-  if (level.type == LevelState::Type::Vertical){
-    level_handle_vertical_camera(level);
-  }
 
   level_checkpoints_controller(level);
   level_restart_when_player_fell_out(app);
@@ -312,11 +310,11 @@ static auto level_controller(AppState& app){
     fire_flower_controller(block, level);
   }
 
+  if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
+
   for (auto& bar : level.fire_bars){
     fire_bar_controller(bar, level);
   }
-
-  if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
 
   level_finish(level, app);
 
@@ -334,6 +332,9 @@ static auto level_controller(AppState& app){
   if (level.type == LevelState::Type::Boss){
     level_bosses(app);
   }
+
+  //Camera
+  level_camera(level);
 
   //Timers
   LevelState::timer += window::delta_time;

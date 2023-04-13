@@ -28,7 +28,7 @@ static auto fireball_controller(FireballState& fireball, const LevelState& level
     reset_fireball(fireball);
   }
 
-  if (fireball.position.y > level.camera_offset_y + config::InitialWindowHeight){
+  if (fireball.position.y > level.camera_offset.y + config::InitialWindowHeight){
     reset_fireball(fireball);
   }
 

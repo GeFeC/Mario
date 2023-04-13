@@ -18,8 +18,6 @@ static auto run_frame_level14(AppState& app){
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
 
-    level.player.position.x = 40 * config::BlockSize;
-
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "level14_1.csv");
     level_generator::generate_level(level, "level14_2.csv");

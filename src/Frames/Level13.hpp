@@ -23,18 +23,16 @@ static auto run_frame_level13(AppState& app){
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
 
-    level.fire_bars.push_back(FireBarState({ 13, 183 }, 3));
-    level.fire_bars.push_back(FireBarState({ 5, 154 }, 5));
-    level.fire_bars.push_back(FireBarState({ 6, 111 }, 3));
-    level.fire_bars.push_back(FireBarState({ 11, 108 }, 3));
-    level.fire_bars.push_back(FireBarState({ 16, 105 }, 3));
-    level.fire_bars.push_back(FireBarState({ 7, 95 }, 7));
-    level.fire_bars.push_back(FireBarState({ 7, 74 }, 5));
-    level.fire_bars.push_back(FireBarState({ 16, 39 }, 5));
-    level.fire_bars.push_back(FireBarState({ 4, 54 }, 7));
+    level.fire_bars.push_back(FireBarState({ 13, 133 }, 3));
+    level.fire_bars.push_back(FireBarState({ 5, 104 }, 5));
+    level.fire_bars.push_back(FireBarState({ 6, 61 }, 3));
+    level.fire_bars.push_back(FireBarState({ 11, 58 }, 3));
+    level.fire_bars.push_back(FireBarState({ 16, 55 }, 3));
+    level.fire_bars.push_back(FireBarState({ 7, 45 }, 7));
+    level.fire_bars.push_back(FireBarState({ 7, 24 }, 5));
+    level.fire_bars.push_back(FireBarState({ 4, 4 }, 7));
 
-    level_generator::put_qblock_with_coins(level, { 7, 25 }, 5);
-    level_generator::put_qblock_with_coins(level, { 4, 115 }, 5);
+    level_generator::put_qblock_with_coins(level, { 4, 65 }, 5);
 
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level13_1.csv");

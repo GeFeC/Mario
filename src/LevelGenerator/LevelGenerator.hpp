@@ -32,9 +32,11 @@ static auto generate_horizontal_level_clouds(LevelState& level, int spread = 2){
 
 static auto generate_vertical_level_clouds(LevelState& level){
   auto& clouds = level.background.clouds;
-  clouds.reserve(14 * 2 * 2 * 3);
 
-  for (int j = 0; j < 14; ++j){
+  static constexpr auto CloudRows = 11;
+  clouds.reserve(CloudRows * 2 * 2 * 3);
+
+  for (int j = 0; j < CloudRows; ++j){
     for (int i = 0; i < 2; ++i){
       clouds.push_back(std::make_pair(glm::vec2(i * 18 + 4, 2 + j * 14), 2));
       clouds.push_back(std::make_pair(glm::vec2(i * 18 + 9, 3 + j * 14), 3));
@@ -62,14 +64,6 @@ static auto generate_level(LevelState& level, const std::string& file_path){
   auto tile_id = 0;
   auto counter = 0;
 
-  const auto level_size = [&]{
-    switch(level.type){
-      default: return LevelState::VerticalLevelSize;
-      case LevelState::Type::Horizontal: return LevelState::HorizontalLevelSize;
-      case LevelState::Type::Boss: return LevelState::BossLevelSize;
-    }
-  }();
-
   while(ss >> tile_id){
     const auto tile = tile_id | util::as<level_generator::Tile>;
 
@@ -77,8 +71,8 @@ static auto generate_level(LevelState& level, const std::string& file_path){
       allocated_textures.insert(tile);
     }
 
-    const auto x = counter % (level_size.x | util::as<int>);
-    const auto y = counter / (level_size.x | util::as<int>);
+    const auto x = counter % (level.max_size().x | util::as<int>);
+    const auto y = counter / (level.max_size().x | util::as<int>);
 
     auto& entities = level.entities;
     using config::BlockSize;
@@ -111,6 +105,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::QBlockFireFlower) put_qblock_with_flower(level, { x, y });
 
     else if (tile == Tile::Hitbox) put_hitbox_block(level, { x, y });
+    else if (tile == Tile::Finish) level.finish_position = { x, y };
     
     else if (tile == Tile::Checkpoint) put_checkpoint(level, { x, y });
     else if (&id_to_texture.at(tile).front() != level_generator::no_texture || tile == Tile::Dirt) {

@@ -12,7 +12,6 @@ static auto run_frame_level22(AppState& app){
   level.frame = AppState::Frame::Level22;
   level.type = LevelState::Type::Vertical;
   level.number = { 2, 2 };
-  level.size = { 20, 178 };
   level.extra_textures = {
     texture_groups::blue_cloud,
     texture_groups::red_flying_koopa,
@@ -30,11 +29,11 @@ static auto run_frame_level22(AppState& app){
 
     //Additional Entities
     auto& purple_flying_koopas = level.entities.purple_flying_koopas;
-    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 10, 99.5 }, { 2, 2 }));
-    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 7, 68.5 }, { 0, 3 }));
-    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 4, 53.5 }, { 0, 3 }));
+    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 10, 71.5 }, { 2, 2 }));
+    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 7, 40.5 }, { 0, 3 }));
+    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 4, 25.5 }, { 0, 3 }));
 
     level.entities.hammerbros[0].jump_state = HammerBroState::JumpState::Down;
-    level_generator::put_qblock_with_coins(level, { 2, 131 }, 8);
+    level_generator::put_qblock_with_coins(level, { 2, 103 }, 8);
   });
 }

@@ -42,8 +42,10 @@ struct StatsState{
 };
 
 struct LevelState{
-  inline static constexpr auto VerticalLevelHeight = 150.f;
-  inline static constexpr auto MaxLevelScrollY = (VerticalLevelHeight - config::BlocksInColumn) * config::BlockSize;
+  inline static constexpr auto HorizontalLevelSize = glm::vec2(200, 12);
+  inline static constexpr auto MaxVerticalLevelSize = glm::vec2(20, 150);
+  inline static constexpr auto BossLevelSize = glm::vec2(20, 12);
+
   inline static constexpr auto CheckpointNotSet = glm::vec2(-1);
   inline static constexpr auto MinPlayerRelativeY = 5 * config::BlockSize;
   inline static constexpr auto MaxPlayerRelativeY = 9 * config::BlockSize;
@@ -127,13 +129,11 @@ struct LevelState{
     std::vector<CloudState> clouds;
   } background;
 
-  glm::vec2 size;
-  static constexpr auto HorizontalLevelSize = glm::vec2(config::HorizontalLevelWidth, config::HorizontalLevelHeight);
-  static constexpr auto VerticalLevelSize = glm::vec2(config::VerticalLevelWidth, config::VerticalLevelHeight);
-  static constexpr auto BossLevelSize = glm::vec2(config::BlocksInRow, config::BlocksInColumn);
-
   std::vector<glm::vec2> checkpoints;
   glm::vec2 current_checkpoint = CheckpointNotSet;
+  glm::vec2 finish_position;
+
+  glm::vec2 camera_offset;
 
   int blink_state = 0;
   float purple_flying_koopa_timer = 0.f;
@@ -143,24 +143,25 @@ struct LevelState{
   util::InfiniteCounter hammer_counter = util::InfiniteCounter(4.f, 10.f);
   util::InfiniteCounter purple_koopa_counter = util::InfiniteCounter(10.f, 10.f);
 
-  float camera_offset_y = MaxLevelScrollY;
-
   float load_delay = 3.f;
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;
   bool is_finished = false;
 
+  auto max_size() const{
+    switch(type){
+      default: return HorizontalLevelSize;
+      case Type::Vertical: return MaxVerticalLevelSize;
+      case Type::Boss: return BossLevelSize;
+    }
+  }
+
   auto generate_hitbox_grid(){
+    const auto size = max_size();
     hitbox_grid.resize(size.x, std::vector<int>(size.y, 0));
   }
 
-  auto get_finishing_pipe_position() const{
-    if (type == Type::Horizontal) return glm::vec2(197, 8);
-    if (type == Type::Vertical) return glm::vec2(16, 55);
-    return glm::vec2(-1, -1);
-  }
-
-  auto& get_hitbox_grid_element(const glm::vec2& position){
+  auto& hitbox_grid_element(const glm::vec2& position){
     return hitbox_grid[position.x][position.y];
   }
 };

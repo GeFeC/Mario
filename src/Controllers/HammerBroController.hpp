@@ -19,7 +19,7 @@ static auto hammer_controller(HammerState& hammer, LevelState& level){
   entity_movement(hammer, level);
   entity_gravity(hammer, level);
 
-  if (hammer.position.y > level.camera_offset_y + config::BlocksInColumn * config::BlockSize) {
+  if (hammer.position.y > level.camera_offset.y + config::BlocksInColumn * config::BlockSize) {
     hammer.is_active = false;
     hammer.is_visible = false;
   }

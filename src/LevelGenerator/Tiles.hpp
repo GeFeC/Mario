@@ -8,6 +8,8 @@ enum class Tile{
   Air = -1,
   Hitbox = 79,
   Checkpoint = 80,
+  Finish = 87,
+
   Dirt = 0,
   MushroomRight = 5,
   MushroomCenter = 7,

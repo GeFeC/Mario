@@ -8,7 +8,7 @@
 namespace level_generator{
 
 static auto put_solid(LevelState& level, const glm::vec2& position, const Texture& texture){
-  level.get_hitbox_grid_element(position) = 1;
+  level.hitbox_grid_element(position) = 1;
   level.blocks.normal.push_back(BlockState(position, &texture));
 }
 
@@ -18,7 +18,7 @@ static auto put_nonsolid(LevelState& level, const glm::vec2& position, const Tex
 }
 
 static auto put_bricks(LevelState& level, const glm::vec2& position){
-  level.get_hitbox_grid_element(position) = 1;
+  level.hitbox_grid_element(position) = 1;
 
   put_solid(level, position, textures::dirt);
   level.blocks.normal.back().is_visible = false;

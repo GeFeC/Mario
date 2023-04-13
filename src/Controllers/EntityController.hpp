@@ -33,7 +33,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
   if (!entity.is_on_ground) return;
 
-  const auto level_size = level.size;
+  const auto level_size = level.max_size();
 
   if (left_x >= level_size.x || left_x < 0) return;
   if (right_x >= level_size.x || right_x < 0) return;
@@ -206,7 +206,7 @@ static auto entity_become_active_when_seen(MonsterState& entity, const LevelStat
     config::BlocksInRow * config::BlockSize - player.position.x
   );
 
-  const auto player_field_of_view_y = player.position.y - level.camera_offset_y;
+  const auto player_field_of_view_y = player.position.y - level.camera_offset.y;
 
   if (entity.position.x - player.position.x > player_field_of_view_x) return;
   if (player.position.y - entity.position.y - entity.size.y > player_field_of_view_y) return;
