@@ -35,16 +35,16 @@ static auto render_clouds(const LevelState& level){
     const auto x = position.x - cloud_offset;
     const auto y = position.y;
 
-    render_block(BlockState({ x , y  }, &top_left), level.camera_offset);
-    render_block(BlockState({ x , (y + 1)  }, &bottom_left), level.camera_offset);
+    render_block(BlockState({ x, y  }, &top_left), level.camera_offset);
+    render_block(BlockState({ x, (y + 1)  }, &bottom_left), level.camera_offset);
 
     for (int i = 0; i < cloud_size; ++i){
-      render_block(BlockState({ (x + i + 1) , y  }, &top_center), level.camera_offset);
-      render_block(BlockState({ (x + i + 1) , (y + 1)  }, &bottom_center), level.camera_offset);
+      render_block(BlockState({ (x + i + 1), y  }, &top_center), level.camera_offset);
+      render_block(BlockState({ (x + i + 1), (y + 1)  }, &bottom_center), level.camera_offset);
     }
 
-    render_block(BlockState({ (x + cloud_size + 1) , y  }, &top_right), level.camera_offset);
-    render_block(BlockState({ (x + cloud_size + 1) , (y + 1)  }, &bottom_right), level.camera_offset);
+    render_block(BlockState({ (x + cloud_size + 1), y  }, &top_right), level.camera_offset);
+    render_block(BlockState({ (x + cloud_size + 1), (y + 1)  }, &bottom_right), level.camera_offset);
   }
 }
 
@@ -59,11 +59,11 @@ static auto render_stats(const LevelState& level){
     << std::setw(3) << std::setfill('0') << stats.time;
 
   const auto font_size = fonts::normal.size * 3.5f;
-  static constexpr auto WindowWidth = config::InitialWindowWidth;
+  static constexpr auto WindowWidth = config::FrameBufferSize.x;
 
   auto text = Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
   const auto center_x = WindowWidth / 2 - text.get_size().x / 2;
-  const auto step_y = 2.f / 3.f * config::BlockSize;
+  const auto step_y = 2.f / 3.f * BlockBase::Size;
 
   text.set_position({ center_x, step_y });
   renderer::print(text, glm::vec2(0));
@@ -133,14 +133,11 @@ static auto render_loading_screen(const LevelState& level){
   //Background;
   renderer::draw(Drawable{
     glm::vec2(0, 0),
-    glm::vec2(config::InitialWindowWidth, config::InitialWindowHeight),
+    config::FrameBufferSize,
     &textures::black
   });
 
   //Header:
-  static constexpr auto WindowWidth = config::InitialWindowWidth;
-  static constexpr auto WindowHeight = config::InitialWindowHeight;
-
   const auto& stats = level.stats;
 
   auto text = Text(
@@ -149,7 +146,7 @@ static auto render_loading_screen(const LevelState& level){
     font_size / fonts::normal.size
   );
 
-  const auto center_pos = glm::vec2(WindowWidth, WindowHeight) / 2.f - text.get_size() * 0.5f;
+  const auto center_pos = config::FrameBufferSize / 2.f - text.get_size() * 0.5f;
 
   text.set_position(center_pos - glm::vec2(0, font_size * 2.5f));
 
@@ -158,16 +155,16 @@ static auto render_loading_screen(const LevelState& level){
   //Mario:
   renderer::draw(Drawable{
     glm::vec2(
-      WindowWidth / 2 - config::BlockSize * 1.5f, 
-      center_pos.y - (config::BlockSize - font_size * 1.f) 
+      config::FrameBufferSize.x / 2 - BlockBase::Size * 1.5f, 
+      center_pos.y - (BlockBase::Size - font_size * 1.f) 
     ),
-    glm::vec2(config::BlockSize),
+    glm::vec2(BlockBase::Size),
     &textures::small_mario
   });
 
   //HP:
   text.set_text("X " + std::to_string(stats.hp));
-  text.set_position(glm::vec2(WindowWidth / 2, center_pos.y));
+  text.set_position(glm::vec2(config::FrameBufferSize.x / 2, center_pos.y));
 
   renderer::print(text, glm::vec2(0));
 }
@@ -193,7 +190,7 @@ static auto render_blocks(const LevelState& level){
 static auto render_level(const LevelState& level){
   renderer::draw(Drawable{
     glm::vec2(0, 0),
-    glm::vec2(config::InitialWindowWidth, config::InitialWindowHeight),
+    config::FrameBufferSize,
     level.background_texture
   });
 

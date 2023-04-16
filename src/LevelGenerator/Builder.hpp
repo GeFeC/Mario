@@ -59,7 +59,7 @@ static auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, 
   auto& points = level.blocks.q_blocks.back().points_generator.items;
   points.reserve(coins);
   for (int i = 0; i < coins; ++i){
-    auto particle = PointsParticlesState(QBlockState::RewardInPoints, position * config::BlockSize);
+    auto particle = PointsParticlesState(QBlockState::RewardInPoints, position * BlockBase::Size);
     particle.hits_required_to_activate = i + 1;
 
     points.push_back(particle);
@@ -100,7 +100,7 @@ static auto put_hitbox_block(LevelState& level, const glm::vec2& position){
 }
 
 static auto put_checkpoint(LevelState& level, const glm::vec2& position){
-  level.checkpoints.push_back(position * config::BlockSize);
+  level.checkpoints.push_back(position * BlockBase::Size);
 }
 
 static auto put_hill(LevelState& level, const glm::vec2& position, Tile tile){

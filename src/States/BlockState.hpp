@@ -6,16 +6,17 @@
 #include "States/EntityState.hpp"
 
 #include "res/textures.hpp"
-#include "config.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
 #include <array>
 
 struct BlockBase{
+  inline static constexpr auto Size = 96.f;
+
   Texture const* texture;
   glm::vec2 position = { 0.f, 0.f };
-  glm::vec2 size = glm::vec2(config::BlockSize);
+  glm::vec2 size = glm::vec2(Size);
 
   bool is_visible = true;
   bool is_solid = true;
@@ -41,7 +42,7 @@ struct BlinkingBlockBase{};
 
 struct BlockState : BlockBase{
   BlockState(const glm::vec2& position, Texture const* texture){
-    this->position = position * config::BlockSize;
+    this->position = position * BlockBase::Size;
     this->texture = texture;
   }
 };
@@ -49,20 +50,20 @@ struct BlockState : BlockBase{
 struct BouncingBlockState : BlockBase, BouncingBlockBase{
   BouncingBlockState() = default;
   BouncingBlockState(const glm::vec2& position){
-    this->position = position * config::BlockSize;
+    this->position = position * BlockBase::Size;
   }
 };
 
 struct CoinBlockState : BlockBase, BlinkingBlockBase{
   CoinBlockState(const glm::vec2& position){
-    this->position = position * config::BlockSize;
+    this->position = position * BlockBase::Size;
     this->texture = &textures::coin[0];
   }
 };
 
 struct BricksBlockState : BouncingBlockState{
   static constexpr auto ParticlesCount = 10;
-  static constexpr auto ParticleSize = config::BlockSize / 1.5;
+  static constexpr auto ParticleSize = BlockBase::Size / 1.5;
 
   std::array<EntityState, ParticlesCount> particles;  
   bool are_particles_active = false;
@@ -79,7 +80,7 @@ struct BricksBlockState : BouncingBlockState{
   }
 
   BricksBlockState(const glm::vec2& position) : BricksBlockState(){
-    this->position = position * config::BlockSize;
+    this->position = position * BlockBase::Size;
 
     for (auto& particle : particles){
       const auto center_position = this->position + size / 2.f - particle.size / 2.f;
@@ -90,7 +91,7 @@ struct BricksBlockState : BouncingBlockState{
 
 struct SpinningCoinState : BouncingBlockState{
   SpinningCoinState(const glm::vec2& position){
-    this->position = position * config::BlockSize;
+    this->position = position * BlockBase::Size;
     texture = &textures::spinning_coin[0];
     bounce_state.initial_power = -20.f;
   }

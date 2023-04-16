@@ -5,14 +5,14 @@
 struct BeetleState : ShellMonsterState{
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto beetle = BeetleState();
-    beetle.position = position * config::BlockSize;
-    beetle.size = glm::vec2(config::BlockSize);
+    beetle.position = position * BlockBase::Size;
+    beetle.size = glm::vec2(BlockBase::Size);
     beetle.walk_speed = 3.f;
     beetle.shell_speed = 12.f;
     beetle.set_direction(direction);
     beetle.current_texture = &textures::beetle_walk[0];
     beetle.texture_flip = Drawable::Flip::UseFlip;
-    beetle.shell_height = config::BlockSize;
+    beetle.shell_height = BlockBase::Size;
     beetle.reward_for_killing = 100;
 
     return beetle;

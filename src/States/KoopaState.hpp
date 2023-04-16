@@ -7,14 +7,14 @@ protected:
   template<typename Entity>
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = Entity();
-    koopa.position = position * config::BlockSize;
-    koopa.size = glm::vec2(config::BlockSize, config::BlockSize * 1.5f);
+    koopa.position = position * BlockBase::Size;
+    koopa.size = glm::vec2(BlockBase::Size, BlockBase::Size * 1.5f);
     koopa.walk_speed = 3.f;
     koopa.shell_speed = 12.f;
     koopa.set_direction(direction);
     koopa.texture_flip = Drawable::Flip::UseFlip;
     koopa.reward_for_killing = 100.f;
-    koopa.shell_height = config::BlockSize * 7.f / 8.f;
+    koopa.shell_height = BlockBase::Size * 7.f / 8.f;
 
     return koopa;
   }

@@ -9,14 +9,14 @@ struct MushroomState : MonsterState{
   auto disappear(){
     is_active = false;
     is_visible = false;
-    position.y = config::BigValue;
+    position.y = util::BigValue;
   }
 
 private:
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto mushroom = MushroomState();
-    mushroom.position = position * config::BlockSize;
-    mushroom.size = glm::vec2(config::BlockSize);
+    mushroom.position = position * BlockBase::Size;
+    mushroom.size = glm::vec2(BlockBase::Size);
     mushroom.walk_speed = 5.f;
     mushroom.set_direction(direction);
     mushroom.is_visible = false;

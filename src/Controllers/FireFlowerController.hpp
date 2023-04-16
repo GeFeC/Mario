@@ -16,7 +16,7 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
   }
 
   auto& player = level.player;
-  if (player_hit_block_above(player, BouncingBlockState(flower.position / config::BlockSize))){
+  if (player_hit_block_above(player, BouncingBlockState(flower.position / BlockBase::Size))){
     flower.should_be_pushed_out = true;
     flower.is_visible = true;
   } 
@@ -25,7 +25,7 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
     const auto value = window::delta_time * 2;
 
     flower.offset += value;
-    flower.position.y -= value * config::BlockSize;
+    flower.position.y -= value * BlockBase::Size;
   }
 
   //Interaction with player
@@ -37,7 +37,7 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
     level.stats.score += FireFlowerState::RewardForEating;
   
     flower.is_visible = false;
-    flower.position.y = config::BigValue;
+    flower.position.y = util::BigValue;
 
     const auto is_player_big = player.growth == PlayerState::Growth::Big;
     if (is_player_big){

@@ -156,6 +156,6 @@ auto Text::get_font() const -> Font*{
   return font;
 }
 
-auto Text::get_total_height() const -> float{
+auto Text::get_all_lines_height() const -> float{
   return get_lines_count(text) * font->size;
 }

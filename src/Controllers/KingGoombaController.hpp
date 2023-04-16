@@ -4,15 +4,12 @@
 #include "States/BossState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/EntityController.hpp"
-#include "Controllers/BossController.hpp"
 #include "Window.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
 #include "Util/Util.hpp"
 
 static auto king_goomba_controller(KingGoombaState& boss, LevelState& level){
-  using config::BlockSize;
-
   if (boss.hp > 0){
     entity_run_movement_animation(boss, textures::king_goomba_walk);
   }
@@ -23,7 +20,7 @@ static auto king_goomba_controller(KingGoombaState& boss, LevelState& level){
     boss.is_on_ground = false;
   }
   
-  static constexpr auto GroundPosition = (config::BlocksInColumn - 1) * config::BlockSize;
+  static constexpr auto GroundPosition = config::FrameBufferSize.y - BlockBase::Size;
   entity_gravity_base(boss, level, [&](const auto&, auto& position_increaser){
     if (boss.hp == 0.f) return;
 
@@ -48,7 +45,7 @@ static auto king_goomba_controller(KingGoombaState& boss, LevelState& level){
 
   auto boss_hitbox = MonsterState{};
   boss_hitbox.is_active = true;
-  boss_hitbox.size = boss.size - glm::vec2(1) * BlockSize;
+  boss_hitbox.size = boss.size - glm::vec2(1) * BlockBase::Size;
   boss_hitbox.position = boss.position + glm::vec2((boss.size.x - boss_hitbox.size.x) / 2.f);
 
   entity_kill_player_on_touch(boss_hitbox, level.player);
@@ -67,10 +64,10 @@ static auto king_goomba_controller(KingGoombaState& boss, LevelState& level){
   //Walking
   boss.position.x += boss.direction * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier; 
 
-  static constexpr auto LevelWidth = (config::BlocksInRow - 1) * BlockSize;
+  static constexpr auto LevelWidth = config::FrameBufferSize.x - BlockBase::Size;
   if (boss.position.x + boss.size.x >= LevelWidth) boss.direction = EntityState::DirectionLeft;
-  if (boss.position.x <= BlockSize) boss.direction = EntityState::DirectionRight;
+  if (boss.position.x <= BlockBase::Size) boss.direction = EntityState::DirectionRight;
 
-  boss.position.x = std::clamp(boss.position.x, BlockSize, LevelWidth);
+  boss.position.x = std::clamp(boss.position.x, BlockBase::Size, LevelWidth);
   boss.position.y = std::min(boss.position.y, GroundPosition);
 }

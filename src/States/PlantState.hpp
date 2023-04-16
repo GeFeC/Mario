@@ -3,7 +3,7 @@
 #include "MonsterState.hpp"
 
 struct PlantState : MonsterState{
-  static constexpr auto MaxOffset = config::BlockSize * 11 / 8;
+  static constexpr auto MaxOffset = BlockBase::Size * 11 / 8;
   float offset = 0.f;
   float cooldown_duration = 0.f;
   float speed = 0.f;
@@ -17,8 +17,8 @@ struct PlantState : MonsterState{
 private:
   static auto make(const glm::vec2& position){
     auto plant = PlantState();
-    plant.position = position * config::BlockSize;
-    plant.size = glm::vec2(config::BlockSize, config::BlockSize * 11 / 8);
+    plant.position = position * BlockBase::Size;
+    plant.size = glm::vec2(BlockBase::Size, BlockBase::Size * 11 / 8);
     plant.current_texture = &textures::plant[0];
     plant.can_be_stomped = false;
     plant.is_active = true;

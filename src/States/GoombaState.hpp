@@ -6,8 +6,8 @@ struct GoombaState : MonsterState{
 private:
   static auto make(const glm::vec2& position){
     auto goomba = GoombaState();
-    goomba.position = position * config::BlockSize;
-    goomba.size = glm::vec2(config::BlockSize);
+    goomba.position = position * BlockBase::Size;
+    goomba.size = glm::vec2(BlockBase::Size);
     goomba.walk_speed = 3.f;
 
     return goomba;

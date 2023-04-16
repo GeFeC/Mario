@@ -10,7 +10,7 @@ struct FlyingKoopaState : KoopaState{
 
   static auto make(const glm::vec2& position, const glm::vec2& axis){
     auto koopa = KoopaState::make<FlyingKoopaState>(position);
-    koopa.initial_position = position * config::BlockSize;
+    koopa.initial_position = position * BlockBase::Size;
     koopa.movement_axis = axis;
 
     return koopa;

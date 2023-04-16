@@ -12,7 +12,6 @@
 #include "Frames/Level22.hpp"
 
 #include "Util/Util.hpp"
-#include "config.hpp"
 
 #include <unordered_map>
 #include <functional>

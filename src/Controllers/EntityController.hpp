@@ -24,12 +24,12 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
   //Checking if entity should change direction not to fall from edge
   
-  static constexpr auto Offset = config::BlockSize / 3.f;
+  static constexpr auto Offset = BlockBase::Size / 3.f;
 
-  const auto x = (entity.position.x) / config::BlockSize;
-  const auto y = (entity.position.y + entity.size.y + Offset) / config::BlockSize;
-  const auto left_x = (entity.position.x + Offset) / config::BlockSize;
-  const auto right_x = (entity.position.x + config::BlockSize - Offset) / config::BlockSize;
+  const auto x = (entity.position.x) / BlockBase::Size;
+  const auto y = (entity.position.y + entity.size.y + Offset) / BlockBase::Size;
+  const auto left_x = (entity.position.x + Offset) / BlockBase::Size;
+  const auto right_x = (entity.position.x + BlockBase::Size - Offset) / BlockBase::Size;
 
   if (!entity.is_on_ground) return;
 
@@ -42,12 +42,12 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   static constexpr auto Air = 0;
   if (level.hitbox_grid[right_x][y] == Air && entity.direction == EntityState::DirectionRight){
     entity.acceleration.left = entity.acceleration.right = 0.f;
-    entity.position.x = (right_x - 1) * config::BlockSize + Offset;
+    entity.position.x = (right_x - 1) * BlockBase::Size + Offset;
   }
 
   if (level.hitbox_grid[left_x][y] == Air && entity.direction == EntityState::DirectionLeft){
     entity.acceleration.left = entity.acceleration.right = 0.f;
-    entity.position.x = left_x * config::BlockSize - Offset;
+    entity.position.x = left_x * BlockBase::Size - Offset;
   }
 };
 
@@ -140,7 +140,7 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
 
   if (collision::is_hovering_in_x(player, entity)){
     const auto distance = entity.position.y - player.position.y - player.size.y;
-    return distance == util::in_range(-config::BlockSize * 5.f/6.f, 0);
+    return distance == util::in_range(-BlockBase::Size * 5.f/6.f, 0);
   }
 
   return false;
@@ -198,12 +198,11 @@ static auto entity_die_when_stomped(
 };
 
 static auto entity_become_active_when_seen(MonsterState& entity, const LevelState& level){
-  using config::PlayerPositionToScroll;
   const auto& player = level.player;
 
   const auto player_field_of_view_x = std::max(
-    config::BlocksInRow * config::BlockSize - config::PlayerPositionToScroll.x,
-    config::BlocksInRow * config::BlockSize - player.position.x
+    config::FrameBufferSize.x - LevelState::PlayerPositionToStartLevelScrolling.x,
+    config::FrameBufferSize.x - player.position.x
   );
 
   const auto player_field_of_view_y = player.position.y - level.camera_offset.y;

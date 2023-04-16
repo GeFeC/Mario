@@ -30,7 +30,7 @@ static auto flying_koopa_controller(
     }
 
     const auto sin = glm::sin(timer / distance * koopa.walk_speed * FlightSpeedMultiplier) | util::as<float>;
-    koopa.position = koopa.initial_position + koopa.movement_axis * sin * config::BlockSize;
+    koopa.position = koopa.initial_position + koopa.movement_axis * sin * BlockBase::Size;
 
     previous_walk_speed = koopa.walk_speed;
 

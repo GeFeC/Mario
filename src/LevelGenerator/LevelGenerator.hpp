@@ -75,7 +75,6 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     const auto y = counter / (level.max_size().x | util::as<int>);
 
     auto& entities = level.entities;
-    using config::BlockSize;
 
     if (tile == Tile::MushroomBot2) put_nonsolid(level, { x, y }, textures::mushroom_bot2);
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);

@@ -2,7 +2,6 @@
 #include "LevelGenerator/Builder.hpp"
 #include "States/AppState.hpp"
 #include "LevelGenerator/LevelGenerator.hpp"
-#include "config.hpp"
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
@@ -45,9 +44,10 @@ static auto run_frame_levelbase(
     auto& player = level.player;
 
     //Checkpoints:
+    static constexpr auto BlockSize = BlockBase::Size;
     if (level.current_checkpoint == LevelState::CheckpointNotSet){
       const auto level_height = level.max_size().y;
-      level.current_checkpoint = { config::BlockSize, (level_height - 3.f) * config::BlockSize };
+      level.current_checkpoint = { BlockSize, (level_height - 3.f) * BlockSize };
     }
     player.position = level.current_checkpoint;
 
@@ -57,7 +57,7 @@ static auto run_frame_levelbase(
 
     //Camera:
     if (level.type == LevelState::Type::Vertical){
-      level.camera_offset.y = player.position.y - config::BlocksInColumn / 2.f * config::BlockSize;
+      level.camera_offset.y = player.position.y - LevelState::BlocksInColumn / 2.f * BlockSize;
     }
 
     //Hitbox Borders:

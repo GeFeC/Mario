@@ -50,7 +50,7 @@ struct PlayerState : EntityState{
   : growth_counter(3.f, 10.f, 3), transformation_counter(2.f, 10.f, 3) {
 
     death_delay = 0.5f;
-    size = glm::vec2(config::BlockSize);
+    size = glm::vec2(BlockBase::Size);
     is_active = true;
     current_texture = &textures::small_mario;
   }

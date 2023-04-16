@@ -7,8 +7,8 @@ struct SpikeState : MonsterState{
 
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto spike = SpikeState();
-    spike.position = position * config::BlockSize;
-    spike.size = glm::vec2(config::BlockSize);
+    spike.position = position * BlockBase::Size;
+    spike.size = glm::vec2(BlockBase::Size);
     spike.walk_speed = 3.f;
     spike.set_direction(direction);
     spike.current_texture = &textures::spike_walk[0];

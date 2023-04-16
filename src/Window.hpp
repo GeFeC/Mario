@@ -9,7 +9,7 @@
 namespace window{
   inline auto delta_time = 0.f;
 
-  auto init(const std::string& title, const glm::vec2& initial_size) -> void;
+  auto init() -> void;
   auto show() -> void;
   auto update() -> void;
   auto should_close() -> bool;

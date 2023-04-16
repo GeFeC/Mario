@@ -9,7 +9,7 @@ struct QBlockState : BouncingBlockState, BlinkingBlockBase{
   util::Generator<PointsParticlesState> points_generator;
 
   QBlockState(const glm::vec2& position){
-    this->position = position * config::BlockSize;
+    this->position = position * BlockBase::Size;
     this->texture = &textures::q_block[0];
   }
 };

@@ -21,7 +21,7 @@ inline auto coin_controller(CoinBlockState& coin, LevelState& level){
     == util::in_range(-player.size.y + CollisionPadding, coin.size.y - CollisionPadding); 
 
   if (hovers_in_x && hovers_in_y){
-    coin.position.y = config::BigValue;
+    coin.position.y = util::BigValue;
     ++level.stats.coins;
   }
 }

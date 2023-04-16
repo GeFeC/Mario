@@ -31,7 +31,13 @@ auto renderer::init() -> void{
 
   program::create_program(shaders::v_shader, shaders::f_shader);
 
-  const auto projection_matrix = glm::ortho(0.f, 0.f + config::InitialWindowWidth, 0.f + config::InitialWindowHeight, 0.f);
+  const auto projection_matrix = glm::ortho(
+    0.f, 
+    config::FrameBufferSize.x, 
+    config::FrameBufferSize.y, 
+    0.f
+  );
+
   program::set_uniform("projection", projection_matrix);
 }
 

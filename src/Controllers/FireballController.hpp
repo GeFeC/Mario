@@ -28,12 +28,12 @@ static auto fireball_controller(FireballState& fireball, const LevelState& level
     reset_fireball(fireball);
   }
 
-  if (fireball.position.y > level.camera_offset.y + config::InitialWindowHeight){
+  if (fireball.position.y > level.camera_offset.y + config::FrameBufferSize.y){
     reset_fireball(fireball);
   }
 
   const auto& player = level.player;
-  if (fireball.is_active && std::abs(player.position.x - fireball.position.x) > config::InitialWindowWidth){
+  if (fireball.is_active && std::abs(player.position.x - fireball.position.x) > config::FrameBufferSize.x){
     reset_fireball(fireball);
   }
 

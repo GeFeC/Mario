@@ -19,7 +19,7 @@ static auto hammer_controller(HammerState& hammer, LevelState& level){
   entity_movement(hammer, level);
   entity_gravity(hammer, level);
 
-  if (hammer.position.y > level.camera_offset.y + config::BlocksInColumn * config::BlockSize) {
+  if (hammer.position.y > level.camera_offset.y + config::FrameBufferSize.y) {
     hammer.is_active = false;
     hammer.is_visible = false;
   }
@@ -30,7 +30,7 @@ static auto hammerbro_controller(HammerBroState& hammerbro, LevelState& level){
     hammer_controller(hammer, level);
   }
 
-  if (level.player.position.y - hammerbro.position.y >= config::BlockSize * config::BlocksInColumn){
+  if (level.player.position.y - hammerbro.position.y >= config::FrameBufferSize.y){
     hammerbro.is_active = false;
   }
 

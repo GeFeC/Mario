@@ -5,7 +5,7 @@
 using util::Rect;
 
 auto collision_controller(const Rect& object1, const Rect& object2) -> CollisionState{
-  using config::BigValue;
+  using util::BigValue;
   auto collision_state = CollisionState{ BigValue, BigValue, BigValue, BigValue };
 
   if (collision::is_hovering_in_x(object1, object2)){

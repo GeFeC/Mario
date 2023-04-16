@@ -5,6 +5,8 @@
 #include "States/BossState.hpp"
 #include "res/textureGroups.hpp"
 
+#include <memory>
+
 static auto run_frame_level16(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level16;
@@ -28,8 +30,8 @@ static auto run_frame_level16(AppState& app){
     level_generator::generate_level(level, "level16_2.csv");
 
     auto& boss = level.bosses.king_goomba; 
-    boss = std::make_unique<KingGoombaState>();
-    boss->position = glm::vec2(16, 8) * config::BlockSize;
+    boss = std::make_shared<KingGoombaState>();
+    boss->position = glm::vec2(16, 8) * BlockBase::Size;
     boss->walk_speed = 7.f;
     boss->set_direction(EntityState::DirectionLeft);
 
@@ -38,6 +40,6 @@ static auto run_frame_level16(AppState& app){
 
     level.player.growth = PlayerState::Growth::Big;
     level.player.form = PlayerState::Form::Fire;
-    level.player.position.x = 7 * config::BlockSize;
+    level.player.position.x = 2 * BlockBase::Size;
   });
 }

@@ -9,7 +9,7 @@ static auto fire_bar_controller(FireBarState& bar, LevelState& level){
     auto& fireball = bar.fireballs[i];
     fireball.current_texture = &textures::fireball[level.fireball_counter.int_value()];
 
-    const auto y = config::BlockSize * i * 0.8f;
+    const auto y = BlockBase::Size * i * 0.8f;
     const auto rotation = glm::vec2(
       -y * glm::sin(LevelState::timer * FireBarState::RotationSpeed),
       y * glm::cos(LevelState::timer * FireBarState::RotationSpeed)

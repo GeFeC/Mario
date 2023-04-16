@@ -2,6 +2,7 @@
 #include "States/BlockState.hpp"
 #include "Renderer/Text.hpp"
 #include "res/fonts.hpp"
+#include "Util/Util.hpp"
 
 #include <algorithm>
 
@@ -19,7 +20,7 @@ struct PointsParticlesState{
   PointsParticlesState(){
     text = Text(&fonts::normal, "", TextSize);
     text.is_visible = false;
-    text.position.y = config::BigValue;
+    text.position.y = util::BigValue;
   }
 
   PointsParticlesState(const std::string& label, const glm::vec2& position){
@@ -43,7 +44,7 @@ struct PointsParticlesState{
   }
 
   auto as_block() const{
-    return BouncingBlockState(text.get_position() / config::BlockSize);
+    return BouncingBlockState(text.get_position() / BlockBase::Size);
   }
 
   auto finished() const{

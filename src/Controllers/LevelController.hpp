@@ -147,8 +147,8 @@ static auto level_finish(LevelState& level, AppState& app){
   if (level.is_finished){
     level.score_adding_after_finish_delay -= window::delta_time;
 
-    if (level.player.position.y / config::BlockSize < finish.y + 1){
-      level.player.position.y += window::delta_time * config::BlockSize;
+    if (level.player.position.y / BlockBase::Size < finish.y + 1){
+      level.player.position.y += window::delta_time * BlockBase::Size;
     }
 
     if (level.stats.time > 0) {
@@ -171,8 +171,8 @@ static auto level_finish(LevelState& level, AppState& app){
     }
   }
 
-  if (player.position.y / config::BlockSize - finish.y != util::in_range(-1, 0)) return;
-  if (player.position.x / config::BlockSize - finish.x != util::in_range(0.25, 0.75)) return;
+  if (player.position.y / BlockBase::Size - finish.y != util::in_range(-1, 0)) return;
+  if (player.position.x / BlockBase::Size - finish.x != util::in_range(0.25, 0.75)) return;
 
   if (window::is_key_pressed(GLFW_KEY_DOWN)) level.is_finished = true;
 }
@@ -188,16 +188,16 @@ static auto level_restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
 
-  if (player.position.y > (level.max_size().y + 1) * config::BlockSize) {
+  if (player.position.y > (level.max_size().y + 1) * BlockBase::Size) {
     player.can_move = false;
     //set speed to 0
     player.set_direction(EntityState::DirectionLeft, 0);
   }
 
   const auto position_required_to_restart_level 
-    = config::PlayerPositionToRestartLevel 
+    = LevelState::PlayerYToRestartLevel 
     + level.max_size().y 
-    * config::BlockSize;
+    * BlockBase::Size;
 
   if (player.position.y > position_required_to_restart_level){
     app.should_restart_current_frame = true;
@@ -215,7 +215,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
 
 static auto level_camera(LevelState& level){
   auto& player = level.player;
-  auto player_y = player.position.y - config::BlockSize + player.size.y;
+  auto player_y = player.position.y - BlockBase::Size + player.size.y;
   
   //Vertical level scroll
   if (level.type == LevelState::Type::Vertical){
@@ -227,8 +227,8 @@ static auto level_camera(LevelState& level){
       level.camera_offset.y = player_y - LevelState::MaxPlayerRelativeY;
     }
 
-    const auto max_scroll_y = (level.max_size().y - config::BlocksInColumn) * config::BlockSize;
-    const auto min_scroll_y = (level.finish_position.y - 5) * config::BlockSize;
+    const auto max_scroll_y = level.max_size().y * BlockBase::Size - config::FrameBufferSize.y;
+    const auto min_scroll_y = (level.finish_position.y - 5) * BlockBase::Size;
     if (level.type == LevelState::Type::Vertical){
       level.camera_offset.y = std::clamp(level.camera_offset.y, min_scroll_y, max_scroll_y);
     }
@@ -236,13 +236,15 @@ static auto level_camera(LevelState& level){
   //Horizontal level scroll
   else if (level.type == LevelState::Type::Horizontal){
     static constexpr auto HorizontalLevelWidth = LevelState::HorizontalLevelSize.x;
+    static constexpr auto PlayerPositionToScroll = LevelState::PlayerPositionToStartLevelScrolling;
 
     const auto player_position_to_stop_scrolling 
-      = HorizontalLevelWidth * config::BlockSize - (config::PlayerPositionToScroll.x + config::BlockSize) * 2;
+      = HorizontalLevelWidth * BlockBase::Size 
+      - (PlayerPositionToScroll.x + BlockBase::Size) * 2;
 
-    if (player.position.x >= config::PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
+    if (player.position.x >= PlayerPositionToScroll.x && level.type == LevelState::Type::Horizontal){
       level.camera_offset.x = std::min(
-        player.position.x - config::PlayerPositionToScroll.x,
+        player.position.x - PlayerPositionToScroll.x,
         player_position_to_stop_scrolling
       );
     }

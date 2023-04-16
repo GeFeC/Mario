@@ -66,8 +66,8 @@ static auto entity_push_shell_on_player_touch(
 
 static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   auto hitbox = ShellMonsterState();
-  hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - config::BlockSize);
-  hitbox.size = glm::vec2(config::BlockSize);
+  hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - BlockBase::Size);
+  hitbox.size = glm::vec2(BlockBase::Size);
   hitbox.is_dead = entity.is_dead;
   hitbox.should_collide = entity.should_collide;
   hitbox.vertical_flip = entity.vertical_flip;

@@ -7,7 +7,7 @@
 #include "Util/Generator.hpp"
 
 struct HammerBroState : MonsterState{
-  static constexpr auto MaxWalkDistance = config::BlockSize * 1.f;
+  static constexpr auto MaxWalkDistance = BlockBase::Size;
   static constexpr auto JumpPower = -30.f;
   static constexpr auto WeakJumpPower = -20.f;
   static constexpr auto HammerThrowForce = -25.f;
@@ -26,7 +26,7 @@ struct HammerBroState : MonsterState{
   int hammers_spawned = 0;
   bool started_jumping = false;
 
-  HammerBroState() : throw_counter(config::BigValue, 3.f, 1) {}
+  HammerBroState() : throw_counter(util::BigValue, 3.f, 1) {}
 
   static auto new_jump_delay(){
     return util::random_value(3, 5);
@@ -38,9 +38,9 @@ struct HammerBroState : MonsterState{
 
   static auto make(const glm::vec2& position){
     auto bro = HammerBroState();
-    bro.position = position * config::BlockSize;
+    bro.position = position * BlockBase::Size;
     bro.initial_x = bro.position.x;
-    bro.size = glm::vec2(1, 2) * config::BlockSize;
+    bro.size = glm::vec2(1, 2) * BlockBase::Size;
     bro.walk_speed = 3.f;
     bro.current_texture = &textures::hammerbro_walk[0];
     bro.set_direction(DirectionLeft);

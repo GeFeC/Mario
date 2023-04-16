@@ -55,10 +55,5 @@ public:
   auto get_glyph(int index) const -> const Glyph&;
   auto get_length() const -> int;
 
-  /*
-    The difference between this and Text::get_size().y is that
-    Text::get_size().y returns something called 'bearingY' and
-    this function returns 'real' height
-  */
-  auto get_total_height() const -> float;
+  auto get_all_lines_height() const -> float;
 };

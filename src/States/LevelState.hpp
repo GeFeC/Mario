@@ -42,13 +42,19 @@ struct StatsState{
 };
 
 struct LevelState{
-  inline static constexpr auto HorizontalLevelSize = glm::vec2(200, 12);
-  inline static constexpr auto MaxVerticalLevelSize = glm::vec2(20, 150);
-  inline static constexpr auto BossLevelSize = glm::vec2(20, 12);
+  inline static constexpr auto BlocksInRow = 20;
+  inline static constexpr auto BlocksInColumn = 12;
+
+  inline static constexpr auto HorizontalLevelSize = glm::vec2(200, BlocksInColumn);
+  inline static constexpr auto MaxVerticalLevelSize = glm::vec2(BlocksInRow, 150);
+  inline static constexpr auto BossLevelSize = glm::vec2(BlocksInRow, BlocksInColumn);
 
   inline static constexpr auto CheckpointNotSet = glm::vec2(-1);
-  inline static constexpr auto MinPlayerRelativeY = 5 * config::BlockSize;
-  inline static constexpr auto MaxPlayerRelativeY = 9 * config::BlockSize;
+  inline static constexpr auto MinPlayerRelativeY = 5 * BlockBase::Size;
+  inline static constexpr auto MaxPlayerRelativeY = 9 * BlockBase::Size;
+
+  static constexpr auto PlayerPositionToStartLevelScrolling = glm::vec2(9 * BlockBase::Size, 0.f);
+  static constexpr auto PlayerYToRestartLevel = 10000.f;
 
   inline static float timer = 0.f;
 

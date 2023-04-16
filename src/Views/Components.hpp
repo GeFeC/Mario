@@ -16,13 +16,13 @@
 #include "res/textures.hpp"
 
 static auto is_component_on_screen(const util::Rect& component, const glm::vec2& offset){
-  using config::BlockSize, config::BlocksInRow, config::BlocksInColumn;
+  using config::FrameBufferSize;
 
   const auto& position = component.position;
   const auto& size = component.size;
 
-  const auto is_x = position.x - offset.x == util::in_range(-size.x, BlocksInRow * BlockSize);
-  const auto is_y = position.y - offset.y == util::in_range(-size.y, BlocksInColumn * BlockSize);
+  const auto is_x = position.x - offset.x == util::in_range(-size.x, FrameBufferSize.x);
+  const auto is_y = position.y - offset.y == util::in_range(-size.y, FrameBufferSize.y);
 
   return is_x && is_y;
 }
@@ -56,7 +56,7 @@ static auto render_block(const BlockBase& block, const glm::vec2& offset){
 
   renderer::draw(Drawable{
     block.position - offset,
-    glm::vec2(config::BlockSize),
+    glm::vec2(BlockBase::Size),
     block.texture,
     { Drawable::Flip::NoFlip, Drawable::Flip::NoFlip },
     block.is_visible

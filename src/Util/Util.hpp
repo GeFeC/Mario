@@ -10,6 +10,8 @@
 #include <fstream>
 
 namespace util{
+  inline static constexpr auto BigValue = 999999;
+
   template<typename T>
   using vector2d = std::vector<std::vector<T>>;
 

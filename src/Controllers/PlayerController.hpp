@@ -16,7 +16,7 @@
 #include <algorithm>
 
 static auto to_grid_coords(const glm::vec2& normal_coords){
-  return glm::ivec2(normal_coords.x / config::BlockSize, normal_coords.y / config::BlockSize);
+  return glm::ivec2(normal_coords.x / BlockBase::Size, normal_coords.y / BlockBase::Size);
 }
 
 static auto player_jump(PlayerState& player, LevelState& level){
@@ -33,7 +33,7 @@ static auto player_jump(PlayerState& player, LevelState& level){
       player.gravity = -collision_state.distance_above;
     }
 
-    if (collision_state.distance_below < config::BlockSize && !window::is_key_pressed(GLFW_KEY_UP)){
+    if (collision_state.distance_below < BlockBase::Size && !window::is_key_pressed(GLFW_KEY_UP)){
       player.jump_cooldown = false;
     }
   });
@@ -149,15 +149,15 @@ static auto player_update_growth(PlayerState& player){
   };
 
   if (grow_state % 3 == 0){
-    set_grow_state(PlayerState::Growth::Small, config::BlockSize);
+    set_grow_state(PlayerState::Growth::Small, BlockBase::Size);
   }
 
   if (grow_state % 3 == 1){
-    set_grow_state(PlayerState::Growth::Medium, config::BlockSize * 1.5f);
+    set_grow_state(PlayerState::Growth::Medium, BlockBase::Size * 1.5f);
   }
 
   if (grow_state % 3 == 2){
-    set_grow_state(PlayerState::Growth::Big, config::BlockSize * 2.f);
+    set_grow_state(PlayerState::Growth::Big, BlockBase::Size * 2.f);
   }
 }
 
@@ -242,20 +242,20 @@ auto player_squat(PlayerState& player, LevelState& level){
 
   if (player.growth == PlayerState::Growth::Big){
     if (window::is_key_pressed(GLFW_KEY_DOWN) || is_forced_to_squat){
-      if (player.size.y == config::BlockSize * 2){
+      if (player.size.y == BlockBase::Size * 2){
         player.is_squating = true;
-        player.position.y += config::BlockSize;
+        player.position.y += BlockBase::Size;
       }
 
-      player.size.y = config::BlockSize;
+      player.size.y = BlockBase::Size;
     }
     else{
-      if (player.size.y == config::BlockSize){
+      if (player.size.y == BlockBase::Size){
         player.is_squating = false;
-        player.position.y -= config::BlockSize;
+        player.position.y -= BlockBase::Size;
       }
 
-      player.size.y = config::BlockSize * 2;
+      player.size.y = BlockBase::Size * 2;
     }
   }
 }

@@ -2,6 +2,7 @@
 
 #include "States/PointsParticlesState.hpp"
 #include "Window.hpp"
+#include "Util/Util.hpp"
 
 static auto points_particles_controller(PointsParticlesState& points){
   if (points.is_active && points.offset < PointsParticlesState::MaxOffset){
@@ -14,7 +15,7 @@ static auto points_particles_controller(PointsParticlesState& points){
     points.is_active = false;
     points.text.is_visible = false;
     points.offset = 0.f;
-    points.text.position.y = config::BigValue;
+    points.text.position.y = util::BigValue;
   }
 }
 
