@@ -122,6 +122,8 @@ static auto entity_handle_shell(
 
   //Killing Entities with shell
   level.entities.for_each([&](auto& target){
+    if constexpr (std::is_convertible_v<decltype(target), MushroomState>) return;
+
     shell_kill_entity(target);
   });
 };

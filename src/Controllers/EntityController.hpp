@@ -150,14 +150,14 @@ static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& 
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
+  if (player_is_on_entity(player, entity) && player.gravity >= 0) return;
+  if (!collision::is_hovering(player, entity)) return;
 
-  if (!player_is_on_entity(player, entity) && collision::is_hovering(player, entity)){
-    if (player.growth == PlayerState::Growth::Big){
-      player.is_shrinking = true;
-    }
-    else if (!player.is_shrinking && player.invincibility_delay <= 0.f) { 
-      player.is_dead = true; 
-    }
+  if (player.growth == PlayerState::Growth::Big){
+    player.is_shrinking = true;
+  }
+  else if (!player.is_shrinking && player.invincibility_delay <= 0.f) { 
+    player.is_dead = true; 
   }
 };
 

@@ -107,8 +107,7 @@ static auto render_plants(const LevelState& level){
 
 static auto render_entities(const LevelState& level){
   level.entities.for_each([&](const auto& entity){
-    using entity_t = std::decay_t<decltype(entity)>;
-    if constexpr (std::is_same_v<entity_t, PlantState>) return;
+    if constexpr (std::is_convertible_v<decltype(entity), PlantState>) return;
 
     render_entity(entity, level.camera_offset);
   });
