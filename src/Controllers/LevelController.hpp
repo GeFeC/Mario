@@ -220,16 +220,16 @@ static auto level_camera(LevelState& level){
   
   //Vertical level scroll
   if (level.type == LevelState::Type::Vertical){
-    if (player_y - level.camera_offset.y < LevelState::MinPlayerRelativeY && player.gravity < 0.f){
+    if (player_y - level.camera_offset.y < LevelState::MinPlayerRelativeY){
       level.camera_offset.y = player_y - LevelState::MinPlayerRelativeY;
     }
 
-    if (player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY && player.gravity > 0.f){
+    if (player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY){
       level.camera_offset.y = player_y - LevelState::MaxPlayerRelativeY;
     }
 
     const auto max_scroll_y = level.max_size().y * BlockBase::Size - config::FrameBufferSize.y;
-    const auto min_scroll_y = (level.finish_position.y - 5) * BlockBase::Size;
+    const auto min_scroll_y = std::max<float>((level.finish_position.y - 5) * BlockBase::Size, 0);
     if (level.type == LevelState::Type::Vertical){
       level.camera_offset.y = std::clamp(level.camera_offset.y, min_scroll_y, max_scroll_y);
     }

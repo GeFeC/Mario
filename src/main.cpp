@@ -20,7 +20,7 @@ auto main() -> int{
   renderer::init();
 
   auto app = AppState();
-  app.current_frame = AppState::Frame::Level23;
+  app.current_frame = AppState::Frame::Level24;
 
   window::show();
 
