@@ -41,3 +41,6 @@ release
 # IDE 
 compile_commands.json
 .vscode
+
+# Helper Tiled Layers
+*helper_layer.csv

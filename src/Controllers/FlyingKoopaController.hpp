@@ -10,7 +10,8 @@ static auto flying_koopa_controller(
     FlyingKoopaState& koopa, 
     LevelState& level, 
     const std::array<Texture, 2>& walk_frames_with_wings,
-    const std::array<Texture, 2>& walk_frames_without_wings
+    const std::array<Texture, 2>& walk_frames_without_wings,
+    float& timer
 ){
   //Motion
   if (koopa.has_wings && koopa.should_collide){
@@ -22,17 +23,9 @@ static auto flying_koopa_controller(
     );
 
     static constexpr auto FlightSpeedMultiplier = 2.f;
-    static auto previous_walk_speed = 0;
-
-    auto& timer = level.purple_flying_koopa_timer;
-    if (previous_walk_speed != koopa.walk_speed) {
-      timer = timer * previous_walk_speed / koopa.walk_speed;
-    }
 
     const auto sin = glm::sin(timer / distance * koopa.walk_speed * FlightSpeedMultiplier) | util::as<float>;
     koopa.position = koopa.initial_position + koopa.movement_axis * sin * BlockBase::Size;
-
-    previous_walk_speed = koopa.walk_speed;
 
     //Turning around
     if (previous_x - koopa.position.x >= 0.f){
@@ -71,7 +64,8 @@ static auto green_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& l
     koopa,
     level,
     textures::green_flying_koopa_walk,
-    textures::green_koopa_walk
+    textures::green_koopa_walk,
+    LevelState::timer
   );
 
   entity_handle_shell(
@@ -86,7 +80,8 @@ static auto red_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& lev
     koopa,
     level,
     textures::red_flying_koopa_walk,
-    textures::red_koopa_walk
+    textures::red_koopa_walk,
+    LevelState::timer
   );
 
   entity_handle_shell(
@@ -97,11 +92,25 @@ static auto red_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& lev
 }
 
 static auto purple_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
+  purple_koopa_movement_controller(koopa, level);
+
+  static auto previous_walk_speed = 0;
+
+  auto& timer = level.purple_flying_koopa_timer;
+  if (koopa.has_wings){
+    if (previous_walk_speed != koopa.walk_speed) {
+      timer = timer * previous_walk_speed / koopa.walk_speed;
+    }
+
+    previous_walk_speed = koopa.walk_speed;
+  }
+
   flying_koopa_controller(
     koopa,
     level,
     textures::purple_flying_koopa_walk,
-    textures::purple_koopa_walk
+    textures::purple_koopa_walk,
+    level.purple_flying_koopa_timer
   );
 
   entity_handle_shell(
@@ -109,6 +118,4 @@ static auto purple_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& 
     level,
     textures::purple_koopa_dead
   );
-
-  purple_koopa_movement_controller(koopa, level);
 }

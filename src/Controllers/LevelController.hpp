@@ -28,6 +28,7 @@
 #include "Controllers/KoopaController.hpp"
 #include "Controllers/FireBarController.hpp"
 #include "Controllers/HammerBroController.hpp"
+#include "Controllers/PlatformController.hpp"
 
 #include "Util/Util.hpp"
 #include "Window.hpp"
@@ -316,6 +317,10 @@ static auto level_controller(AppState& app){
 
   for (auto& bar : level.fire_bars){
     fire_bar_controller(bar, level);
+  }
+
+  for (auto& platform : level.platforms){
+    platform_controller(platform, level);
   }
 
   level_finish(level, app);

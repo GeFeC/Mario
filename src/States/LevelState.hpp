@@ -19,6 +19,7 @@
 #include "States/FireBarState.hpp"
 #include "States/HammerBroState.hpp"
 #include "States/BossState.hpp"
+#include "States/PlatformState.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -81,6 +82,7 @@ struct LevelState{
     std::vector<FireFlowerState> fire_flowers;
   } blocks;
 
+  std::vector<PlatformState> platforms;
   std::vector<FireBarState> fire_bars;
 
   struct Entities{

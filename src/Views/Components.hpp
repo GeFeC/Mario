@@ -9,6 +9,7 @@
 #include "States/FireBarState.hpp"
 #include "States/HammerBroState.hpp"
 #include "States/BossState.hpp"
+#include "States/PlatformState.hpp"
 
 #include "Util/Util.hpp"
 
@@ -92,4 +93,14 @@ static auto render_entity(const HammerBroState& bro, const glm::vec2& offset){
   }
 
   render_entity(EntityState(bro), offset);
+}
+
+static auto render_platform(const PlatformState& platform, const glm::vec2& offset){
+  for (int i = 0; i < platform.width; ++i){
+    renderer::draw(Drawable{
+      platform.position + glm::vec2(i * PlatformState::ElementSize, 0) - offset,
+      glm::vec2(PlatformState::ElementSize),
+      &textures::platform
+    });
+  }
 }

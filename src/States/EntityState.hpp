@@ -12,10 +12,10 @@ struct EntityState{
   using Direction = int;
   using Flip = Drawable::Flip;
 
-  static constexpr auto MovementSpeedMultiplier = 100.f;
-  static constexpr auto DirectionLeft = -1;
-  static constexpr auto DirectionRight = 1;
-  static constexpr auto GravityForce = 70.f;
+  inline static constexpr auto MovementSpeedMultiplier = 100.f;
+  inline static constexpr auto DirectionLeft = -1;
+  inline static constexpr auto DirectionRight = 1;
+  inline static constexpr auto GravityForce = 70.f;
 
   struct Acceleration{
     float left = 0.f, right = 0.f;
@@ -36,6 +36,7 @@ struct EntityState{
   bool can_be_stomped = true;
   bool is_visible = true;
   bool is_on_ground = false;
+  bool is_on_platform = false;
   bool is_dead = false;
   bool is_active = false;
   bool should_collide = true;
@@ -52,6 +53,10 @@ struct EntityState{
 
     acceleration.left = speed;
     acceleration.right = 0.f;
+  }
+
+  auto turn_around(){
+    acceleration.left = acceleration.right = 0.f;
   }
 };
 

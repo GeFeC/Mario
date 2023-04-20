@@ -4,6 +4,7 @@
 #include "Renderer/Drawable.hpp"
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
+#include "States/MonsterState.hpp"
 #include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
@@ -13,6 +14,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
     return;
   }
 
+  //Blocks
   for (const auto& block : level.blocks.normal){
     if (!block.is_solid) continue;
 
@@ -20,18 +22,28 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
     callable(collision_state);
   }
 
+  //Platforms
+  for (const auto& platform : level.platforms){
+    const auto platform_rect = util::Rect(
+      platform.position,
+      platform.size()
+    );
+
+    const auto collision_state = collision_controller(util::Rect(entity), platform_rect);
+    callable(collision_state);
+  }
+
   if (entity.fall_from_edge) return;
+  if (!entity.is_on_ground) return;
+  if (entity.is_on_platform) return;
 
   //Checking if entity should change direction not to fall from edge
-  
-  static constexpr auto Offset = BlockBase::Size / 3.f;
+  static constexpr auto Offset = MonsterState::EdgeDetectionOffset;
 
   const auto x = (entity.position.x) / BlockBase::Size;
   const auto y = (entity.position.y + entity.size.y + Offset) / BlockBase::Size;
   const auto left_x = (entity.position.x + Offset) / BlockBase::Size;
   const auto right_x = (entity.position.x + BlockBase::Size - Offset) / BlockBase::Size;
-
-  if (!entity.is_on_ground) return;
 
   const auto level_size = level.max_size();
 
@@ -150,7 +162,7 @@ static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& 
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
-  if (player_is_on_entity(player, entity) && player.gravity >= 0) return;
+  if (player_is_on_entity(player, entity)) return;
   if (!collision::is_hovering(player, entity)) return;
 
   if (player.growth == PlayerState::Growth::Big){
@@ -197,7 +209,7 @@ static auto entity_die_when_stomped(
   return false;
 };
 
-static auto entity_become_active_when_seen(MonsterState& entity, const LevelState& level){
+static auto entity_become_active_when_seen(EntityState& entity, const LevelState& level){
   const auto& player = level.player;
 
   const auto player_field_of_view_x = std::max(

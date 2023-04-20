@@ -221,6 +221,12 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
+    for (const auto& platform : level.platforms){
+      render_platform(platform, level.camera_offset);
+    }
+  });
+
+  renderer::draw_with_shadow([&]{
     render_entities(level);
 
     for (const auto& block : level.blocks.q_blocks){

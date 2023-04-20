@@ -9,6 +9,8 @@ namespace textures{
   inline auto mushroom_bg = Texture("mushroom_background.png");
   inline auto bg = Texture("normal_background.png");
 
+  inline auto platform = Texture("platform.png");
+
   //Blocks and Background objects
   inline auto bricks_particles_normal = Texture("bricks_particle/normal.png");
 

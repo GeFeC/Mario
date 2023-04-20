@@ -8,8 +8,9 @@
 #include <algorithm>
 
 struct MonsterState : EntityState{
-  static constexpr auto BounceDiePower = -20.f;
-  static constexpr auto BouncePower = -15.f;
+  inline static constexpr auto BounceDiePower = -20.f;
+  inline static constexpr auto BouncePower = -15.f;
+  inline static constexpr auto EdgeDetectionOffset = BlockBase::Size / 3.f;
 
   int reward_for_killing = 0;
   int walk_speed = 0.f;
