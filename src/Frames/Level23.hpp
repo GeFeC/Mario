@@ -5,7 +5,6 @@
 #include "Frames/LevelBase.hpp"
 #include "Util/Util.hpp"
 #include "res/textureGroups.hpp"
-#include <thread>
 
 static auto run_frame_level23(AppState& app){
   auto level = LevelFrameSharedData{};

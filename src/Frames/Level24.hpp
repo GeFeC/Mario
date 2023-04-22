@@ -22,7 +22,6 @@ static auto run_frame_level24(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
     level.cloud_textures = &texture_groups::blue_cloud;
-    level.player.position = glm::vec2{ 7, 30 } * BlockBase::Size;
 
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level24_1.csv");

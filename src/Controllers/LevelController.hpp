@@ -323,6 +323,10 @@ static auto level_controller(AppState& app){
     platform_controller(platform, level);
   }
 
+  for (auto& platform : level.looped_platforms){
+    looped_platform_controller(platform, level);
+  }
+
   level_finish(level, app);
 
   level_blocks_controller(level);

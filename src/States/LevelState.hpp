@@ -83,6 +83,7 @@ struct LevelState{
   } blocks;
 
   std::vector<PlatformState> platforms;
+  std::vector<PlatformState> looped_platforms;
   std::vector<FireBarState> fire_bars;
 
   struct Entities{

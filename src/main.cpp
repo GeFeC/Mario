@@ -1,4 +1,3 @@
-#include <cmath>
 #include <glad/glad.h>
 
 #include "Renderer/ShaderProgram.hpp"
@@ -20,7 +19,7 @@ auto main() -> int{
   renderer::init();
 
   auto app = AppState();
-  app.current_frame = AppState::Frame::Level24;
+  app.current_frame = AppState::Frame::Level25;
 
   window::show();
 

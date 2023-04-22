@@ -23,7 +23,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   }
 
   //Platforms
-  for (const auto& platform : level.platforms){
+  util::multi_for([&](const auto& platform){
     const auto platform_rect = util::Rect(
       platform.position,
       platform.size()
@@ -31,7 +31,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
     const auto collision_state = collision_controller(util::Rect(entity), platform_rect);
     callable(collision_state);
-  }
+  }, level.platforms, level.looped_platforms);
 
   if (entity.fall_from_edge) return;
   if (!entity.is_on_ground) return;

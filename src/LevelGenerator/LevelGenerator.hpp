@@ -23,10 +23,10 @@ static auto generate_horizontal_level_clouds(LevelState& level, int spread = 2){
   clouds.reserve(64);
 
   for (int i = 0; i < 16; ++i){
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, spread / 2), 3));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 1), 2));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, spread), 1));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, spread / 3), 1));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, spread / 2 + 1), 3));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 2), 2));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, spread + 1), 1));
+    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, spread / 3 + 1), 1));
   }
 }
 

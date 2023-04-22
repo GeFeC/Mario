@@ -224,6 +224,10 @@ static auto render_level(const LevelState& level){
     for (const auto& platform : level.platforms){
       render_platform(platform, level.camera_offset);
     }
+
+    for (const auto& platform : level.looped_platforms){
+      render_platform(platform, level.camera_offset);
+    }
   });
 
   renderer::draw_with_shadow([&]{
