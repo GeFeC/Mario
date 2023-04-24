@@ -16,7 +16,9 @@ static auto fire_bar_controller(FireBarState& bar, LevelState& level){
     );
     fireball.position = bar.position + rotation;
 
-    entity_kill_player_on_touch(fireball, level.player);
+    if (!level.is_finished){
+      entity_kill_player_on_touch(fireball, level.player);
+    }
   }
 
 }

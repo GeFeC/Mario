@@ -249,7 +249,7 @@ static auto render_level(const LevelState& level){
 
   renderer::draw_with_shadow([&]{
     if (level.type == LevelState::Type::Boss){
-      render_boss(*level.bosses.king_goomba, level.camera_offset);
+      render_boss(*level.bosses.current_boss.lock(), level.camera_offset);
     }
   });
 

@@ -24,7 +24,6 @@ static auto run_frame_level25(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
     level.cloud_textures = &texture_groups::blue_cloud;
-    level.player.position = { 191 * BlockBase::Size, 2 * BlockBase::Size };
 
     level_generator::generate_horizontal_level_clouds(level, 10);
     level_generator::generate_level(level, "level25_1.csv");

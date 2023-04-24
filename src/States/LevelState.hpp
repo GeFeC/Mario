@@ -129,7 +129,10 @@ struct LevelState{
   } entities;
 
   struct Bosses{
-    std::shared_ptr<KingGoombaState> king_goomba; 
+    std::weak_ptr<BossState> current_boss;
+
+    std::shared_ptr<KingGoombaState> king_goomba;
+    std::shared_ptr<KingKoopaState> king_koopa;
   } bosses;
 
   struct Background{

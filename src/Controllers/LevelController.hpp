@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Controllers/KingGoombaController.hpp"
 #include "States/LevelState.hpp"
 #include "States/LoopedCounter.hpp"
 #include "States/AppState.hpp"
@@ -29,6 +28,9 @@
 #include "Controllers/FireBarController.hpp"
 #include "Controllers/HammerBroController.hpp"
 #include "Controllers/PlatformController.hpp"
+
+#include "Controllers/KingGoombaController.hpp"
+#include "Controllers/KingKoopaController.hpp"
 
 #include "Util/Util.hpp"
 #include "Window.hpp"
@@ -269,8 +271,10 @@ static auto level_checkpoints_controller(LevelState& level){
 static auto level_bosses(AppState& app){
   auto& level = app.current_level;
 
+  using Frame = AppState::Frame;
   switch(app.current_frame){
-    case AppState::Frame::Level16: king_goomba_controller(*level.bosses.king_goomba, level); break;
+    case Frame::Level16: king_goomba_controller(*level.bosses.king_goomba, level); break;
+    case Frame::Level26: king_koopa_controller(*level.bosses.king_koopa, level); break;
     default: break;
   }
 }

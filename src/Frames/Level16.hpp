@@ -4,6 +4,7 @@
 #include "Frames/LevelBase.hpp"
 #include "States/BossState.hpp"
 #include "res/textureGroups.hpp"
+#include "Controllers/BossController.hpp"
 
 #include <memory>
 
@@ -30,10 +31,8 @@ static auto run_frame_level16(AppState& app){
     level_generator::generate_level(level, "level16_2.csv");
 
     auto& boss = level.bosses.king_goomba; 
-    boss = std::make_shared<KingGoombaState>();
+    boss = make_boss<KingGoombaState>(level);
     boss->position = glm::vec2(16, 8) * BlockBase::Size;
-    boss->walk_speed = 7.f;
-    boss->set_direction(EntityState::DirectionLeft);
 
     level.stats.boss_hp = &boss->hp;
     level.stats.max_boss_hp = KingGoombaState::MaxHp;
