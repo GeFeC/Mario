@@ -37,6 +37,7 @@ struct PlayerState : EntityState{
 
   float invincibility_delay = 0.f;
   float grow_state = 0.f;
+  float slip = 1.f;
   
   bool can_move = true;
   bool jump_cooldown = false;

@@ -6,8 +6,10 @@
 
 namespace textures{
   inline auto black = Texture("black.png");
-  inline auto mushroom_bg = Texture("mushroom_background.png");
+
   inline auto bg = Texture("normal_background.png");
+  inline auto mushroom_bg = Texture("mushroom_background.png");
+  inline auto snow_bg = Texture("snow_background.png");
 
   inline auto platform = Texture("platform.png");
 
@@ -29,6 +31,11 @@ namespace textures{
   inline auto grass_left = Texture("tile/grass_left.png");
   inline auto grass_right = Texture("tile/grass_right.png");
 
+  inline auto snow_bot = Texture("tile/snow_bot.png");
+  inline auto snow_center = Texture("tile/snow_center.png");
+  inline auto snow_left = Texture("tile/snow_left.png");
+  inline auto snow_right = Texture("tile/snow_right.png");
+
   inline auto red_cloud_top_left = Texture("cloud/left_top.png");
   inline auto red_cloud_top_center = Texture("cloud/center_top.png");
   inline auto red_cloud_top_right = Texture("cloud/right_top.png");
@@ -43,19 +50,29 @@ namespace textures{
   inline auto blue_cloud_bottom_center = Texture("cloud/blue_center_bottom.png");
   inline auto blue_cloud_bottom_right = Texture("cloud/blue_right_bottom.png");
 
+  inline auto white_bush_center = Texture("bush/snow_center.png");
+  inline auto white_bush_left = Texture("bush/snow_left.png");
+  inline auto white_bush_right = Texture("bush/snow_right.png");
+
+  inline auto green_bush_center = Texture("bush/center.png");
+  inline auto green_bush_left = Texture("bush/left.png");
+  inline auto green_bush_right = Texture("bush/right.png");
+
   inline auto red_bush_center = Texture("bush/mush_center.png");
   inline auto red_bush_left = Texture("bush/mush_left.png");
   inline auto red_bush_right = Texture("bush/mush_right.png");
+
+  inline auto white_hill_center = Texture("hill/snow_center.png");
+  inline auto white_hill_center_dot = Texture("hill/snow_center_dot.png");
+  inline auto white_hill_left = Texture("hill/snow_left.png");
+  inline auto white_hill_right = Texture("hill/snow_right.png");
+  inline auto white_hill_top = Texture("hill/snow_top.png");
 
   inline auto red_hill_center = Texture("hill/mush_center.png");
   inline auto red_hill_center_dot = Texture("hill/mush_center_dot.png");
   inline auto red_hill_left = Texture("hill/mush_left.png");
   inline auto red_hill_right = Texture("hill/mush_right.png");
   inline auto red_hill_top = Texture("hill/mush_top.png");
-
-  inline auto green_bush_center = Texture("bush/center.png");
-  inline auto green_bush_left = Texture("bush/left.png");
-  inline auto green_bush_right = Texture("bush/right.png");
 
   inline auto green_hill_center = Texture("hill/center.png");
   inline auto green_hill_center_dot = Texture("hill/center_dot.png");
@@ -72,6 +89,11 @@ namespace textures{
   inline auto green_pipe_top_right = Texture("pipe/green_right_top.png");
   inline auto green_pipe_bottom_left = Texture("pipe/green_left_bottom.png");
   inline auto green_pipe_bottom_right = Texture("pipe/green_right_bottom.png");
+
+  inline auto white_pipe_top_left = Texture("pipe/white_left_top.png");
+  inline auto white_pipe_top_right = Texture("pipe/white_right_top.png");
+  inline auto white_pipe_bottom_left = Texture("pipe/white_left_bottom.png");
+  inline auto white_pipe_bottom_right = Texture("pipe/white_right_bottom.png");
 
   inline auto coin = std::array<Texture, 3>{
     Texture("coin/0.png"),

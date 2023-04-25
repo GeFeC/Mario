@@ -20,6 +20,10 @@ enum class Tile{
   GrassLeft = 84,
   GrassRight = 85,
   GrassBot = 10,
+  SnowCenter = 89,
+  SnowLeft = 90,
+  SnowRight = 91,
+  SnowBot = 88,
   Cloud = 15,
   Bricks = 16,
   Coin = 74,
@@ -39,6 +43,11 @@ enum class Tile{
   RedPipeTopLeft = 33,
   RedPipeBottomLeft = 34,
 
+  WhitePipeTopRight = 21,
+  WhitePipeBottomRight = 23,
+  WhitePipeTopLeft = 25,
+  WhitePipeBottomLeft = 27,
+
   GreenHillTop = 45,
   GreenHillLeft = 52,
   GreenHillRight = 46,
@@ -50,6 +59,12 @@ enum class Tile{
   RedHillRight = 48,
   RedHillCenter = 50,
   RedHillCenter2 = 51,
+
+  WhiteHillTop = 96,
+  WhiteHillLeft = 94,
+  WhiteHillRight = 95,
+  WhiteHillCenter = 93,
+  WhiteHillCenter2 = 92,
 
   Fireball = 55,
 
@@ -79,17 +94,23 @@ enum class Tile{
   RedBushLeft = 70,
   RedBushCenter = 71,
 
+  WhiteBushRight = 99,
+  WhiteBushLeft = 98,
+  WhiteBushCenter = 97,
+
   Stone = 81
 };
 
 static constexpr Tile HillTiles[] = {
   Tile::GreenHillCenter, Tile::GreenHillCenter2, Tile::GreenHillTop, Tile::GreenHillLeft, Tile::GreenHillRight,
-  Tile::RedHillCenter, Tile::RedHillCenter2, Tile::RedHillTop, Tile::RedHillLeft, Tile::RedHillRight
+  Tile::RedHillCenter, Tile::RedHillCenter2, Tile::RedHillTop, Tile::RedHillLeft, Tile::RedHillRight,
+  Tile::WhiteHillCenter, Tile::WhiteHillCenter2, Tile::WhiteHillTop, Tile::WhiteHillLeft, Tile::WhiteHillRight
 };
 
 static constexpr Tile BushTiles[] = {
   Tile::GreenBushCenter, Tile::GreenBushLeft, Tile::GreenBushRight,
-  Tile::RedBushCenter, Tile::RedBushLeft, Tile::RedBushRight
+  Tile::RedBushCenter, Tile::RedBushLeft, Tile::RedBushRight,
+  Tile::WhiteBushCenter, Tile::WhiteBushLeft, Tile::WhiteBushRight
 };
 
 template<std::size_t N>

@@ -153,8 +153,17 @@ static auto put_plant(LevelState& level, const glm::vec2& position){
   level.entities.plants.push_back(PlantState::make_green(position + glm::vec2(0.5, 1.f)));
 }
 
+static auto put_red_plant(LevelState& level, const glm::vec2& position){
+  level.entities.red_plants.push_back(PlantState::make_red(position + glm::vec2(0.5, 1.f)));
+}
+
 static auto put_hammerbro(LevelState& level, const glm::vec2& position){
   level.entities.hammerbros.push_back(HammerBroState::make(position - glm::vec2(0, 1)));
 }
+
+static auto put_beetle(LevelState& level, const glm::vec2& position){
+  level.entities.beetles.push_back(BeetleState::make(position - glm::vec2(0, 0.5)));
+}
+
 
 } //namespace level_generator

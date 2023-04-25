@@ -29,6 +29,11 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::GrassRight, &textures::grass_right),
   pair(Tile::GrassBot, &textures::grass_bot),
 
+  pair(Tile::SnowCenter, &textures::snow_center),
+  pair(Tile::SnowLeft, &textures::snow_left), 
+  pair(Tile::SnowRight, &textures::snow_right),
+  pair(Tile::SnowBot, &textures::snow_bot),
+
   pair(Tile::Bricks, texture_groups::bricks),
   pair(Tile::QBlock, no_texture),
   pair(Tile::QBlockMushroom, texture_groups::mushroom),
@@ -46,16 +51,28 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::GreenPipeTopLeft, &textures::green_pipe_top_left),
   pair(Tile::GreenPipeBottomLeft, &textures::green_pipe_bottom_left),
 
+  pair(Tile::WhitePipeTopRight, &textures::white_pipe_top_right),
+  pair(Tile::WhitePipeBottomRight, &textures::white_pipe_bottom_right),
+  pair(Tile::WhitePipeTopLeft, &textures::white_pipe_top_left),
+  pair(Tile::WhitePipeBottomLeft, &textures::white_pipe_bottom_left),
+
   pair(Tile::GreenHillTop, &textures::green_hill_top),
   pair(Tile::GreenHillRight, &textures::green_hill_right),
+  pair(Tile::GreenHillLeft, &textures::green_hill_left),
+  pair(Tile::GreenHillCenter, &textures::green_hill_center),
+  pair(Tile::GreenHillCenter2, &textures::green_hill_center_dot),
+
   pair(Tile::RedHillTop, &textures::red_hill_top),
   pair(Tile::RedHillRight, &textures::red_hill_right),
   pair(Tile::RedHillLeft, &textures::red_hill_left),
   pair(Tile::RedHillCenter, &textures::red_hill_center),
   pair(Tile::RedHillCenter2, &textures::red_hill_center_dot),
-  pair(Tile::GreenHillLeft, &textures::green_hill_left),
-  pair(Tile::GreenHillCenter, &textures::green_hill_center),
-  pair(Tile::GreenHillCenter2, &textures::green_hill_center_dot),
+
+  pair(Tile::WhiteHillTop, &textures::white_hill_top),
+  pair(Tile::WhiteHillRight, &textures::white_hill_right),
+  pair(Tile::WhiteHillLeft, &textures::white_hill_left),
+  pair(Tile::WhiteHillCenter, &textures::white_hill_center),
+  pair(Tile::WhiteHillCenter2, &textures::white_hill_center_dot),
 
   pair(Tile::Fireball, no_texture),
 
@@ -74,12 +91,18 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::Hammerbro, texture_groups::hammerbro),
   pair(Tile::Beetle, texture_groups::beetle),
 
-  pair(Tile::GreenBushRight, &textures::green_bush_right),
   pair(Tile::RedBushRight, &textures::red_bush_right),
   pair(Tile::RedBushLeft, &textures::red_bush_left),
   pair(Tile::RedBushCenter, &textures::red_bush_center),
+
+  pair(Tile::GreenBushRight, &textures::green_bush_right),
   pair(Tile::GreenBushLeft, &textures::green_bush_left),
   pair(Tile::GreenBushCenter, &textures::green_bush_center),
+  
+  pair(Tile::WhiteBushRight, &textures::white_bush_right),
+  pair(Tile::WhiteBushLeft, &textures::white_bush_left),
+  pair(Tile::WhiteBushCenter, &textures::white_bush_center),
+  
   pair(Tile::Coin, texture_groups::coin),
 
   pair(Tile::Stone, &textures::stone),

@@ -61,8 +61,8 @@ static auto player_movement(PlayerState& player, LevelState& level){
     player.acceleration.right += speed_boost;
     player.direction = Right;
   }
-  else{
-    player.acceleration.right -= speed_boost;
+  else{ 
+    player.acceleration.right -= speed_boost / player.slip;
   }
 
   if (window::is_key_pressed(GLFW_KEY_LEFT)){
@@ -70,7 +70,7 @@ static auto player_movement(PlayerState& player, LevelState& level){
     player.direction = Left;
   }
   else{
-    player.acceleration.left -= speed_boost;
+    player.acceleration.left -= speed_boost / player.slip;
   }
 
   //Calculating max speed
