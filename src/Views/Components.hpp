@@ -10,6 +10,11 @@
 #include "States/HammerBroState.hpp"
 #include "States/BossState.hpp"
 #include "States/PlatformState.hpp"
+#include "States/QBlockState.hpp"
+
+#include "States/CoinPusherState.hpp"
+#include "States/MushroomPusherState.hpp"
+#include "States/FireFlowerPusherState.hpp"
 
 #include "Util/Util.hpp"
 
@@ -103,4 +108,23 @@ static auto render_platform(const PlatformState& platform, const glm::vec2& offs
       &textures::platform
     });
   }
+}
+
+static auto render_q_block_with_coins(const QBlockState<CoinPusherState>& block, const glm::vec2& offset){
+  for (auto& coin : block.pusher.coins){
+    render_block(coin, offset);
+  }
+
+  render_block(block, offset);
+}
+
+static auto render_q_block_with_mushroom(const QBlockState<MushroomPusherState>& block, const glm::vec2& offset){
+  render_entity(block.pusher.mushroom, offset);
+
+  render_block(block, offset);
+}
+
+static auto render_q_block_with_flower(const QBlockState<FireFlowerPusherState>& block, const glm::vec2& offset){
+  render_block(block.pusher.fire_flower, offset);
+  render_block(block, offset);
 }

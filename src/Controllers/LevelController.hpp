@@ -10,7 +10,6 @@
 #include "Controllers/CoinController.hpp"
 #include "Controllers/BounceController.hpp"
 #include "Controllers/QBlockController.hpp"
-#include "Controllers/SpinningCoinController.hpp"
 #include "Controllers/StatsController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 #include "Controllers/EntityController.hpp"
@@ -41,16 +40,8 @@ static auto level_blocks_controller(LevelState& level){
   auto& player = level.player;
   auto& blocks = level.blocks;
 
-  for (auto& block : blocks.q_blocks){
-    q_block_controller(block, level);
-  }
-
   for (auto& block : blocks.bricks){
     bricks_controller(block, level);
-  }
-
-  for (auto& block : blocks.spinning_coins){
-    spinning_coin_controller(block, level);
   }
 
   for (auto& block : blocks.coins){
@@ -128,18 +119,6 @@ static auto level_entities_controller(LevelState& level){
 
   for (auto& bro : level.entities.hammerbros){
     hammerbro_controller(bro, level);
-  }
-}
-
-static auto level_mushrooms_controller(LevelState& level){
-  auto& player = level.player;
-
-  for (auto& mushroom : level.entities.mushrooms){
-    red_mushroom_controller(mushroom, level);
-  }
-
-  for (auto& mushroom : level.entities.green_mushrooms){
-    green_mushroom_controller(mushroom, level);
   }
 }
 
@@ -302,6 +281,14 @@ static auto level_controller(AppState& app){
 
   auto& player = level.player;
 
+  util::multi_for([&](auto& block){
+    q_block_controller(block, level);
+  }, 
+    level.blocks.q_blocks_with_coins, 
+    level.blocks.q_blocks_with_mushroom,
+    level.blocks.q_blocks_with_flower
+  );
+
   if (!level.is_finished) {
     stats_controller(level.stats);
     player_controller(player, level);
@@ -309,12 +296,6 @@ static auto level_controller(AppState& app){
     if (level.stats.time <= 0){
       player.is_dead = true;
     }
-  }
-
-  level_mushrooms_controller(level);
-
-  for (auto& block : level.blocks.fire_flowers){
-    fire_flower_controller(block, level);
   }
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
@@ -337,9 +318,9 @@ static auto level_controller(AppState& app){
   level_entities_controller(level);
 
   //Counting coins
-  static constexpr auto CoinsAmountToGetHP = 100;
-  if (level.stats.coins >= CoinsAmountToGetHP) {
-    level.stats.coins -= CoinsAmountToGetHP;
+  static constexpr auto CoinsToGetHP = 100;
+  if (level.stats.coins >= CoinsToGetHP) {
+    level.stats.coins -= CoinsToGetHP;
     level.stats.hp++;
   }
 

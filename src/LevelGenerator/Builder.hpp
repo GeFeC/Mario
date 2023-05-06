@@ -1,6 +1,8 @@
 #pragma once
 
 #include "LevelGenerator/Textures.hpp"
+#include "States/BlockState.hpp"
+#include "States/FireFlowerState.hpp"
 #include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include <glm/glm.hpp>
@@ -10,6 +12,11 @@ namespace level_generator{
 static auto put_solid(LevelState& level, const glm::vec2& position, const Texture& texture){
   level.hitbox_grid_element(position) = 1;
   level.blocks.normal.push_back(BlockState(position, &texture));
+}
+
+static auto put_hitbox_block(LevelState& level, const glm::vec2& position){
+  put_solid(level, position, textures::dirt);
+  level.blocks.normal.back().is_visible = false;
 }
 
 static auto put_nonsolid(LevelState& level, const glm::vec2& position, const Texture& texture){
@@ -30,47 +37,27 @@ static auto put_coin(LevelState& level, const glm::vec2& position){
   level.blocks.coins.push_back(CoinBlockState(position));
 }
 
-static auto put_spinning_coin(LevelState& level, const glm::vec2& position, int hits_required_to_bounce){
-  level.blocks.spinning_coins.push_back(SpinningCoinState(position));
-
-  level.blocks.spinning_coins.back().bounce_state.initial_power = -20.f;
-  level.blocks.spinning_coins.back().bounce_state.hits_required_to_bounce = hits_required_to_bounce;
-  
-  if (hits_required_to_bounce > 0){
-    level.blocks.spinning_coins.back().is_visible = false;
-  }
-}
-
-static auto put_qblock(LevelState& level, const glm::vec2& position, int bounces = 1){
-  put_solid(level, position, textures::dirt);
-  level.blocks.normal.back().is_visible = false;
-
-  level.blocks.q_blocks.push_back(QBlockState(position));
-  level.blocks.q_blocks.back().bounce_state.bounces_count = bounces;
-}
-
 static auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, int coins = 1){
-  for (int i = 0; i < coins; ++i){
-    put_spinning_coin(level, position, i + 1);
-  }
+  put_hitbox_block(level, position);
+  auto& block = level.blocks.q_blocks_with_coins.emplace_back(position);
+  block.bounce_state.bounces_count = coins;
+  block.pusher.coins.resize(coins, SpinningCoinState(position));
 
-  put_qblock(level, position, coins);
-
-  auto& points = level.blocks.q_blocks.back().points_generator.items;
+  auto& points = level.blocks.q_blocks_with_coins.back().pusher.points_generator.items;
   points.reserve(coins);
+
   for (int i = 0; i < coins; ++i){
-    auto particle = PointsParticlesState(QBlockState::RewardInPoints, position * BlockBase::Size);
-    particle.hits_required_to_activate = i + 1;
+    auto particle = PointsParticlesState(QBlockReward, position * BlockBase::Size);
 
     points.push_back(particle);
   }
 }
 
 static auto put_qblock_with_flower(LevelState& level, const glm::vec2& position){
-  level.blocks.fire_flowers.push_back(FireFlowerState(position));
-  level.blocks.fire_flowers.back().is_visible = false;
+  put_hitbox_block(level, position);
 
-  put_qblock(level, position);
+  auto& block = level.blocks.q_blocks_with_flower.emplace_back(position);
+  block.pusher.fire_flower = FireFlowerState(position);
 }
 
 using Direction = EntityState::Direction;
@@ -78,25 +65,26 @@ static constexpr auto DirectionLeft = EntityState::DirectionLeft;
 
 static auto put_qblock_with_mushroom(
     LevelState& level, 
-    const glm::vec2& position, 
-    Direction direction = DirectionLeft
+    const glm::vec2& position
 ){
-  put_qblock(level, position, 1);
-  level.entities.mushrooms.push_back(MushroomState::make_red(position, direction));
+  put_hitbox_block(level, position);
+  auto& block = level.blocks.q_blocks_with_mushroom.emplace_back(position);
+  auto& mushroom = block.pusher.mushroom;
+
+  mushroom = MushroomState::make_red(position);
 }
 
 static auto put_qblock_with_green_mushroom(
     LevelState& level, 
-    const glm::vec2& position, 
-    Direction direction = DirectionLeft
+    const glm::vec2& position
 ){
-  put_qblock(level, position, 1);
-  level.entities.green_mushrooms.push_back(MushroomState::make_green(position, direction));
-}
+  put_hitbox_block(level, position);
 
-static auto put_hitbox_block(LevelState& level, const glm::vec2& position){
-  put_solid(level, position, textures::dirt);
-  level.blocks.normal.back().is_visible = false;
+  auto& block = level.blocks.q_blocks_with_mushroom.emplace_back(position);
+  block.pusher.mushroom_type = MushroomPusherState::MushroomType::Green;
+
+  auto& mushroom = block.pusher.mushroom;
+  mushroom = MushroomState::make_green(position);
 }
 
 static auto put_checkpoint(LevelState& level, const glm::vec2& position){

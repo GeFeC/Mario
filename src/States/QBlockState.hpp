@@ -4,9 +4,12 @@
 #include "States/PointsParticlesState.hpp"
 #include "Util/Generator.hpp"
 
+inline constexpr auto QBlockReward = 200;
+
+template<typename Pusher>
 struct QBlockState : BouncingBlockState, BlinkingBlockBase{
-  static constexpr auto RewardInPoints = 200;
-  util::Generator<PointsParticlesState> points_generator;
+  //Contents pusher
+  Pusher pusher;
 
   QBlockState(const glm::vec2& position){
     this->position = position * BlockBase::Size;

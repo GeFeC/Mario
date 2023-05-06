@@ -13,36 +13,12 @@ static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
   //Interaction with blocks
   entity_bounce_when_on_bouncing_block(mushroom, level);
 
-  //Interaction with player
-  auto& player = level.player;
-  const auto mushroom_block = BouncingBlockState(mushroom.position / BlockBase::Size);
-  if (player_hit_block_above(player, mushroom_block) && !mushroom.should_be_pushed_out){
-    mushroom.should_be_pushed_out = true;
-    mushroom.is_visible = true;
-
-    if (player.position.x < mushroom_block.position.x) mushroom.set_direction(EntityState::DirectionRight);
-    if (player.position.x > mushroom_block.position.x) mushroom.set_direction(EntityState::DirectionLeft);
-  } 
-
   entity_gravity(mushroom, level);
   entity_movement(mushroom, level);
   entity_turn_around(mushroom);
 
   for (auto& p : mushroom.points_generator.items){
     points_particles_controller(p);
-  }
-
-  if (mushroom.is_active) return;
-
-  if (mushroom.should_be_pushed_out && mushroom.offset < 1.f){
-    const auto value = window::delta_time * 2;
-
-    mushroom.offset += value;
-    mushroom.position.y -= value * BlockBase::Size;
-  }
-
-  if (mushroom.offset >= 1.f){
-    mushroom.is_active = true;
   }
 }
 

@@ -118,12 +118,16 @@ static auto render_all_points_particles(const LevelState& level){
     render_points_particles(entity.points_generator.items, level.camera_offset);
   });
 
-  for (const auto& block : level.blocks.q_blocks){
-    render_points_particles(block.points_generator.items, level.camera_offset);
+  for (const auto& block : level.blocks.q_blocks_with_coins){
+    render_points_particles(block.pusher.points_generator.items, level.camera_offset);
   }
 
-  for (const auto& flower : level.blocks.fire_flowers){
-    render_points_particles(flower.points_generator.items, level.camera_offset);
+  for (const auto& block : level.blocks.q_blocks_with_mushroom){
+    render_points_particles(block.pusher.mushroom.points_generator.items, level.camera_offset);
+  }
+
+  for (const auto& block : level.blocks.q_blocks_with_flower){
+    render_points_particles(block.pusher.fire_flower.points_generator.items, level.camera_offset);
   }
 }
 
@@ -177,14 +181,6 @@ static auto render_blocks(const LevelState& level){
   for (const auto& block : level.blocks.coins){
     render_block(block, level.camera_offset);
   }
-  
-  for (const auto& block : level.blocks.spinning_coins){
-    render_block(block, level.camera_offset);
-  }
-
-  for (const auto& block : level.blocks.fire_flowers){
-    render_block(block, level.camera_offset);
-  }
 }
 
 static auto render_level(const LevelState& level){
@@ -233,8 +229,16 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     render_entities(level);
 
-    for (const auto& block : level.blocks.q_blocks){
-      render_block(block, level.camera_offset);
+    for (const auto& block : level.blocks.q_blocks_with_coins){
+      render_q_block_with_coins(block, level.camera_offset);
+    }
+
+    for (const auto& block : level.blocks.q_blocks_with_mushroom){
+      render_q_block_with_mushroom(block, level.camera_offset);
+    }
+
+    for (const auto& block : level.blocks.q_blocks_with_flower){
+      render_q_block_with_flower(block, level.camera_offset);
     }
 
     for (const auto& block : level.blocks.bricks){

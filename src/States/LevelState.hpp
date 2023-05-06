@@ -21,6 +21,10 @@
 #include "States/BossState.hpp"
 #include "States/PlatformState.hpp"
 
+#include "States/CoinPusherState.hpp"
+#include "States/MushroomPusherState.hpp"
+#include "States/FireFlowerPusherState.hpp"
+
 #include "Renderer/Text.hpp"
 #include "config.hpp"
 #include "res/fonts.hpp"
@@ -76,10 +80,10 @@ struct LevelState{
   struct Blocks{
     std::vector<BlockState> normal;
     std::vector<CoinBlockState> coins;
-    std::vector<QBlockState> q_blocks;
+    std::vector<QBlockState<CoinPusherState>> q_blocks_with_coins;
+    std::vector<QBlockState<MushroomPusherState>> q_blocks_with_mushroom;
+    std::vector<QBlockState<FireFlowerPusherState>> q_blocks_with_flower;
     std::vector<BricksBlockState> bricks;
-    std::vector<SpinningCoinState> spinning_coins;
-    std::vector<FireFlowerState> fire_flowers;
   } blocks;
 
   std::vector<PlatformState> platforms;
@@ -116,7 +120,6 @@ struct LevelState{
         green_jumping_koopas, red_jumping_koopas, purple_jumping_koopas,
         green_flying_koopas, red_flying_koopas, purple_flying_koopas,
         beetles, spikes,
-        mushrooms, green_mushrooms,
         plants, red_plants,
         hammerbros
       );

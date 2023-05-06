@@ -287,7 +287,8 @@ static auto entity_react_when_on_bouncing_block(
     }
   },
     blocks.bricks,
-    blocks.q_blocks
+    blocks.q_blocks_with_coins,
+    blocks.q_blocks_with_mushroom
   );
 }
 

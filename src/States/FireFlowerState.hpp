@@ -13,9 +13,12 @@ struct FireFlowerState : BlockBase{
 
   util::Generator<PointsParticlesState> points_generator;
 
+  FireFlowerState() = default;
+
   FireFlowerState(const glm::vec2& position){
     this->position = position * BlockBase::Size;
     texture = &textures::fire_flower[0];
+    is_visible = false;
   }
 };
 

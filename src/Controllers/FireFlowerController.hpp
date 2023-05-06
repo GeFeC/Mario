@@ -9,26 +9,12 @@
 #include "Window.hpp"
 
 static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
-  flower.texture = &textures::fire_flower[level.fire_flower_blink_counter.int_value()];
-
   for (auto& p : flower.points_generator.items){
     points_particles_controller(p);
   }
 
-  auto& player = level.player;
-  if (player_hit_block_above(player, BouncingBlockState(flower.position / BlockBase::Size))){
-    flower.should_be_pushed_out = true;
-    flower.is_visible = true;
-  } 
-
-  if (flower.should_be_pushed_out && flower.offset < 1.f){
-    const auto value = window::delta_time * 2;
-
-    flower.offset += value;
-    flower.position.y -= value * BlockBase::Size;
-  }
-
   //Interaction with player
+  auto& player = level.player;
   if (collision::is_hovering(player, flower) && flower.is_visible){
     flower.points_generator.item().set_active(
       FireFlowerState::RewardForEating,

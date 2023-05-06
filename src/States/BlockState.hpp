@@ -49,13 +49,13 @@ struct BlockState : BlockBase{
 
 struct BouncingBlockState : BlockBase, BouncingBlockBase{
   BouncingBlockState() = default;
-  BouncingBlockState(const glm::vec2& position){
+  explicit BouncingBlockState(const glm::vec2& position){
     this->position = position * BlockBase::Size;
   }
 };
 
 struct CoinBlockState : BlockBase, BlinkingBlockBase{
-  CoinBlockState(const glm::vec2& position){
+  explicit CoinBlockState(const glm::vec2& position){
     this->position = position * BlockBase::Size;
     this->texture = &textures::coin[0];
   }
@@ -79,7 +79,7 @@ struct BricksBlockState : BouncingBlockState{
     }
   }
 
-  BricksBlockState(const glm::vec2& position) : BricksBlockState(){
+  explicit BricksBlockState(const glm::vec2& position) : BricksBlockState(){
     this->position = position * BlockBase::Size;
 
     for (auto& particle : particles){
@@ -90,10 +90,11 @@ struct BricksBlockState : BouncingBlockState{
 };
 
 struct SpinningCoinState : BouncingBlockState{
-  SpinningCoinState(const glm::vec2& position){
+  explicit SpinningCoinState(const glm::vec2& position){
     this->position = position * BlockBase::Size;
     texture = &textures::spinning_coin[0];
     bounce_state.initial_power = -20.f;
+    is_visible = false;
   }
 };
 
