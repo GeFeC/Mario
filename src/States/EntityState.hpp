@@ -33,6 +33,9 @@ struct EntityState{
   float gravity_boost = 1.f;
   float death_delay = 1.f;
 
+  //When used with q_block
+  float push_offset = 0.f;
+
   bool can_be_stomped = true;
   bool is_visible = true;
   bool is_on_ground = false;
@@ -41,6 +44,10 @@ struct EntityState{
   bool is_active = false;
   bool should_collide = true;
   bool fall_from_edge = true;
+
+  //when used with q_block
+  bool should_be_pushed_out = false;
+  bool is_in_q_block = false;
 
   auto set_direction(Direction direction, int speed){
     this->direction = direction;

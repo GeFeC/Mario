@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Controllers/CoinPusherController.hpp"
-#include "Controllers/MushroomPusherController.hpp"
+#include "Controllers/EntityPusherController.hpp"
 #include "Controllers/FireFlowerPusherController.hpp"
 
 #include "States/QBlockState.hpp"

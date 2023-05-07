@@ -123,7 +123,11 @@ static auto render_all_points_particles(const LevelState& level){
   }
 
   for (const auto& block : level.blocks.q_blocks_with_mushroom){
-    render_points_particles(block.pusher.mushroom.points_generator.items, level.camera_offset);
+    render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
+  }
+
+  for (const auto& block : level.blocks.q_blocks_with_goomba){
+    render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
   }
 
   for (const auto& block : level.blocks.q_blocks_with_flower){
@@ -233,9 +237,12 @@ static auto render_level(const LevelState& level){
       render_q_block_with_coins(block, level.camera_offset);
     }
 
-    for (const auto& block : level.blocks.q_blocks_with_mushroom){
-      render_q_block_with_mushroom(block, level.camera_offset);
-    }
+    level.blocks.for_each_q_block([&](const auto& block){
+      using pusher_t = std::decay_t<decltype(block.pusher)>;
+      if constexpr (pusher_t::ContainsEntity){
+        render_q_block_with_entity(block, level.camera_offset);
+      }
+    });
 
     for (const auto& block : level.blocks.q_blocks_with_flower){
       render_q_block_with_flower(block, level.camera_offset);

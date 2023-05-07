@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/BlockState.hpp"
+#include "States/EntityPusherState.hpp"
 #include "States/EntityState.hpp"
 #include "States/MonsterState.hpp"
 #include "States/PlayerState.hpp"
@@ -22,7 +23,6 @@
 #include "States/PlatformState.hpp"
 
 #include "States/CoinPusherState.hpp"
-#include "States/MushroomPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
 
 #include "Renderer/Text.hpp"
@@ -80,10 +80,26 @@ struct LevelState{
   struct Blocks{
     std::vector<BlockState> normal;
     std::vector<CoinBlockState> coins;
-    std::vector<QBlockState<CoinPusherState>> q_blocks_with_coins;
-    std::vector<QBlockState<MushroomPusherState>> q_blocks_with_mushroom;
-    std::vector<QBlockState<FireFlowerPusherState>> q_blocks_with_flower;
     std::vector<BricksBlockState> bricks;
+
+    std::vector<QBlockState<CoinPusherState>> q_blocks_with_coins;
+    std::vector<QBlockState<FireFlowerPusherState>> q_blocks_with_flower;
+    std::vector<QBlockState<MushroomPusherState>> q_blocks_with_mushroom;
+    std::vector<QBlockState<GoombaPusherState>> q_blocks_with_goomba;
+
+    template<typename Function>
+    auto for_each_q_block(const Function& function){
+      util::multi_for(
+        function, 
+        q_blocks_with_coins, q_blocks_with_flower,
+        q_blocks_with_mushroom, q_blocks_with_goomba
+      );
+    }
+
+    template<typename Function>
+    auto for_each_q_block(const Function& function) const{
+      const_cast<Blocks*>(this)->for_each_q_block([&](const auto& x){ function(x); });
+    }
   } blocks;
 
   std::vector<PlatformState> platforms;

@@ -65,26 +65,22 @@ static constexpr auto DirectionLeft = EntityState::DirectionLeft;
 
 static auto put_qblock_with_mushroom(
     LevelState& level, 
-    const glm::vec2& position
+    const glm::vec2& position,
+    MushroomState::Type mushroom_type
 ){
   put_hitbox_block(level, position);
   auto& block = level.blocks.q_blocks_with_mushroom.emplace_back(position);
-  auto& mushroom = block.pusher.mushroom;
+  auto& mushroom = block.pusher.entity;
 
-  mushroom = MushroomState::make_red(position);
-}
+  mushroom.type = mushroom_type;
 
-static auto put_qblock_with_green_mushroom(
-    LevelState& level, 
-    const glm::vec2& position
-){
-  put_hitbox_block(level, position);
-
-  auto& block = level.blocks.q_blocks_with_mushroom.emplace_back(position);
-  block.pusher.mushroom_type = MushroomPusherState::MushroomType::Green;
-
-  auto& mushroom = block.pusher.mushroom;
-  mushroom = MushroomState::make_green(position);
+  using MushroomType = MushroomState::Type;
+  mushroom = [&]{
+    switch(mushroom.type){
+      case MushroomType::Red: return MushroomState::make_red(position);
+      case MushroomType::Green: return MushroomState::make_green(position);
+    }
+  }();
 }
 
 static auto put_checkpoint(LevelState& level, const glm::vec2& position){
@@ -153,5 +149,14 @@ static auto put_beetle(LevelState& level, const glm::vec2& position){
   level.entities.beetles.push_back(BeetleState::make(position - glm::vec2(0, 0.5)));
 }
 
+template<typename Function>
+static auto put_q_block_with_entity(LevelState& level, const glm::vec2& position, Function make_entity){
+  level_generator::put_hitbox_block(level, position);
+  auto& block = level.blocks.q_blocks_with_goomba.emplace_back(position);
+  block.pusher.entity = make_entity(position);
+
+  block.pusher.entity.is_in_q_block = true;
+  block.pusher.entity.is_visible = false;
+}
 
 } //namespace level_generator

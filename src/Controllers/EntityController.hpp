@@ -210,6 +210,8 @@ static auto entity_die_when_stomped(
 };
 
 static auto entity_become_active_when_seen(EntityState& entity, const LevelState& level){
+  if (entity.is_in_q_block) return;
+
   const auto& player = level.player;
 
   const auto player_field_of_view_x = std::max(

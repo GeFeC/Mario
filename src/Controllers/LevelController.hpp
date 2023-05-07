@@ -281,13 +281,9 @@ static auto level_controller(AppState& app){
 
   auto& player = level.player;
 
-  util::multi_for([&](auto& block){
+  level.blocks.for_each_q_block([&](auto& block){
     q_block_controller(block, level);
-  }, 
-    level.blocks.q_blocks_with_coins, 
-    level.blocks.q_blocks_with_mushroom,
-    level.blocks.q_blocks_with_flower
-  );
+  });
 
   if (!level.is_finished) {
     stats_controller(level.stats);

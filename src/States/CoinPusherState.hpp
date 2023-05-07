@@ -8,6 +8,8 @@
 #include <vector>
 
 struct CoinPusherState{
+  static constexpr auto ContainsEntity = false;
+
   util::Generator<PointsParticlesState> points_generator;
 
   std::vector<SpinningCoinState> coins;

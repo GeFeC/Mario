@@ -13,7 +13,6 @@
 #include "States/QBlockState.hpp"
 
 #include "States/CoinPusherState.hpp"
-#include "States/MushroomPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
 
 #include "Util/Util.hpp"
@@ -118,8 +117,12 @@ static auto render_q_block_with_coins(const QBlockState<CoinPusherState>& block,
   render_block(block, offset);
 }
 
-static auto render_q_block_with_mushroom(const QBlockState<MushroomPusherState>& block, const glm::vec2& offset){
-  render_entity(block.pusher.mushroom, offset);
+template<typename Entity>
+static auto render_q_block_with_entity(
+    const QBlockState<EntityPusherState<Entity>>& block, 
+    const glm::vec2& offset
+){
+  render_entity(block.pusher.entity, offset);
 
   render_block(block, offset);
 }
