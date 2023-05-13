@@ -3,6 +3,10 @@
 #include "States/MonsterState.hpp"
 
 struct KoopaState : ShellMonsterState{
+  enum class Type{
+    Green, Red, Purple
+  } type;
+
 protected:
   template<typename Entity>
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
@@ -22,6 +26,8 @@ protected:
 public:
   static auto make_green(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = make<KoopaState>(position, direction);
+    koopa.type = Type::Green;
+
     koopa.current_texture = &textures::green_koopa_walk[0];
 
     return koopa;
@@ -29,6 +35,8 @@ public:
 
   static auto make_red(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = make<KoopaState>(position, direction);
+    koopa.type = Type::Red;
+
     koopa.current_texture = &textures::red_koopa_walk[0];
     koopa.fall_from_edge = false;
 
@@ -37,6 +45,8 @@ public:
 
   static auto make_purple(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = make<KoopaState>(position, direction);
+    koopa.type = Type::Purple;
+
     koopa.current_texture = &textures::purple_koopa_walk[0];
     koopa.fall_from_edge = false;
 

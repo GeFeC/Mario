@@ -14,6 +14,10 @@ struct PlantState : MonsterState{
     GoingDown
   } direction = Direction::GoingUp;
 
+  enum class Type{
+    Green, Red
+  } type;
+
 private:
   static auto make(const glm::vec2& position){
     auto plant = PlantState();
@@ -30,6 +34,8 @@ private:
 public:
   static auto make_green(const glm::vec2& position){
     auto plant = make(position);
+    plant.type = Type::Green;
+
     plant.cooldown_duration = 3.f;
     plant.speed = 150.f;
 
@@ -38,6 +44,8 @@ public:
 
   static auto make_red(const glm::vec2& position){
     auto plant = make(position);
+    plant.type = Type::Red;
+
     plant.cooldown_duration = 1.f;
     plant.speed = 300.f;
 

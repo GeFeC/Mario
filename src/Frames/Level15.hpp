@@ -31,26 +31,26 @@ static auto run_frame_level15(AppState& app){
     level.fire_bars.push_back(FireBarState({ 9, 76 }, 6));
     level.fire_bars.push_back(FireBarState({ 9, 83 }, 6));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 98 }, { 0, 3 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 98 }, { 0, 3 }));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 14, 67 }, { 3, 0 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 14, 67 }, { 3, 0 }));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, 3 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, -3 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, 3 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, -3 }));
 
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, 3 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, -3 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, 3 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, -3 }));
 
     const auto r = 8;
-    const auto r2 = r / 1.414f;
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, r }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, -r }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r, 0 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r, 0 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, r2 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, r2 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, -r2 }));
-    level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, -r2 }));
+    const auto r2 = r / glm::sqrt(2);
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, r }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, -r }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r, 0 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r, 0 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, r2 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, r2 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, -r2 }));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, -r2 }));
 
     level_generator::put_q_block_with_coins(level, { 13, 13 }, 10);
 

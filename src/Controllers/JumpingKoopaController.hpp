@@ -7,7 +7,7 @@
 #include "Controllers/ShellMonsterController.hpp"
 #include "res/textures.hpp"
 
-static auto jumping_koopa_controller(
+static auto jumping_koopa_controller_base(
     JumpingKoopaState& koopa, 
     LevelState& level, 
     const std::array<Texture, 2>& walk_frames_with_wings,
@@ -45,7 +45,7 @@ static auto jumping_koopa_controller(
 }
 
 static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
-  jumping_koopa_controller(
+  jumping_koopa_controller_base(
     koopa,
     level,
     textures::green_flying_koopa_walk,
@@ -62,7 +62,7 @@ static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState&
 static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
   if (!koopa.has_wings && !koopa.in_shell) koopa.fall_from_edge = false;
 
-  jumping_koopa_controller(
+  jumping_koopa_controller_base(
     koopa,
     level,
     textures::red_flying_koopa_walk,
@@ -79,7 +79,7 @@ static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& l
 static auto purple_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
   if (!koopa.has_wings && !koopa.in_shell) koopa.fall_from_edge = false;
 
-  jumping_koopa_controller(
+  jumping_koopa_controller_base(
     koopa,
     level,
     textures::purple_flying_koopa_walk,
@@ -93,4 +93,13 @@ static auto purple_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState
   );
 
   purple_koopa_movement_controller(koopa, level);
+}
+
+static auto jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
+  using Type = KoopaState::Type;
+  switch(koopa.type){
+    case Type::Green: green_jumping_koopa_controller(koopa, level); return;
+    case Type::Red: red_jumping_koopa_controller(koopa, level); return;
+    case Type::Purple: purple_jumping_koopa_controller(koopa, level); return;
+  }
 }

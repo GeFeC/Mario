@@ -11,7 +11,7 @@
 
 #include <GLFW/glfw3.h>
 
-static auto plant_controller(PlantState& plant, LevelState& level){
+static auto plant_controller_base(PlantState& plant, LevelState& level){
   //Points
   for (auto& p : plant.points_generator.items){
     points_particles_controller(p);
@@ -61,15 +61,21 @@ static auto plant_controller(PlantState& plant, LevelState& level){
 }
 
 static auto green_plant_controller(PlantState& plant, LevelState& level){
-  plant_controller(plant, level);
+  plant_controller_base(plant, level);
   
-  //Plant Movement
   entity_run_movement_animation(plant, textures::plant);
 }
 
 static auto red_plant_controller(PlantState& plant, LevelState& level){
-  plant_controller(plant, level);
+  plant_controller_base(plant, level);
   
-  //Plant Movement
   entity_run_movement_animation(plant, textures::red_plant);
+}
+
+static auto plant_controller(PlantState& plant, LevelState& level){
+  using Type = PlantState::Type;
+  switch(plant.type){
+    case Type::Green: green_plant_controller(plant, level); return;
+    case Type::Red: red_plant_controller(plant, level); return;
+  }
 }

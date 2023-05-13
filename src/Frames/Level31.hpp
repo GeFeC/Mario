@@ -33,7 +33,7 @@ static auto run_frame_level31(AppState& app){
     platforms.push_back(PlatformState({ 79, 8 }, { 0, -4 }));
     platforms.back().is_active = true;
 
-    auto& pf_koopas = level.entities.purple_flying_koopas;
-    pf_koopas.push_back(FlyingKoopaState::make_purple({ 179, 8 }, { 0, 2 }));
+    auto& flying_koopas = level.entities.flying_koopas;
+    flying_koopas.push_back(FlyingKoopaState::make_purple({ 179, 8 }, { 0, 2 }));
   });
 }

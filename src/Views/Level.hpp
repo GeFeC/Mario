@@ -99,10 +99,6 @@ static auto render_plants(const LevelState& level){
   for (const auto& plant : level.entities.plants){
     render_entity(plant, level.camera_offset);
   }
-
-  for (const auto& plant : level.entities.red_plants){
-    render_entity(plant, level.camera_offset);
-  }
 }
 
 static auto render_entities(const LevelState& level){

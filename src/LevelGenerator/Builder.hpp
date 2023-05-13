@@ -102,35 +102,35 @@ static auto put_goomba(LevelState& level, const glm::vec2& position){
 }
 
 static auto put_red_goomba(LevelState& level, const glm::vec2& position){
-  level.entities.red_goombas.push_back(GoombaState::make_red(position));
+  level.entities.goombas.push_back(GoombaState::make_red(position));
 }
 
 static auto put_yellow_goomba(LevelState& level, const glm::vec2& position){
-  level.entities.yellow_goombas.push_back(GoombaState::make_yellow(position));
+  level.entities.goombas.push_back(GoombaState::make_yellow(position));
 }
 
 static auto put_green_koopa(LevelState& level, const glm::vec2& position){
-  level.entities.green_koopas.push_back(KoopaState::make_green(position - glm::vec2(0, 0.5)));
+  level.entities.koopas.push_back(KoopaState::make_green(position - glm::vec2(0, 0.5)));
 }
 
 static auto put_red_koopa(LevelState& level, const glm::vec2& position){
-  level.entities.red_koopas.push_back(KoopaState::make_red(position - glm::vec2(0, 0.5)));
+  level.entities.koopas.push_back(KoopaState::make_red(position - glm::vec2(0, 0.5)));
 }
 
 static auto put_purple_koopa(LevelState& level, const glm::vec2& position){
-  level.entities.purple_koopas.push_back(KoopaState::make_purple(position - glm::vec2(0, 0.5)));
+  level.entities.koopas.push_back(KoopaState::make_purple(position - glm::vec2(0, 0.5)));
 }
 
 static auto put_green_koopa_with_wings(LevelState& level, const glm::vec2& position){
-  level.entities.green_jumping_koopas.push_back(JumpingKoopaState::make_green(position - glm::vec2(0, 0.5)));
+  level.entities.jumping_koopas.push_back(JumpingKoopaState::make_green(position - glm::vec2(0, 0.5)));
 }
 
 static auto put_red_koopa_with_wings(LevelState& level, const glm::vec2& position){
-  level.entities.red_jumping_koopas.push_back(JumpingKoopaState::make_red(position - glm::vec2(0, 0.5)));
+  level.entities.jumping_koopas.push_back(JumpingKoopaState::make_red(position - glm::vec2(0, 0.5)));
 }
 
 static auto put_purple_koopa_with_wings(LevelState& level, const glm::vec2& position){
-  level.entities.purple_jumping_koopas.push_back(JumpingKoopaState::make_purple(position - glm::vec2(0, 0.5)));
+  level.entities.jumping_koopas.push_back(JumpingKoopaState::make_purple(position - glm::vec2(0, 0.5)));
 }
 
 static auto put_plant(LevelState& level, const glm::vec2& position){
@@ -138,7 +138,7 @@ static auto put_plant(LevelState& level, const glm::vec2& position){
 }
 
 static auto put_red_plant(LevelState& level, const glm::vec2& position){
-  level.entities.red_plants.push_back(PlantState::make_red(position + glm::vec2(0.5, 1.f)));
+  level.entities.plants.push_back(PlantState::make_red(position + glm::vec2(0.5, 1.f)));
 }
 
 static auto put_hammerbro(LevelState& level, const glm::vec2& position){

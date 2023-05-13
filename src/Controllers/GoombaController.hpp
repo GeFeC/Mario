@@ -20,7 +20,7 @@ static auto goomba_run_walk_animation(GoombaState& goomba, const std::array<Text
   entity_run_movement_animation(goomba, walk_frames);
 }
 
-static auto goomba_controller(GoombaState& goomba, LevelState& level){
+static auto goomba_controller_base(GoombaState& goomba, LevelState& level){
   //Interactions with player
   auto& player = level.player;
   entity_kill_player_on_touch(goomba, player);
@@ -51,7 +51,7 @@ static auto goomba_controller(GoombaState& goomba, LevelState& level){
 
 static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
   auto& player = level.player;
-  goomba_controller(goomba, level);
+  goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::goomba_walk);
 
   entity_die_when_stomped(goomba, level, [&]{ 
@@ -61,7 +61,7 @@ static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
 
 static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
   auto& player = level.player;
-  goomba_controller(goomba, level);
+  goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::red_goomba_walk);
 
   entity_die_when_stomped(goomba, level, [&]{ 
@@ -71,10 +71,19 @@ static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
 
 static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
   auto& player = level.player;
-  goomba_controller(goomba, level);
+  goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::yellow_goomba_walk);
 
   entity_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::yellow_goomba_dead);
   });
+}
+
+static auto goomba_controller(GoombaState& goomba, LevelState& level){
+  using Type = GoombaState::Type;
+  switch(goomba.type){
+    case Type::Normal: normal_goomba_controller(goomba, level); return;
+    case Type::Red: red_goomba_controller(goomba, level); return;
+    case Type::Yellow: yellow_goomba_controller(goomba, level); return;
+  }
 }

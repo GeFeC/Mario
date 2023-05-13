@@ -109,35 +109,24 @@ struct LevelState{
 
   struct Entities{
     std::vector<GoombaState> goombas;
-    std::vector<GoombaState> red_goombas;
-    std::vector<GoombaState> yellow_goombas;
-    std::vector<KoopaState> green_koopas;
-    std::vector<KoopaState> red_koopas;
-    std::vector<KoopaState> purple_koopas;
-    std::vector<JumpingKoopaState> green_jumping_koopas;
-    std::vector<JumpingKoopaState> red_jumping_koopas;
-    std::vector<JumpingKoopaState> purple_jumping_koopas;
-    std::vector<FlyingKoopaState> green_flying_koopas;
-    std::vector<FlyingKoopaState> red_flying_koopas;
-    std::vector<FlyingKoopaState> purple_flying_koopas;
+    std::vector<KoopaState> koopas;
+    std::vector<JumpingKoopaState> jumping_koopas;
+    std::vector<FlyingKoopaState> flying_koopas;
     std::vector<BeetleState> beetles;
     std::vector<SpikeState> spikes;
     std::vector<MushroomState> mushrooms;
-    std::vector<MushroomState> green_mushrooms;
     std::vector<PlantState> plants;
-    std::vector<PlantState> red_plants;
     std::vector<HammerBroState> hammerbros;
 
     template<typename Function>
     auto for_each(const Function& function){
       util::multi_for(
         function,
-        goombas, red_goombas, yellow_goombas,
-        green_koopas, red_koopas, purple_koopas,
-        green_jumping_koopas, red_jumping_koopas, purple_jumping_koopas,
-        green_flying_koopas, red_flying_koopas, purple_flying_koopas,
-        beetles, spikes,
-        plants, red_plants,
+        goombas, 
+        koopas, jumping_koopas, flying_koopas,
+        beetles, 
+        spikes,
+        plants, 
         hammerbros
       );
     }

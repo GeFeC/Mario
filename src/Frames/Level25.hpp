@@ -53,7 +53,7 @@ static auto run_frame_level25(AppState& app){
     l_platforms.push_back(PlatformState({ 97, 0 }, { 0, 1 }));
     l_platforms.push_back(PlatformState({ 97, 6 }, { 0, 1 }));
 
-    auto& gf_koopas = level.entities.green_flying_koopas;
-    gf_koopas.push_back(FlyingKoopaState::make_green({ 194, 4 }, { 0.5, 0 }));
+    auto& flying_koopas = level.entities.flying_koopas;
+    flying_koopas.push_back(FlyingKoopaState::make_green({ 194, 4 }, { 0.5, 0 }));
   });
 }

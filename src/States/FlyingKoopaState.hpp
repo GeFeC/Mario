@@ -10,6 +10,7 @@ struct FlyingKoopaState : KoopaState{
 
   static auto make(const glm::vec2& position, const glm::vec2& axis){
     auto koopa = KoopaState::make<FlyingKoopaState>(position);
+
     koopa.initial_position = position * BlockBase::Size;
     koopa.movement_axis = axis;
 
@@ -18,6 +19,7 @@ struct FlyingKoopaState : KoopaState{
 
   static auto make_green(const glm::vec2& position, const glm::vec2& axis){
     auto koopa = make(position, axis);
+    koopa.type = Type::Green;
 
     koopa.current_texture = &textures::green_flying_koopa_walk[0];
     return koopa;
@@ -25,6 +27,7 @@ struct FlyingKoopaState : KoopaState{
 
   static auto make_red(const glm::vec2& position, const glm::vec2& axis){
     auto koopa = make(position, axis);
+    koopa.type = Type::Red;
 
     koopa.current_texture = &textures::red_flying_koopa_walk[0];
     koopa.fall_from_edge = false;
@@ -33,6 +36,7 @@ struct FlyingKoopaState : KoopaState{
 
   static auto make_purple(const glm::vec2& position, const glm::vec2& axis){
     auto koopa = make(position, axis);
+    koopa.type = Type::Purple;
 
     koopa.fall_from_edge = false;
     koopa.current_texture = &textures::purple_flying_koopa_walk[0];

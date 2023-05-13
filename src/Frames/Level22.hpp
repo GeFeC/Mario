@@ -28,10 +28,10 @@ static auto run_frame_level22(AppState& app){
     level_generator::generate_level(level, "level22_2.csv");
 
     //Additional Entities
-    auto& purple_flying_koopas = level.entities.purple_flying_koopas;
-    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 10, 71.5 }, { 2, 2 }));
-    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 7, 40.5 }, { 0, 3 }));
-    purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 4, 25.5 }, { 0, 3 }));
+    auto& flying_koopas = level.entities.flying_koopas;
+    flying_koopas.push_back(FlyingKoopaState::make_purple({ 10, 71.5 }, { 2, 2 }));
+    flying_koopas.push_back(FlyingKoopaState::make_purple({ 7, 40.5 }, { 0, 3 }));
+    flying_koopas.push_back(FlyingKoopaState::make_purple({ 4, 25.5 }, { 0, 3 }));
 
     level.entities.hammerbros[0].jump_state = HammerBroState::JumpState::Down;
     level_generator::put_q_block_with_coins(level, { 2, 103 }, 8);

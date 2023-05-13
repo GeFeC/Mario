@@ -54,15 +54,7 @@ static auto level_entities_controller(LevelState& level){
   auto& player = level.player;
 
   for (auto& goomba : level.entities.goombas){
-    normal_goomba_controller(goomba, level);
-  }
-
-  for (auto& goomba : level.entities.red_goombas){
-    red_goomba_controller(goomba, level);
-  }
-
-  for (auto& goomba : level.entities.yellow_goombas){
-    yellow_goomba_controller(goomba, level);
+    goomba_controller(goomba, level);
   }
 
   for (auto& spike : level.entities.spikes){
@@ -70,47 +62,19 @@ static auto level_entities_controller(LevelState& level){
   }
 
   for (auto& plant : level.entities.plants){
-    green_plant_controller(plant, level);
+    plant_controller(plant, level);
   }
 
-  for (auto& plant : level.entities.red_plants){
-    red_plant_controller(plant, level);
+  for (auto& koopa : level.entities.koopas){
+    koopa_controller(koopa, level);
   }
 
-  for (auto& koopa : level.entities.green_koopas){
-    green_koopa_controller(koopa, level);
+  for (auto& koopa : level.entities.flying_koopas){
+    flying_koopa_controller(koopa, level);
   }
 
-  for (auto& koopa : level.entities.purple_koopas){
-    purple_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.green_jumping_koopas){
-    green_jumping_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.purple_jumping_koopas){
-    purple_jumping_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.green_flying_koopas){
-    green_flying_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.purple_flying_koopas){
-    purple_flying_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.red_koopas){
-    red_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.red_jumping_koopas){
-    red_jumping_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.red_flying_koopas){
-    red_flying_koopa_controller(koopa, level);
+  for (auto& koopa : level.entities.jumping_koopas){
+    jumping_koopa_controller(koopa, level);
   }
 
   for (auto& koopa : level.entities.beetles){

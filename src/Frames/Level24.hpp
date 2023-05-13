@@ -32,17 +32,18 @@ static auto run_frame_level24(AppState& app){
     level_generator::put_q_block_with_coins(level, { 15, 9 }, 5);
 
     auto& entities = level.entities;
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 123 }, { 4, 4 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 123 }, { -4, 4 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 116 }, { -4, 0 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 97 }, { 4, 0 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 90 }, { -4, 0 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 82 }, { 4, 0 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 2.5, 45 }, { 3, 0 }));
-    entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 2.5, 40 }, { -3, 0 }));
-    entities.purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 16.5, 61 }, { 3, 0 }));
-    entities.purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 9.5, 24 }, { -3, 0 }));
-    entities.purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 9.5, 19 }, { 3, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 123 }, { 4, 4 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 123 }, { -4, 4 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 116 }, { -4, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 97 }, { 4, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 90 }, { -4, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 82 }, { 4, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 2.5, 45 }, { 3, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 2.5, 40 }, { -3, 0 }));
+
+    entities.flying_koopas.push_back(FlyingKoopaState::make_purple({ 16.5, 61 }, { 3, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_purple({ 9.5, 24 }, { -3, 0 }));
+    entities.flying_koopas.push_back(FlyingKoopaState::make_purple({ 9.5, 19 }, { 3, 0 }));
 
     auto& platforms = level.platforms;
     platforms.push_back(PlatformState({ 8, 146 }, { 0, -30 }));

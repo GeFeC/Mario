@@ -47,13 +47,13 @@ static auto run_frame_level23(AppState& app){
     level.platforms.push_back(PlatformState({ 189, 6 }, { -5, 0 }));
     level.platforms.back().is_active = true;
 
-    level.entities.red_flying_koopas.push_back(FlyingKoopaState::make_red( { 32, 8 }, { 2, 3 } ));
-    level.entities.red_flying_koopas.push_back(FlyingKoopaState::make_red( { 130, 5 }, { 0, 5 } ));
-    level.entities.red_flying_koopas.push_back(FlyingKoopaState::make_red( { 137, 5 }, { 0, -5 } ));
-    level.entities.red_flying_koopas.push_back(FlyingKoopaState::make_red( { 145, 5 }, { 0, 5 } ));
-    level.entities.purple_flying_koopas.push_back(FlyingKoopaState::make_purple( { 63, 4 }, { 3, 0 } ));
-    level.entities.purple_flying_koopas.push_back(FlyingKoopaState::make_purple( { 96.5, 6 }, { 4, 4 } ));
-    level.entities.purple_flying_koopas.push_back(FlyingKoopaState::make_purple( { 96.5, 6 }, { -4, 4 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_red( { 32, 8 }, { 2, 3 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_red( { 130, 5 }, { 0, 5 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_red( { 137, 5 }, { 0, -5 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_red( { 145, 5 }, { 0, 5 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_purple( { 63, 4 }, { 3, 0 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_purple( { 96.5, 6 }, { 4, 4 } ));
+    level.entities.flying_koopas.push_back(FlyingKoopaState::make_purple( { 96.5, 6 }, { -4, 4 } ));
 
     level.fire_bars.push_back(FireBarState({ 163, 6 }, 4));
   });
