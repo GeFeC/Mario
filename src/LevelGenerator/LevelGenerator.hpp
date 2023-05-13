@@ -102,10 +102,10 @@ static auto generate_level(LevelState& level, const std::string& file_path){
 
     else if (tile == Tile::Coin) put_coin(level, { x, y });
 
-    else if (tile == Tile::QBlockMushroom) put_qblock_with_mushroom(level, { x, y }, MushroomState::Type::Red);
-    else if (tile == Tile::QBlockGreenMushroom) put_qblock_with_mushroom(level, { x, y }, MushroomState::Type::Green);
-    else if (tile == Tile::QBlockCoins) put_qblock_with_coins(level, { x, y });
-    else if (tile == Tile::QBlockFireFlower) put_qblock_with_flower(level, { x, y });
+    else if (tile == Tile::QBlockMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Red);
+    else if (tile == Tile::QBlockGreenMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Green);
+    else if (tile == Tile::QBlockCoins) put_q_block_with_coins(level, { x, y });
+    else if (tile == Tile::QBlockFireFlower) put_q_block_with_flower(level, { x, y });
 
     else if (tile == Tile::Hitbox) put_hitbox_block(level, { x, y });
     else if (tile == Tile::Finish) level.finish_position = { x, y };

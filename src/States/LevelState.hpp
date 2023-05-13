@@ -86,13 +86,14 @@ struct LevelState{
     std::vector<QBlockState<FireFlowerPusherState>> q_blocks_with_flower;
     std::vector<QBlockState<MushroomPusherState>> q_blocks_with_mushroom;
     std::vector<QBlockState<GoombaPusherState>> q_blocks_with_goomba;
+    std::vector<QBlockState<JumpingKoopaPusherState>> q_blocks_with_jumping_koopa;
 
     template<typename Function>
     auto for_each_q_block(const Function& function){
       util::multi_for(
         function, 
         q_blocks_with_coins, q_blocks_with_flower,
-        q_blocks_with_mushroom, q_blocks_with_goomba
+        q_blocks_with_mushroom, q_blocks_with_goomba, q_blocks_with_jumping_koopa
       );
     }
 

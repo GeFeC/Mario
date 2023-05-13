@@ -29,7 +29,7 @@ static auto run_frame_level25(AppState& app){
     level_generator::generate_level(level, "level25_1.csv");
     level_generator::generate_level(level, "level25_2.csv");
 
-    level_generator::put_qblock_with_coins(level, { 59, 1 }, 8);
+    level_generator::put_q_block_with_coins(level, { 59, 1 }, 8);
 
     auto& bars = level.fire_bars;
     bars.push_back(FireBarState({ 76, 4 }, 4));

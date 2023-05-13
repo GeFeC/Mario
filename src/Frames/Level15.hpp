@@ -52,7 +52,7 @@ static auto run_frame_level15(AppState& app){
     level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, -r2 }));
     level.entities.green_flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, -r2 }));
 
-    level_generator::put_qblock_with_coins(level, { 13, 13 }, 10);
+    level_generator::put_q_block_with_coins(level, { 13, 13 }, 10);
 
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level15_1.csv");

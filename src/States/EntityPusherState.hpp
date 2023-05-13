@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/GoombaState.hpp"
+#include "States/JumpingKoopaState.hpp"
 #include "States/MushroomState.hpp"
 
 template<typename Entity>
@@ -11,4 +12,5 @@ struct EntityPusherState{
 };
 
 using GoombaPusherState = EntityPusherState<GoombaState>;
+using JumpingKoopaPusherState = EntityPusherState<JumpingKoopaState>;
 using MushroomPusherState = EntityPusherState<MushroomState>;

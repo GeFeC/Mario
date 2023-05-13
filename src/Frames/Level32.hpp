@@ -13,7 +13,7 @@ static auto run_frame_level32(AppState& app){
   level.number = { 3, 2 };
   level.extra_textures = {
     texture_groups::blue_cloud,
-    texture_groups::purple_flying_koopa,
+    texture_groups::green_flying_koopa,
     &textures::platform,
     &textures::dirt,
     &textures::snow_bg
@@ -28,9 +28,12 @@ static auto run_frame_level32(AppState& app){
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "level32_1.csv");
     level_generator::generate_level(level, "level32_2.csv");
+    level_generator::generate_level(level, "level32_3.csv");
 
-    level_generator::put_q_block_with_entity(level, { 11, 7 }, [&](const auto& position){
-      return GoombaState::make_normal(position);
-    });
+    auto& goombas = level.blocks.q_blocks_with_goomba;
+    level_generator::put_q_block_with_entity(level, goombas, GoombaState::make_normal({ 11, 7 }));
+
+    auto& koopas = level.blocks.q_blocks_with_jumping_koopa;
+    level_generator::put_q_block_with_entity(level, koopas, JumpingKoopaState::make_green({ 63, 7 }));
   });
 }

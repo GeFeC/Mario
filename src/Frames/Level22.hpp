@@ -34,6 +34,6 @@ static auto run_frame_level22(AppState& app){
     purple_flying_koopas.push_back(FlyingKoopaState::make_purple({ 4, 25.5 }, { 0, 3 }));
 
     level.entities.hammerbros[0].jump_state = HammerBroState::JumpState::Down;
-    level_generator::put_qblock_with_coins(level, { 2, 103 }, 8);
+    level_generator::put_q_block_with_coins(level, { 2, 103 }, 8);
   });
 }

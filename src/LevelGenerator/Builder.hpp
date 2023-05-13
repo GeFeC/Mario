@@ -37,7 +37,7 @@ static auto put_coin(LevelState& level, const glm::vec2& position){
   level.blocks.coins.push_back(CoinBlockState(position));
 }
 
-static auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, int coins = 1){
+static auto put_q_block_with_coins(LevelState& level, const glm::vec2& position, int coins = 1){
   put_hitbox_block(level, position);
   auto& block = level.blocks.q_blocks_with_coins.emplace_back(position);
   block.bounce_state.bounces_count = coins;
@@ -53,7 +53,7 @@ static auto put_qblock_with_coins(LevelState& level, const glm::vec2& position, 
   }
 }
 
-static auto put_qblock_with_flower(LevelState& level, const glm::vec2& position){
+static auto put_q_block_with_flower(LevelState& level, const glm::vec2& position){
   put_hitbox_block(level, position);
 
   auto& block = level.blocks.q_blocks_with_flower.emplace_back(position);
@@ -63,7 +63,7 @@ static auto put_qblock_with_flower(LevelState& level, const glm::vec2& position)
 using Direction = EntityState::Direction;
 static constexpr auto DirectionLeft = EntityState::DirectionLeft;
 
-static auto put_qblock_with_mushroom(
+static auto put_q_block_with_mushroom(
     LevelState& level, 
     const glm::vec2& position,
     MushroomState::Type mushroom_type
@@ -149,14 +149,23 @@ static auto put_beetle(LevelState& level, const glm::vec2& position){
   level.entities.beetles.push_back(BeetleState::make(position - glm::vec2(0, 0.5)));
 }
 
-template<typename Function>
-static auto put_q_block_with_entity(LevelState& level, const glm::vec2& position, Function make_entity){
-  level_generator::put_hitbox_block(level, position);
-  auto& block = level.blocks.q_blocks_with_goomba.emplace_back(position);
-  block.pusher.entity = make_entity(position);
+template<typename Entity>
+static auto put_q_block_with_entity(
+    LevelState& level, 
+    std::vector<QBlockState<EntityPusherState<Entity>>>& q_blocks_vec,
+    const Entity& entity
+){
+  const auto position = entity.position / BlockBase::Size;
 
-  block.pusher.entity.is_in_q_block = true;
-  block.pusher.entity.is_visible = false;
+  level_generator::put_hitbox_block(level, position);
+
+  auto& block = q_blocks_vec.emplace_back(position);
+  auto& pusher_entity = block.pusher.entity;
+
+  pusher_entity = entity;
+  pusher_entity.position.y -= entity.size.y - BlockBase::Size;
+  pusher_entity.is_in_q_block = true;
+  pusher_entity.is_visible = false;
 }
 
 } //namespace level_generator

@@ -26,10 +26,10 @@ static auto run_frame_level12(AppState& app){
     level_generator::generate_level(level, "level12_1.csv");
     level_generator::generate_level(level, "level12_2.csv");
 
-    level_generator::put_qblock_with_coins(level, { 84, 2 }, 5);
+    level_generator::put_q_block_with_coins(level, { 84, 2 }, 5);
 
-    level_generator::put_qblock_with_coins(level, { 178, 3 }, 5);
-    level_generator::put_qblock_with_coins(level, { 180, 3 }, 5);
-    level_generator::put_qblock_with_coins(level, { 182, 3 }, 5);
+    level_generator::put_q_block_with_coins(level, { 178, 3 }, 5);
+    level_generator::put_q_block_with_coins(level, { 180, 3 }, 5);
+    level_generator::put_q_block_with_coins(level, { 182, 3 }, 5);
   });
 }

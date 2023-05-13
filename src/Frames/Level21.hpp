@@ -28,6 +28,6 @@ static auto run_frame_level21(AppState& app){
 
     level.entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 79, 6 }, { 0, 2 }));
     level.entities.red_flying_koopas.push_back(FlyingKoopaState::make_red({ 84, 6 }, { 0, 2 }));
-    level_generator::put_qblock_with_coins(level, { 150, 8 }, 10);
+    level_generator::put_q_block_with_coins(level, { 150, 8 }, 10);
   });
 }

@@ -32,7 +32,7 @@ static auto run_frame_level13(AppState& app){
     level.fire_bars.push_back(FireBarState({ 7, 24 }, 5));
     level.fire_bars.push_back(FireBarState({ 4, 4 }, 7));
 
-    level_generator::put_qblock_with_coins(level, { 4, 65 }, 5);
+    level_generator::put_q_block_with_coins(level, { 4, 65 }, 5);
 
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level13_1.csv");

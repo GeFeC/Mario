@@ -159,6 +159,7 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
 }
 
 static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& player){
+  if (!entity.is_active) return;
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
@@ -189,6 +190,8 @@ static auto entity_die_when_stomped(
     LevelState& level,
     Function set_entity_dead
 ){
+  if (!entity.is_active) return false;
+
   auto& player = level.player;
   auto& stats = level.stats;
 

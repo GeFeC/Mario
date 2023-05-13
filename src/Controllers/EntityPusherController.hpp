@@ -4,6 +4,7 @@
 #include "States/LevelState.hpp"
 
 #include "Controllers/GoombaController.hpp"
+#include "Controllers/JumpingKoopaController.hpp"
 #include "Controllers/MushroomController.hpp"
 
 static auto pusher_entity_controller(MushroomPusherState& pusher, LevelState& level){
@@ -16,6 +17,10 @@ static auto pusher_entity_controller(MushroomPusherState& pusher, LevelState& le
 
 static auto pusher_entity_controller(GoombaPusherState& pusher, LevelState& level){
   normal_goomba_controller(pusher.entity, level);
+}
+
+static auto pusher_entity_controller(JumpingKoopaPusherState& pusher, LevelState& level){
+  green_jumping_koopa_controller(pusher.entity, level);
 }
 
 template<typename Entity>
