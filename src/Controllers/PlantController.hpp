@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PolyControllers.hpp"
+
 #include "Controllers/PointsParticlesController.hpp"
 #include "States/MonsterState.hpp"
 #include "States/PlantState.hpp"
@@ -72,10 +74,13 @@ static auto red_plant_controller(PlantState& plant, LevelState& level){
   entity_run_movement_animation(plant, textures::red_plant);
 }
 
-static auto plant_controller(PlantState& plant, LevelState& level){
-  using Type = PlantState::Type;
-  switch(plant.type){
-    case Type::Green: green_plant_controller(plant, level); return;
-    case Type::Red: red_plant_controller(plant, level); return;
+template<>
+struct Controller<PlantState>{
+  static auto run(PlantState& plant, LevelState& level){
+    using Type = PlantState::Type;
+    switch(plant.type){
+      case Type::Green: green_plant_controller(plant, level); return;
+      case Type::Red: red_plant_controller(plant, level); return;
+    }
   }
-}
+};

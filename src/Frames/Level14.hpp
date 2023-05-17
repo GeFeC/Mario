@@ -23,13 +23,14 @@ static auto run_frame_level14(AppState& app){
     level_generator::generate_level(level, "level14_2.csv");
     level_generator::generate_level(level, "level14_3.csv");
 
-    level.fire_bars.push_back(FireBarState({ 10, 8 }, 3));
-    level.fire_bars.push_back(FireBarState({ 17, 6 }, 3));
-    level.fire_bars.push_back(FireBarState({ 24, 4 }, 3));
-    level.fire_bars.push_back(FireBarState({ 121, 7 }, 5));
-    level.fire_bars.push_back(FireBarState({ 103, 6 }, 5));
-    level.fire_bars.push_back(FireBarState({ 108, 6 }, 5));
-    level.fire_bars.push_back(FireBarState({ 184, 7 }, 5));
+    auto& objects = level.game_objects;
+    objects.push(FireBarState({ 10, 8 }, 3));
+    objects.push(FireBarState({ 17, 6 }, 3));
+    objects.push(FireBarState({ 24, 4 }, 3));
+    objects.push(FireBarState({ 121, 7 }, 5));
+    objects.push(FireBarState({ 103, 6 }, 5));
+    objects.push(FireBarState({ 108, 6 }, 5));
+    objects.push(FireBarState({ 184, 7 }, 5));
 
     level_generator::put_q_block_with_coins(level, { 184, 3 }, 5);
   });

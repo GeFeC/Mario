@@ -6,14 +6,6 @@
 
 #include "Window.hpp"
 
-template<typename BossType>
-static auto make_boss(LevelState& level){
-  const auto ptr = std::make_shared<BossType>();
-  level.bosses.current_boss = ptr;
-
-  return ptr;
-}
-
 static auto boss_controller(BossState& boss, LevelState& level){
   //Interactions with player
   static auto blink_cooldown = 0.f;

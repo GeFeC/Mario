@@ -15,39 +15,6 @@
 #include <sstream>
 #include <iomanip>
 
-static auto render_clouds(const LevelState& level){
-  const auto& clouds = level.background.clouds;
-  const auto& cloud_textures = *level.cloud_textures;
-
-  const auto& top_left = cloud_textures[0];
-  const auto& top_right = cloud_textures[1];
-  const auto& top_center = cloud_textures[2];
-  const auto& bottom_left = cloud_textures[3];
-  const auto& bottom_right = cloud_textures[4];
-  const auto& bottom_center = cloud_textures[5];
-
-  static auto cloud_offset = 0.f;
-  cloud_offset += window::delta_time;
-
-  if (cloud_offset >= 18.f) cloud_offset -= 18.f;
-
-  for (const auto [position, cloud_size] : clouds){
-    const auto x = position.x - cloud_offset;
-    const auto y = position.y;
-
-    render_block(BlockState({ x, y  }, &top_left), level.camera_offset);
-    render_block(BlockState({ x, (y + 1)  }, &bottom_left), level.camera_offset);
-
-    for (int i = 0; i < cloud_size; ++i){
-      render_block(BlockState({ (x + i + 1), y  }, &top_center), level.camera_offset);
-      render_block(BlockState({ (x + i + 1), (y + 1)  }, &bottom_center), level.camera_offset);
-    }
-
-    render_block(BlockState({ (x + cloud_size + 1), y  }, &top_right), level.camera_offset);
-    render_block(BlockState({ (x + cloud_size + 1), (y + 1)  }, &bottom_right), level.camera_offset);
-  }
-}
-
 static auto render_stats(const LevelState& level){
   const auto& stats = level.stats;
 
@@ -95,40 +62,24 @@ static auto render_stats(const LevelState& level){
   }
 }
 
-static auto render_plants(const LevelState& level){
-  for (const auto& plant : level.entities.plants){
-    render_entity(plant, level.camera_offset);
-  }
-}
-
-static auto render_entities(const LevelState& level){
-  level.entities.for_each([&](const auto& entity){
-    if constexpr (std::is_convertible_v<decltype(entity), PlantState>) return;
-
-    render_entity(entity, level.camera_offset);
-  });
-}
-
 static auto render_all_points_particles(const LevelState& level){
-  level.entities.for_each([&](const auto& entity){
+  level.game_objects.for_each_template<QBlockState>([&](const auto& block){
+    using BlockType = std::decay_t<decltype(block)>;
+
+    if constexpr (BlockType::PusherType::ContainsEntity){
+      render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
+    }
+    else if constexpr(!std::is_same_v<BlockType, QBlockState<FireFlowerPusherState>>){
+      render_points_particles(block.pusher.points_generator.items, level.camera_offset);
+    }
+    else{
+      render_points_particles(block.pusher.fire_flower.points_generator.items, level.camera_offset);
+    }
+  });
+
+  level.game_objects.for_each_derived<EntityState>([&](const auto& entity){
     render_points_particles(entity.points_generator.items, level.camera_offset);
   });
-
-  for (const auto& block : level.blocks.q_blocks_with_coins){
-    render_points_particles(block.pusher.points_generator.items, level.camera_offset);
-  }
-
-  for (const auto& block : level.blocks.q_blocks_with_mushroom){
-    render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
-  }
-
-  for (const auto& block : level.blocks.q_blocks_with_goomba){
-    render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
-  }
-
-  for (const auto& block : level.blocks.q_blocks_with_flower){
-    render_points_particles(block.pusher.fire_flower.points_generator.items, level.camera_offset);
-  }
 }
 
 static auto render_loading_screen(const LevelState& level){
@@ -173,16 +124,6 @@ static auto render_loading_screen(const LevelState& level){
   renderer::print(text, glm::vec2(0));
 }
 
-static auto render_blocks(const LevelState& level){
-  for (const auto& block : level.blocks.normal){
-    render_block(block, level.camera_offset);
-  }
-
-  for (const auto& block : level.blocks.coins){
-    render_block(block, level.camera_offset);
-  }
-}
-
 static auto render_level(const LevelState& level){
   renderer::draw(Drawable{
     glm::vec2(0, 0),
@@ -191,73 +132,24 @@ static auto render_level(const LevelState& level){
   });
 
   renderer::draw_with_shadow([&]{
-    render_clouds(level);
-  });
-
-  renderer::draw_with_shadow([&]{
     if (level.is_finished) render_player(level.player, level.camera_offset);
+  });
 
-    for (const auto& hill : level.background.hills){
-      render_block(hill, level.camera_offset);
-    }
+  //Rendering game objects
+  renderer::draw_with_shadow([&]{
+    level.game_objects.run_controllers<BackgroundView>(level.camera_offset, level);
   });
 
   renderer::draw_with_shadow([&]{
-    for (const auto& bush : level.background.bushes){
-      render_block(bush, level.camera_offset);
-    }
+    level.game_objects.run_controllers<PlantsView>(level.camera_offset, level);
   });
 
   renderer::draw_with_shadow([&]{
-    render_plants(level);
+    level.game_objects.run_controllers<BlocksView>(level.camera_offset, level);
   });
 
   renderer::draw_with_shadow([&]{
-    render_blocks(level);
-  });
-
-  renderer::draw_with_shadow([&]{
-    for (const auto& platform : level.platforms){
-      render_platform(platform, level.camera_offset);
-    }
-
-    for (const auto& platform : level.looped_platforms){
-      render_platform(platform, level.camera_offset);
-    }
-  });
-
-  renderer::draw_with_shadow([&]{
-    render_entities(level);
-
-    for (const auto& block : level.blocks.q_blocks_with_coins){
-      render_q_block_with_coins(block, level.camera_offset);
-    }
-
-    level.blocks.for_each_q_block([&](const auto& block){
-      using pusher_t = std::decay_t<decltype(block.pusher)>;
-      if constexpr (pusher_t::ContainsEntity){
-        render_q_block_with_entity(block, level.camera_offset);
-      }
-    });
-
-    for (const auto& block : level.blocks.q_blocks_with_flower){
-      render_q_block_with_flower(block, level.camera_offset);
-    }
-
-    for (const auto& block : level.blocks.bricks){
-      render_bricks(block, level.camera_offset);
-    }
-
-    for (const auto& bar : level.fire_bars){
-      render_fire_bar(bar, level.camera_offset);
-    }
-
-  });
-
-  renderer::draw_with_shadow([&]{
-    if (level.type == LevelState::Type::Boss){
-      render_boss(*level.bosses.current_boss.lock(), level.camera_offset);
-    }
+    level.game_objects.run_controllers<EntitiesView>(level.camera_offset, level);
   });
 
   renderer::draw_with_shadow([&]{

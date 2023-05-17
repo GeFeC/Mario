@@ -2,6 +2,8 @@
 
 #include "Controllers/CollisionController.hpp"
 #include "Renderer/Drawable.hpp"
+#include "States/BlockState.hpp"
+#include "States/EntityPusherState.hpp"
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
 #include "States/MonsterState.hpp"
@@ -15,7 +17,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   }
 
   //Blocks
-  for (const auto& block : level.blocks.normal){
+  for (const auto& block : level.game_objects.get_vec<BlockState>()){
     if (!block.is_solid) continue;
 
     const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
@@ -23,7 +25,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   }
 
   //Platforms
-  util::multi_for([&](const auto& platform){
+  level.game_objects.for_each_type<PlatformState, LoopedPlatformState>([&](const auto& platform){
     const auto platform_rect = util::Rect(
       platform.position,
       platform.size()
@@ -31,7 +33,7 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
 
     const auto collision_state = collision_controller(util::Rect(entity), platform_rect);
     callable(collision_state);
-  }, level.platforms, level.looped_platforms);
+  });
 
   if (entity.fall_from_edge) return;
   if (!entity.is_on_ground) return;
@@ -152,7 +154,9 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
 
   if (collision::is_hovering_in_x(player, entity)){
     const auto distance = entity.position.y - player.position.y - player.size.y;
-    return distance == util::in_range(-BlockBase::Size * 5.f/6.f, 0);
+    const auto hitbox_tolerance = -entity.size.y + BlockBase::Size / 6.f;
+
+    return distance == util::in_range(hitbox_tolerance, 0);
   }
 
   return false;
@@ -278,7 +282,7 @@ static auto entity_react_when_on_bouncing_block(
     const LevelState& level,
     Reaction reaction 
 ){
-  const auto& blocks = level.blocks;
+  const auto& objects = level.game_objects;
 
   util::multi_for([&](const auto& block){
     if (block.bounce_state.is_bouncing){
@@ -291,9 +295,11 @@ static auto entity_react_when_on_bouncing_block(
       }
     }
   },
-    blocks.bricks,
-    blocks.q_blocks_with_coins,
-    blocks.q_blocks_with_mushroom
+    objects.get_vec<BricksBlockState>(),
+    objects.get_vec<QBlockState<CoinPusherState>>(),
+    objects.get_vec<QBlockState<MushroomPusherState>>(),
+    objects.get_vec<QBlockState<GoombaPusherState>>(),
+    objects.get_vec<QBlockState<JumpingKoopaPusherState>>()
   );
 }
 

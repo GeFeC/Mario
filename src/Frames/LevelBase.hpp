@@ -63,7 +63,7 @@ static auto run_frame_levelbase(
     //Hitbox Borders:
     if (level.type == LevelState::Type::Vertical){
       for (int i = 0; i < LevelState::MaxVerticalLevelSize.y; ++i){
-        auto& normal_blocks = level.blocks.normal;
+        auto& normal_blocks = level.game_objects.template get_vec<BlockState>();
 
         normal_blocks.emplace_back(glm::vec2(-1, i), level_generator::no_texture);
         normal_blocks.back().is_visible = false; 

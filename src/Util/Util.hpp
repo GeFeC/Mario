@@ -10,16 +10,6 @@
 #include <fstream>
 
 namespace util{
-  template<typename T>
-  struct FunctionInfo{};
-
-  template<typename Ret, typename... Params>
-  struct FunctionInfo<Ret(Params...)>{
-    using return_type = Ret;
-    using params_types = std::tuple<std::decay_t<Params>...>;
-    static constexpr auto params_count = sizeof...(Params);
-  };
-
   inline static constexpr auto BigValue = 999999;
 
   template<typename T>

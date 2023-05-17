@@ -29,11 +29,10 @@ static auto run_frame_level31(AppState& app){
     level_generator::generate_level(level, "level31_2.csv");
     level_generator::generate_level(level, "level31_3.csv");
 
-    auto& platforms = level.platforms;
-    platforms.push_back(PlatformState({ 79, 8 }, { 0, -4 }));
-    platforms.back().is_active = true;
+    auto& objects = level.game_objects;
+    auto& platform = objects.push(PlatformState({ 79, 8 }, { 0, -4 }));
+    platform.is_active = true;
 
-    auto& flying_koopas = level.entities.flying_koopas;
-    flying_koopas.push_back(FlyingKoopaState::make_purple({ 179, 8 }, { 0, 2 }));
+    objects.push(FlyingKoopaState::make_purple({ 179, 8 }, { 0, 2 }));
   });
 }

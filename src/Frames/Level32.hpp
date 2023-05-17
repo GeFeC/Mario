@@ -30,10 +30,10 @@ static auto run_frame_level32(AppState& app){
     level_generator::generate_level(level, "level32_2.csv");
     level_generator::generate_level(level, "level32_3.csv");
 
-    auto& goombas = level.blocks.q_blocks_with_goomba;
+    auto& goombas = level.game_objects.get_vec<QBlockState<GoombaPusherState>>();
     level_generator::put_q_block_with_entity(level, goombas, GoombaState::make_normal({ 11, 7 }));
 
-    auto& koopas = level.blocks.q_blocks_with_jumping_koopa;
+    auto& koopas = level.game_objects.get_vec<QBlockState<JumpingKoopaPusherState>>();
     level_generator::put_q_block_with_entity(level, koopas, JumpingKoopaState::make_green({ 63, 7 }));
   });
 }

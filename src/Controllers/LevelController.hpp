@@ -36,54 +36,11 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 
-static auto level_blocks_controller(LevelState& level){
-  auto& player = level.player;
-  auto& blocks = level.blocks;
+static auto level_background_controller(LevelState& level){
+  level.cloud_offset += window::delta_time;
 
-  for (auto& block : blocks.bricks){
-    bricks_controller(block, level);
-  }
-
-  for (auto& block : blocks.coins){
-    coin_controller(block, level);
-  }
-}
-
-static auto level_entities_controller(LevelState& level){
-  auto& entities = level.entities;
-  auto& player = level.player;
-
-  for (auto& goomba : level.entities.goombas){
-    goomba_controller(goomba, level);
-  }
-
-  for (auto& spike : level.entities.spikes){
-    spike_controller(spike, level);
-  }
-
-  for (auto& plant : level.entities.plants){
-    plant_controller(plant, level);
-  }
-
-  for (auto& koopa : level.entities.koopas){
-    koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.flying_koopas){
-    flying_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.jumping_koopas){
-    jumping_koopa_controller(koopa, level);
-  }
-
-  for (auto& koopa : level.entities.beetles){
-    beetle_controller(koopa, level);
-  }
-
-  for (auto& bro : level.entities.hammerbros){
-    hammerbro_controller(bro, level);
-  }
+  static constexpr auto CloudMaxOffset = 18.f;
+  if (level.cloud_offset > CloudMaxOffset) level.cloud_offset -= CloudMaxOffset;
 }
 
 static auto level_finish(LevelState& level, AppState& app){
@@ -211,17 +168,6 @@ static auto level_checkpoints_controller(LevelState& level){
   }
 }
 
-static auto level_bosses(AppState& app){
-  auto& level = app.current_level;
-
-  using Frame = AppState::Frame;
-  switch(app.current_frame){
-    case Frame::Level16: king_goomba_controller(*level.bosses.king_goomba, level); break;
-    case Frame::Level26: king_koopa_controller(*level.bosses.king_koopa, level); break;
-    default: break;
-  }
-}
-
 static auto level_controller(AppState& app){
   auto& level = app.current_level;
 
@@ -245,10 +191,6 @@ static auto level_controller(AppState& app){
 
   auto& player = level.player;
 
-  level.blocks.for_each_q_block([&](auto& block){
-    q_block_controller(block, level);
-  });
-
   if (!level.is_finished) {
     stats_controller(level.stats);
     player_controller(player, level);
@@ -259,34 +201,17 @@ static auto level_controller(AppState& app){
   }
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
-
-  for (auto& bar : level.fire_bars){
-    fire_bar_controller(bar, level);
-  }
-
-  for (auto& platform : level.platforms){
-    platform_controller(platform, level);
-  }
-
-  for (auto& platform : level.looped_platforms){
-    looped_platform_controller(platform, level);
-  }
+  //Game objects
+  level_background_controller(level);
+  level.game_objects.run_controllers<Controller>(level);
 
   level_finish(level, app);
-
-  level_blocks_controller(level);
-  level_entities_controller(level);
 
   //Counting coins
   static constexpr auto CoinsToGetHP = 100;
   if (level.stats.coins >= CoinsToGetHP) {
     level.stats.coins -= CoinsToGetHP;
     level.stats.hp++;
-  }
-
-  //Bosses
-  if (level.type == LevelState::Type::Boss){
-    level_bosses(app);
   }
 
   //Camera

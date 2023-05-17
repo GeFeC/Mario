@@ -23,14 +23,15 @@ static auto run_frame_level13(AppState& app){
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
 
-    level.fire_bars.push_back(FireBarState({ 13, 133 }, 3));
-    level.fire_bars.push_back(FireBarState({ 5, 104 }, 5));
-    level.fire_bars.push_back(FireBarState({ 6, 61 }, 3));
-    level.fire_bars.push_back(FireBarState({ 11, 58 }, 3));
-    level.fire_bars.push_back(FireBarState({ 16, 55 }, 3));
-    level.fire_bars.push_back(FireBarState({ 7, 45 }, 7));
-    level.fire_bars.push_back(FireBarState({ 7, 24 }, 5));
-    level.fire_bars.push_back(FireBarState({ 4, 4 }, 7));
+    auto& objects = level.game_objects;
+    objects.push(FireBarState({ 13, 133 }, 3));
+    objects.push(FireBarState({ 5, 104 }, 5));
+    objects.push(FireBarState({ 6, 61 }, 3));
+    objects.push(FireBarState({ 11, 58 }, 3));
+    objects.push(FireBarState({ 16, 55 }, 3));
+    objects.push(FireBarState({ 7, 45 }, 7));
+    objects.push(FireBarState({ 7, 24 }, 5));
+    objects.push(FireBarState({ 4, 4 }, 7));
 
     level_generator::put_q_block_with_coins(level, { 4, 65 }, 5);
 

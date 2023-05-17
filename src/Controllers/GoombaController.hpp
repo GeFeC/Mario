@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PolyControllers.hpp"
+
 #include "Controllers/EntityController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 #include "States/EntityState.hpp"
@@ -79,11 +81,14 @@ static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
   });
 }
 
-static auto goomba_controller(GoombaState& goomba, LevelState& level){
-  using Type = GoombaState::Type;
-  switch(goomba.type){
-    case Type::Normal: normal_goomba_controller(goomba, level); return;
-    case Type::Red: red_goomba_controller(goomba, level); return;
-    case Type::Yellow: yellow_goomba_controller(goomba, level); return;
+template<>
+struct Controller<GoombaState>{
+  static auto run(GoombaState& goomba, LevelState& level){
+    using Type = GoombaState::Type;
+    switch(goomba.type){
+      case Type::Normal: normal_goomba_controller(goomba, level); return;
+      case Type::Red: red_goomba_controller(goomba, level); return;
+      case Type::Yellow: yellow_goomba_controller(goomba, level); return;
+    }
   }
-}
+};

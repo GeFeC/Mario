@@ -30,6 +30,7 @@
 #include "res/fonts.hpp"
 #include "res/textures.hpp"
 #include "Util/Util.hpp"
+#include "Util/Poly.hpp"
 
 #include <memory>
 #include <vector>
@@ -77,78 +78,40 @@ struct LevelState{
   StatsState stats;
   PlayerState player;
 
-  struct Blocks{
-    std::vector<BlockState> normal;
-    std::vector<CoinBlockState> coins;
-    std::vector<BricksBlockState> bricks;
+  util::poly::Array<
+    //Background
+    CloudState,
+    BackgroundHillState,
+    BackgroundBushState,
 
-    std::vector<QBlockState<CoinPusherState>> q_blocks_with_coins;
-    std::vector<QBlockState<FireFlowerPusherState>> q_blocks_with_flower;
-    std::vector<QBlockState<MushroomPusherState>> q_blocks_with_mushroom;
-    std::vector<QBlockState<GoombaPusherState>> q_blocks_with_goomba;
-    std::vector<QBlockState<JumpingKoopaPusherState>> q_blocks_with_jumping_koopa;
+    //Blocks
+    BlockState, CoinBlockState, BricksBlockState,
+    QBlockState<CoinPusherState>,
+    QBlockState<FireFlowerPusherState>,
+    QBlockState<MushroomPusherState>,
+    QBlockState<GoombaPusherState>,
+    QBlockState<JumpingKoopaPusherState>,
 
-    template<typename Function>
-    auto for_each_q_block(const Function& function){
-      util::multi_for(
-        function, 
-        q_blocks_with_coins, q_blocks_with_flower,
-        q_blocks_with_mushroom, q_blocks_with_goomba, q_blocks_with_jumping_koopa
-      );
-    }
+    //Entities
+    GoombaState,
+    KoopaState,
+    JumpingKoopaState,
+    FlyingKoopaState,
+    BeetleState,
+    SpikeState,
+    MushroomState,
+    PlantState,
+    HammerBroState,
 
-    template<typename Function>
-    auto for_each_q_block(const Function& function) const{
-      const_cast<Blocks*>(this)->for_each_q_block([&](const auto& x){ function(x); });
-    }
-  } blocks;
+    //Obstacles
+    FireBarState,
+    PlatformState,
+    LoopedPlatformState,
 
-  std::vector<PlatformState> platforms;
-  std::vector<PlatformState> looped_platforms;
-  std::vector<FireBarState> fire_bars;
-
-  struct Entities{
-    std::vector<GoombaState> goombas;
-    std::vector<KoopaState> koopas;
-    std::vector<JumpingKoopaState> jumping_koopas;
-    std::vector<FlyingKoopaState> flying_koopas;
-    std::vector<BeetleState> beetles;
-    std::vector<SpikeState> spikes;
-    std::vector<MushroomState> mushrooms;
-    std::vector<PlantState> plants;
-    std::vector<HammerBroState> hammerbros;
-
-    template<typename Function>
-    auto for_each(const Function& function){
-      util::multi_for(
-        function,
-        goombas, 
-        koopas, jumping_koopas, flying_koopas,
-        beetles, 
-        spikes,
-        plants, 
-        hammerbros
-      );
-    }
-
-    template<typename Function>
-    auto for_each(const Function& function) const{
-      const_cast<Entities*>(this)->for_each([&](const auto& x){ function(x); });
-    }
-  } entities;
-
-  struct Bosses{
-    std::weak_ptr<BossState> current_boss;
-
-    std::shared_ptr<KingGoombaState> king_goomba;
-    std::shared_ptr<KingKoopaState> king_koopa;
-  } bosses;
-
-  struct Background{
-    std::vector<BlockState> hills;
-    std::vector<BlockState> bushes;
-    std::vector<CloudState> clouds;
-  } background;
+    //Bosses
+    KingGoombaState,
+    KingKoopaState
+  > game_objects;
 
   std::vector<glm::vec2> checkpoints;
   glm::vec2 current_checkpoint = CheckpointNotSet;
@@ -156,17 +119,18 @@ struct LevelState{
 
   glm::vec2 camera_offset;
 
-  int blink_state = 0;
-  float purple_flying_koopa_timer = 0.f;
   util::InfiniteCounter coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
   util::InfiniteCounter fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
   util::InfiniteCounter fireball_counter = util::InfiniteCounter(4.f, 20.f);
   util::InfiniteCounter hammer_counter = util::InfiniteCounter(4.f, 10.f);
   util::InfiniteCounter purple_koopa_counter = util::InfiniteCounter(10.f, 10.f);
 
+  float purple_flying_koopa_timer = 0.f;
+  float cloud_offset = 0.f;
   float load_delay = 3.f;
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;
+  int blink_state = 0;
   bool is_finished = false;
 
   auto max_size() const{

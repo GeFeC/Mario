@@ -9,6 +9,7 @@ inline constexpr auto QBlockReward = 200;
 template<typename Pusher>
 struct QBlockState : BouncingBlockState, BlinkingBlockBase{
   //Contents pusher
+  using PusherType = Pusher;
   Pusher pusher;
 
   QBlockState(const glm::vec2& position){

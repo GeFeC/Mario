@@ -19,34 +19,34 @@
 namespace level_generator{
 
 static auto generate_horizontal_level_clouds(LevelState& level, int spread = 2){
-  auto& clouds = level.background.clouds;
+  auto& clouds = level.game_objects.get_vec<CloudState>();
   clouds.reserve(64);
 
   for (int i = 0; i < 16; ++i){
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 1, spread / 2 + 1), 3));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 7, 2), 2));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 12, spread + 1), 1));
-    clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, spread / 3 + 1), 1));
+    clouds.push_back({ glm::vec2(i * 18 + 1, spread / 2 + 1), 3 });
+    clouds.push_back({ glm::vec2(i * 18 + 7, 2), 2 });
+    clouds.push_back({ glm::vec2(i * 18 + 12, spread + 1), 1 });
+    clouds.push_back({ glm::vec2(i * 18 + 15, spread / 3 + 1), 1 });
   }
 }
 
 static auto generate_vertical_level_clouds(LevelState& level){
-  auto& clouds = level.background.clouds;
+  auto& clouds = level.game_objects.get_vec<CloudState>();
 
   static constexpr auto CloudRows = 11;
   clouds.reserve(CloudRows * 2 * 2 * 3);
 
   for (int j = 0; j < CloudRows; ++j){
     for (int i = 0; i < 2; ++i){
-      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 4, 2 + j * 14), 2));
-      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 9, 3 + j * 14), 3));
-      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15, 1 + j * 14), 1));
+      clouds.push_back({ glm::vec2(i * 18 + 4, 2 + j * 14), 2 });
+      clouds.push_back({ glm::vec2(i * 18 + 9, 3 + j * 14), 3 });
+      clouds.push_back({ glm::vec2(i * 18 + 15, 1 + j * 14), 1 });
     }
 
     for (int i = 0; i < 2; ++i){
-      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 4 - 2, 2 + j * 14 + 7), 2));
-      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 9 - 2, 3 + j * 14 + 7), 3));
-      clouds.push_back(std::make_pair(glm::vec2(i * 18 + 15 - 2, 1 + j * 14 + 7), 1));
+      clouds.push_back({ glm::vec2(i * 18 + 4 - 2, 2 + j * 14 + 7), 2 });
+      clouds.push_back({ glm::vec2(i * 18 + 9 - 2, 3 + j * 14 + 7), 3 });
+      clouds.push_back({ glm::vec2(i * 18 + 15 - 2, 1 + j * 14 + 7), 1 });
     }
   }
 }
@@ -73,8 +73,6 @@ static auto generate_level(LevelState& level, const std::string& file_path){
 
     const auto x = counter % (level.max_size().x | util::as<int>);
     const auto y = counter / (level.max_size().x | util::as<int>);
-
-    auto& entities = level.entities;
 
     if (tile == Tile::MushroomBot2) put_nonsolid(level, { x, y }, textures::mushroom_bot2);
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);

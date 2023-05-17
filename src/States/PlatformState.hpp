@@ -44,3 +44,12 @@ struct PlatformState{
     return glm::radians(-90.f * move_distance() / Speed);
   }
 };
+
+struct LoopedPlatformState : PlatformState{
+  LoopedPlatformState(
+      const glm::vec2& position, 
+      const glm::vec2& transport_distance, 
+      int width = DefaultWidth
+  ) 
+    : PlatformState(position, transport_distance, width) {}
+};

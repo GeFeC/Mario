@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PolyControllers.hpp"
+
 #include "States/KoopaState.hpp"
 #include "States/LoopedCounter.hpp"
 #include "States/PlayerState.hpp"
@@ -61,11 +63,14 @@ static auto purple_koopa_controller(KoopaState& koopa, LevelState& level){
   purple_koopa_movement_controller(koopa, level);
 }
 
-static auto koopa_controller(KoopaState& koopa, LevelState& level){
-  using Type = KoopaState::Type;
-  switch(koopa.type){
-    case Type::Green: green_koopa_controller(koopa, level); return;
-    case Type::Red: red_koopa_controller(koopa, level); return;
-    case Type::Purple: purple_koopa_controller(koopa, level); return;
+template<>
+struct Controller<KoopaState>{
+  static auto run(KoopaState& koopa, LevelState& level){
+    using Type = KoopaState::Type;
+    switch(koopa.type){
+      case Type::Green: green_koopa_controller(koopa, level); return;
+      case Type::Red: red_koopa_controller(koopa, level); return;
+      case Type::Purple: purple_koopa_controller(koopa, level); return;
+    }
   }
-}
+};

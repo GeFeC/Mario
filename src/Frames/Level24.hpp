@@ -31,31 +31,29 @@ static auto run_frame_level24(AppState& app){
     level_generator::put_q_block_with_coins(level, { 14, 9 }, 5);
     level_generator::put_q_block_with_coins(level, { 15, 9 }, 5);
 
-    auto& entities = level.entities;
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 123 }, { 4, 4 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 123 }, { -4, 4 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 116 }, { -4, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 97 }, { 4, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 90 }, { -4, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 9.5, 82 }, { 4, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 2.5, 45 }, { 3, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 2.5, 40 }, { -3, 0 }));
+    auto& objects = level.game_objects;
+    objects.push(FlyingKoopaState::make_red({ 9.5, 123 }, { 4, 4 }));
+    objects.push(FlyingKoopaState::make_red({ 9.5, 123 }, { -4, 4 }));
+    objects.push(FlyingKoopaState::make_red({ 9.5, 116 }, { -4, 0 }));
+    objects.push(FlyingKoopaState::make_red({ 9.5, 97 }, { 4, 0 }));
+    objects.push(FlyingKoopaState::make_red({ 9.5, 90 }, { -4, 0 }));
+    objects.push(FlyingKoopaState::make_red({ 9.5, 82 }, { 4, 0 }));
+    objects.push(FlyingKoopaState::make_red({ 2.5, 45 }, { 3, 0 }));
+    objects.push(FlyingKoopaState::make_red({ 2.5, 40 }, { -3, 0 }));
 
-    entities.flying_koopas.push_back(FlyingKoopaState::make_purple({ 16.5, 61 }, { 3, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_purple({ 9.5, 24 }, { -3, 0 }));
-    entities.flying_koopas.push_back(FlyingKoopaState::make_purple({ 9.5, 19 }, { 3, 0 }));
+    objects.push(FlyingKoopaState::make_purple({ 16.5, 61 }, { 3, 0 }));
+    objects.push(FlyingKoopaState::make_purple({ 9.5, 24 }, { -3, 0 }));
+    objects.push(FlyingKoopaState::make_purple({ 9.5, 19 }, { 3, 0 }));
 
-    auto& platforms = level.platforms;
-    platforms.push_back(PlatformState({ 8, 146 }, { 0, -30 }));
-    platforms.push_back(PlatformState({ 8, 107 }, { 0, -30 }));
-    platforms.push_back(PlatformState({ 15, 66 }, { 0, -13 }));
-    platforms.push_back(PlatformState({ 1, 50 }, { 0, -18 }));
-    platforms.push_back(PlatformState({ 8, 29 }, { 0, -20 }));
+    objects.push(PlatformState({ 8, 146 }, { 0, -30 }));
+    objects.push(PlatformState({ 8, 107 }, { 0, -30 }));
+    objects.push(PlatformState({ 15, 66 }, { 0, -13 }));
+    objects.push(PlatformState({ 1, 50 }, { 0, -18 }));
+    objects.push(PlatformState({ 8, 29 }, { 0, -20 }));
 
-    auto& bars = level.fire_bars;
-    bars.push_back(FireBarState({ 6, 101 }, 5));
-    bars.push_back(FireBarState({ 13, 94 }, 5));
-    bars.push_back(FireBarState({ 6, 86 }, 6));
-    bars.push_back(FireBarState({ 13, 79 }, 6));
+    objects.push(FireBarState({ 6, 101 }, 5));
+    objects.push(FireBarState({ 13, 94 }, 5));
+    objects.push(FireBarState({ 6, 86 }, 6));
+    objects.push(FireBarState({ 13, 79 }, 6));
   });
 }

@@ -24,33 +24,31 @@ static auto run_frame_level15(AppState& app){
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
 
-    level.fire_bars.push_back(FireBarState({ 7, 102 }, 3));
-    level.fire_bars.push_back(FireBarState({ 10, 102 }, 3));
-    level.fire_bars.push_back(FireBarState({ 13, 102 }, 3));
+    auto& objects = level.game_objects;
+    objects.push(FireBarState({ 7, 102 }, 3));
+    objects.push(FireBarState({ 10, 102 }, 3));
+    objects.push(FireBarState({ 13, 102 }, 3));
 
-    level.fire_bars.push_back(FireBarState({ 9, 76 }, 6));
-    level.fire_bars.push_back(FireBarState({ 9, 83 }, 6));
+    objects.push(FireBarState({ 9, 76 }, 6));
+    objects.push(FireBarState({ 9, 83 }, 6));
 
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 98 }, { 0, 3 }));
-
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 14, 67 }, { 3, 0 }));
-
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, 3 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 8, 37 }, { 0, -3 }));
-
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, 3 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 10, 26 }, { 0, -3 }));
+    objects.push(FlyingKoopaState::make_green({ 10, 98 }, { 0, 3 }));
+    objects.push(FlyingKoopaState::make_green({ 14, 67 }, { 3, 0 }));
+    objects.push(FlyingKoopaState::make_green({ 8, 37 }, { 0, 3 }));
+    objects.push(FlyingKoopaState::make_green({ 8, 37 }, { 0, -3 }));
+    objects.push(FlyingKoopaState::make_green({ 10, 26 }, { 0, 3 }));
+    objects.push(FlyingKoopaState::make_green({ 10, 26 }, { 0, -3 }));
 
     const auto r = 8;
     const auto r2 = r / glm::sqrt(2);
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, r }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { 0, -r }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r, 0 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r, 0 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, r2 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, r2 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { r2, -r2 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_green({ 13, 13 }, { -r2, -r2 }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { 0, r }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { 0, -r }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { r, 0 }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { -r, 0 }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { r2, r2 }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { -r2, r2 }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { r2, -r2 }));
+    objects.push(FlyingKoopaState::make_green({ 13, 13 }, { -r2, -r2 }));
 
     level_generator::put_q_block_with_coins(level, { 13, 13 }, 10);
 

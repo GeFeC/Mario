@@ -18,7 +18,7 @@ struct JumpingKoopaState : KoopaState{
 
   static auto make_red(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = KoopaState::make<JumpingKoopaState>(position, direction);
-    koopa.type = Type::Green;
+    koopa.type = Type::Red;
 
     koopa.current_texture = &textures::red_flying_koopa_walk[0];
     koopa.gravity_boost = 0.7f;
@@ -28,7 +28,7 @@ struct JumpingKoopaState : KoopaState{
 
   static auto make_purple(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = KoopaState::make<JumpingKoopaState>(position, direction);
-    koopa.type = Type::Green;
+    koopa.type = Type::Purple;
 
     koopa.current_texture = &textures::purple_flying_koopa_walk[0];
     koopa.gravity_boost = 0.7f;

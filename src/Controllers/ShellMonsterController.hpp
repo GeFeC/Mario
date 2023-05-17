@@ -69,6 +69,7 @@ static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - BlockBase::Size);
   hitbox.size = glm::vec2(BlockBase::Size);
   hitbox.is_dead = entity.is_dead;
+  hitbox.is_active = entity.is_active;
   hitbox.should_collide = entity.should_collide;
   hitbox.vertical_flip = entity.vertical_flip;
 
@@ -121,7 +122,7 @@ static auto entity_handle_shell(
   };
 
   //Killing Entities with shell
-  level.entities.for_each([&](auto& target){
+  level.game_objects.for_each_derived<MonsterState>([&](auto& target){
     if constexpr (std::is_convertible_v<decltype(target), MushroomState>) return;
 
     shell_kill_entity(target);

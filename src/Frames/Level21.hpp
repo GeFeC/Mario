@@ -26,8 +26,9 @@ static auto run_frame_level21(AppState& app){
     level_generator::generate_level(level, "level21_1.csv");
     level_generator::generate_level(level, "level21_2.csv");
 
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 79, 6 }, { 0, 2 }));
-    level.entities.flying_koopas.push_back(FlyingKoopaState::make_red({ 84, 6 }, { 0, 2 }));
+    level.game_objects.push(FlyingKoopaState::make_red({ 79, 6 }, { 0, 2 }));
+    level.game_objects.push(FlyingKoopaState::make_red({ 84, 6 }, { 0, 2 }));
+
     level_generator::put_q_block_with_coins(level, { 150, 8 }, 10);
   });
 }

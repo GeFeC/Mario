@@ -31,29 +31,26 @@ static auto run_frame_level25(AppState& app){
 
     level_generator::put_q_block_with_coins(level, { 59, 1 }, 8);
 
-    auto& bars = level.fire_bars;
-    bars.push_back(FireBarState({ 76, 4 }, 4));
-    bars.push_back(FireBarState({ 146, 5 }, 4));
-    bars.push_back(FireBarState({ 154, 5 }, 4));
+    auto& objects = level.game_objects;
+    objects.push(FireBarState({ 76, 4 }, 4));
+    objects.push(FireBarState({ 146, 5 }, 4));
+    objects.push(FireBarState({ 154, 5 }, 4));
 
-    auto& platforms = level.platforms;
-    platforms.push_back(PlatformState({ 134, 8 }, { 0, -5 }, 10));
-    platforms.back().is_active = true;
-    platforms.push_back(PlatformState({ 144, 1 }, { 0, 9 }, 10));
-    platforms.back().is_active = true;
-    platforms.push_back(PlatformState({ 153, 9 }, { 0, -7 }, 6));
-    platforms.back().is_active = true;
-    platforms.push_back(PlatformState({ 186, 9 }, { 0, -5 }, 6));
-    platforms.back().is_active = true;
+    objects.push(PlatformState({ 134, 8 }, { 0, -5 }, 10))
+    .is_active = true;
+    objects.push(PlatformState({ 144, 1 }, { 0, 9 }, 10))
+    .is_active = true;
+    objects.push(PlatformState({ 153, 9 }, { 0, -7 }, 6))
+    .is_active = true;
+    objects.push(PlatformState({ 186, 9 }, { 0, -5 }, 6))
+    .is_active = true;
 
-    auto& l_platforms = level.looped_platforms;
-    l_platforms.push_back(PlatformState({ 89, 0 }, { 0, -1 }));
-    l_platforms.push_back(PlatformState({ 89, 6 }, { 0, -1 }));
+    objects.push(LoopedPlatformState({ 89, 0 }, { 0, -1 }));
+    objects.push(LoopedPlatformState({ 89, 6 }, { 0, -1 }));
 
-    l_platforms.push_back(PlatformState({ 97, 0 }, { 0, 1 }));
-    l_platforms.push_back(PlatformState({ 97, 6 }, { 0, 1 }));
+    objects.push(LoopedPlatformState({ 97, 0 }, { 0, 1 }));
+    objects.push(LoopedPlatformState({ 97, 6 }, { 0, 1 }));
 
-    auto& flying_koopas = level.entities.flying_koopas;
-    flying_koopas.push_back(FlyingKoopaState::make_green({ 194, 4 }, { 0.5, 0 }));
+    objects.push(FlyingKoopaState::make_green({ 194, 4 }, { 0.5, 0 }));
   });
 }

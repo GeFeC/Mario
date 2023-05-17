@@ -98,4 +98,16 @@ struct SpinningCoinState : BouncingBlockState{
   }
 };
 
-using CloudState = std::pair<glm::vec2, int>;
+struct CloudState{
+  glm::vec2 position;
+  int size;
+};
+
+struct BackgroundHillState : BlockState{
+  explicit BackgroundHillState(const glm::vec2& position, Texture const* texture)
+    : BlockState(position, texture) {}
+};
+struct BackgroundBushState : BlockState{
+  explicit BackgroundBushState(const glm::vec2& position, Texture const* texture)
+    : BlockState(position, texture) {}
+};
