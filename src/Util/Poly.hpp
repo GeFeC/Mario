@@ -110,7 +110,7 @@ struct Array : std::tuple<std::vector<Ts>...>{
   }
 
   template<template <typename> typename Template, typename Function>
-  auto for_each_template(const Function& function) const{
+  auto for_each_template(const Function& function){
     ForEachTemplate<Template, Function> invoker{ function };
 
     for_each([&](auto& object){
@@ -118,9 +118,9 @@ struct Array : std::tuple<std::vector<Ts>...>{
     });
   }
 
-  template<typename Function, typename... Types>
+  template<template <typename> typename Template, typename Function>
   auto for_each_template(const Function& function) const{
-    const_cast<this_type*>(this)->for_each_template([&](const auto& e){ function(e); });
+    const_cast<this_type*>(this)->for_each_template<Template>([&](const auto& e){ function(e); });
   }
 
   template<typename T, typename Function>

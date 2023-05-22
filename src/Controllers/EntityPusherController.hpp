@@ -6,6 +6,7 @@
 #include "Controllers/GoombaController.hpp"
 #include "Controllers/JumpingKoopaController.hpp"
 #include "Controllers/MushroomController.hpp"
+#include <type_traits>
 
 static auto pusher_entity_controller(MushroomPusherState& pusher, LevelState& level){
   using MushroomType = MushroomState::Type;
@@ -15,12 +16,9 @@ static auto pusher_entity_controller(MushroomPusherState& pusher, LevelState& le
   }
 }
 
-static auto pusher_entity_controller(GoombaPusherState& pusher, LevelState& level){
-  normal_goomba_controller(pusher.entity, level);
-}
-
-static auto pusher_entity_controller(JumpingKoopaPusherState& pusher, LevelState& level){
-  green_jumping_koopa_controller(pusher.entity, level);
+template<typename Entity>
+static auto pusher_entity_controller(EntityPusherState<Entity>& pusher, LevelState& level){
+  Controller<Entity>::run(pusher.entity, level);
 }
 
 template<typename Entity>
@@ -43,18 +41,20 @@ static auto pusher_controller(
     LevelState& level
 ){
   auto& entity = pusher.entity;
-  pusher_entity_controller(pusher, level);
-
-  if (entity.is_active) return;
 
   if (entity.should_be_pushed_out && entity.push_offset < 1.f){
     const auto value = window::delta_time * 2;
 
     entity.push_offset += value;
-    entity.position.y -= value * BlockBase::Size;
+    entity.position.y -= value * BlockBase::Size * pusher.push_distance_multiplier;
+
+    if constexpr (std::is_convertible_v<Entity, FlyingKoopaState>){
+      entity.initial_position.y = entity.position.y;
+    }
   }
 
   if (entity.push_offset >= 1.f){
     entity.is_active = true;
+    pusher_entity_controller(pusher, level);
   }
 }

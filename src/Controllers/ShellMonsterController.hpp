@@ -127,6 +127,12 @@ static auto entity_handle_shell(
 
     shell_kill_entity(target);
   });
+
+  level.game_objects.for_each_template<QBlockState>([&](auto& block){
+    if constexpr (std::decay_t<decltype(block)>::PusherType::ContainsEntity) {
+      shell_kill_entity(block.pusher.entity);
+    }
+  });
 };
 
 

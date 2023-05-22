@@ -32,7 +32,7 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
 
   //Motion:
   using Direction = PlantState::Direction;
-  if (plant.cooldown == 0.f){
+  if (plant.current_cooldown == 0.f){
     if (plant.direction == Direction::GoingUp && plant.offset < PlantState::MaxOffset){
       plant.offset += offset;
       plant.position.y -= offset;
@@ -40,7 +40,7 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
     }
     else{
       if (plant.direction == Direction::GoingUp){
-        plant.cooldown = plant.cooldown_duration;
+        plant.current_cooldown = plant.cooldown_duration;
       }
 
       plant.direction = Direction::GoingDown;
@@ -53,13 +53,13 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
     }
     else{
       if (plant.direction == Direction::GoingDown){
-        plant.cooldown = plant.cooldown_duration;
+        plant.current_cooldown = plant.cooldown_duration;
       }
 
       plant.direction = Direction::GoingUp;
     }
   }
-  plant.cooldown = std::max(plant.cooldown - window::delta_time, 0.f);
+  plant.current_cooldown = std::max(plant.current_cooldown - window::delta_time, 0.f);
 }
 
 static auto green_plant_controller(PlantState& plant, LevelState& level){

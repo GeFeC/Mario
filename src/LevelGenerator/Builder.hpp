@@ -151,22 +151,24 @@ static auto put_beetle(LevelState& level, const glm::vec2& position){
 }
 
 template<typename Entity>
-static auto put_q_block_with_entity(
+static auto& put_q_block_with_entity(
     LevelState& level, 
-    std::vector<QBlockState<EntityPusherState<Entity>>>& q_blocks_vec,
     const Entity& entity
 ){
   const auto position = entity.position / BlockBase::Size;
 
   level_generator::put_hitbox_block(level, position);
 
-  auto& block = q_blocks_vec.emplace_back(position);
+  auto& block = level.game_objects.push(QBlockState<EntityPusherState<Entity>>(position));
   auto& pusher_entity = block.pusher.entity;
 
   pusher_entity = entity;
   pusher_entity.position.y -= entity.size.y - BlockBase::Size;
+  pusher_entity.is_active = false;
   pusher_entity.is_in_q_block = true;
   pusher_entity.is_visible = false;
+
+  return block;
 }
 
 } //namespace level_generator

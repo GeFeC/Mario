@@ -7,7 +7,7 @@ struct PlantState : MonsterState{
   float offset = 0.f;
   float cooldown_duration = 0.f;
   float speed = 0.f;
-  float cooldown = 0.f;
+  float current_cooldown = 0.f;
 
   enum class Direction{
     GoingUp,
