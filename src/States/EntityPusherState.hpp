@@ -4,6 +4,7 @@
 #include "States/JumpingKoopaState.hpp"
 #include "States/FlyingKoopaState.hpp"
 #include "States/MushroomState.hpp"
+#include "States/HammerBroState.hpp"
 
 template<typename Entity>
 struct EntityPusherState{
@@ -17,4 +18,5 @@ using GoombaPusherState = EntityPusherState<GoombaState>;
 using KoopaPusherState = EntityPusherState<KoopaState>;
 using JumpingKoopaPusherState = EntityPusherState<JumpingKoopaState>;
 using FlyingKoopaPusherState = EntityPusherState<FlyingKoopaState>;
+using HammerBroPusherState = EntityPusherState<HammerBroState>;
 using MushroomPusherState = EntityPusherState<MushroomState>;

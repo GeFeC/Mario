@@ -146,6 +146,10 @@ static auto put_hammerbro(LevelState& level, const glm::vec2& position){
   level.game_objects.push(HammerBroState::make(position - glm::vec2(0, 1)));
 }
 
+static auto put_red_hammerbro(LevelState& level, const glm::vec2& position){
+  level.game_objects.push(HammerBroState::make_red(position - glm::vec2(0, 1)));
+}
+
 static auto put_beetle(LevelState& level, const glm::vec2& position){
   level.game_objects.push(BeetleState::make(position - glm::vec2(0, 0.5)));
 }

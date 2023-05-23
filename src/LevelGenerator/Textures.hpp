@@ -89,6 +89,7 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::PurpleKoopa, texture_groups::purple_koopa),
   pair(Tile::PurpleKoopaWings, texture_groups::purple_flying_koopa),
   pair(Tile::Hammerbro, texture_groups::hammerbro),
+  pair(Tile::RedHammerbro, texture_groups::red_hammerbro),
   pair(Tile::Beetle, texture_groups::beetle),
 
   pair(Tile::RedBushRight, &textures::red_bush_right),

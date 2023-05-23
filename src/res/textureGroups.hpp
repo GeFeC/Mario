@@ -170,6 +170,16 @@ namespace texture_groups{
     &textures::hammer[3]
   });
 
+  inline const auto red_hammerbro = TextureGroup({
+    &textures::red_hammerbro_walk[0],
+    &textures::red_hammerbro_walk[1],
+    &textures::red_hammerbro_walk_with_hammer[0],
+    &textures::red_hammerbro_walk_with_hammer[1],
+    &textures::hammer[0],
+    &textures::hammer[1],
+    &textures::hammer[2],
+    &textures::hammer[3]
+  });
   inline const auto red_cloud = TextureGroup({
     &textures::red_cloud_top_left,
     &textures::red_cloud_top_right,

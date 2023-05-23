@@ -96,6 +96,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::GreenPlant) put_plant(level, { x, y });
     else if (tile == Tile::RedPlant) put_red_plant(level, { x, y });
     else if (tile == Tile::Hammerbro) put_hammerbro(level, { x, y });
+    else if (tile == Tile::RedHammerbro) put_red_hammerbro(level, { x, y });
     else if (tile == Tile::Beetle) put_beetle(level, { x, y });
 
     else if (tile == Tile::Coin) put_coin(level, { x, y });

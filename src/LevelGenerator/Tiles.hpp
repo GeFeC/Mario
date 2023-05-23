@@ -83,6 +83,7 @@ enum class Tile{
   PurpleKoopaWings = 86,
 
   Hammerbro = 66,
+  RedHammerbro = 100,
   Beetle = 67,
   Spike = 59,
 

@@ -1,4 +1,6 @@
 #pragma once
+
+#include "Frame.hpp"
 #include "LevelGenerator/Builder.hpp"
 #include "States/AppState.hpp"
 #include "LevelGenerator/LevelGenerator.hpp"

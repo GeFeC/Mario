@@ -93,6 +93,7 @@ struct LevelState{
     QBlockState<KoopaPusherState>,
     QBlockState<JumpingKoopaPusherState>,
     QBlockState<FlyingKoopaPusherState>,
+    QBlockState<HammerBroPusherState>,
 
     //Entities
     GoombaState,

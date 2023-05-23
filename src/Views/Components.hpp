@@ -213,7 +213,7 @@ struct BlocksView<QBlockState<EntityPusherState<Entity>>>{
       const QBlockState<EntityPusherState<Entity>>& block, 
       const glm::vec2& offset
   ){
-    render_entity(block.pusher.entity, offset);
+    EntitiesView<Entity>::run(block.pusher.entity, offset);
 
     BlocksView<BlockState>::run(block, offset);
   }

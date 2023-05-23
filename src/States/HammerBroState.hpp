@@ -5,12 +5,18 @@
 #include "States/HammerState.hpp"
 #include "Util/Util.hpp"
 #include "Util/Generator.hpp"
+#include "res/textures.hpp"
 
 struct HammerBroState : MonsterState{
   static constexpr auto MaxWalkDistance = BlockBase::Size;
   static constexpr auto JumpPower = -30.f;
   static constexpr auto WeakJumpPower = -20.f;
   static constexpr auto HammerThrowForce = -25.f;
+
+  enum class Type{
+    Green,
+    Red
+  } type;
 
   enum class JumpState{
     Up,
@@ -23,6 +29,7 @@ struct HammerBroState : MonsterState{
   float jump_delay;
   float throw_delay;
   float initial_x;
+  int hammers_count = 0;
   int hammers_spawned = 0;
   bool started_jumping = false;
 
@@ -47,6 +54,18 @@ struct HammerBroState : MonsterState{
     bro.jump_delay = new_jump_delay();
     bro.throw_delay = new_throw_delay();
     bro.reward_for_killing = 500;
+    bro.hammers_count = 3;
+    bro.type = Type::Green;
+
+    return bro;
+  }
+
+  static auto make_red(const glm::vec2& position){
+    auto bro = make(position);
+    bro.throw_counter.step = 15.f;
+    bro.hammers_count = 15;
+    bro.type = Type::Red;
+    bro.current_texture = &textures::red_hammerbro_walk[0];
 
     return bro;
   }

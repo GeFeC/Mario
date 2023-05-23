@@ -268,6 +268,15 @@ namespace textures{
     Texture("entity/hammerbro/4.png")
   };
 
+  inline auto red_hammerbro_walk = std::array<Texture, 2>{
+    Texture("entity/hammerbro/red1.png"),
+    Texture("entity/hammerbro/red2.png")
+  };
+
+  inline auto red_hammerbro_walk_with_hammer = std::array<Texture, 2>{
+    Texture("entity/hammerbro/red3.png"),
+    Texture("entity/hammerbro/red4.png")
+  };
   inline auto plant = std::array<Texture, 2>{
     Texture("entity/plant/0.png"),
     Texture("entity/plant/1.png")

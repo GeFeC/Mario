@@ -284,7 +284,7 @@ static auto entity_react_when_on_bouncing_block(
 ){
   const auto& objects = level.game_objects;
 
-  util::multi_for([&](const auto& block){
+  const auto detect_bounce_and_react = [&](const auto& block){
     if (block.bounce_state.is_bouncing){
       if (entity.is_dead || !entity.should_collide) return;
 
@@ -294,13 +294,13 @@ static auto entity_react_when_on_bouncing_block(
         reaction();
       }
     }
-  },
-    objects.get_vec<BricksBlockState>(),
-    objects.get_vec<QBlockState<CoinPusherState>>(),
-    objects.get_vec<QBlockState<MushroomPusherState>>(),
-    objects.get_vec<QBlockState<GoombaPusherState>>(),
-    objects.get_vec<QBlockState<JumpingKoopaPusherState>>()
-  );
+  };
+
+  for (auto& block : objects.get_vec<BricksBlockState>()){
+    detect_bounce_and_react(block);
+  }
+
+  objects.for_each_template<QBlockState>(detect_bounce_and_react);
 }
 
 static auto entity_die_when_on_bouncing_block(MonsterState& entity, LevelState& level){
