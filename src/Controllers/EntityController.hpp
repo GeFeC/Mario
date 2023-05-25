@@ -166,7 +166,6 @@ static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& 
   if (!entity.is_active) return;
   if (entity.is_dead) return;
   if (player.is_dead) return;
-  if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
   if (player_is_on_entity(player, entity)) return;
   if (!collision::is_hovering(player, entity)) return;
 
@@ -176,6 +175,11 @@ static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& 
   else if (!player.is_shrinking && player.invincibility_delay <= 0.f) { 
     player.is_dead = true; 
   }
+};
+
+static auto entity_kill_player_on_touch(const MonsterState& monster, PlayerState& player){
+  if (monster.was_hit) return;
+  entity_kill_player_on_touch(monster | util::as<EntityState>, player);
 };
 
 static auto player_stomp_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
@@ -241,6 +245,7 @@ static auto entity_bounce_out(MonsterState& entity){
 }
 
 static auto entity_bounce_die(MonsterState& entity, StatsState& stats){
+  entity.was_hit = true;
   entity_bounce_out(entity);
 
   stats.score += entity.reward_for_killing;

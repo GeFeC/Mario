@@ -25,8 +25,7 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
   entity_kill_player_on_touch(plant, player);
   entity_die_when_hit_by_fireball(plant, level);
 
-  const auto is_hit_by_fireball = plant.vertical_flip == Drawable::Flip::UseFlip;
-  if (is_hit_by_fireball) plant.is_visible = false;
+  if (plant.was_hit) plant.is_visible = false;
 
   const auto offset = window::delta_time * plant.speed;
 
@@ -35,7 +34,7 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
   if (plant.current_cooldown == 0.f){
     if (plant.direction == Direction::GoingUp && plant.offset < PlantState::MaxOffset){
       plant.offset += offset;
-      plant.position.y -= offset;
+      plant.position.y -= offset * plant.vertical_flip;
       return;
     }
     else{
@@ -48,7 +47,7 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
 
     if (plant.direction == Direction::GoingDown && plant.offset > 0.f){
       plant.offset -= offset;
-      plant.position.y += offset;
+      plant.position.y += offset * plant.vertical_flip;
       return;
     }
     else{

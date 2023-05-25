@@ -15,6 +15,9 @@ struct MonsterState : EntityState{
   int reward_for_killing = 0;
   int walk_speed = 0.f;
 
+  //If monster was hit by a shell or fireball:
+  bool was_hit = false;
+
   util::Generator<PointsParticlesState> points_generator;
 
   auto set_direction(Direction direction){

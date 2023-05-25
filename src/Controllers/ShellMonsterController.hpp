@@ -72,6 +72,7 @@ static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   hitbox.is_active = entity.is_active;
   hitbox.should_collide = entity.should_collide;
   hitbox.vertical_flip = entity.vertical_flip;
+  hitbox.was_hit = entity.was_hit;
 
   return hitbox;
 }

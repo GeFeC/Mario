@@ -20,6 +20,7 @@
 #include "Frames/Level31.hpp"
 #include "Frames/Level32.hpp"
 #include "Frames/Level33.hpp"
+#include "Frames/Level34.hpp"
 
 #include "Util/Util.hpp"
 
@@ -41,24 +42,25 @@ static auto app_update_level(AppState& app){
   app.current_level.current_checkpoint = current_checkpoint;
 }
 
-static auto app_frame_functions = std::unordered_map{
-  std::make_pair(AppState::Frame::Level11, run_frame_level11),
-  std::make_pair(AppState::Frame::Level12, run_frame_level12),
-  std::make_pair(AppState::Frame::Level13, run_frame_level13),
-  std::make_pair(AppState::Frame::Level14, run_frame_level14),
-  std::make_pair(AppState::Frame::Level15, run_frame_level15),
-  std::make_pair(AppState::Frame::Level16, run_frame_level16),
+static auto app_frame_functions = std::unordered_map<AppState::Frame, void(*)(AppState&)>{
+  { AppState::Frame::Level11, run_frame_level11 },
+  { AppState::Frame::Level12, run_frame_level12 },
+  { AppState::Frame::Level13, run_frame_level13 },
+  { AppState::Frame::Level14, run_frame_level14 },
+  { AppState::Frame::Level15, run_frame_level15 },
+  { AppState::Frame::Level16, run_frame_level16 },
 
-  std::make_pair(AppState::Frame::Level21, run_frame_level21),
-  std::make_pair(AppState::Frame::Level22, run_frame_level22),
-  std::make_pair(AppState::Frame::Level23, run_frame_level23),
-  std::make_pair(AppState::Frame::Level24, run_frame_level24),
-  std::make_pair(AppState::Frame::Level25, run_frame_level25),
-  std::make_pair(AppState::Frame::Level26, run_frame_level26),
+  { AppState::Frame::Level21, run_frame_level21 },
+  { AppState::Frame::Level22, run_frame_level22 },
+  { AppState::Frame::Level23, run_frame_level23 },
+  { AppState::Frame::Level24, run_frame_level24 },
+  { AppState::Frame::Level25, run_frame_level25 },
+  { AppState::Frame::Level26, run_frame_level26 },
 
-  std::make_pair(AppState::Frame::Level31, run_frame_level31),
-  std::make_pair(AppState::Frame::Level32, run_frame_level32),
-  std::make_pair(AppState::Frame::Level33, run_frame_level33),
+  { AppState::Frame::Level31, run_frame_level31 },
+  { AppState::Frame::Level32, run_frame_level32 },
+  { AppState::Frame::Level33, run_frame_level33 },
+  { AppState::Frame::Level34, run_frame_level34 },
 };
 
 static auto app_controller(AppState& app){

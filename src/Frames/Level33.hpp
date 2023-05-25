@@ -20,6 +20,7 @@ static auto run_frame_level33(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::snow_bg;
     level.cloud_textures = &texture_groups::blue_cloud;
+    level.player.slip = 1.5f;
 
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level33_1.csv");
