@@ -81,10 +81,9 @@ static auto level_finish(LevelState& level, AppState& app){
 }
 
 static auto get_worlds_first_level(AppState::Frame level){
-  static constexpr auto LevelsInWorld = 6;
   const auto level_number = level | util::as<int>;
 
-  return ((level_number / LevelsInWorld) * LevelsInWorld) | util::as<AppState::Frame>;
+  return ((level_number / config::LevelsInWorld) * config::LevelsInWorld) | util::as<AppState::Frame>;
 }
 
 static auto level_restart_when_player_fell_out(AppState& app){
@@ -111,6 +110,8 @@ static auto level_restart_when_player_fell_out(AppState& app){
     if (level.stats.hp == 0){
       level.stats = StatsState{};
       app.current_frame = get_worlds_first_level(app.current_frame);
+
+      level.stats.level_major = (app.current_frame | util::as<int>) / config::LevelsInWorld + 1;
       level.current_checkpoint = LevelState::CheckpointNotSet;
     }
   }

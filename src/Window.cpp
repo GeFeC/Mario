@@ -6,6 +6,8 @@
 
 static GLFWwindow* g_window;
 
+#include <iostream>
+
 auto window_resize_callback(GLFWwindow*, int window_width, int window_height){
   const auto ratio = (window_width | util::as<float>) / window_height;
 
@@ -84,7 +86,6 @@ auto window::update() -> void{
   //VSync on:
   glfwSwapInterval(1);
   glfwSwapBuffers(g_window);
-  glfwPollEvents();
 }
 
 auto window::is_key_pressed(int key) -> bool{

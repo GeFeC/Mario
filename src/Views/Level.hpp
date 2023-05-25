@@ -62,26 +62,6 @@ static auto render_stats(const LevelState& level){
   }
 }
 
-static auto render_all_points_particles(const LevelState& level){
-  level.game_objects.for_each_template<QBlockState>([&](const auto& block){
-    using BlockType = std::decay_t<decltype(block)>;
-
-    if constexpr (BlockType::PusherType::ContainsEntity){
-      render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
-    }
-    else if constexpr(!std::is_same_v<BlockType, QBlockState<FireFlowerPusherState>>){
-      render_points_particles(block.pusher.points_generator.items, level.camera_offset);
-    }
-    else{
-      render_points_particles(block.pusher.fire_flower.points_generator.items, level.camera_offset);
-    }
-  });
-
-  level.game_objects.for_each_derived<EntityState>([&](const auto& entity){
-    render_points_particles(entity.points_generator.items, level.camera_offset);
-  });
-}
-
 static auto render_loading_screen(const LevelState& level){
   const auto font_size = fonts::normal.size * 3.5f;
 
@@ -122,6 +102,28 @@ static auto render_loading_screen(const LevelState& level){
   text.set_position(glm::vec2(config::FrameBufferSize.x / 2, center_pos.y));
 
   renderer::print(text, glm::vec2(0));
+}
+
+
+
+static auto render_all_points_particles(const LevelState& level){
+  level.game_objects.for_each_template<QBlockState>([&](const auto& block){
+    using BlockType = std::decay_t<decltype(block)>;
+
+    if constexpr (BlockType::PusherType::ContainsEntity){
+      render_points_particles(block.pusher.entity.points_generator.items, level.camera_offset);
+    }
+    else if constexpr(!std::is_same_v<BlockType, QBlockState<FireFlowerPusherState>>){
+      render_points_particles(block.pusher.points_generator.items, level.camera_offset);
+    }
+    else{
+      render_points_particles(block.pusher.fire_flower.points_generator.items, level.camera_offset);
+    }
+  });
+
+  level.game_objects.for_each_derived<EntityState>([&](const auto& entity){
+    render_points_particles(entity.points_generator.items, level.camera_offset);
+  });
 }
 
 static auto render_level(const LevelState& level){

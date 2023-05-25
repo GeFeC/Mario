@@ -44,7 +44,10 @@ static auto entity_push_shell_on_player_touch(
 ){
   auto& player = level.player;
 
-  if (!collision::is_hovering(player, entity) || entity.is_dead || !entity.should_collide) return;
+  if (player.is_dead) return;
+  if (entity.is_dead) return;
+  if (!entity.should_collide) return;
+  if (!collision::is_hovering(player, entity)) return;
 
   entity.shell_push_cooldown = glfwGetTime();
   entity.walk_speed = entity.shell_speed;

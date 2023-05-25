@@ -23,6 +23,7 @@ static auto run_frame(
 
   while(!window::should_close() && app_state.current_frame == frame && !app_state.should_restart_current_frame){
     const auto frame_start_time = glfwGetTime();
+    glfwPollEvents();
 
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0, 0, 0, 0);
