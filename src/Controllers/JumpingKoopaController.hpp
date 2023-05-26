@@ -28,21 +28,21 @@ static auto jumping_koopa_controller_base(
   }
 
   //Interaction with blocks
-  entity_die_when_on_bouncing_block(koopa, level);
+  monster_die_when_on_bouncing_block(koopa, level);
 
   //Interaction with player
   auto& player = level.player;
-  entity_die_when_hit_by_fireball(koopa, level);
-  entity_become_active_when_seen(koopa, level);
+  monster_die_when_hit_by_fireball(koopa, level);
+  monster_become_active_when_seen(koopa, level);
 
   if (koopa.has_wings) {
     auto koopa_hitbox = shell_monster_get_hitbox(koopa);
-    entity_die_when_stomped(koopa, level, [&]{
+    monster_die_when_stomped(koopa, level, [&]{
       koopa.has_wings = false;
       koopa.gravity = 0;
     });
 
-    entity_kill_player_on_touch(koopa_hitbox, player);
+    monster_kill_player_on_touch(koopa_hitbox, player);
   }
 }
 
@@ -54,7 +54,7 @@ static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState&
     textures::green_koopa_walk
   );
 
-  entity_handle_shell(
+  shell_monster_handle_shell(
     koopa,
     level,
     textures::green_koopa_dead
@@ -71,7 +71,7 @@ static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& l
     textures::red_koopa_walk
   );
 
-  entity_handle_shell(
+  shell_monster_handle_shell(
     koopa,
     level,
     textures::red_koopa_dead
@@ -88,7 +88,7 @@ static auto purple_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState
     textures::purple_koopa_walk
   );
 
-  entity_handle_shell(
+  shell_monster_handle_shell(
     koopa,
     level,
     textures::purple_koopa_dead

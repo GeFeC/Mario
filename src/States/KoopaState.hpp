@@ -11,7 +11,8 @@ protected:
   template<typename Entity>
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto koopa = Entity();
-    koopa.position = position * BlockBase::Size;
+    koopa.position = (position + glm::vec2(0.f, -0.5f)) * BlockBase::Size;
+
     koopa.size = glm::vec2(BlockBase::Size, BlockBase::Size * 1.5f);
     koopa.walk_speed = 3.f;
     koopa.shell_speed = 12.f;

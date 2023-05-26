@@ -15,6 +15,11 @@ struct MonsterState : EntityState{
   int reward_for_killing = 0;
   int walk_speed = 0.f;
 
+  //When used with q_block
+  float push_offset = 0.f;
+  bool should_be_pushed_out = false;
+  bool is_in_q_block = false;
+
   //If monster was hit by a shell or fireball:
   bool was_hit = false;
 

@@ -5,8 +5,10 @@
 #include "States/EntityState.hpp"
 #include "States/HammerBroState.hpp"
 #include "States/LevelState.hpp"
-#include "Controllers/EntityController.hpp"
+
+#include "Controllers/MonsterController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
+
 #include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
@@ -42,7 +44,7 @@ static auto hammerbro_controller_base(
     hammer_controller(hammer, level);
   }
 
-  entity_become_active_when_seen(hammerbro, level);
+  monster_become_active_when_seen(hammerbro, level);
   if (!hammerbro.is_active) return;
 
   hammerbro.throw_delay -= window::delta_time;
@@ -73,17 +75,18 @@ static auto hammerbro_controller_base(
   auto copy = textures::hammerbro_walk[0];
 
   entity_gravity(hammerbro, level);
-  entity_run_movement_animation(hammerbro, *current_walk_frames);
+  monster_run_movement_animation(hammerbro, *current_walk_frames);
 
   //Interaction with player
-  entity_die_when_hit_by_fireball(hammerbro, level);
-  entity_die_when_on_bouncing_block(hammerbro, level);
-  entity_kill_player_on_touch(hammerbro, level.player);
-  entity_die_when_stomped(hammerbro, level, [&]{
-    entity_bounce_out(hammerbro);
-  });
+  monster_die_when_hit_by_fireball(hammerbro, level);
+  monster_die_when_on_bouncing_block(hammerbro, level);
 
   if (hammerbro.vertical_flip == Drawable::Flip::UseFlip) return;
+
+  monster_kill_player_on_touch(hammerbro, level.player);
+  monster_die_when_stomped(hammerbro, level, [&]{
+    monster_bounce_out(hammerbro);
+  });
 
   //Walking
   if (hammerbro.position.x < hammerbro.initial_x - HammerBroState::MaxWalkDistance){

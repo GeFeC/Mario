@@ -13,13 +13,13 @@ struct Controller<BeetleState>{
     shell_monster_controller(beetle, level, textures::beetle_walk);
 
     //Interaction with blocks
-    entity_die_when_on_bouncing_block(beetle, level);
+    monster_die_when_on_bouncing_block(beetle, level);
 
     //Interaction with player
     auto& player = level.player;
-    entity_endure_fireball(beetle, player);
-    entity_become_active_when_seen(beetle, level);
-    entity_handle_shell(
+    monster_endure_fireball(beetle, player);
+    monster_become_active_when_seen(beetle, level);
+    shell_monster_handle_shell(
       beetle,
       level,
       textures::beetle_dead

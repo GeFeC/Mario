@@ -34,7 +34,7 @@ static auto boss_controller(BossState& boss, LevelState& level){
 
   entity_kill_player_on_touch(boss_hitbox, level.player);
 
-  entity_react_when_hit_by_fireball(boss_hitbox, level, [&](auto& fireball){
+  monster_react_when_hit_by_fireball(boss_hitbox, level, [&](auto& fireball){
     boss.hp--;
     blink_cooldown = 0.05f;
     boss.is_highlighted = true;

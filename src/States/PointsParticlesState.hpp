@@ -25,17 +25,19 @@ struct PointsParticlesState{
 
   PointsParticlesState(const std::string& label, const glm::vec2& position){
     text = Text(&fonts::normal, label, TextSize);
-    text.set_position(position);
+    text.position = position;
     text.is_visible = false;
+    text.update();
   }
 
   PointsParticlesState(int label, const glm::vec2& position)
   : PointsParticlesState(std::to_string(label), position) {}
 
   auto set_active(const std::string& reward, const glm::vec2& position){
-    text.set_text(reward);
+    text.text = reward;
     text.position = position;
     text.is_visible = true;
+    text.update();
     is_active = true;
   }
 
@@ -44,7 +46,7 @@ struct PointsParticlesState{
   }
 
   auto as_block() const{
-    return BouncingBlockState(text.get_position() / BlockBase::Size);
+    return BouncingBlockState(text.position / BlockBase::Size);
   }
 
   auto finished() const{

@@ -58,7 +58,7 @@ struct Controller<KingKoopaState>{
 
     //Movement
     if (boss.hp > 0 && !boss.in_shell){
-      entity_run_movement_animation(boss, textures::green_koopa_walk);
+      monster_run_movement_animation(boss, textures::green_koopa_walk);
     }
 
     boss_controller(boss, level);

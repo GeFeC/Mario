@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Controllers/EntityController.hpp"
+#include "Controllers/MonsterController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 #include "States/EntityState.hpp"
 #include "States/MonsterState.hpp"
@@ -15,7 +15,7 @@ static auto shell_monster_controller(
 ){
   entity_gravity(entity, level);
   entity_movement(entity, level);
-  entity_turn_around(entity);
+  monster_turn_around(entity);
 
   for (auto& p : entity.points_generator.items){
     points_particles_controller(p);
@@ -23,7 +23,7 @@ static auto shell_monster_controller(
 
   if (entity.is_dead || entity.in_shell) return;
 
-  entity_run_movement_animation(entity, walk_frames);
+  monster_run_movement_animation(entity, walk_frames);
 }
 
 static auto shell_monster_hide_in_shell(ShellMonsterState& entity, const Texture& dead_texture){
@@ -38,7 +38,7 @@ static auto shell_monster_hide_in_shell(ShellMonsterState& entity, const Texture
   entity.position.y += previous_size - entity.size.y;
 }
 
-static auto entity_push_shell_on_player_touch(
+static auto shell_monster_push_shell_on_player_touch(
     ShellMonsterState& entity, 
     LevelState& level
 ){
@@ -80,7 +80,7 @@ static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   return hitbox;
 }
 
-static auto entity_handle_shell(
+static auto shell_monster_handle_shell(
     ShellMonsterState& entity, 
     LevelState& level,
     const Texture& dead_texture
@@ -91,13 +91,13 @@ static auto entity_handle_shell(
 
   auto& player = level.player;
   if (entity.in_shell && entity.walk_speed == 0.f){
-    entity_push_shell_on_player_touch(entity, level);
+    shell_monster_push_shell_on_player_touch(entity, level);
     return;
   }
 
   auto entity_hitbox = shell_monster_get_hitbox(entity);
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    entity_die_when_stomped(entity, level, [&]{ 
+    monster_die_when_stomped(entity, level, [&]{ 
       shell_monster_hide_in_shell(entity, dead_texture); 
     });
   }
@@ -108,7 +108,7 @@ static auto entity_handle_shell(
     if (distance < 0 && entity.acceleration.left == entity.shell_speed) return;
 
     if (entity.walk_speed > 0){
-      entity_kill_player_on_touch(entity_hitbox, player);
+      monster_kill_player_on_touch(entity_hitbox, player);
     }
   }(); 
 
@@ -121,7 +121,7 @@ static auto entity_handle_shell(
     if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
 
     if (collision::is_hovering(entity, target_entity)){
-      entity_bounce_die(target_entity, level.stats);
+      monster_bounce_die(target_entity, level.stats);
     }
   };
 

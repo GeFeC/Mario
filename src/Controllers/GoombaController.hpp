@@ -2,7 +2,7 @@
 
 #include "PolyControllers.hpp"
 
-#include "Controllers/EntityController.hpp"
+#include "Controllers/MonsterController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
@@ -19,22 +19,22 @@ static auto goomba_set_dead(GoombaState& goomba, const Texture& dead_texture){
 
 static auto goomba_run_walk_animation(GoombaState& goomba, const std::array<Texture, 2>& walk_frames){
   if (goomba.is_dead) return;
-  entity_run_movement_animation(goomba, walk_frames);
+  monster_run_movement_animation(goomba, walk_frames);
 }
 
 static auto goomba_controller_base(GoombaState& goomba, LevelState& level){
   //Interactions with player
   auto& player = level.player;
-  entity_kill_player_on_touch(goomba, player);
-  entity_become_active_when_seen(goomba, level);
-  entity_die_when_hit_by_fireball(goomba, level);
+  monster_kill_player_on_touch(goomba, player);
+  monster_become_active_when_seen(goomba, level);
+  monster_die_when_hit_by_fireball(goomba, level);
 
   //Interaction with blocks
-  entity_die_when_on_bouncing_block(goomba, level);
+  monster_die_when_on_bouncing_block(goomba, level);
 
   entity_gravity(goomba, level);
   entity_movement(goomba, level);
-  entity_turn_around(goomba);
+  monster_turn_around(goomba);
 
   for (auto& p : goomba.points_generator.items){
     points_particles_controller(p);
@@ -56,7 +56,7 @@ static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
   goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::goomba_walk);
 
-  entity_die_when_stomped(goomba, level, [&]{ 
+  monster_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::goomba_dead);
   });
 }
@@ -66,7 +66,7 @@ static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
   goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::red_goomba_walk);
 
-  entity_die_when_stomped(goomba, level, [&]{ 
+  monster_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::red_goomba_dead);
   });
 }
@@ -76,7 +76,7 @@ static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
   goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::yellow_goomba_walk);
 
-  entity_die_when_stomped(goomba, level, [&]{ 
+  monster_die_when_stomped(goomba, level, [&]{ 
     goomba_set_dead(goomba, textures::yellow_goomba_dead);
   });
 }

@@ -29,14 +29,17 @@ static auto render_stats(const LevelState& level){
   static constexpr auto WindowWidth = config::FrameBufferSize.x;
 
   auto text = Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
+  text.update();
   const auto center_x = WindowWidth / 2 - text.get_size().x / 2;
   const auto step_y = 2.f / 3.f * BlockBase::Size;
 
-  text.set_position({ center_x, step_y });
+  text.position = { center_x, step_y };
+  text.update_position();
   renderer::print(text, glm::vec2(0));
 
-  text.set_text(body.str());
-  text.set_position(text.get_position() + glm::vec2(0.f, step_y));
+  text.text = body.str();
+  text.position += glm::vec2(0.f, step_y);
+  text.update();
   renderer::print(text, glm::vec2(0));
 
   //Mini coin
@@ -47,8 +50,9 @@ static auto render_stats(const LevelState& level){
   });
 
   if (level.type == LevelState::Type::Boss && stats.boss_hp != nullptr){
-    text.set_text("BOSS");
-    text.set_position(glm::vec2(WindowWidth / 2.f - text.get_size().x / 2.f, step_y * 4));
+    text.text = "BOSS";
+    text.position = glm::vec2(WindowWidth / 2.f - text.get_size().x / 2.f, step_y * 4);
+    text.update();
 
     renderer::print(text, glm::vec2(0));
 
@@ -80,10 +84,12 @@ static auto render_loading_screen(const LevelState& level){
     "WORLD " + std::to_string(stats.level_major) + "-" + std::to_string(stats.level_minor),
     font_size / fonts::normal.size
   );
+  text.update();
 
   const auto center_pos = config::FrameBufferSize / 2.f - text.get_size() * 0.5f;
 
-  text.set_position(center_pos - glm::vec2(0, font_size * 2.5f));
+  text.position = center_pos - glm::vec2(0, font_size * 2.5f);
+  text.update_position();
 
   renderer::print(text, glm::vec2(0));
 
@@ -98,13 +104,12 @@ static auto render_loading_screen(const LevelState& level){
   });
 
   //HP:
-  text.set_text("X " + std::to_string(stats.hp));
-  text.set_position(glm::vec2(config::FrameBufferSize.x / 2, center_pos.y));
+  text.text = "X " + std::to_string(stats.hp);
+  text.position = glm::vec2(config::FrameBufferSize.x / 2, center_pos.y);
+  text.update();
 
   renderer::print(text, glm::vec2(0));
 }
-
-
 
 static auto render_all_points_particles(const LevelState& level){
   level.game_objects.for_each_template<QBlockState>([&](const auto& block){

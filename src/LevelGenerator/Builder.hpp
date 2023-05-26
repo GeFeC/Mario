@@ -34,10 +34,6 @@ static auto put_bricks(LevelState& level, const glm::vec2& position){
   level.game_objects.back<BricksBlockState>().hitbox_block_index = level.game_objects.size<BlockState>() - 1;
 };
 
-static auto put_coin(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(CoinBlockState(position));
-}
-
 static auto put_q_block_with_coins(LevelState& level, const glm::vec2& position, int coins = 1){
   put_hitbox_block(level, position);
   auto& block = level.game_objects.push(QBlockState<CoinPusherState>(position));
@@ -97,63 +93,6 @@ static auto put_bush(LevelState& level, const glm::vec2& position, Tile tile){
 }
 
 //Entities:
-
-static auto put_goomba(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(GoombaState::make_normal(position));
-}
-
-static auto put_red_goomba(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(GoombaState::make_red(position));
-}
-
-static auto put_yellow_goomba(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(GoombaState::make_yellow(position));
-}
-
-static auto put_green_koopa(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(KoopaState::make_green(position - glm::vec2(0, 0.5)));
-}
-
-static auto put_red_koopa(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(KoopaState::make_red(position - glm::vec2(0, 0.5)));
-}
-
-static auto put_purple_koopa(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(KoopaState::make_purple(position - glm::vec2(0, 0.5)));
-}
-
-static auto put_green_koopa_with_wings(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(JumpingKoopaState::make_green(position - glm::vec2(0, 0.5)));
-}
-
-static auto put_red_koopa_with_wings(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(JumpingKoopaState::make_red(position - glm::vec2(0, 0.5)));
-}
-
-static auto put_purple_koopa_with_wings(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(JumpingKoopaState::make_purple(position - glm::vec2(0, 0.5)));
-}
-
-static auto put_plant(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(PlantState::make_green(position + glm::vec2(0.5, 1.f)));
-}
-
-static auto put_red_plant(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(PlantState::make_red(position + glm::vec2(0.5, 1.f)));
-}
-
-static auto put_hammerbro(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(HammerBroState::make(position - glm::vec2(0, 1)));
-}
-
-static auto put_red_hammerbro(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(HammerBroState::make_red(position - glm::vec2(0, 1)));
-}
-
-static auto put_beetle(LevelState& level, const glm::vec2& position){
-  level.game_objects.push(BeetleState::make(position - glm::vec2(0, 0.5)));
-}
-
 template<typename Entity>
 static auto& put_q_block_with_entity(
     LevelState& level, 

@@ -3,11 +3,12 @@
 #include "PolyControllers.hpp"
 
 #include "Controllers/PointsParticlesController.hpp"
+#include "Controllers/MonsterController.hpp"
+
 #include "States/MonsterState.hpp"
 #include "States/PlantState.hpp"
 #include "States/PlayerState.hpp"
 #include "States/LevelState.hpp"
-#include "Controllers/EntityController.hpp"
 #include "res/textures.hpp"
 #include "Window.hpp"
 
@@ -19,11 +20,13 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
     points_particles_controller(p);
   }
 
+  if (!plant.should_collide) return;
+
   //Interactions with player
   auto& player = level.player;
 
   entity_kill_player_on_touch(plant, player);
-  entity_die_when_hit_by_fireball(plant, level);
+  monster_die_when_hit_by_fireball(plant, level);
 
   if (plant.was_hit) plant.is_visible = false;
 
@@ -64,13 +67,13 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
 static auto green_plant_controller(PlantState& plant, LevelState& level){
   plant_controller_base(plant, level);
   
-  entity_run_movement_animation(plant, textures::plant);
+  monster_run_movement_animation(plant, textures::plant);
 }
 
 static auto red_plant_controller(PlantState& plant, LevelState& level){
   plant_controller_base(plant, level);
   
-  entity_run_movement_animation(plant, textures::red_plant);
+  monster_run_movement_animation(plant, textures::red_plant);
 }
 
 template<>

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "PolyControllers.hpp"
+#include "Controllers/MonsterController.hpp"
 
 #include "States/EntityState.hpp"
 #include "States/FlyingKoopaState.hpp"
 #include "States/JumpingKoopaState.hpp"
 #include "States/PlatformState.hpp"
 #include "States/LevelState.hpp"
-#include "Controllers/EntityController.hpp"
 #include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
@@ -64,7 +64,7 @@ static auto platform_collision_controller(
         entity.position.x = platform_right_edge_pos - entity.size.x + MonsterState::EdgeDetectionOffset;
       }
 
-      entity_turn_around(entity);
+      monster_turn_around(entity);
     }
   });
 }

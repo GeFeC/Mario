@@ -16,7 +16,7 @@ template<>
 struct Controller<KingGoombaState>{
   static auto run(BossState& boss, LevelState& level){
     if (boss.hp > 0){
-      entity_run_movement_animation(boss, textures::king_goomba_walk);
+      monster_run_movement_animation(boss, textures::king_goomba_walk);
     }
 
     //Jumping

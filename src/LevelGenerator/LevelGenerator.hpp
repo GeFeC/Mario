@@ -64,6 +64,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
   auto tile_id = 0;
   auto counter = 0;
 
+  auto& objects = level.game_objects;
   while(ss >> tile_id){
     const auto tile = tile_id | util::as<level_generator::Tile>;
 
@@ -84,22 +85,22 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (any_tile(BushTiles, tile)) put_bush(level, { x, y }, tile);
 
     //Entities:    
-    else if (tile == Tile::YellowGoomba) put_yellow_goomba(level, { x, y });
-    else if (tile == Tile::RedGoomba) put_red_goomba(level, { x, y });
-    else if (tile == Tile::Goomba) put_goomba(level, { x, y });
-    else if (tile == Tile::RedKoopa) put_red_koopa(level, { x, y });
-    else if (tile == Tile::GreenKoopa) put_green_koopa(level, { x, y });
-    else if (tile == Tile::PurpleKoopa) put_purple_koopa(level, { x, y });
-    else if (tile == Tile::RedKoopaWings) put_red_koopa_with_wings(level, { x, y });
-    else if (tile == Tile::GreenKoopaWings) put_green_koopa_with_wings(level, { x, y });
-    else if (tile == Tile::PurpleKoopaWings) put_purple_koopa_with_wings(level, { x, y });
-    else if (tile == Tile::GreenPlant) put_plant(level, { x, y });
-    else if (tile == Tile::RedPlant) put_red_plant(level, { x, y });
-    else if (tile == Tile::Hammerbro) put_hammerbro(level, { x, y });
-    else if (tile == Tile::RedHammerbro) put_red_hammerbro(level, { x, y });
-    else if (tile == Tile::Beetle) put_beetle(level, { x, y });
+    else if (tile == Tile::YellowGoomba) objects.push(GoombaState::make_yellow({ x, y }));
+    else if (tile == Tile::RedGoomba) objects.push(GoombaState::make_red({ x, y }));
+    else if (tile == Tile::Goomba) objects.push(GoombaState::make_normal({ x, y }));
+    else if (tile == Tile::RedKoopa) objects.push(KoopaState::make_red({ x, y }));
+    else if (tile == Tile::GreenKoopa) objects.push(KoopaState::make_green({ x, y }));
+    else if (tile == Tile::PurpleKoopa) objects.push(KoopaState::make_purple({ x, y }));
+    else if (tile == Tile::RedKoopaWings) objects.push(JumpingKoopaState::make_red({ x, y }));
+    else if (tile == Tile::GreenKoopaWings) objects.push(JumpingKoopaState::make_green({ x, y }));
+    else if (tile == Tile::PurpleKoopaWings) objects.push(JumpingKoopaState::make_purple({ x, y }));
+    else if (tile == Tile::GreenPlant) objects.push(PlantState::make_green({ x, y }));
+    else if (tile == Tile::RedPlant) objects.push(PlantState::make_red({ x, y }));
+    else if (tile == Tile::Hammerbro) objects.push(HammerBroState::make({ x, y }));
+    else if (tile == Tile::RedHammerbro) objects.push(HammerBroState::make_red({ x, y }));
+    else if (tile == Tile::Beetle) objects.push(BeetleState::make({ x, y }));
 
-    else if (tile == Tile::Coin) put_coin(level, { x, y });
+    else if (tile == Tile::Coin) objects.push(CoinBlockState({ x, y }));
 
     else if (tile == Tile::QBlockMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Red);
     else if (tile == Tile::QBlockGreenMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Green);

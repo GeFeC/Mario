@@ -1,10 +1,14 @@
 #pragma once
 
+#include "config.hpp"
+
+#include <stb/stb_image.h>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 struct Texture{
 private:
@@ -16,18 +20,68 @@ public:
   bool allocated = false;
   GLuint id;
 
-  Texture() noexcept = default;
+  Texture() = default;
 
-  explicit Texture(const std::string& path) noexcept;
+  explicit Texture(const std::string& path){
+    this->source_path = config::TexturesSourceDir + path;
+  } 
+
   explicit Texture(GLuint id) noexcept : id(id) {}
   
-  auto allocate() -> void;
-  auto free() noexcept -> void;
+  auto allocate(){
+    if (allocated) return;
 
-  auto set_min_filter(int min_filter) const noexcept -> void;
-  auto set_mag_filter(int mag_filter) const noexcept -> void;
+    allocated = true;
 
-  auto bind() const noexcept -> void;
+    glGenTextures(1, &id);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, id);
+
+    //Load texture from file
+    int width, height, channels;
+    auto image_buffer = stbi_load(source_path.c_str(), &width, &height, &channels, 0);
+
+    if (image_buffer == nullptr) {
+      throw std::runtime_error("Failed to load image from: " + source_path);
+    }
+      
+    glBindTexture(GL_TEXTURE_2D, id);
+
+    glTexImage2D(
+      GL_TEXTURE_2D, 
+      0, 
+      GL_RGBA, 
+      width, 
+      height, 
+      0, 
+      GL_RGBA, 
+      GL_UNSIGNED_BYTE, 
+      image_buffer
+    );
+    
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    stbi_image_free(image_buffer);
+  }
+
+  auto set_min_filter(int min_filter) const{
+    glBindTexture(GL_TEXTURE_2D, this->id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter);
+  }
+
+  auto set_mag_filter(int mag_filter) const{
+    glBindTexture(GL_TEXTURE_2D, this->id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
+  }
+
+  auto bind() const{
+    glBindTexture(GL_TEXTURE_2D, this->id);
+  }
+
+  auto free(){
+    allocated = false;
+    glDeleteTextures(1, &this->id);
+  }
 };
 
 struct TextureGroup{

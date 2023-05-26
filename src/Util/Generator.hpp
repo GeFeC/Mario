@@ -1,8 +1,10 @@
 #pragma once
+
 #include <vector>
 #include <algorithm>
 
 namespace util{
+
 template<typename T>
 struct Generator{
   std::vector<T> items;

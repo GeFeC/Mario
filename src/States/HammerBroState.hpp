@@ -26,9 +26,11 @@ struct HammerBroState : MonsterState{
   util::Generator<HammerState> hammer_generator;
   util::LoopedCounter throw_counter;
   Direction walk_direction = DirectionLeft;
+
   float jump_delay;
   float throw_delay;
   float initial_x;
+
   int hammers_count = 0;
   int hammers_spawned = 0;
   bool started_jumping = false;
@@ -45,7 +47,7 @@ struct HammerBroState : MonsterState{
 
   static auto make(const glm::vec2& position){
     auto bro = HammerBroState();
-    bro.position = position * BlockBase::Size;
+    bro.position = (position + glm::vec2(0.f, -1.f)) * BlockBase::Size;
     bro.initial_x = bro.position.x;
     bro.size = glm::vec2(1, 2) * BlockBase::Size;
     bro.walk_speed = 3.f;

@@ -21,7 +21,7 @@ struct PlantState : MonsterState{
 private:
   static auto make(const glm::vec2& position){
     auto plant = PlantState();
-    plant.position = position * BlockBase::Size;
+    plant.position = (position + glm::vec2(0.5f, 1.f)) * BlockBase::Size;
     plant.size = glm::vec2(BlockBase::Size, BlockBase::Size * 11 / 8);
     plant.current_texture = &textures::plant[0];
     plant.can_be_stomped = false;

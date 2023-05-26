@@ -11,11 +11,11 @@
 
 static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
   //Interaction with blocks
-  entity_bounce_when_on_bouncing_block(mushroom, level);
+  monster_bounce_when_on_bouncing_block(mushroom, level);
 
   entity_gravity(mushroom, level);
   entity_movement(mushroom, level);
-  entity_turn_around(mushroom);
+  monster_turn_around(mushroom);
 
   for (auto& p : mushroom.points_generator.items){
     points_particles_controller(p);

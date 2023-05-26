@@ -37,7 +37,7 @@ static auto flying_koopa_controller_base(
       koopa.direction = EntityState::DirectionRight;
     }
 
-    entity_run_movement_animation(koopa, walk_frames_with_wings);
+    monster_run_movement_animation(koopa, walk_frames_with_wings);
   }
   else{
     koopa.set_direction(koopa.direction);
@@ -47,12 +47,12 @@ static auto flying_koopa_controller_base(
   //Interaction with player
   auto& player = level.player;
 
-  entity_die_when_hit_by_fireball(koopa, level);
-  entity_become_active_when_seen(koopa, level);
+  monster_die_when_hit_by_fireball(koopa, level);
+  monster_become_active_when_seen(koopa, level);
 
   if (koopa.has_wings){
     auto koopa_hitbox = shell_monster_get_hitbox(koopa);
-    entity_die_when_stomped(koopa, level, [&]{
+    monster_die_when_stomped(koopa, level, [&]{
       koopa.has_wings = false;
       koopa.gravity = 0;
     });
@@ -70,7 +70,7 @@ static auto green_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& l
     LevelState::timer
   );
 
-  entity_handle_shell(
+  shell_monster_handle_shell(
     koopa,
     level,
     textures::green_koopa_dead
@@ -86,7 +86,7 @@ static auto red_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& lev
     LevelState::timer
   );
 
-  entity_handle_shell(
+  shell_monster_handle_shell(
     koopa,
     level,
     textures::red_koopa_dead
@@ -115,7 +115,7 @@ static auto purple_flying_koopa_controller(FlyingKoopaState& koopa, LevelState& 
     level.purple_flying_koopa_timer
   );
 
-  entity_handle_shell(
+  shell_monster_handle_shell(
     koopa,
     level,
     textures::purple_koopa_dead
