@@ -127,13 +127,15 @@ static auto shell_monster_handle_shell(
 
   //Killing Entities with shell
   level.game_objects.for_each_derived<MonsterState>([&](auto& target){
-    if constexpr (std::is_convertible_v<decltype(target), MushroomState>) return;
+    if constexpr (std::is_convertible_v<decltype(target), PlantState>) return;
 
     shell_kill_entity(target);
   });
 
   level.game_objects.for_each_template<QBlockState>([&](auto& block){
     if constexpr (std::decay_t<decltype(block)>::PusherType::ContainsEntity) {
+      if constexpr (std::is_convertible_v<decltype(block.pusher.entity), MushroomState>) return;
+
       shell_kill_entity(block.pusher.entity);
     }
   });

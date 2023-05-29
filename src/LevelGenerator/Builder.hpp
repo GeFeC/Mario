@@ -98,7 +98,7 @@ static auto& put_q_block_with_entity(
     LevelState& level, 
     const Entity& entity
 ){
-  const auto position = entity.position / BlockBase::Size;
+  const auto position = (entity.position + glm::vec2(0.f, entity.size.y)) / BlockBase::Size - glm::vec2(0.f, 1.f);
 
   level_generator::put_hitbox_block(level, position);
 

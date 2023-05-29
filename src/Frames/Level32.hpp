@@ -30,6 +30,7 @@ static auto run_frame_level32(AppState& app){
     level.background_texture = &textures::snow_bg;
     level.cloud_textures = &texture_groups::blue_cloud;
     level.player.slip = 1.5f;
+    level.player.position = glm::vec2(172, 3) * BlockBase::Size;
 
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "level32_1.csv");
