@@ -137,6 +137,7 @@ static auto set_uniform(const std::string& uniform_name, int value) noexcept -> 
     value
   );
 }
+
 static GLuint vao, vbo;
 static constexpr auto VaoStride = 4;
 
@@ -201,6 +202,7 @@ static auto init(){
   }
   glUseProgram(shader_program);
 
+  //Create Projection Matrix
   const auto projection_matrix = glm::ortho(
     0.f, 
     config::FrameBufferSize.x, 

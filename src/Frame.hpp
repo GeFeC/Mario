@@ -3,7 +3,6 @@
 #include "Window.hpp"
 #include "Renderer/Texture.hpp"
 #include "States/AppState.hpp"
-#include "Controllers/AppController.hpp"
 
 #include <vector>
 

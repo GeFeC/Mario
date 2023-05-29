@@ -3,15 +3,17 @@
 #include "LevelGenerator/Builder.hpp"
 #include "States/AppState.hpp"
 #include "Frames/LevelBase.hpp"
+#include "States/BlockState.hpp"
 #include "States/FireBarState.hpp"
 #include "res/textureGroups.hpp"
 
-static auto run_frame_level33(AppState& app){
+static auto run_frame_level35(AppState& app){
   auto level = LevelFrameSharedData{};
-  level.frame = AppState::Frame::Level33;
+  level.frame = AppState::Frame::Level35;
   level.type = LevelState::Type::Vertical;
-  level.number = { 3, 3 };
+  level.number = { 3, 5 };
   level.extra_textures = {
+    texture_groups::green_flying_koopa,
     texture_groups::blue_cloud,
     &textures::platform,
     &textures::snow_bg
@@ -24,12 +26,14 @@ static auto run_frame_level33(AppState& app){
     level.player.slip = 1.5f;
 
     level_generator::generate_vertical_level_clouds(level);
-    level_generator::generate_level(level, "level33_1.csv");
-    level_generator::generate_level(level, "level33_2.csv");
-    level_generator::generate_level(level, "level33_3.csv");
+    level_generator::generate_level(level, "level35_1.csv");
+    level_generator::generate_level(level, "level35_2.csv");
 
-    level_generator::put_q_block_with_coins(level, { 17, 113 }, 5);
-    level_generator::put_q_block_with_entity(level, HammerBroState::make_red({ 9, 31 }));
-    level.game_objects.push(PlatformState({ 8, 98 }, { 0, -38 }, 8));
+    auto& objects = level.game_objects;
+    objects.push(FireBarState({ 16, 133 }, 6));
+    
+    for (int i = 0; i < 10; ++i){
+      objects.push(FlyingKoopaState::make_green({ 9.5f, 102 + i * 4 }, { 0.5f, 0.f }));
+    }
   });
 }
