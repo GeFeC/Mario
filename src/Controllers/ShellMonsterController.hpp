@@ -80,6 +80,22 @@ static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   return hitbox;
 }
 
+static auto shell_monster_did_hit_monster_with_shell(
+    const ShellMonsterState& monster, 
+    const MonsterState& target 
+){
+  if (&target == &monster) return false;
+  if (!target.should_collide) return false;
+  if (!target.is_active) return false;
+  if (monster.vertical_flip == Drawable::Flip::UseFlip) return false;
+  if (!monster.in_shell) return false;
+
+  if (monster.acceleration.left != monster.shell_speed && monster.acceleration.right != monster.shell_speed) 
+    return false;
+
+  return collision::is_hovering(monster, target);
+}
+
 static auto shell_monster_handle_shell(
     ShellMonsterState& entity, 
     LevelState& level,
@@ -112,21 +128,16 @@ static auto shell_monster_handle_shell(
     }
   }(); 
 
-  if (entity.acceleration.left != entity.shell_speed && entity.acceleration.right != entity.shell_speed) return;
 
   auto shell_kill_entity = [&](MonsterState& target_entity){
-    if (&target_entity == &entity) return;
-    if (!target_entity.should_collide) return;
-    if (!target_entity.is_active) return;
-    if (entity.vertical_flip == Drawable::Flip::UseFlip) return;
+    if (!shell_monster_did_hit_monster_with_shell(entity, target_entity)) return;
 
-    if (collision::is_hovering(entity, target_entity)){
-      monster_bounce_die(target_entity, level.stats);
-    }
+    monster_bounce_die(target_entity, level.stats);
   };
 
   //Killing Entities with shell
   level.game_objects.for_each_derived<MonsterState>([&](auto& target){
+    if constexpr (std::is_base_of_v<BossState, std::decay_t<decltype(target)>>) return;
     if constexpr (std::is_convertible_v<decltype(target), PlantState>) return;
 
     shell_kill_entity(target);

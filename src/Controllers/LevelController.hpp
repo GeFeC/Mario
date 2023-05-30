@@ -30,6 +30,7 @@
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"
+#include "Controllers/KingBeetleController.hpp"
 
 #include "Util/Util.hpp"
 #include "Window.hpp"

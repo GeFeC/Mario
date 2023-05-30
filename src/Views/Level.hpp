@@ -51,8 +51,9 @@ static auto render_stats(const LevelState& level){
 
   if (level.type == LevelState::Type::Boss && stats.boss_hp != nullptr){
     text.text = "BOSS";
-    text.position = glm::vec2(WindowWidth / 2.f - text.get_size().x / 2.f, step_y * 4);
     text.update();
+    text.position = glm::vec2(WindowWidth / 2.f - text.get_size().x / 2.f, step_y * 4);
+    text.update_position();
 
     renderer::print(text, glm::vec2(0));
 

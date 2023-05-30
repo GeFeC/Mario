@@ -54,18 +54,6 @@ template<> struct EntitiesView<BeetleState> : EntitiesView<EntityState>{};
 template<> struct EntitiesView<SpikeState> : EntitiesView<EntityState>{};
 template<> struct PlantsView<PlantState> : EntitiesView<EntityState>{};
 
-template<>
-struct EntitiesView<BossState>{
-  static auto run(const BossState& boss, const glm::vec2& offset){
-    renderer::highlight_mode = boss.is_highlighted;
-    render_entity(boss, offset);
-    renderer::highlight_mode = false;
-  }
-};
-
-template<> struct EntitiesView<KingGoombaState> : EntitiesView<BossState>{};
-template<> struct EntitiesView<KingKoopaState> : EntitiesView<BossState>{};
-
 static auto render_points_particles(const std::vector<PointsParticlesState>& points, const glm::vec2& offset){
   for (const auto& point : points){
     renderer::print(point.text, offset);
@@ -218,3 +206,28 @@ struct BlocksView<QBlockState<EntityPusherState<Entity>>>{
     BlocksView<BlockState>::run(block, offset);
   }
 };
+
+template<>
+struct EntitiesView<BossState>{
+  static auto run(const BossState& boss, const glm::vec2& offset){
+    renderer::highlight_mode = boss.is_highlighted;
+    render_entity(boss, offset);
+    renderer::highlight_mode = false;
+  }
+};
+
+template<> struct EntitiesView<KingGoombaState> : EntitiesView<BossState>{};
+template<> struct EntitiesView<KingKoopaState> : EntitiesView<BossState>{};
+
+template<> struct EntitiesView<KingBeetleState>{
+  static auto run(const KingBeetleState& boss, const glm::vec2& offset){
+    for (const auto& f : boss.fireballs){
+      render_entity(f, offset);
+      BlocksView<BlockState>::run(f.explosion, offset);
+    }
+
+    EntitiesView<BossState>::run(boss, offset);
+  }
+};
+
+

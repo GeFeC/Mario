@@ -113,7 +113,8 @@ struct LevelState{
 
     //Bosses
     KingGoombaState,
-    KingKoopaState
+    KingKoopaState,
+    KingBeetleState
   > game_objects;
 
   std::vector<glm::vec2> checkpoints;

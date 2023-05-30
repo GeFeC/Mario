@@ -35,5 +35,6 @@ struct Controller<KingGoombaState>{
     });
 
     boss_controller(boss, level);
+    boss_react_when_hit_by_fireball(boss, level);
   }
 };

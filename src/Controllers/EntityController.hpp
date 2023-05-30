@@ -140,7 +140,9 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
 
   if (collision::is_hovering_in_x(player, entity)){
     const auto distance = entity.position.y - player.position.y - player.size.y;
-    const auto hitbox_tolerance = -entity.size.y + BlockBase::Size / 6.f;
+    const auto hitbox_tolerance = entity.can_be_stomped
+      ? -entity.size.y + BlockBase::Size / 6.f
+      : -BlockBase::Size / 6.f;
 
     return distance == util::in_range(hitbox_tolerance, 0);
   }

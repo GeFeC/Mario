@@ -66,7 +66,7 @@ static auto monster_bounce_die(MonsterState& entity, StatsState& stats){
   entity.points_generator.item().set_active(entity.reward_for_killing, entity.position);
 }
 
-static auto monster_is_hit_by_fireball(MonsterState& entity, FireballState& fireball){
+static auto monster_is_hit_by_fireball(const MonsterState& entity, const FireballState& fireball){
   return collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active && entity.should_collide;
 }
 
