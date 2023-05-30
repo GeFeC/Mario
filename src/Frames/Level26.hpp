@@ -41,7 +41,7 @@ static auto run_frame_level26(AppState& app){
     level.player.form = PlayerState::Form::Fire;
     level.player.position.x = 2 * BlockBase::Size;
 
-    objects.push(FireBarState({ 4, 4 }, 4));
-    objects.push(FireBarState({ 15, 4 }, 4));
+    objects.push(FireBarState({ 0, 7 }, 4));
+    objects.push(FireBarState({ 19, 7 }, 4));
   });
 }

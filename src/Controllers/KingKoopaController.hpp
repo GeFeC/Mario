@@ -35,7 +35,7 @@ struct Controller<KingKoopaState>{
         boss.withdraw_duration = KingKoopaState::WithdrawDuration;
       }
       else{
-        boss.walk_speed = 20.f;
+        boss.walk_speed = KingKoopaState::ShellSpeed;
         boss.withdraw_duration -= window::delta_time;
       }
 

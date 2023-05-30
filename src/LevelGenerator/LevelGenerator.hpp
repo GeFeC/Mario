@@ -99,6 +99,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::Hammerbro) objects.push(HammerBroState::make({ x, y }));
     else if (tile == Tile::RedHammerbro) objects.push(HammerBroState::make_red({ x, y }));
     else if (tile == Tile::Beetle) objects.push(BeetleState::make({ x, y }));
+    else if (tile == Tile::Spike) objects.push(SpikeState::make({ x, y }));
 
     else if (tile == Tile::Coin) objects.push(CoinBlockState({ x, y }));
 

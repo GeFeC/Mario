@@ -9,8 +9,11 @@
 static auto boss_get_hitbox(BossState& boss){
   auto boss_hitbox = MonsterState{ boss };
   boss_hitbox.is_active = true;
-  boss_hitbox.size = boss.size - glm::vec2(1) * BlockBase::Size;
-  boss_hitbox.position = boss.position + glm::vec2((boss.size.x - boss_hitbox.size.x) / 2.f);
+  boss_hitbox.size = glm::vec2(2.f) * BlockBase::Size;
+  boss_hitbox.position = glm::vec2(
+    boss.position.x + boss.size.x / 2 - boss_hitbox.size.x / 2,
+    boss.position.y + boss.size.y - 2.f * BlockBase::Size
+  );
 
   return boss_hitbox;
 }

@@ -26,13 +26,13 @@ struct KingGoombaState : BossState{
   KingGoombaState() : BossState(){
     size = Size;
     gravity_boost = 0.5f;
-    walk_speed = 7.f;
+    walk_speed = 6.f;
   }
 };
 
 struct KingKoopaState : BossState{
   static constexpr auto Size = glm::vec2(3.f, 4.5f) * BlockBase::Size;
-  static constexpr auto ShellSpeed = 20.f;
+  static constexpr auto ShellSpeed = 15.f;
 
   static constexpr auto SpeedUpDelay = 0.5f;
   static constexpr auto WithdrawDuration = 2.f;
