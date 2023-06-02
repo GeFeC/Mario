@@ -3,10 +3,11 @@
 #include "PolyControllers.hpp"
 
 #include "States/KoopaState.hpp"
-#include "States/LoopedCounter.hpp"
 #include "States/PlayerState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/ShellMonsterController.hpp"
+
+#include "Util/LoopedCounter.hpp"
 
 static auto koopa_controller_base(KoopaState& koopa, LevelState& level){
   //Interaction with player

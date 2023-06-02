@@ -10,6 +10,7 @@ enum class Tile{
   Checkpoint = 80,
   Finish = 87,
 
+  GreenGround = 13,
   Dirt = 0,
   MushroomRight = 5,
   MushroomCenter = 7,

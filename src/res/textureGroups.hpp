@@ -128,6 +128,9 @@ namespace texture_groups{
     &textures::small_mario_dead,
     &textures::small_mario_jumping,
     &textures::small_mario_turning,
+    &textures::small_mario_swim[0],
+    &textures::small_mario_swim[1],
+
     &textures::big_mario_walk[0],
     &textures::big_mario_walk[1],
     &textures::big_mario_walk[2],
@@ -135,6 +138,9 @@ namespace texture_groups{
     &textures::big_mario_jumping,
     &textures::big_mario_turning,
     &textures::big_mario_squating,
+    &textures::big_mario_swim[0],
+    &textures::big_mario_swim[1],
+
     &textures::fire_big_mario_walk[0],
     &textures::fire_big_mario_walk[1],
     &textures::fire_big_mario_walk[2],
@@ -142,6 +148,9 @@ namespace texture_groups{
     &textures::fire_big_mario_jumping,
     &textures::fire_big_mario_turning,
     &textures::fire_big_mario_squating,
+    &textures::fire_big_mario_swim[0],
+    &textures::fire_big_mario_swim[1],
+
     &textures::black_big_mario_walk[0],
     &textures::black_big_mario_walk[1],
     &textures::black_big_mario_walk[2],
@@ -149,6 +158,9 @@ namespace texture_groups{
     &textures::black_big_mario_jumping,
     &textures::black_big_mario_turning,
     &textures::black_big_mario_squating,
+    &textures::black_big_mario_swim[0],
+    &textures::black_big_mario_swim[1],
+
     &textures::medium_mario,
     &textures::fireball[0],
     &textures::fireball[1],

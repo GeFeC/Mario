@@ -1,7 +1,6 @@
 #pragma once
 
 #include "States/LevelState.hpp"
-#include "States/LoopedCounter.hpp"
 #include "States/AppState.hpp"
 
 #include "Controllers/CollisionController.hpp"
@@ -32,6 +31,7 @@
 #include "Controllers/KingKoopaController.hpp"
 #include "Controllers/KingBeetleController.hpp"
 
+#include "Util/LoopedCounter.hpp"
 #include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
@@ -138,6 +138,7 @@ static auto level_camera(LevelState& level){
       level.camera_offset.y = std::clamp(level.camera_offset.y, min_scroll_y, max_scroll_y);
     }
   }
+
   //Horizontal level scroll
   else if (level.type == LevelState::Type::Horizontal){
     static constexpr auto HorizontalLevelWidth = LevelState::HorizontalLevelSize.x;

@@ -17,6 +17,7 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::Hitbox, no_texture),
   pair(Tile::Finish, no_texture),
   pair(Tile::Dirt, &textures::dirt),
+  pair(Tile::GreenGround, &textures::green_ground),
 
   pair(Tile::MushroomRight, &textures::mushroom_right),
   pair(Tile::MushroomLeft, &textures::mushroom_left), 

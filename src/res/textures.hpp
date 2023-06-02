@@ -19,6 +19,7 @@ namespace textures{
   inline auto bricks = Texture("tile/bricks.png");  
   inline auto dirt = Texture("tile/dirt.png");
   inline auto stone = Texture("tile/stone.png");
+  inline auto green_ground = Texture("tile/greenground.png");
 
   inline auto mushroom_bot1 = Texture("tile/mushroom_bot1.png");
   inline auto mushroom_bot2 = Texture("tile/mushroom_bot2.png");
@@ -128,6 +129,11 @@ namespace textures{
     Texture("player/mario/small/normal/walk3.png")
   };
 
+  inline auto small_mario_swim = std::array<Texture, 2>{
+    Texture("player/mario/small/normal/swim1.png"),
+    Texture("player/mario/small/normal/swim2.png")
+  };
+
   inline auto big_mario = Texture("player/mario/big/normal/mario.png");
   inline auto big_mario_jumping = Texture("player/mario/big/normal/jumping.png");
   inline auto big_mario_squating = Texture("player/mario/big/normal/squating.png");
@@ -137,6 +143,11 @@ namespace textures{
     Texture("player/mario/big/normal/walk1.png"),
     Texture("player/mario/big/normal/walk2.png"),
     Texture("player/mario/big/normal/walk3.png")
+  };
+
+  inline auto big_mario_swim = std::array<Texture, 2>{
+    Texture("player/mario/big/normal/swim1.png"),
+    Texture("player/mario/big/normal/swim2.png")
   };
 
   inline auto fire_big_mario = Texture("player/mario/big/fire/mario.png");
@@ -150,6 +161,11 @@ namespace textures{
     Texture("player/mario/big/fire/walk3.png")
   };
 
+  inline auto fire_big_mario_swim = std::array<Texture, 2>{
+    Texture("player/mario/big/fire/swim1.png"),
+    Texture("player/mario/big/fire/swim2.png")
+  };
+
   inline auto black_big_mario = Texture("player/mario/big/black/mario.png");
   inline auto black_big_mario_jumping = Texture("player/mario/big/black/jumping.png");
   inline auto black_big_mario_squating = Texture("player/mario/big/black/squating.png");
@@ -159,6 +175,11 @@ namespace textures{
     Texture("player/mario/big/black/walk1.png"),
     Texture("player/mario/big/black/walk2.png"),
     Texture("player/mario/big/black/walk3.png")
+  };
+
+  inline auto black_big_mario_swim = std::array<Texture, 2>{
+    Texture("player/mario/big/black/swim1.png"),
+    Texture("player/mario/big/black/swim2.png")
   };
 
   inline auto medium_mario = Texture("player/mario/growing.png");

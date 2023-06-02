@@ -1,6 +1,6 @@
 #pragma once
 
-#include "States/LoopedCounter.hpp"
+#include "Util/LoopedCounter.hpp"
 #include "States/MonsterState.hpp"
 #include "States/HammerState.hpp"
 #include "Util/Util.hpp"

@@ -6,7 +6,6 @@
 #include "States/MonsterState.hpp"
 #include "States/PlayerState.hpp"
 #include "States/PointsParticlesState.hpp"
-#include "States/LoopedCounter.hpp"
 #include "States/QBlockState.hpp"
 #include "States/FireFlowerState.hpp"
 #include "States/PlantState.hpp"
@@ -24,6 +23,8 @@
 
 #include "States/CoinPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
+
+#include "Util/LoopedCounter.hpp"
 
 #include "Renderer/Text.hpp"
 #include "config.hpp"
@@ -69,6 +70,11 @@ struct LevelState{
     Vertical,
     Boss
   } type = Type::Horizontal;
+
+  enum class Biome{
+    Underwater,
+    Land
+  } biome = Biome::Land;
 
   util::vector2d<int> hitbox_grid;
 

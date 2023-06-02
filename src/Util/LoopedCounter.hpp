@@ -3,6 +3,8 @@
 #include "Window.hpp"
 #include "Util/Util.hpp"
 
+namespace util{
+
 struct LoopedCounter{
   float value = 0;
 
@@ -37,6 +39,10 @@ struct LoopedCounter{
     loops = 0;
     value = 0.f;
   }
+
+  auto disable(){
+    loops = max_loops;
+  }
 };
 
 struct InfiniteCounter : LoopedCounter{
@@ -50,3 +56,5 @@ struct InfiniteCounter : LoopedCounter{
     }
   }
 };
+
+} //namespace util

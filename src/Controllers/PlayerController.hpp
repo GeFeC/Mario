@@ -19,15 +19,7 @@ static auto to_grid_coords(const glm::vec2& normal_coords){
   return glm::ivec2(normal_coords.x / BlockBase::Size, normal_coords.y / BlockBase::Size);
 }
 
-static auto player_jump(PlayerState& player, LevelState& level){
-  if (player.is_dead) return;
-
-  if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown){
-    player.gravity = PlayerState::JumpPower;
-    player.is_on_ground = false;
-    player.jump_cooldown = true;
-  }
-
+static auto player_detect_collision_above(PlayerState& player, LevelState& level){
   detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
     if (collision_state.distance_above < -player.gravity){
       player.gravity = -collision_state.distance_above;
@@ -37,6 +29,39 @@ static auto player_jump(PlayerState& player, LevelState& level){
       player.jump_cooldown = false;
     }
   });
+}
+
+static auto player_swim(PlayerState& player, LevelState& level){
+  player.swim_counter.run();
+
+  if (player.is_dead) return;
+  player.gravity = std::min(player.gravity, PlayerState::MaxGravityWhenSwimming);
+
+  player.gravity_boost = 0.05f;
+  if (window::is_key_pressed(GLFW_KEY_UP) && !player.swim_cooldown){
+    player.swim_counter.reset();
+    player.gravity = PlayerState::SwimPower;
+    player.is_on_ground = false;
+    player.swim_cooldown = true;
+  }
+
+  if (!window::is_key_pressed(GLFW_KEY_UP)){
+    player.swim_cooldown = false;
+  }
+
+  player_detect_collision_above(player, level);
+}
+
+static auto player_jump(PlayerState& player, LevelState& level){
+  if (player.is_dead) return;
+
+  if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown){
+    player.gravity = PlayerState::JumpPower;
+    player.is_on_ground = false;
+    player.jump_cooldown = true;
+  }
+
+  player_detect_collision_above(player, level);
 }
 
 static auto player_gravity(PlayerState& player, LevelState& level){
@@ -161,7 +186,7 @@ static auto player_update_growth(PlayerState& player){
   }
 }
 
-auto player_transform_to_fire(PlayerState& player){
+static auto player_transform_to_fire(PlayerState& player){
   player.transformation_counter.run();
   const auto transformation_state = player.transformation_counter.int_value();
 
@@ -174,12 +199,19 @@ auto player_transform_to_fire(PlayerState& player){
   }
 }
 
-static auto player_textures(PlayerState& player){
+static auto player_textures(PlayerState& player, const LevelState& level){
   player.current_texture = player.default_texture();
 
   if (player.is_growing_up || player.is_shrinking) return;
 
-  static auto current_walk_animation_frame = 0.f;
+  //Swimming
+  if (level.biome == LevelState::Biome::Underwater && !player.is_on_ground){
+    player.current_texture = player.swim_texture(player.swim_counter.int_value());
+    return;
+  }
+
+  //Walking
+  auto &current_walk_animation_frame = player.current_walk_animation_frame;
   if (player.acceleration.left > 0 || player.acceleration.right > 0){
     const auto total_speed = std::abs(player.acceleration.left - player.acceleration.right);
 
@@ -228,7 +260,7 @@ static auto player_death(PlayerState& player){
   }
 }
 
-auto player_squat(PlayerState& player, LevelState& level){
+static auto player_squat(PlayerState& player, LevelState& level){
   if (player.is_on_ground){
     player.mobs_killed_in_row = 1;
   }
@@ -287,7 +319,7 @@ static auto player_fireballs(PlayerState& player, const LevelState& level){
   fireball.is_visible = true;
 }
 
-auto player_controller(PlayerState& player, LevelState& level) -> void{
+static auto player_controller(PlayerState& player, LevelState& level) -> void{
   if (player.is_changing_to_fire){
     player_transform_to_fire(player);
   }
@@ -301,7 +333,11 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
     player_movement(player, level);
     entity_movement(player, level);
 
-    player_jump(player, level);
+    switch(level.biome){
+      case LevelState::Biome::Land: player_jump(player, level); break;
+      case LevelState::Biome::Underwater: player_swim(player, level); break;
+    }
+
     player_gravity(player, level);
     player_squat(player, level);
     player_invincibility(player);
@@ -311,10 +347,10 @@ auto player_controller(PlayerState& player, LevelState& level) -> void{
   } 
 
   player_update_growth(player);
-  player_textures(player);
+  player_textures(player, level);
 }
 
-auto player_can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
+static auto player_can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
   if (player.direction == EntityState::DirectionLeft){
     return player.position.x - block.position.x 
       == util::in_range(-CollisionOffset, block.size.x - CollisionOffset);
@@ -324,7 +360,7 @@ auto player_can_hit_block_above(const PlayerState& player, const BouncingBlockSt
     == util::in_range(-player.size.x + CollisionOffset, CollisionOffset);
 }
 
-auto player_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
+static auto player_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
   if (player.is_dead) return false;
 
   const auto was_block_hit_by_player 
