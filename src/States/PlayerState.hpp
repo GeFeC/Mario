@@ -10,14 +10,17 @@
 
 struct PlayerState : EntityState{
   static constexpr auto FireballSpeed = 18.f;
+
   static constexpr auto MaxSpeedWithoutSprint = 7.f;
   static constexpr auto MaxSpeedWithSprint = 10.f;
   static constexpr auto MaxSpeedWhenSquating = 1.5f;
+
+  static constexpr auto MaxGravityWhenSwimming = 7.f;
+
   static constexpr auto BouncePower = -23.f;
   static constexpr auto DeathBouncePower = -23.f;
   static constexpr auto JumpPower = -30.f;
   static constexpr auto SwimPower = -18.f;
-  static constexpr auto MaxGravityWhenSwimming = 7.f;
 
   enum class Growth{
     Small,
@@ -39,10 +42,11 @@ struct PlayerState : EntityState{
   int mobs_killed_in_row = 1;
   float current_walk_animation_frame = 0.f;
 
+  float max_speed = 0.f;
   float invincibility_delay = 0.f;
   float grow_state = 0.f;
   float slip = 1.f;
-  
+
   bool swim_cooldown = false;
   bool jump_cooldown = false;
   bool can_move = true;

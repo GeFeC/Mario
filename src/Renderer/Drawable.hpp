@@ -8,6 +8,7 @@ struct Drawable{
   glm::vec2 position;
   glm::vec2 size;
   Texture const* texture;
+  float alpha = 1.f;
 
   struct Flip{
     static constexpr auto UseFlip = -1;

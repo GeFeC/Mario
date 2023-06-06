@@ -18,6 +18,8 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::Finish, no_texture),
   pair(Tile::Dirt, &textures::dirt),
   pair(Tile::GreenGround, &textures::green_ground),
+  pair(Tile::WaterGround, &textures::water_ground),
+  pair(Tile::Coral, &textures::coral),
 
   pair(Tile::MushroomRight, &textures::mushroom_right),
   pair(Tile::MushroomLeft, &textures::mushroom_left), 
@@ -77,22 +79,6 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
 
   pair(Tile::Fireball, no_texture),
 
-  pair(Tile::YellowGoomba, texture_groups::yellow_goomba),
-  pair(Tile::RedGoomba, texture_groups::red_goomba),
-  pair(Tile::Goomba, texture_groups::goomba),
-  pair(Tile::Spike, texture_groups::spike),
-  pair(Tile::GreenPlant, texture_groups::plant),
-  pair(Tile::RedPlant, texture_groups::red_plant),
-  pair(Tile::RedKoopa, texture_groups::red_koopa),
-  pair(Tile::RedKoopaWings, texture_groups::red_flying_koopa),
-  pair(Tile::GreenKoopa, texture_groups::green_koopa),
-  pair(Tile::GreenKoopaWings, texture_groups::green_flying_koopa),
-  pair(Tile::PurpleKoopa, texture_groups::purple_koopa),
-  pair(Tile::PurpleKoopaWings, texture_groups::purple_flying_koopa),
-  pair(Tile::Hammerbro, texture_groups::hammerbro),
-  pair(Tile::RedHammerbro, texture_groups::red_hammerbro),
-  pair(Tile::Beetle, texture_groups::beetle),
-
   pair(Tile::RedBushRight, &textures::red_bush_right),
   pair(Tile::RedBushLeft, &textures::red_bush_left),
   pair(Tile::RedBushCenter, &textures::red_bush_center),
@@ -108,6 +94,26 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::Coin, texture_groups::coin),
 
   pair(Tile::Stone, &textures::stone),
+
+  //Entities
+  pair(Tile::YellowGoomba, texture_groups::yellow_goomba),
+  pair(Tile::RedGoomba, texture_groups::red_goomba),
+  pair(Tile::Goomba, texture_groups::goomba),
+  pair(Tile::Spike, texture_groups::spike),
+  pair(Tile::GreenPlant, texture_groups::plant),
+  pair(Tile::RedPlant, texture_groups::red_plant),
+  pair(Tile::RedKoopa, texture_groups::red_koopa),
+  pair(Tile::RedKoopaWings, texture_groups::red_flying_koopa),
+  pair(Tile::GreenKoopa, texture_groups::green_koopa),
+  pair(Tile::GreenKoopaWings, texture_groups::green_flying_koopa),
+  pair(Tile::PurpleKoopa, texture_groups::purple_koopa),
+  pair(Tile::PurpleKoopaWings, texture_groups::purple_flying_koopa),
+  pair(Tile::Hammerbro, texture_groups::hammerbro),
+  pair(Tile::RedHammerbro, texture_groups::red_hammerbro),
+  pair(Tile::Beetle, texture_groups::beetle),
+  pair(Tile::GreyFish, texture_groups::grey_fish),
+  pair(Tile::RedFish, texture_groups::red_fish),
+  pair(Tile::Squid, texture_groups::squid),
 };
 
 static auto allocate_texture_if_needed(Tile tile){

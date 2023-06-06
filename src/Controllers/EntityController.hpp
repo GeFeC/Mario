@@ -152,6 +152,7 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
 
 static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& player){
   if (!entity.is_active) return;
+  if (entity.was_hit) return;
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (player_is_on_entity(player, entity)) return;

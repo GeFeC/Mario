@@ -55,6 +55,18 @@ namespace util{
     }
   }
 
+  template<typename Callable, typename T>
+  inline auto for_2d(const Callable& callable, const std::pair<T, T>& min, const std::pair<T, T>& max){
+    const auto [x_min, y_min] = min;
+    const auto [x_max, y_max] = max;
+
+    for (int x = x_min; x < x_max; ++x){
+      for (int y = y_min; y < y_max; ++y){
+        callable(x, y);
+      }
+    }
+  }
+
   template<typename Callable, typename... Containers>
   inline auto multi_for(const Callable& callable, Containers&... containers){
     auto tuple = std::make_tuple(std::ref(containers)...);
@@ -64,6 +76,19 @@ namespace util{
         callable(item);
       }
     });
+  }
+
+  template<typename Callable, typename T>
+  inline auto for_2d(const Callable& callable, const std::pair<T, T>& max){
+    for_2d<Callable, T>(
+        callable, 
+        std::make_pair(0, 0),
+        max
+    );
+  }
+
+  inline auto make_pair_from_vec2(const glm::vec2& vec2){
+    return std::make_pair(vec2.x, vec2.y);
   }
 
   inline auto operator==(float value, const util::Interval& interval){

@@ -26,6 +26,8 @@
 #include "Controllers/FireBarController.hpp"
 #include "Controllers/HammerBroController.hpp"
 #include "Controllers/PlatformController.hpp"
+#include "Controllers/FishController.hpp"
+#include "Controllers/SquidController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"

@@ -17,6 +17,7 @@ struct BlockBase{
   Texture const* texture;
   glm::vec2 position = { 0.f, 0.f };
   glm::vec2 size = glm::vec2(Size);
+  float alpha = 1.f;
 
   bool is_visible = true;
   bool is_solid = true;

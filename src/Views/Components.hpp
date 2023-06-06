@@ -33,6 +33,7 @@ static auto render_entity(const EntityState& entity, const glm::vec2& offset){
       entity.position - offset,
       entity.size,
       entity.current_texture,
+      1.f,
       { entity.direction * entity.texture_flip, entity.vertical_flip },
       entity.is_visible
     });
@@ -52,6 +53,8 @@ template<> struct EntitiesView<FlyingKoopaState> : EntitiesView<EntityState>{};
 template<> struct EntitiesView<MushroomState> : EntitiesView<EntityState>{};
 template<> struct EntitiesView<BeetleState> : EntitiesView<EntityState>{};
 template<> struct EntitiesView<SpikeState> : EntitiesView<EntityState>{};
+template<> struct EntitiesView<FishState> : EntitiesView<EntityState>{};
+template<> struct EntitiesView<SquidState> : EntitiesView<EntityState>{};
 template<> struct PlantsView<PlantState> : EntitiesView<EntityState>{};
 
 static auto render_points_particles(const std::vector<PointsParticlesState>& points, const glm::vec2& offset){
@@ -69,6 +72,7 @@ struct BlocksView<BlockState>{
       block.position - offset,
       glm::vec2(BlockBase::Size),
       block.texture,
+      block.alpha,
       { Drawable::Flip::NoFlip, Drawable::Flip::NoFlip },
       block.is_visible
     });

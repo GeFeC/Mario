@@ -20,9 +20,6 @@ struct MonsterState : EntityState{
   bool should_be_pushed_out = false;
   bool is_in_q_block = false;
 
-  //If monster was hit by a shell or fireball:
-  bool was_hit = false;
-
   util::Generator<PointsParticlesState> points_generator;
 
   auto set_direction(Direction direction){

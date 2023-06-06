@@ -13,7 +13,9 @@ static auto run_frame_level41(AppState& app){
   level.extra_textures = {
     texture_groups::red_flying_koopa,
     &textures::dirt,
-    &textures::bg
+    &textures::bg,
+    &textures::water_top,
+    &textures::water_bottom,
   };
 
   run_frame_levelbase(app, level, [](AppState& app){
@@ -21,6 +23,7 @@ static auto run_frame_level41(AppState& app){
     level.background_texture = &textures::bg;
     level.biome = LevelState::Biome::Underwater;
 
-    level_generator::generate_level(level, "level41.csv");
+    level_generator::generate_level(level, "level41_1.csv");
+    level_generator::generate_level(level, "level41_2.csv");
   });
 }

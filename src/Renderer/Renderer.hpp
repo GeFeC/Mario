@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <iostream>
 #include <array>
 
 namespace renderer{
@@ -58,6 +59,7 @@ static auto fragment_shader_script = R"(
   uniform sampler2D pixel_map;
   uniform vec4 f_color;
 
+  uniform float texture_alpha = 1;
   uniform int is_texture = 1;
   uniform int is_glyph = 0;
   uniform int is_shadow = 0;
@@ -67,6 +69,7 @@ static auto fragment_shader_script = R"(
 
   void main(){
     vec4 texture_pixel = texture(pixel_map, f_texture_position);
+    texture_pixel.a *= texture_alpha;
     float alpha = texture_pixel.r;
 
     const float shadow = 0.1;
@@ -133,6 +136,13 @@ static auto set_uniform(const std::string& uniform_name, const glm::vec4& vector
 
 static auto set_uniform(const std::string& uniform_name, int value) noexcept -> void{
   glUniform1i(
+    glGetUniformLocation(shader_program, uniform_name.c_str()), 
+    value
+  );
+}
+
+static auto set_uniform(const std::string& uniform_name, float value) noexcept -> void{
+  glUniform1f(
     glGetUniformLocation(shader_program, uniform_name.c_str()), 
     value
   );
@@ -231,6 +241,7 @@ static auto draw_base(const Drawable& drawable, bool is_glyph, const glm::vec2& 
     glm::round(drawable.size.y * drawable.flip.vertical)
   });
 
+  set_uniform("texture_alpha", drawable.alpha);
   set_uniform("is_glyph", is_glyph);
   set_uniform("is_shadow", renderer::shadow_mode);
   set_uniform("is_highlighted", renderer::highlight_mode);

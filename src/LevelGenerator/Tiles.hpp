@@ -10,6 +10,7 @@ enum class Tile{
   Checkpoint = 80,
   Finish = 87,
 
+  Stone = 81,
   GreenGround = 13,
   Dirt = 0,
   MushroomRight = 5,
@@ -67,6 +68,21 @@ enum class Tile{
   WhiteHillCenter = 93,
   WhiteHillCenter2 = 92,
 
+  GreenBushRight = 68,
+  GreenBushLeft = 72,
+  GreenBushCenter = 73,
+
+  RedBushRight = 69,
+  RedBushLeft = 70,
+  RedBushCenter = 71,
+
+  WhiteBushRight = 99,
+  WhiteBushLeft = 98,
+  WhiteBushCenter = 97,
+
+  Coral = 106,
+  WaterGround = 107,
+
   Fireball = 55,
 
   Goomba = 58,
@@ -88,19 +104,9 @@ enum class Tile{
   Beetle = 67,
   Spike = 59,
 
-  GreenBushRight = 68,
-  GreenBushLeft = 72,
-  GreenBushCenter = 73,
-
-  RedBushRight = 69,
-  RedBushLeft = 70,
-  RedBushCenter = 71,
-
-  WhiteBushRight = 99,
-  WhiteBushLeft = 98,
-  WhiteBushCenter = 97,
-
-  Stone = 81
+  GreyFish = 101,
+  RedFish = 102,
+  Squid = 108
 };
 
 static constexpr Tile HillTiles[] = {

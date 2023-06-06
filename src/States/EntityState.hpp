@@ -34,6 +34,9 @@ struct EntityState{
   float gravity_boost = 1.f;
   float death_delay = 1.f;
 
+  //If monster was hit by a shell or fireball:
+  bool was_hit = false;
+
   bool is_visible = true;
   bool is_active = false;
   bool is_dead = false;

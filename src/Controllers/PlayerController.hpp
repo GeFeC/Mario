@@ -38,12 +38,17 @@ static auto player_swim(PlayerState& player, LevelState& level){
   player.gravity = std::min(player.gravity, PlayerState::MaxGravityWhenSwimming);
 
   player.gravity_boost = 0.05f;
-  if (window::is_key_pressed(GLFW_KEY_UP) && !player.swim_cooldown){
-    player.swim_counter.reset();
-    player.gravity = PlayerState::SwimPower;
-    player.is_on_ground = false;
-    player.swim_cooldown = true;
-  }
+
+  [&]{
+    if (player.position.y < BlockBase::Size * 1.5f) return;
+
+    if (window::is_key_pressed(GLFW_KEY_UP) && !player.swim_cooldown && !player.is_squating){
+      player.swim_counter.reset();
+      player.gravity = PlayerState::SwimPower;
+      player.is_on_ground = false;
+      player.swim_cooldown = true;
+    }
+  }();
 
   if (!window::is_key_pressed(GLFW_KEY_UP)){
     player.swim_cooldown = false;
@@ -99,26 +104,24 @@ static auto player_movement(PlayerState& player, LevelState& level){
   }
 
   //Calculating max speed
-  static auto max_speed = PlayerState::MaxSpeedWithoutSprint;
-
   if (!player.is_squating){
     if (window::is_key_pressed(GLFW_KEY_LEFT_CONTROL)){
-      max_speed = PlayerState::MaxSpeedWithSprint;
+      player.max_speed = PlayerState::MaxSpeedWithSprint;
     }
-    else if (max_speed > PlayerState::MaxSpeedWithoutSprint){
-      max_speed -= speed_boost;
+    else if (player.max_speed > PlayerState::MaxSpeedWithoutSprint){
+      player.max_speed -= speed_boost;
     }
     else{
-      max_speed = PlayerState::MaxSpeedWithoutSprint;
+      player.max_speed = PlayerState::MaxSpeedWithoutSprint;
     }
   }
 
-  if (player.is_squating && max_speed > PlayerState::MaxSpeedWhenSquating){
-    max_speed -= speed_boost;
+  if (player.is_squating && player.max_speed > PlayerState::MaxSpeedWhenSquating){
+    player.max_speed -= speed_boost;
   }
 
-  player.acceleration.left = std::clamp(player.acceleration.left, 0.f, max_speed);
-  player.acceleration.right = std::clamp(player.acceleration.right, 0.f, max_speed);
+  player.acceleration.left = std::clamp(player.acceleration.left, 0.f, player.max_speed);
+  player.acceleration.right = std::clamp(player.acceleration.right, 0.f, player.max_speed);
 }
 
 static auto player_grow_up(PlayerState& player){
@@ -204,12 +207,6 @@ static auto player_textures(PlayerState& player, const LevelState& level){
 
   if (player.is_growing_up || player.is_shrinking) return;
 
-  //Swimming
-  if (level.biome == LevelState::Biome::Underwater && !player.is_on_ground){
-    player.current_texture = player.swim_texture(player.swim_counter.int_value());
-    return;
-  }
-
   //Walking
   auto &current_walk_animation_frame = player.current_walk_animation_frame;
   if (player.acceleration.left > 0 || player.acceleration.right > 0){
@@ -236,6 +233,11 @@ static auto player_textures(PlayerState& player, const LevelState& level){
 
   if (!player.is_on_ground){
     player.current_texture = player.jump_texture();
+  }
+
+  //Swimming
+  if (level.biome == LevelState::Biome::Underwater && !player.is_on_ground){
+    player.current_texture = player.swim_texture(player.swim_counter.int_value());
   }
 
   if (player.is_dead){
@@ -333,9 +335,11 @@ static auto player_controller(PlayerState& player, LevelState& level) -> void{
     player_movement(player, level);
     entity_movement(player, level);
 
-    switch(level.biome){
-      case LevelState::Biome::Land: player_jump(player, level); break;
-      case LevelState::Biome::Underwater: player_swim(player, level); break;
+    if (level.biome == LevelState::Biome::Underwater && player.position.y < config::FrameBufferSize.y){
+      player_swim(player, level);
+    }
+    else{
+      player_jump(player, level);
     }
 
     player_gravity(player, level);

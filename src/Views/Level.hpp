@@ -15,6 +15,38 @@
 #include <sstream>
 #include <iomanip>
 
+static auto render_water(const LevelState& level, const glm::vec2& offset){
+  static constexpr auto WaterTransparency = 0.5f;
+
+  static auto waves_offset = 0.f;
+  waves_offset += window::delta_time * 40.f;
+  if (waves_offset >= BlockBase::Size) waves_offset -= BlockBase::Size;
+
+  if (level.type == LevelState::Type::Horizontal){
+    for (int i = 0; i < LevelState::HorizontalLevelSize.x + 1; ++i){ //one more than level size because of animation
+      auto block = BlockBase{};
+      block.position = { i * BlockBase::Size - waves_offset, LevelState::WaterLevel * BlockBase::Size };
+      block.size = glm::vec2(BlockBase::Size);
+      block.texture = &textures::water_top;
+      block.alpha = WaterTransparency;
+
+      BlocksView<BlockState>::run(block, offset);
+    }
+
+    const auto water_area = util::make_pair_from_vec2(LevelState::HorizontalLevelSize);
+
+    util::for_2d([&](int x, int y){
+      auto block = BlockBase{};
+      block.position = { x * BlockBase::Size, y * BlockBase::Size };
+      block.size = glm::vec2(BlockBase::Size);
+      block.texture = &textures::water_bottom;
+      block.alpha = WaterTransparency;
+
+      BlocksView<BlockState>::run(block, offset);
+    }, std::make_pair(0.f, LevelState::WaterLevel + 1.f), water_area);
+  }
+}
+
 static auto render_stats(const LevelState& level){
   const auto& stats = level.stats;
 
@@ -75,6 +107,7 @@ static auto render_loading_screen(const LevelState& level){
     glm::vec2(0, 0),
     config::FrameBufferSize,
     &textures::black
+
   });
 
   //Header:
@@ -139,13 +172,13 @@ static auto render_level(const LevelState& level){
     level.background_texture
   });
 
-  renderer::draw_with_shadow([&]{
-    if (level.is_finished) render_player(level.player, level.camera_offset);
-  });
-
   //Rendering game objects
   renderer::draw_with_shadow([&]{
     level.game_objects.run_controllers<BackgroundView>(level.camera_offset, level);
+  });
+
+  renderer::draw_with_shadow([&]{
+    if (level.is_finished) render_player(level.player, level.camera_offset);
   });
 
   renderer::draw_with_shadow([&]{
@@ -162,10 +195,17 @@ static auto render_level(const LevelState& level){
 
   renderer::draw_with_shadow([&]{
     if (!level.is_finished) render_player(level.player, level.camera_offset);
+  });
 
+  if (level.biome == LevelState::Biome::Underwater){
+    render_water(level, level.camera_offset);
+  }
+
+  renderer::draw_with_shadow([&]{
     if (level.load_delay > 0.f){
       render_loading_screen(level);
     }
+
     render_stats(level);
   });
 

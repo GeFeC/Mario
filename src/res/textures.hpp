@@ -20,6 +20,11 @@ namespace textures{
   inline auto dirt = Texture("tile/dirt.png");
   inline auto stone = Texture("tile/stone.png");
   inline auto green_ground = Texture("tile/greenground.png");
+  inline auto water_ground = Texture("tile/waterground.png");
+  inline auto coral = Texture("tile/coral.png");
+  
+  inline auto water_top = Texture("tile/water1.png");
+  inline auto water_bottom = Texture("tile/water2.png");
 
   inline auto mushroom_bot1 = Texture("tile/mushroom_bot1.png");
   inline auto mushroom_bot2 = Texture("tile/mushroom_bot2.png");
@@ -217,6 +222,19 @@ namespace textures{
     Texture("entity/goomba/king1.png")
   };
 
+  inline auto squid1 = Texture("entity/squid/1.png");
+  inline auto squid2 = Texture("entity/squid/2.png");
+
+  inline auto grey_fish_swim = std::array<Texture, 2>{
+    Texture("entity/fish/grey1.png"),
+    Texture("entity/fish/grey2.png")
+  };
+
+  inline auto red_fish_swim = std::array<Texture, 2>{
+    Texture("entity/fish/red1.png"),
+    Texture("entity/fish/red2.png")
+  };
+
   inline auto goomba_walk = std::array<Texture, 2>{
     Texture("entity/goomba/0.png"),
     Texture("entity/goomba/1.png")
@@ -298,6 +316,7 @@ namespace textures{
     Texture("entity/hammerbro/red3.png"),
     Texture("entity/hammerbro/red4.png")
   };
+
   inline auto plant = std::array<Texture, 2>{
     Texture("entity/plant/0.png"),
     Texture("entity/plant/1.png")

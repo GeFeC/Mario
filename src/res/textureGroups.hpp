@@ -9,6 +9,21 @@ namespace texture_groups{
     &textures::coin[2]
   });
 
+  inline const auto squid = TextureGroup({
+    &textures::squid1,
+    &textures::squid2
+  });
+
+  inline const auto grey_fish = TextureGroup({
+    &textures::grey_fish_swim[0],
+    &textures::grey_fish_swim[1]
+  });
+
+  inline const auto red_fish = TextureGroup({
+    &textures::red_fish_swim[0],
+    &textures::red_fish_swim[1]
+  });
+
   inline const auto king_goomba = TextureGroup({
     &textures::king_goomba_walk[0],
     &textures::king_goomba_walk[1]

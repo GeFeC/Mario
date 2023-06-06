@@ -84,6 +84,13 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (any_tile(HillTiles, tile)) put_hill(level, { x, y }, tile);
     else if (any_tile(BushTiles, tile)) put_bush(level, { x, y }, tile);
 
+    else if (tile == Tile::Coin) objects.push(CoinBlockState({ x, y }));
+
+    else if (tile == Tile::QBlockMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Red);
+    else if (tile == Tile::QBlockGreenMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Green);
+    else if (tile == Tile::QBlockCoins) put_q_block_with_coins(level, { x, y });
+    else if (tile == Tile::QBlockFireFlower) put_q_block_with_flower(level, { x, y });
+
     //Entities:    
     else if (tile == Tile::YellowGoomba) objects.push(GoombaState::make_yellow({ x, y }));
     else if (tile == Tile::RedGoomba) objects.push(GoombaState::make_red({ x, y }));
@@ -100,13 +107,9 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::RedHammerbro) objects.push(HammerBroState::make_red({ x, y }));
     else if (tile == Tile::Beetle) objects.push(BeetleState::make({ x, y }));
     else if (tile == Tile::Spike) objects.push(SpikeState::make({ x, y }));
-
-    else if (tile == Tile::Coin) objects.push(CoinBlockState({ x, y }));
-
-    else if (tile == Tile::QBlockMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Red);
-    else if (tile == Tile::QBlockGreenMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Green);
-    else if (tile == Tile::QBlockCoins) put_q_block_with_coins(level, { x, y });
-    else if (tile == Tile::QBlockFireFlower) put_q_block_with_flower(level, { x, y });
+    else if (tile == Tile::GreyFish) objects.push(FishState::make_grey({ x, y }));
+    else if (tile == Tile::RedFish) objects.push(FishState::make_red({ x, y }));
+    else if (tile == Tile::Squid) objects.push(SquidState::make({ x, y }));
 
     else if (tile == Tile::Hitbox) put_hitbox_block(level, { x, y });
     else if (tile == Tile::Finish) level.finish_position = { x, y };
