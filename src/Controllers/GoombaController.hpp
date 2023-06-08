@@ -52,7 +52,6 @@ static auto goomba_controller_base(GoombaState& goomba, LevelState& level){
 }
 
 static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
-  auto& player = level.player;
   goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::goomba_walk);
 
@@ -62,7 +61,6 @@ static auto normal_goomba_controller(GoombaState& goomba, LevelState& level){
 }
 
 static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
-  auto& player = level.player;
   goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::red_goomba_walk);
 
@@ -72,7 +70,6 @@ static auto red_goomba_controller(GoombaState& goomba, LevelState& level){
 }
 
 static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
-  auto& player = level.player;
   goomba_controller_base(goomba, level);
   goomba_run_walk_animation(goomba, textures::yellow_goomba_walk);
 

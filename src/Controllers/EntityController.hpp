@@ -42,7 +42,6 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   //Checking if entity should change direction not to fall from edge
   static constexpr auto Offset = MonsterState::EdgeDetectionOffset;
 
-  const auto x = (entity.position.x) / BlockBase::Size;
   const auto y = (entity.position.y + entity.size.y + Offset) / BlockBase::Size;
   const auto left_x = (entity.position.x + Offset) / BlockBase::Size;
   const auto right_x = (entity.position.x + BlockBase::Size - Offset) / BlockBase::Size;

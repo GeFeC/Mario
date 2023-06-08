@@ -30,7 +30,6 @@ struct Controller<SquidState>{
     if (!squid.is_active) return;
     squid.position.y = std::max(squid.position.y, BlockBase::Size);
 
-    using Direction = SquidState::Direction;
     const auto& player = level.player;
 
     static constexpr auto WalkSpeed = 200.f;
@@ -64,12 +63,11 @@ struct Controller<SquidState>{
       static constexpr auto AttackSpeed = 800.f;
 
       const auto attack_direction = squid.direction | util::as<int>;
-      const auto change = AttackSpeed * window::delta_time;
-      const auto change_up = glm::vec2(attack_direction, 1) * change;
-      const auto change_down = glm::vec2(attack_direction, -1) * change;
+      const auto attack_speed = AttackSpeed * window::delta_time;
+      const auto translation = glm::vec2(attack_direction, -1) * attack_speed;
 
-      squid.position += change_down;
-      squid.attack_distance -= change;
+      squid.position += translation;
+      squid.attack_distance -= attack_speed;;
 
       if (squid.attack_distance <= 0.f){
         squid.attack_cooldown = 1.f;

@@ -15,10 +15,6 @@
 #include <cmath>
 #include <algorithm>
 
-static auto to_grid_coords(const glm::vec2& normal_coords){
-  return glm::ivec2(normal_coords.x / BlockBase::Size, normal_coords.y / BlockBase::Size);
-}
-
 static auto player_detect_collision_above(PlayerState& player, LevelState& level){
   detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
     if (collision_state.distance_above < -player.gravity){

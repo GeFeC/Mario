@@ -11,7 +11,6 @@
 
 static auto koopa_controller_base(KoopaState& koopa, LevelState& level){
   //Interaction with player
-  auto& player = level.player;
   monster_die_when_hit_by_fireball(koopa, level);
   monster_become_active_when_seen(koopa, level);
   

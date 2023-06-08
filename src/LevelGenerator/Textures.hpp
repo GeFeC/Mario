@@ -116,10 +116,6 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
   pair(Tile::Squid, texture_groups::squid),
 };
 
-static auto allocate_texture_if_needed(Tile tile){
-  id_to_texture.at(tile).allocate();
-}
-
 static auto allocated_textures = std::unordered_set<Tile>{};
 
 }

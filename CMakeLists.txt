@@ -32,5 +32,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${libs})
 add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/freetype)
 
+target_compile_options(${PROJECT_NAME} PUBLIC ${FLAGS})
+
 add_dependencies(glfw freetype)
 

@@ -84,8 +84,6 @@ struct Controller<PlatformState>{
       platform.timer = glm::radians(-90.f * platform.move_distance() / PlatformSpeed);
     }
 
-    auto& player = level.player;
-
     if (!platform.is_active) return;
 
     platform.timer += window::delta_time;

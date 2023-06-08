@@ -146,7 +146,6 @@ struct Array : std::tuple<std::vector<Ts>...>{
     for_each([&](auto& object){
       using object_type = std::decay_t<decltype(object)>;
       using fun_info = FunctionInfo<decltype(Controller<object_type>::run)>;
-      using fun_params_t = typename fun_info::params_types;
       using fun_param_ptrs_t = typename fun_info::params_ptr_types;
       const auto params = fun_param_ptrs_t{};
 
