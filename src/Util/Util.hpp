@@ -15,6 +15,7 @@ namespace util{
   template<typename T>
   using vector2d = std::vector<std::vector<T>>;
 
+  //Randomising:
   inline auto rng = std::mt19937(static_cast<std::mt19937::result_type>(std::time(0)));
 
   inline auto random_value(int min, int max){
@@ -22,22 +23,7 @@ namespace util{
     return engine(rng);
   }
 
-  struct Rect{
-    glm::vec2 position;
-    glm::vec2 size;
-
-    Rect() = default;
-
-    template<typename T>
-    Rect(const T& t){
-      position = t.position;
-      size = t.size;
-    }
-
-    Rect(const glm::vec2& pos, const glm::vec2& size)
-    : position(pos), size(size) {}
-  };
-
+  //Ranges:
   struct Interval{
     float min, max;
   };
@@ -46,6 +32,16 @@ namespace util{
     return Interval{ min, max };
   }
 
+  inline auto operator==(float value, const util::Interval& interval){
+    const auto [min, max] = interval;
+    return value >= min && value <= max;
+  }
+
+  inline auto operator!=(float value, const util::Interval& interval){
+    return !(value == interval);
+  }
+
+  //Loops:
   template<std::size_t N = 0, typename Callable, typename... Ts>
   inline auto tuple_for_each(std::tuple<Ts...>& tuple, const Callable& callable){
     callable(std::get<N>(tuple));
@@ -87,17 +83,9 @@ namespace util{
     );
   }
 
+  //Conversion:
   inline auto make_pair_from_vec2(const glm::vec2& vec2){
     return std::make_pair(vec2.x, vec2.y);
-  }
-
-  inline auto operator==(float value, const util::Interval& interval){
-    const auto [min, max] = interval;
-    return value >= min && value <= max;
-  }
-
-  inline auto operator!=(float value, const util::Interval& interval){
-    return !(value == interval);
   }
 
   template<typename T>
@@ -111,11 +99,30 @@ namespace util{
     return static_cast<T>(obj);
   }
 
+  //Files:
   static auto get_file_content(const std::string& path){
     auto file = std::ifstream(path);
     auto ss = std::stringstream();
     ss << file.rdbuf();
 
     return ss.str();
+  }
+
+  //Enums:
+  template<typename Enum>
+  static auto enum_add(Enum enum_value, float value){
+    const auto int_value = enum_value | as<int>;
+    return (int_value + value) | as<Enum>;
+  }
+
+  template<typename Enum>
+  static auto enum_multiply(Enum enum_value, float value){
+    const auto int_value = enum_value | as<int>;
+    return (int_value * value) | as<Enum>;
+  }
+
+  template<typename Enum, typename Function>
+  static auto enum_modify(Enum enum_value, const Function& function){
+    return function(enum_value | as<int>);
   }
 }

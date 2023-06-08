@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Controllers/CollisionController.hpp"
 #include "Renderer/Renderer.hpp"
 
 #include "States/BlockState.hpp"
@@ -14,7 +15,7 @@
 
 #include "PolyControllers.hpp"
 
-static auto is_component_on_screen(const util::Rect& component, const glm::vec2& offset){
+static auto is_component_on_screen(const CollisionRect& component, const glm::vec2& offset){
   using config::FrameBufferSize;
 
   const auto& position = component.position;

@@ -20,18 +20,18 @@ static auto detect_entity_collision_with_level = [](EntityState& entity, const L
   for (const auto& block : level.game_objects.get_vec<BlockState>()){
     if (!block.is_solid) continue;
 
-    const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
+    const auto collision_state = collision_controller(CollisionRect(entity), CollisionRect(block));
     callable(collision_state);
   }
 
   //Platforms
   level.game_objects.for_each_type<PlatformState, LoopedPlatformState>([&](const auto& platform){
-    const auto platform_rect = util::Rect(
+    const auto platform_rect = CollisionRect(
       platform.position,
       platform.size()
     );
 
-    const auto collision_state = collision_controller(util::Rect(entity), platform_rect);
+    const auto collision_state = collision_controller(CollisionRect(entity), platform_rect);
     callable(collision_state);
   });
 
@@ -127,7 +127,7 @@ static auto entity_gravity(EntityState& entity, const LevelState& level){
       entity.gravity = 0.f;
     }
 
-    if (collision_state.distance_below == util::in_range(-CollisionOffset, position_increaser)){
+    if (collision_state.distance_below == util::in_range(-CollisionPadding, position_increaser)){
       entity.is_on_ground = true;
       position_increaser = collision_state.distance_below;
     }
@@ -137,7 +137,7 @@ static auto entity_gravity(EntityState& entity, const LevelState& level){
 static auto player_is_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
   if (!entity.can_be_stomped) return false;
 
-  if (collision::is_hovering_in_x(player, entity)){
+  if (collision_intersects_in_x(player, entity)){
     const auto distance = entity.position.y - player.position.y - player.size.y;
     const auto hitbox_tolerance = entity.can_be_stomped
       ? -entity.size.y + BlockBase::Size / 6.f
@@ -155,7 +155,7 @@ static auto entity_kill_player_on_touch(const EntityState& entity, PlayerState& 
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (player_is_on_entity(player, entity)) return;
-  if (!collision::is_hovering(player, entity)) return;
+  if (!collision_intersects(player, entity)) return;
 
   if (player.growth == PlayerState::Growth::Big){
     player.is_shrinking = true;

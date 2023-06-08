@@ -15,7 +15,7 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
 
   //Interaction with player
   auto& player = level.player;
-  if (collision::is_hovering(player, flower) && flower.is_visible){
+  if (collision_intersects(player, flower) && flower.is_visible){
     flower.points_generator.item().set_active(
       FireFlowerState::RewardForEating,
       flower.position

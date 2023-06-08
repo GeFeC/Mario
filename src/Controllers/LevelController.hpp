@@ -71,7 +71,7 @@ static auto level_finish(LevelState& level, AppState& app){
       level.finish_delay -= window::delta_time;
 
       if (level.finish_delay <= 0.f){
-        app.current_frame = (app.current_frame | util::as<int>) + 1 | util::as<AppState::Frame>;
+        app.current_frame = util::enum_add(app.current_frame, 1);
         app.current_level.current_checkpoint = LevelState::CheckpointNotSet;
       }
     }
@@ -84,9 +84,9 @@ static auto level_finish(LevelState& level, AppState& app){
 }
 
 static auto get_worlds_first_level(AppState::Frame level){
-  const auto level_number = level | util::as<int>;
+  const auto world_number = util::enum_multiply(level, 1.f / config::LevelsInWorld);
 
-  return ((level_number / config::LevelsInWorld) * config::LevelsInWorld) | util::as<AppState::Frame>;
+  return util::enum_multiply(world_number, config::LevelsInWorld);
 }
 
 static auto level_restart_when_player_fell_out(AppState& app){
@@ -114,7 +114,10 @@ static auto level_restart_when_player_fell_out(AppState& app){
       level.stats = StatsState{};
       app.current_frame = get_worlds_first_level(app.current_frame);
 
-      level.stats.level_major = (app.current_frame | util::as<int>) / config::LevelsInWorld + 1;
+      level.stats.level_major = util::enum_modify(app.current_frame, [](auto value){
+        return value / config::LevelsInWorld + 1;
+      });
+
       level.current_checkpoint = LevelState::CheckpointNotSet;
     }
   }

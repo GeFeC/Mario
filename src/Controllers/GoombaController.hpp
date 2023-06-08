@@ -35,10 +35,7 @@ static auto goomba_controller_base(GoombaState& goomba, LevelState& level){
   entity_gravity(goomba, level);
   entity_movement(goomba, level);
   monster_turn_around(goomba);
-
-  for (auto& p : goomba.points_generator.items){
-    points_particles_controller(p);
-  }
+  monster_points_particles(goomba);
 
   if (goomba.is_dead){
     goomba.death_delay -= window::delta_time;

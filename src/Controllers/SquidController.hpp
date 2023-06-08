@@ -16,10 +16,7 @@ struct Controller<SquidState>{
     monster_become_active_when_seen(squid, level);    
     monster_die_when_hit_by_fireball(squid, level);
     monster_kill_player_on_touch(squid, level.player);
-
-    for (auto& p : squid.points_generator.items){
-      points_particles_controller(p);
-    }
+    monster_points_particles(squid);
 
     if (squid.was_hit){
       entity_gravity(squid, level);

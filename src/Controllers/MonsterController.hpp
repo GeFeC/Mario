@@ -1,6 +1,13 @@
 #pragma once
 
 #include "Controllers/EntityController.hpp"
+#include "Controllers/PointsParticlesController.hpp"
+
+static auto monster_points_particles(MonsterState& monster){
+  for (auto& p : monster.points_generator.items){
+    points_particles_controller(p);
+  }
+}
 
 static auto monster_kill_player_on_touch(const MonsterState& monster, PlayerState& player){
   if (monster.was_hit) return;
@@ -67,7 +74,7 @@ static auto monster_bounce_die(MonsterState& entity, StatsState& stats){
 }
 
 static auto monster_is_hit_by_fireball(const MonsterState& entity, const FireballState& fireball){
-  return collision::is_hovering(fireball, entity) && fireball.is_active && entity.is_active && !entity.was_hit;
+  return collision_intersects(fireball, entity) && fireball.is_active && entity.is_active && !entity.was_hit;
 }
 
 template<typename Callable>
@@ -107,7 +114,7 @@ static auto monster_react_when_on_bouncing_block(
     if (block.bounce_state.is_bouncing){
       if (entity.is_dead || !entity.should_collide) return;
 
-      const auto collision_state = collision_controller(util::Rect(entity), util::Rect(block));
+      const auto collision_state = collision_controller(CollisionRect(entity), CollisionRect(block));
       
       if (collision_state.distance_below == util::in_range(-15.f, 0.f)){
         reaction();

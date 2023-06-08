@@ -17,10 +17,7 @@ struct Controller<SpikeState>{
     entity_gravity(spike, level);
     entity_movement(spike, level);
     monster_turn_around(spike);
-
-    for (auto& p : spike.points_generator.items){
-      points_particles_controller(p);
-    }
+    monster_points_particles(spike);
 
     monster_run_movement_animation(spike, textures::spike_walk);
 

@@ -17,9 +17,7 @@ static auto shell_monster_controller(
   entity_movement(entity, level);
   monster_turn_around(entity);
 
-  for (auto& p : entity.points_generator.items){
-    points_particles_controller(p);
-  }
+  monster_points_particles(entity);
 
   if (entity.is_dead || entity.in_shell) return;
 
@@ -47,7 +45,7 @@ static auto shell_monster_push_shell_on_player_touch(
   if (player.is_dead) return;
   if (entity.is_dead) return;
   if (!entity.should_collide) return;
-  if (!collision::is_hovering(player, entity)) return;
+  if (!collision_intersects(player, entity)) return;
 
   entity.shell_push_cooldown = glfwGetTime();
   entity.walk_speed = entity.shell_speed;
@@ -93,7 +91,7 @@ static auto shell_monster_did_hit_monster_with_shell(
   if (monster.acceleration.left != monster.shell_speed && monster.acceleration.right != monster.shell_speed) 
     return false;
 
-  return collision::is_hovering(monster, target);
+  return collision_intersects(monster, target);
 }
 
 static auto shell_monster_handle_shell(

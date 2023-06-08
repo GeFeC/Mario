@@ -13,10 +13,7 @@ static auto fish_controller_base(FishState& fish, LevelState& level){
   entity_movement(fish, level);
   entity_kill_player_on_touch(fish, level.player);
   monster_die_when_hit_by_fireball(fish, level);
-
-  for (auto& p : fish.points_generator.items){
-    points_particles_controller(p);
-  }
+  monster_points_particles(fish);
 
   if (fish.was_hit) {
     entity_gravity(fish, level);
