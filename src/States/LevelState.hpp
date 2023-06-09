@@ -59,8 +59,6 @@ struct LevelState{
   static constexpr auto MaxVerticalLevelSize = glm::vec2(BlocksInRow, 150);
   static constexpr auto BossLevelSize = glm::vec2(BlocksInRow, BlocksInColumn);
 
-  static constexpr auto WaterLevel = 1.f;
-
   static constexpr auto CheckpointNotSet = glm::vec2(-1);
   static constexpr auto MinPlayerRelativeY = 5 * BlockBase::Size;
   static constexpr auto MaxPlayerRelativeY = 9 * BlockBase::Size;
@@ -143,7 +141,10 @@ struct LevelState{
   util::InfiniteCounter purple_koopa_counter = util::InfiniteCounter(10.f, 10.f);
 
   float purple_flying_koopa_timer = 0.f;
+
   float cloud_offset = 0.f;
+  float water_level = BlocksInColumn;
+
   float load_delay = 3.f;
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;

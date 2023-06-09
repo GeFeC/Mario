@@ -13,9 +13,24 @@ struct FishState : MonsterState{
   float current_offset_y = 0.f;
   float max_offset = 0.f;
 
+  bool started_jumping = false;
+
   enum class Type{
     Grey, Red
   } type;
+
+  enum class MotionType{
+    Swimming, Jumping
+  } motion_type = MotionType::Swimming;
+
+  enum class JumpDirection{
+    Left, Right
+  } jump_direction = JumpDirection::Left;
+
+  static auto random_value(int min, int max){
+    auto range = std::uniform_int_distribution<>(min, max);
+    return range(rng);
+  }
 
 private:
   inline static auto rng = std::mt19937(100);
@@ -33,8 +48,7 @@ private:
     fish.can_be_stomped = false;
 
     //Randomise max offset
-    auto range = std::uniform_int_distribution<>(-30, 30);
-    fish.max_offset = range(rng) * 2.f; 
+    fish.max_offset = random_value(-30, 30) * 2.f;
 
     return fish;
   }
@@ -56,6 +70,16 @@ public:
     fish.walk_speed = 2.f;
     fish.set_direction(fish.direction);
     fish.current_texture = &textures::red_fish_swim[0];
+
+    return fish;
+  }
+
+  static auto make_jumping(const glm::vec2& position){
+    auto fish = make_red(position);
+
+    fish.motion_type = FishState::MotionType::Jumping;
+    fish.jump_direction = FishState::random_value(0, 1) | util::as<FishState::JumpDirection>;
+    fish.can_be_stomped = true;
 
     return fish;
   }

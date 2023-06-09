@@ -25,6 +25,7 @@ inline auto stone = Texture("tile/stone.png");
 inline auto green_ground = Texture("tile/greenground.png");
 inline auto water_ground = Texture("tile/waterground.png");
 inline auto coral = Texture("tile/coral.png");
+inline auto bridge = Texture("tile/bridge.png");
 
 inline auto water_top = Texture("tile/water1.png");
 inline auto water_bottom = Texture("tile/water2.png");

@@ -27,7 +27,7 @@ static auto render_water(const LevelState& level, const glm::vec2& offset){
   if (level.type == LevelState::Type::Horizontal){
     for (int i = 0; i < LevelState::HorizontalLevelSize.x + 1; ++i){ //one more than level size because of animation
       auto block = BlockBase{};
-      block.position = { i * BlockBase::Size - waves_offset, LevelState::WaterLevel * BlockBase::Size };
+      block.position = { i * BlockBase::Size - waves_offset, level.water_level * BlockBase::Size };
       block.size = glm::vec2(BlockBase::Size);
       block.texture = &textures::water_top;
       block.alpha = WaterTransparency;
@@ -45,7 +45,7 @@ static auto render_water(const LevelState& level, const glm::vec2& offset){
       block.alpha = WaterTransparency;
 
       BlocksView<BlockState>::run(block, offset);
-    }, std::make_pair(0.f, LevelState::WaterLevel + 1.f), water_area);
+    }, std::make_pair(0.f, level.water_level + 1.f), water_area);
   }
 }
 
@@ -199,9 +199,7 @@ static auto render_level(const LevelState& level){
     if (!level.is_finished) render_player(level.player, level.camera_offset);
   });
 
-  if (level.biome == LevelState::Biome::Underwater){
-    render_water(level, level.camera_offset);
-  }
+  render_water(level, level.camera_offset);
 
   renderer::draw_with_shadow([&]{
     if (level.load_delay > 0.f){

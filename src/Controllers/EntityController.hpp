@@ -177,7 +177,7 @@ static auto kill_player_on_touch(const EntityState& entity, PlayerState& player)
 
 static auto was_stomped(const PlayerState& player, const EntityState& entity) -> bool{
   if (!entity.can_be_stomped) return false;
-  if (!entity.should_collide) return false;
+  if (entity.was_hit) return false;
   if (entity.is_dead) return false;
   if (player.is_dead) return false;
   if (player.gravity < 0) return false;
