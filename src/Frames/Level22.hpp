@@ -7,7 +7,9 @@
 #include "States/FlyingKoopaState.hpp"
 #include "res/textureGroups.hpp"
 
-static auto run_frame_level22(AppState& app){
+namespace mario::frames{
+
+static auto run_level22(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level22;
   level.type = LevelState::Type::Vertical;
@@ -18,7 +20,7 @@ static auto run_frame_level22(AppState& app){
     &textures::bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
     level.cloud_textures = &texture_groups::blue_cloud;
@@ -37,3 +39,5 @@ static auto run_frame_level22(AppState& app){
     level_generator::put_q_block_with_coins(level, { 2, 103 }, 8);
   });
 }
+
+} //namespace mario::frames

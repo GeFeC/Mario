@@ -8,23 +8,25 @@
 #include "res/textures.hpp"
 #include "config.hpp"
 
-static auto shell_monster_controller(
+namespace mario::shell_monster_controller{
+
+static auto controller(
     ShellMonsterState& entity, 
     const LevelState& level, 
-    const std::array<Texture, 2>& walk_frames
+    const std::array<renderer::Texture, 2>& walk_frames
 ){
-  entity_gravity(entity, level);
-  entity_movement(entity, level);
-  monster_turn_around(entity);
+  entity_controller::gravity(entity, level);
+  entity_controller::movement(entity, level);
+  monster_controller::turn_around(entity);
 
-  monster_points_particles(entity);
+  monster_controller::points_particles(entity);
 
   if (entity.is_dead || entity.in_shell) return;
 
-  monster_run_movement_animation(entity, walk_frames);
+  monster_controller::run_movement_animation(entity, walk_frames);
 }
 
-static auto shell_monster_hide_in_shell(ShellMonsterState& entity, const Texture& dead_texture){
+static auto hide_in_shell(ShellMonsterState& entity, const renderer::Texture& dead_texture){
   entity.in_shell = true;
   entity.current_texture = &dead_texture;
   entity.acceleration.left = entity.acceleration.right = 0.f;
@@ -36,7 +38,7 @@ static auto shell_monster_hide_in_shell(ShellMonsterState& entity, const Texture
   entity.position.y += previous_size - entity.size.y;
 }
 
-static auto shell_monster_push_shell_on_player_touch(
+static auto push_shell_on_player_touch(
     ShellMonsterState& entity, 
     LevelState& level
 ){
@@ -45,7 +47,7 @@ static auto shell_monster_push_shell_on_player_touch(
   if (player.is_dead) return;
   if (entity.is_dead) return;
   if (!entity.should_collide) return;
-  if (!collision_intersects(player, entity)) return;
+  if (!collision_controller::intersects(player, entity)) return;
 
   entity.shell_push_cooldown = glfwGetTime();
   entity.walk_speed = entity.shell_speed;
@@ -65,7 +67,7 @@ static auto shell_monster_push_shell_on_player_touch(
   entity.set_direction(EntityState::DirectionLeft);
 };
 
-static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
+static auto get_hitbox(const ShellMonsterState& entity){
   auto hitbox = ShellMonsterState();
   hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - BlockBase::Size);
   hitbox.size = glm::vec2(BlockBase::Size);
@@ -78,26 +80,26 @@ static auto shell_monster_get_hitbox(const ShellMonsterState& entity){
   return hitbox;
 }
 
-static auto shell_monster_did_hit_monster_with_shell(
+static auto did_hit_monster_with_shell(
     const ShellMonsterState& monster, 
     const MonsterState& target 
 ){
   if (&target == &monster) return false;
   if (!target.should_collide) return false;
   if (!target.is_active) return false;
-  if (monster.vertical_flip == Drawable::Flip::UseFlip) return false;
+  if (monster.vertical_flip == EntityState::Flip::UseFlip) return false;
   if (!monster.in_shell) return false;
 
   if (monster.acceleration.left != monster.shell_speed && monster.acceleration.right != monster.shell_speed) 
     return false;
 
-  return collision_intersects(monster, target);
+  return collision_controller::intersects(monster, target);
 }
 
-static auto shell_monster_handle_shell(
+static auto handle_shell(
     ShellMonsterState& entity, 
     LevelState& level,
-    const Texture& dead_texture
+    const renderer::Texture& dead_texture
 ){
   if (entity.in_shell){
     entity.fall_from_edge = true;
@@ -105,14 +107,14 @@ static auto shell_monster_handle_shell(
 
   auto& player = level.player;
   if (entity.in_shell && entity.walk_speed == 0.f){
-    shell_monster_push_shell_on_player_touch(entity, level);
+    push_shell_on_player_touch(entity, level);
     return;
   }
 
-  auto entity_hitbox = shell_monster_get_hitbox(entity);
+  auto entity_hitbox = get_hitbox(entity);
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
-    monster_die_when_stomped(entity, level, [&]{ 
-      shell_monster_hide_in_shell(entity, dead_texture); 
+    monster_controller::die_when_stomped(entity, level, [&]{ 
+      hide_in_shell(entity, dead_texture); 
     });
   }
 
@@ -122,15 +124,15 @@ static auto shell_monster_handle_shell(
     if (distance < 0 && entity.acceleration.left == entity.shell_speed) return;
 
     if (entity.walk_speed > 0){
-      monster_kill_player_on_touch(entity_hitbox, player);
+      monster_controller::kill_player_on_touch(entity_hitbox, player);
     }
   }(); 
 
 
   auto shell_kill_entity = [&](MonsterState& target_entity){
-    if (!shell_monster_did_hit_monster_with_shell(entity, target_entity)) return;
+    if (!did_hit_monster_with_shell(entity, target_entity)) return;
 
-    monster_bounce_die(target_entity, level.stats);
+    monster_controller::bounce_die(target_entity, level.stats);
   };
 
   //Killing Entities with shell
@@ -150,4 +152,4 @@ static auto shell_monster_handle_shell(
   });
 };
 
-
+} //namespace mario::shell_monster_controller

@@ -2,7 +2,6 @@
 
 #include "Controllers/CollisionController.hpp"
 #include "Controllers/EntityController.hpp"
-#include "Controllers/GoombaController.hpp"
 #include "Controllers/FireballController.hpp"
 #include "States/EntityState.hpp"
 
@@ -15,8 +14,10 @@
 #include <cmath>
 #include <algorithm>
 
-static auto player_detect_collision_above(PlayerState& player, LevelState& level){
-  detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
+namespace mario::player_controller{
+
+static auto detect_collision_above(PlayerState& player, LevelState& level){
+  entity_controller::detect_collision_with_level(player, level, [&](const auto& collision_state){
     if (collision_state.distance_above < -player.gravity){
       player.gravity = -collision_state.distance_above;
     }
@@ -27,7 +28,7 @@ static auto player_detect_collision_above(PlayerState& player, LevelState& level
   });
 }
 
-static auto player_swim(PlayerState& player, LevelState& level){
+static auto swim(PlayerState& player, LevelState& level){
   player.swim_counter.run();
 
   if (player.is_dead) return;
@@ -50,10 +51,10 @@ static auto player_swim(PlayerState& player, LevelState& level){
     player.swim_cooldown = false;
   }
 
-  player_detect_collision_above(player, level);
+  detect_collision_above(player, level);
 }
 
-static auto player_jump(PlayerState& player, LevelState& level){
+static auto jump(PlayerState& player, LevelState& level){
   if (player.is_dead) return;
 
   if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown){
@@ -62,19 +63,19 @@ static auto player_jump(PlayerState& player, LevelState& level){
     player.jump_cooldown = true;
   }
 
-  player_detect_collision_above(player, level);
+  detect_collision_above(player, level);
 }
 
-static auto player_gravity(PlayerState& player, LevelState& level){
+static auto gravity(PlayerState& player, LevelState& level){
   player.gravity_boost = 1.f;
   if (!player.is_dead && player.gravity < 0 && !window::is_key_pressed(GLFW_KEY_UP)){
     player.gravity_boost = 2.f;
   }
 
-  entity_gravity(player, level);
+  entity_controller::gravity(player, level);
 }
 
-static auto player_movement(PlayerState& player, LevelState& level){
+static auto movement(PlayerState& player, LevelState& level){
   if (!player.can_move) return;
 
   const auto Right = EntityState::DirectionRight;
@@ -120,7 +121,7 @@ static auto player_movement(PlayerState& player, LevelState& level){
   player.acceleration.right = std::clamp(player.acceleration.right, 0.f, player.max_speed);
 }
 
-static auto player_grow_up(PlayerState& player){
+static auto grow(PlayerState& player){
   player.growth_counter.run();
   player.grow_state = player.growth_counter.int_value();
 
@@ -130,7 +131,7 @@ static auto player_grow_up(PlayerState& player){
   }
 }
 
-static auto player_shrink_down(PlayerState& player){
+static auto shrink(PlayerState& player){
   player.form = PlayerState::Form::Normal;
   player.growth_counter.run();
   player.grow_state = 2 - player.growth_counter.int_value();
@@ -144,7 +145,7 @@ static auto player_shrink_down(PlayerState& player){
   }
 }
 
-static auto player_invincibility(PlayerState& player){
+static auto invincibility(PlayerState& player){
   if (player.invincibility_delay <= 0.f) {
     player.is_visible = true;
     return;
@@ -158,7 +159,7 @@ static auto player_invincibility(PlayerState& player){
   player.invincibility_delay -= window::delta_time;
 }
 
-static auto player_update_growth(PlayerState& player){
+static auto update_growth(PlayerState& player){
   if (!player.is_growing_up && !player.is_shrinking) return;
 
   const auto grow_state = player.grow_state | util::as<int>;
@@ -185,7 +186,7 @@ static auto player_update_growth(PlayerState& player){
   }
 }
 
-static auto player_transform_to_fire(PlayerState& player){
+static auto transform_to_fire(PlayerState& player){
   player.transformation_counter.run();
   const auto transformation_state = player.transformation_counter.int_value();
 
@@ -198,7 +199,7 @@ static auto player_transform_to_fire(PlayerState& player){
   }
 }
 
-static auto player_textures(PlayerState& player, const LevelState& level){
+static auto textures(PlayerState& player, const LevelState& level){
   player.current_texture = player.default_texture();
 
   if (player.is_growing_up || player.is_shrinking) return;
@@ -245,7 +246,7 @@ static auto player_textures(PlayerState& player, const LevelState& level){
   }
 }
 
-static auto player_death(PlayerState& player){
+static auto death(PlayerState& player){
   if (player.is_dead && player.death_delay > 0.f){
     player.death_delay -= window::delta_time;
   }
@@ -258,13 +259,13 @@ static auto player_death(PlayerState& player){
   }
 }
 
-static auto player_squat(PlayerState& player, LevelState& level){
+static auto squat(PlayerState& player, LevelState& level){
   if (player.is_on_ground){
     player.mobs_killed_in_row = 1;
   }
 
   auto is_forced_to_squat = false;
-  detect_entity_collision_with_level(player, level, [&](const auto& collision_state){
+  entity_controller::detect_collision_with_level(player, level, [&](const auto& collision_state){
     if (collision_state.distance_above == util::in_range(0, 20) && player.is_squating){
       is_forced_to_squat = true;
     }
@@ -290,9 +291,9 @@ static auto player_squat(PlayerState& player, LevelState& level){
   }
 }
 
-static auto player_fireballs(PlayerState& player, const LevelState& level){
+static auto fireballs(PlayerState& player, const LevelState& level){
   for (auto& fireball : player.fireballs){
-    fireball_controller(fireball, level); 
+    fireball_controller::controller(fireball, level); 
   }
 
   if (player.form != PlayerState::Form::Fire) return;
@@ -317,40 +318,42 @@ static auto player_fireballs(PlayerState& player, const LevelState& level){
   fireball.is_visible = true;
 }
 
-static auto player_controller(PlayerState& player, LevelState& level) -> void{
+static auto controller(PlayerState& player, LevelState& level) -> void{
   if (player.is_changing_to_fire){
-    player_transform_to_fire(player);
+    transform_to_fire(player);
   }
   else if (player.is_growing_up){
-    player_grow_up(player);
+    grow(player);
   }
   else if (player.is_shrinking){
-    player_shrink_down(player);
+    shrink(player);
   }
   else{
-    player_movement(player, level);
-    entity_movement(player, level);
+    movement(player, level);
+    entity_controller::movement(player, level);
 
     if (level.biome == LevelState::Biome::Underwater && player.position.y < config::FrameBufferSize.y){
-      player_swim(player, level);
+      swim(player, level);
     }
     else{
-      player_jump(player, level);
+      jump(player, level);
     }
 
-    player_gravity(player, level);
-    player_squat(player, level);
-    player_invincibility(player);
-    player_fireballs(player, level);
+    gravity(player, level);
+    squat(player, level);
+    invincibility(player);
+    fireballs(player, level);
 
-    player_death(player);
+    death(player);
   } 
 
-  player_update_growth(player);
-  player_textures(player, level);
+  update_growth(player);
+  textures(player, level);
 }
 
-static auto player_can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
+static auto can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
+  using collision_controller::CollisionPadding;
+
   if (player.direction == EntityState::DirectionLeft){
     return player.position.x - block.position.x 
       == util::in_range(-CollisionPadding, block.size.x - CollisionPadding);
@@ -360,14 +363,16 @@ static auto player_can_hit_block_above(const PlayerState& player, const Bouncing
     == util::in_range(-player.size.x + CollisionPadding, CollisionPadding);
 }
 
-static auto player_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
+static auto did_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
   if (player.is_dead) return false;
 
   const auto was_block_hit_by_player 
     = (player.position.y - block.position.y - block.size.y) == util::in_range(-10, -5);
 
   return 
-    player_can_hit_block_above(player, block) && 
+    can_hit_block_above(player, block) && 
     was_block_hit_by_player && 
     !block.bounce_state.is_bouncing;
 }
+
+} //namespace mario::player_controller

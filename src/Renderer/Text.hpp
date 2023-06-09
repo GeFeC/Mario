@@ -11,6 +11,8 @@
 #include <vector>
 #include <algorithm>
 
+namespace mario::renderer{
+
 class Text :public Drawable{
 private:
   struct Glyph : Drawable{
@@ -156,3 +158,5 @@ public:
     }
   }
 };
+
+} //namespace mario::renderer

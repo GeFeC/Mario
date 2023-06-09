@@ -4,7 +4,9 @@
 #include "Window.hpp"
 #include <vector>
 
-inline auto blink_controller(){
+namespace mario{
+
+static auto blink_controller(){
   static auto blink_counter = 0.f;
   auto blink_state = 0;
 
@@ -23,3 +25,5 @@ inline auto blink_controller(){
 
   return blink_state;
 }
+
+} //namespace mario

@@ -7,7 +7,9 @@
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
-static auto run_frame_level15(AppState& app){
+namespace mario::frames{
+
+static auto run_level15(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level15;
   level.type = LevelState::Type::Vertical;
@@ -19,7 +21,7 @@ static auto run_frame_level15(AppState& app){
     &textures::mushroom_bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
@@ -57,3 +59,5 @@ static auto run_frame_level15(AppState& app){
     level_generator::generate_level(level, "level15_2.csv");
   });
 }
+
+} //namespace mario::frames

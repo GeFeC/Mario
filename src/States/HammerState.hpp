@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct HammerState : MonsterState{
   HammerState(){
     position = glm::vec2(-util::BigValue);
@@ -12,3 +14,5 @@ struct HammerState : MonsterState{
     should_collide = false;
   }
 };
+
+} //namespace mario

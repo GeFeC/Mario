@@ -3,19 +3,21 @@
 #include "Controllers/EntityController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 
-static auto monster_points_particles(MonsterState& monster){
+namespace mario::monster_controller{
+
+static auto points_particles(MonsterState& monster){
   for (auto& p : monster.points_generator.items){
     points_particles_controller(p);
   }
 }
 
-static auto monster_kill_player_on_touch(const MonsterState& monster, PlayerState& player){
+static auto kill_player_on_touch(const MonsterState& monster, PlayerState& player){
   if (monster.was_hit) return;
-  entity_kill_player_on_touch(monster | util::as<EntityState>, player);
+  entity_controller::kill_player_on_touch(monster | util::as<EntityState>, player);
 };
 
 template<typename Function>
-static auto monster_die_when_stomped(
+static auto die_when_stomped(
     MonsterState& entity, 
     LevelState& level,
     Function set_entity_dead
@@ -25,7 +27,7 @@ static auto monster_die_when_stomped(
   auto& player = level.player;
   auto& stats = level.stats;
 
-  if (entity_was_stomped(player, entity)){
+  if (entity_controller::was_stomped(player, entity)){
     set_entity_dead();
 
     player.gravity = PlayerState::BouncePower;
@@ -41,7 +43,7 @@ static auto monster_die_when_stomped(
   return false;
 };
 
-static auto monster_become_active_when_seen(MonsterState& entity, const LevelState& level){
+static auto become_active_when_seen(MonsterState& entity, const LevelState& level){
   if (entity.is_in_q_block) return;
 
   const auto& player = level.player;
@@ -59,51 +61,51 @@ static auto monster_become_active_when_seen(MonsterState& entity, const LevelSta
   entity.is_active = true;
 };
 
-static auto monster_bounce_out(MonsterState& entity){
+static auto bounce_out(MonsterState& entity){
   entity.gravity = MonsterState::BounceDiePower;
   entity.should_collide = false;
-  entity.vertical_flip = Drawable::Flip::UseFlip;
+  entity.vertical_flip = EntityState::Flip::UseFlip;
 }
 
-static auto monster_bounce_die(MonsterState& entity, StatsState& stats){
+static auto bounce_die(MonsterState& entity, StatsState& stats){
   entity.was_hit = true;
-  monster_bounce_out(entity);
+  bounce_out(entity);
 
   stats.score += entity.reward_for_killing;
   entity.points_generator.item().set_active(entity.reward_for_killing, entity.position);
 }
 
-static auto monster_is_hit_by_fireball(const MonsterState& entity, const FireballState& fireball){
-  return collision_intersects(fireball, entity) && fireball.is_active && entity.is_active && !entity.was_hit;
+static auto is_hit_by_fireball(const MonsterState& entity, const FireballState& fireball){
+  return collision_controller::intersects(fireball, entity) && fireball.is_active && entity.is_active && !entity.was_hit;
 }
 
 template<typename Callable>
-static auto monster_react_when_hit_by_fireball(MonsterState& entity, LevelState& level, const Callable& callback){
+static auto react_when_hit_by_fireball(MonsterState& entity, LevelState& level, const Callable& callback){
   for (auto& fireball : level.player.fireballs){
-    if (monster_is_hit_by_fireball(entity, fireball)){
+    if (is_hit_by_fireball(entity, fireball)){
       callback(fireball);
     }
   } 
 }
 
-static auto monster_die_when_hit_by_fireball(MonsterState& entity, LevelState& level){
-  monster_react_when_hit_by_fireball(entity, level, [&](FireballState& fireball){
-    monster_bounce_die(entity, level.stats);
+static auto die_when_hit_by_fireball(MonsterState& entity, LevelState& level){
+  react_when_hit_by_fireball(entity, level, [&](FireballState& fireball){
+    bounce_die(entity, level.stats);
 
     fireball.acceleration.left = fireball.acceleration.right = 0.f;
   });
 };  
 
-static auto monster_endure_fireball(MonsterState& entity, PlayerState& player){
+static auto endure_fireball(MonsterState& entity, PlayerState& player){
   for (auto& fireball : player.fireballs){
-    if (monster_is_hit_by_fireball(entity, fireball)){
+    if (is_hit_by_fireball(entity, fireball)){
       fireball.acceleration.left = fireball.acceleration.right = 0.f;
     }
   } 
 };  
 
 template<typename Reaction>
-static auto monster_react_when_on_bouncing_block(
+static auto react_when_on_bouncing_block(
     MonsterState& entity, 
     const LevelState& level,
     Reaction reaction 
@@ -114,7 +116,10 @@ static auto monster_react_when_on_bouncing_block(
     if (block.bounce_state.is_bouncing){
       if (entity.is_dead || !entity.should_collide) return;
 
-      const auto collision_state = collision_controller(CollisionRect(entity), CollisionRect(block));
+      const auto collision_state = collision_controller::controller(
+        collision_controller::Rect(entity), 
+        collision_controller::Rect(block)
+      );
       
       if (collision_state.distance_below == util::in_range(-15.f, 0.f)){
         reaction();
@@ -129,26 +134,26 @@ static auto monster_react_when_on_bouncing_block(
   objects.for_each_template<QBlockState>(detect_bounce_and_react);
 }
 
-static auto monster_die_when_on_bouncing_block(MonsterState& entity, LevelState& level){
-  monster_react_when_on_bouncing_block(entity, level, [&]{
-    monster_bounce_die(entity, level.stats);
+static auto die_when_on_bouncing_block(MonsterState& entity, LevelState& level){
+  monster_controller::react_when_on_bouncing_block(entity, level, [&]{
+    bounce_die(entity, level.stats);
   });
 }
 
 //For mushrooms:
-static auto monster_bounce_when_on_bouncing_block(MonsterState& entity, LevelState& level){
-  monster_react_when_on_bouncing_block(entity, level, [&]{
+static auto bounce_when_on_bouncing_block(MonsterState& entity, LevelState& level){
+  monster_controller::react_when_on_bouncing_block(entity, level, [&]{
     entity.gravity = MonsterState::BouncePower;
     entity.is_on_ground = false;
   });
 }
 
-static auto monster_run_movement_animation(MonsterState& entity, const std::array<Texture, 2>& walk_frames){
+static auto run_movement_animation(MonsterState& entity, const std::array<renderer::Texture, 2>& walk_frames){
   const auto counter = glfwGetTime() * 8.f | util::as<int>;
   entity.current_texture = &walk_frames[counter % 2];
 }
 
-static auto monster_turn_around(MonsterState& entity){
+static auto turn_around(MonsterState& entity){
   if (entity.acceleration.left == 0 && entity.acceleration.right == 0){
     entity.direction = -entity.direction;
 
@@ -161,3 +166,5 @@ static auto monster_turn_around(MonsterState& entity){
     }
   }
 }
+
+} //namespace mario::controllers

@@ -8,7 +8,9 @@
 #include "States/FlyingKoopaState.hpp"
 #include "res/textureGroups.hpp"
 
-static auto run_frame_level32(AppState& app){
+namespace mario::frames{
+
+static auto run_level32(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level32;
   level.type = LevelState::Type::Horizontal;
@@ -25,7 +27,7 @@ static auto run_frame_level32(AppState& app){
     &textures::snow_bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::snow_bg;
     level.cloud_textures = &texture_groups::blue_cloud;
@@ -73,3 +75,5 @@ static auto run_frame_level32(AppState& app){
     
   });
 }
+
+} //namespace mario::frames

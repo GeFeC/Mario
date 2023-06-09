@@ -2,6 +2,8 @@
 
 #include "States/KoopaState.hpp"
 
+namespace mario{
+
 struct JumpingKoopaState : KoopaState{
   static constexpr auto JumpForce = -20.f;
   bool has_wings = true;
@@ -36,3 +38,5 @@ struct JumpingKoopaState : KoopaState{
     return koopa;
   }
 };
+
+} //namespace mario

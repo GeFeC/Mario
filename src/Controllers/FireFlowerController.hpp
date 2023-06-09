@@ -8,6 +8,8 @@
 
 #include "Window.hpp"
 
+namespace mario{
+
 static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
   for (auto& p : flower.points_generator.items){
     points_particles_controller(p);
@@ -15,7 +17,7 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
 
   //Interaction with player
   auto& player = level.player;
-  if (collision_intersects(player, flower) && flower.is_visible){
+  if (collision_controller::intersects(player, flower) && flower.is_visible){
     flower.points_generator.item().set_active(
       FireFlowerState::RewardForEating,
       flower.position
@@ -34,3 +36,5 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
     }
   }
 }
+
+} //namespace mario

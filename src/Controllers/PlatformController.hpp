@@ -13,7 +13,9 @@
 #include "config.hpp"
 #include <iterator>
 
-static auto platform_collision_controller(
+namespace mario::platform_controller{
+
+static auto collision_controller(
     PlatformState& platform, 
     LevelState& level, 
     const glm::vec2& previous_pos
@@ -64,10 +66,14 @@ static auto platform_collision_controller(
         entity.position.x = platform_right_edge_pos - entity.size.x + MonsterState::EdgeDetectionOffset;
       }
 
-      monster_turn_around(entity);
+      monster_controller::turn_around(entity);
     }
   });
 }
+
+} //namespace mario::platform_controller
+
+namespace mario{
 
 template<>
 struct Controller<PlatformState>{
@@ -78,7 +84,7 @@ struct Controller<PlatformState>{
     const auto previous_pos = platform.position;
     platform.position = platform.initial_position + (sin | util::as<float>) * platform.transport_distance;
 
-    platform_collision_controller(platform, level, previous_pos);
+    platform_controller::collision_controller(platform, level, previous_pos);
     if (!platform.is_active){
       //Make glm::sin return -1 
       platform.timer = glm::radians(-90.f * platform.move_distance() / PlatformSpeed);
@@ -97,9 +103,11 @@ struct Controller<LoopedPlatformState>{
     static constexpr auto LoopedPlatformSpeed = 5.f; 
     platform.position += platform.transport_distance * LoopedPlatformSpeed * window::delta_time;
 
-    platform_collision_controller(platform, level, previous_pos);
+    platform_controller::collision_controller(platform, level, previous_pos);
 
     if (platform.position.y > config::FrameBufferSize.y) platform.position.y = -PlatformState::ElementSize;
     if (platform.position.y < -PlatformState::ElementSize) platform.position.y = config::FrameBufferSize.y;
   }
 };
+
+} //namespace mario

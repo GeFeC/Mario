@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <array>
 
+namespace mario{
+
 struct PlayerState : EntityState{
   static constexpr auto FireballSpeed = 18.f;
 
@@ -148,3 +150,5 @@ struct PlayerState : EntityState{
     return &textures::dirt;
   }
 };
+
+} //namespace mario

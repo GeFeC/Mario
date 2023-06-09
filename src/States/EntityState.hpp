@@ -8,9 +8,11 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 
+namespace mario{
+
 struct EntityState{
   using Direction = int;
-  using Flip = Drawable::Flip;
+  using Flip = renderer::Drawable::Flip;
 
   inline static constexpr auto GravityForce = 70.f;
   inline static constexpr auto MovementSpeedMultiplier = 100.f;
@@ -22,7 +24,7 @@ struct EntityState{
     float left = 0.f, right = 0.f;
   } acceleration;
   
-  Texture const* current_texture = nullptr;
+  renderer::Texture const* current_texture = nullptr;
   Direction direction = DirectionRight;
   glm::vec2 position = { 0.f, 0.f };
   glm::vec2 size = { 0.f, 0.f };
@@ -65,3 +67,4 @@ struct EntityState{
   }
 };
 
+} //namespace mario

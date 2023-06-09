@@ -6,7 +6,7 @@
 #include <vector>
 #include <type_traits>
 
-namespace util::poly{
+namespace mario::util::poly{
 
 template<typename T>
 struct FunctionInfo{};
@@ -177,4 +177,4 @@ struct Array : std::tuple<std::vector<Ts>...>{
 
 };
 
-} //namespace util::poly
+} //namespace mario::util::poly

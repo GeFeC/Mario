@@ -8,21 +8,23 @@
 #include "Controllers/MushroomController.hpp"
 #include <type_traits>
 
-static auto pusher_entity_controller(MushroomPusherState& pusher, LevelState& level){
+namespace mario::pusher_controller{
+
+static auto entity_controller(MushroomPusherState& pusher, LevelState& level){
   using MushroomType = MushroomState::Type;
   switch(pusher.entity.type){
-    case MushroomType::Red: red_mushroom_controller(pusher.entity, level); break;
-    case MushroomType::Green: green_mushroom_controller(pusher.entity, level); break;
+    case MushroomType::Red: mushroom_controller::red_mushroom_controller(pusher.entity, level); break;
+    case MushroomType::Green: mushroom_controller::green_mushroom_controller(pusher.entity, level); break;
   }
 }
 
 template<typename Entity>
-static auto pusher_entity_controller(EntityPusherState<Entity>& pusher, LevelState& level){
+static auto entity_controller(EntityPusherState<Entity>& pusher, LevelState& level){
   Controller<Entity>::run(pusher.entity, level);
 }
 
 template<typename Entity>
-static auto pusher_push_out(EntityPusherState<Entity>& pusher, LevelState& level){
+static auto push_out(EntityPusherState<Entity>& pusher, LevelState& level){
   auto& entity = pusher.entity;
 
   entity.should_be_pushed_out = true;
@@ -36,7 +38,7 @@ static auto pusher_push_out(EntityPusherState<Entity>& pusher, LevelState& level
 }
 
 template<typename Entity>
-static auto pusher_controller(
+static auto controller(
     EntityPusherState<Entity>& pusher, 
     LevelState& level
 ){
@@ -55,6 +57,8 @@ static auto pusher_controller(
 
   if (entity.push_offset >= 1.f){
     entity.is_active = true;
-    pusher_entity_controller(pusher, level);
+    pusher_controller::entity_controller(pusher, level);
   }
 }
+
+} //namespace mario::pusher_controller

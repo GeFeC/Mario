@@ -10,16 +10,18 @@
 #include "Window.hpp"
 #include "config.hpp"
 
+namespace mario{
+
 template<>
 struct Controller<SquidState>{
   static auto run(SquidState& squid, LevelState& level){
-    monster_become_active_when_seen(squid, level);    
-    monster_die_when_hit_by_fireball(squid, level);
-    monster_kill_player_on_touch(squid, level.player);
-    monster_points_particles(squid);
+    monster_controller::become_active_when_seen(squid, level);    
+    monster_controller::die_when_hit_by_fireball(squid, level);
+    monster_controller::kill_player_on_touch(squid, level.player);
+    monster_controller::points_particles(squid);
 
     if (squid.was_hit){
-      entity_gravity(squid, level);
+      entity_controller::gravity(squid, level);
       return;
     }
 
@@ -85,3 +87,5 @@ struct Controller<SquidState>{
     squid.attack_cooldown -= window::delta_time;
   }
 };
+
+} //namespace mario

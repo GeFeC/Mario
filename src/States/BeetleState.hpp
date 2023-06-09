@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct BeetleState : ShellMonsterState{
   static constexpr auto DefaultWalkSpeed = 3.f;
 
@@ -13,10 +15,12 @@ struct BeetleState : ShellMonsterState{
     beetle.shell_speed = 12.f;
     beetle.set_direction(direction);
     beetle.current_texture = &textures::beetle_walk[0];
-    beetle.texture_flip = Drawable::Flip::UseFlip;
+    beetle.texture_flip = EntityState::Flip::UseFlip;
     beetle.shell_height = BlockBase::Size;
     beetle.reward_for_killing = 100;
 
     return beetle;
   }
 };
+
+} //namespace mario

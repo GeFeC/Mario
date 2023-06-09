@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+namespace mario::renderer{
+
 struct Drawable{
   glm::vec2 position;
   glm::vec2 size;
@@ -26,3 +28,5 @@ struct PlainDrawable{
   glm::vec2 size;
   glm::vec4 color;
 };
+
+} //namespace mario::renderer

@@ -9,6 +9,8 @@
 
 #include "Util/Util.hpp"
 
+namespace mario{
+
 template<>
 struct Controller<CoinBlockState>{
   static auto run(CoinBlockState& coin, LevelState& level){
@@ -29,3 +31,5 @@ struct Controller<CoinBlockState>{
     }
   }
 };
+
+} //namespace mario

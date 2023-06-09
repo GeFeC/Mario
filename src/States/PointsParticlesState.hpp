@@ -6,11 +6,13 @@
 
 #include <algorithm>
 
+namespace mario{
+
 struct PointsParticlesState{
   static constexpr auto MaxOffset = 180.f;
   static constexpr auto TextSize = 2.f;
 
-  Text text;
+  renderer::Text text;
 
   int hits_required_to_activate = 1;
   float offset = 0.f;
@@ -18,13 +20,13 @@ struct PointsParticlesState{
   bool can_be_activated = true;
 
   PointsParticlesState(){
-    text = Text(&fonts::normal, "", TextSize);
+    text = renderer::Text(&fonts::normal, "", TextSize);
     text.is_visible = false;
     text.position.y = util::BigValue;
   }
 
   PointsParticlesState(const std::string& label, const glm::vec2& position){
-    text = Text(&fonts::normal, label, TextSize);
+    text = renderer::Text(&fonts::normal, label, TextSize);
     text.position = position;
     text.is_visible = false;
     text.update();
@@ -54,4 +56,4 @@ struct PointsParticlesState{
   }
 };
 
-
+} //namespace mario

@@ -1,16 +1,23 @@
 #pragma once
 
 #include "Frame.hpp"
-#include "LevelGenerator/Builder.hpp"
+
+#include "Views/Level.hpp"
+#include "Controllers/LevelController.hpp"
+
 #include "States/AppState.hpp"
+#include "LevelGenerator/Builder.hpp"
 #include "LevelGenerator/LevelGenerator.hpp"
+
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
+
+namespace mario::frames{
 
 struct LevelFrameSharedData{
   LevelState::Type type;
   AppState::Frame frame;
-  std::vector<TextureGroup> extra_textures;
+  std::vector<renderer::TextureGroup> extra_textures;
 
   struct LevelNumber{
     int major = 0;
@@ -19,12 +26,12 @@ struct LevelFrameSharedData{
 };
 
 template<typename Function>
-static auto run_frame_levelbase(
+static auto run_levelbase(
     AppState& app, 
     const LevelFrameSharedData& level_data,
     const Function& extra_setup
 ){
-  auto textures = std::vector<TextureGroup>{
+  auto textures = std::vector<renderer::TextureGroup>{
     texture_groups::mario,
     &textures::mini_coin
   };
@@ -86,9 +93,11 @@ static auto run_frame_levelbase(
   };
 
   const auto loop = [](auto& app){
-    level_controller(app);
-    render_level(app.current_level);
+    level_controller::controller(app);
+    views::render_level(app.current_level);
   };
 
   run_frame(app, level_data.frame, textures, setup, loop);
 }
+
+} //namespace mario::frames

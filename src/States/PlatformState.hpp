@@ -3,6 +3,8 @@
 #include "States/EntityState.hpp"
 #include <vector>
 
+namespace mario{
+
 struct PlatformState{ 
   inline static constexpr auto DefaultWidth = 8;
   inline static constexpr auto ElementSize = BlockBase::Size / 2.f;
@@ -53,3 +55,5 @@ struct LoopedPlatformState : PlatformState{
   ) 
     : PlatformState(position, transport_distance, width) {}
 };
+
+} //namespace mario

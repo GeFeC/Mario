@@ -3,6 +3,8 @@
 #include "States/FireballState.hpp"
 #include <vector>
 
+namespace mario{
+
 struct FireBarState{
   static constexpr auto RotationSpeed = 2.f;
 
@@ -21,3 +23,5 @@ struct FireBarState{
     }
   }
 };
+
+} //namespace mario

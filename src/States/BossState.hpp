@@ -3,6 +3,8 @@
 #include "States/MonsterState.hpp"
 #include "States/FireballState.hpp"
 
+namespace mario{
+
 struct BossState : MonsterState{
   static constexpr auto WalkSpeed = 7.f;
   static constexpr auto MaxHp = 20;
@@ -51,7 +53,7 @@ struct KingKoopaState : BossState{
   KingKoopaState() : BossState(){
     size = Size;
     walk_speed = WalkSpeed;
-    texture_flip = Drawable::Flip::UseFlip;
+    texture_flip = EntityState::Flip::UseFlip;
   }
 };
 
@@ -73,7 +75,9 @@ struct KingBeetleState : BossState{
   KingBeetleState() : BossState() {
     size = Size;
     walk_speed = WalkSpeed;
-    texture_flip = Drawable::Flip::UseFlip;
+    texture_flip = EntityState::Flip::UseFlip;
     hp = MaxHp;
   } 
 };
+
+} //namespace mario

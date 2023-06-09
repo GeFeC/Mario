@@ -3,6 +3,8 @@
 #include "States/LevelState.hpp"
 #include "Window.hpp"
 
+namespace mario{
+
 inline auto stats_controller(StatsState& stats){
   static auto counter = 0.f;
   counter += window::delta_time * 10.f;
@@ -14,3 +16,5 @@ inline auto stats_controller(StatsState& stats){
     counter = 0.f;
   }
 }
+
+} //namespace mario

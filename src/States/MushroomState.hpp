@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct MushroomState : MonsterState{
   enum class Type{
     Red, Green
@@ -46,3 +48,4 @@ public:
   }
 };
 
+} //namespace mario

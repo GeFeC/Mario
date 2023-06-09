@@ -6,6 +6,8 @@
 
 #include <random>
 
+namespace mario{
+
 struct FishState : MonsterState{
   glm::vec2 origin;
   float current_offset_y = 0.f;
@@ -58,3 +60,5 @@ public:
     return fish;
   }
 };
+
+} //namespace mario

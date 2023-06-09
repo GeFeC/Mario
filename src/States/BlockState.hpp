@@ -11,10 +11,12 @@
 #include <vector>
 #include <array>
 
+namespace mario{
+
 struct BlockBase{
   inline static constexpr auto Size = 96.f;
 
-  Texture const* texture;
+  renderer::Texture const* texture;
   glm::vec2 position = { 0.f, 0.f };
   glm::vec2 size = glm::vec2(Size);
   float alpha = 1.f;
@@ -42,7 +44,7 @@ struct BouncingBlockBase{
 struct BlinkingBlockBase{};
 
 struct BlockState : BlockBase{
-  BlockState(const glm::vec2& position, Texture const* texture){
+  BlockState(const glm::vec2& position, renderer::Texture const* texture){
     this->position = position * BlockBase::Size;
     this->texture = texture;
   }
@@ -105,10 +107,12 @@ struct CloudState{
 };
 
 struct BackgroundHillState : BlockState{
-  explicit BackgroundHillState(const glm::vec2& position, Texture const* texture)
+  explicit BackgroundHillState(const glm::vec2& position, renderer::Texture const* texture)
     : BlockState(position, texture) {}
 };
 struct BackgroundBushState : BlockState{
-  explicit BackgroundBushState(const glm::vec2& position, Texture const* texture)
+  explicit BackgroundBushState(const glm::vec2& position, renderer::Texture const* texture)
     : BlockState(position, texture) {}
 };
+
+} //namespace mario

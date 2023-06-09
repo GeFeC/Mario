@@ -4,18 +4,20 @@
 
 #include "Controllers/PlayerController.hpp"
 #include "Controllers/CollisionController.hpp"
-#include "Controllers/EntityController.hpp"
+#include "Controllers/MonsterController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 
 #include "Window.hpp"
 
-static auto mushroom_controller(MushroomState& mushroom, LevelState& level){
-  //Interaction with blocks
-  monster_bounce_when_on_bouncing_block(mushroom, level);
+namespace mario::mushroom_controller{
 
-  entity_gravity(mushroom, level);
-  entity_movement(mushroom, level);
-  monster_turn_around(mushroom);
+static auto controller_base(MushroomState& mushroom, LevelState& level){
+  //Interaction with blocks
+  monster_controller::bounce_when_on_bouncing_block(mushroom, level);
+
+  entity_controller::gravity(mushroom, level);
+  entity_controller::movement(mushroom, level);
+  monster_controller::turn_around(mushroom);
 
   for (auto& p : mushroom.points_generator.items){
     points_particles_controller(p);
@@ -26,7 +28,7 @@ static auto green_mushroom_controller(MushroomState& mushroom, LevelState& level
   auto& player = level.player;
   if (player.is_dead) return;
 
-  if (collision_intersects(player, mushroom) && mushroom.is_active){
+  if (collision_controller::intersects(player, mushroom) && mushroom.is_active){
     auto& points = mushroom.points_generator.item();
     points.set_active("+1 HP", mushroom.position);
 
@@ -35,14 +37,14 @@ static auto green_mushroom_controller(MushroomState& mushroom, LevelState& level
     level.stats.hp++;
   }
 
-  mushroom_controller(mushroom, level);
+  controller_base(mushroom, level);
 }
 
 static auto red_mushroom_controller(MushroomState& mushroom, LevelState& level){
   auto& player = level.player;
   if (player.is_dead) return;
 
-  if (collision_intersects(player, mushroom) && mushroom.is_active){
+  if (collision_controller::intersects(player, mushroom) && mushroom.is_active){
     auto& points = mushroom.points_generator.item();
     points.set_active(mushroom.reward_for_killing, mushroom.position);
   
@@ -54,5 +56,7 @@ static auto red_mushroom_controller(MushroomState& mushroom, LevelState& level){
     level.stats.score += mushroom.reward_for_killing;
   }
 
-  mushroom_controller(mushroom, level);
+  controller_base(mushroom, level);
 }
+
+} //namespace mario::mushroom_controller

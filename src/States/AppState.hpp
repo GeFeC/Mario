@@ -2,6 +2,8 @@
 
 #include "States/LevelState.hpp"
 
+namespace mario{
+
 struct AppState{
   enum class Frame{
     Level11, Level12, Level13, Level14, Level15, Level16,
@@ -15,3 +17,5 @@ struct AppState{
 
   LevelState current_level;
 };
+
+} //namespace mario

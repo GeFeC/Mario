@@ -9,11 +9,13 @@
 #include "Controllers/ShellMonsterController.hpp"
 #include "res/textures.hpp"
 
-static auto jumping_koopa_controller_base(
+namespace mario::jumping_koopa_controller{
+
+static auto controller_base(
     JumpingKoopaState& koopa, 
     LevelState& level, 
-    const std::array<Texture, 2>& walk_frames_with_wings,
-    const std::array<Texture, 2>& walk_frames_without_wings
+    const std::array<renderer::Texture, 2>& walk_frames_with_wings,
+    const std::array<renderer::Texture, 2>& walk_frames_without_wings
 ){
   if (koopa.has_wings && koopa.is_on_ground){
     koopa.gravity = JumpingKoopaState::JumpForce;
@@ -21,90 +23,96 @@ static auto jumping_koopa_controller_base(
   }
 
   if (koopa.has_wings){
-    shell_monster_controller(koopa, level, walk_frames_with_wings);
+    shell_monster_controller::controller(koopa, level, walk_frames_with_wings);
   }
   else{
-    shell_monster_controller(koopa, level, walk_frames_without_wings);
+    shell_monster_controller::controller(koopa, level, walk_frames_without_wings);
   }
 
   //Interaction with blocks
-  monster_die_when_on_bouncing_block(koopa, level);
+  monster_controller::die_when_on_bouncing_block(koopa, level);
 
   //Interaction with player
   auto& player = level.player;
-  monster_die_when_hit_by_fireball(koopa, level);
-  monster_become_active_when_seen(koopa, level);
+  monster_controller::die_when_hit_by_fireball(koopa, level);
+  monster_controller::become_active_when_seen(koopa, level);
 
   if (koopa.has_wings) {
-    auto koopa_hitbox = shell_monster_get_hitbox(koopa);
-    monster_die_when_stomped(koopa, level, [&]{
+    auto koopa_hitbox = shell_monster_controller::get_hitbox(koopa);
+    monster_controller::die_when_stomped(koopa, level, [&]{
       koopa.has_wings = false;
       koopa.gravity = 0;
     });
 
-    monster_kill_player_on_touch(koopa_hitbox, player);
+    monster_controller::kill_player_on_touch(koopa_hitbox, player);
   }
 }
 
-static auto green_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
-  jumping_koopa_controller_base(
+static auto green_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
+  controller_base(
     koopa,
     level,
     textures::green_flying_koopa_walk,
     textures::green_koopa_walk
   );
 
-  shell_monster_handle_shell(
+  shell_monster_controller::handle_shell(
     koopa,
     level,
     textures::green_koopa_dead
   );
 }
 
-static auto red_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
+static auto red_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
   if (!koopa.has_wings && !koopa.in_shell) koopa.fall_from_edge = false;
 
-  jumping_koopa_controller_base(
+  controller_base(
     koopa,
     level,
     textures::red_flying_koopa_walk,
     textures::red_koopa_walk
   );
 
-  shell_monster_handle_shell(
+  shell_monster_controller::handle_shell(
     koopa,
     level,
     textures::red_koopa_dead
   );
 }
 
-static auto purple_jumping_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
+static auto purple_koopa_controller(JumpingKoopaState& koopa, LevelState& level){
   if (!koopa.has_wings && !koopa.in_shell) koopa.fall_from_edge = false;
 
-  jumping_koopa_controller_base(
+  controller_base(
     koopa,
     level,
     textures::purple_flying_koopa_walk,
     textures::purple_koopa_walk
   );
 
-  shell_monster_handle_shell(
+  shell_monster_controller::handle_shell(
     koopa,
     level,
     textures::purple_koopa_dead
   );
 
-  purple_koopa_movement_controller(koopa, level);
+  koopa_controller::purple_koopa_speedup(koopa, level);
 }
+
+} //namespace mario::jumping_koopa_controller
+
+namespace mario{
 
 template<>
 struct Controller<JumpingKoopaState>{
   static auto run(JumpingKoopaState& koopa, LevelState& level){
     using Type = KoopaState::Type;
     switch(koopa.type){
-      case Type::Green: green_jumping_koopa_controller(koopa, level); return;
-      case Type::Red: red_jumping_koopa_controller(koopa, level); return;
-      case Type::Purple: purple_jumping_koopa_controller(koopa, level); return;
+      case Type::Green: jumping_koopa_controller::green_koopa_controller(koopa, level); return;
+      case Type::Red: jumping_koopa_controller::red_koopa_controller(koopa, level); return;
+      case Type::Purple: jumping_koopa_controller::purple_koopa_controller(koopa, level); return;
     }
   }
 };
+
+} //namespace mario

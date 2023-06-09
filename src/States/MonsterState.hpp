@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+namespace mario{
+
 struct MonsterState : EntityState{
   inline static constexpr auto BounceDiePower = -20.f;
   inline static constexpr auto BouncePower = -15.f;
@@ -39,3 +41,4 @@ struct ShellMonsterState : MonsterState{
   float shell_height = 0.f;
 };
 
+} //namespace mario

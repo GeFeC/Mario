@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <iterator>
 
-namespace level_generator{
+namespace mario::level_generator{
 
 enum class Tile{
   Air = -1,
@@ -129,4 +129,4 @@ static auto any_tile(const TileArray<N>& tiles, Tile target){
   return std::any_of(std::begin(tiles), std::end(tiles), [&](auto e){ return e == target; });
 }
 
-} //namespace level_generator
+} //namespace mario::level_generator

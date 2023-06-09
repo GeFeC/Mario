@@ -2,6 +2,8 @@
 
 #include "States/KoopaState.hpp"
 
+namespace mario{
+
 struct FlyingKoopaState : KoopaState{
   bool has_wings = true;
   glm::vec2 initial_position;
@@ -43,3 +45,5 @@ struct FlyingKoopaState : KoopaState{
     return koopa;
   }
 };
+
+} //namespace mario

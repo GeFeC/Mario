@@ -3,7 +3,9 @@
 #include "States/AppState.hpp"
 #include "Frames/LevelBase.hpp"
 
-static auto run_frame_level14(AppState& app){
+namespace mario::frames{
+
+static auto run_level14(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level14;
   level.type = LevelState::Type::Horizontal;
@@ -13,7 +15,7 @@ static auto run_frame_level14(AppState& app){
     &textures::mushroom_bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
@@ -36,3 +38,5 @@ static auto run_frame_level14(AppState& app){
   });
 
 }
+
+} //namespace mario::frames

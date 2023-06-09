@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct GoombaState : MonsterState{
   enum class Type{
     Normal, Red, Yellow
@@ -56,3 +58,5 @@ public:
     return goomba;
   }
 };
+
+} //namespace mario

@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct KoopaState : ShellMonsterState{
   enum class Type{
     Green, Red, Purple
@@ -17,7 +19,7 @@ protected:
     koopa.walk_speed = 3.f;
     koopa.shell_speed = 12.f;
     koopa.set_direction(direction);
-    koopa.texture_flip = Drawable::Flip::UseFlip;
+    koopa.texture_flip = Flip::UseFlip;
     koopa.reward_for_killing = 100.f;
     koopa.shell_height = BlockBase::Size * 7.f / 8.f;
 
@@ -55,4 +57,4 @@ public:
   }
 };
 
-
+} //namespace mario

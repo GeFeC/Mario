@@ -14,14 +14,16 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 
+namespace mario::hammerbro_controller{
+
 static auto hammer_controller(HammerState& hammer, LevelState& level){
   hammer.current_texture = &textures::hammer[level.hammer_counter.int_value()];
 
   if (!hammer.is_active) return;
 
-  entity_kill_player_on_touch(hammer, level.player);
-  entity_movement(hammer, level);
-  entity_gravity(hammer, level);
+  entity_controller::kill_player_on_touch(hammer, level.player);
+  entity_controller::movement(hammer, level);
+  entity_controller::gravity(hammer, level);
 
   if (hammer.position.y > level.camera_offset.y + config::FrameBufferSize.y) {
     hammer.is_active = false;
@@ -29,11 +31,11 @@ static auto hammer_controller(HammerState& hammer, LevelState& level){
   }
 }
 
-static auto hammerbro_controller_base(
+static auto controller_base(
     HammerBroState& hammerbro, 
     LevelState& level,
-    const std::array<Texture, 2>& walk_frames,
-    const std::array<Texture, 2>& walk_frames_with_hammer
+    const std::array<renderer::Texture, 2>& walk_frames,
+    const std::array<renderer::Texture, 2>& walk_frames_with_hammer
 ){
   //Throwing Hammers
   if (level.player.position.y - hammerbro.position.y >= config::FrameBufferSize.y){
@@ -44,14 +46,14 @@ static auto hammerbro_controller_base(
     hammer_controller(hammer, level);
   }
 
-  monster_become_active_when_seen(hammerbro, level);
+  monster_controller::become_active_when_seen(hammerbro, level);
   if (!hammerbro.is_active) return;
 
   hammerbro.throw_delay -= window::delta_time;
 
   auto current_walk_frames = &walk_frames;
 
-  if (hammerbro.throw_delay <= 0.f && hammerbro.vertical_flip == Drawable::Flip::NoFlip){
+  if (hammerbro.throw_delay <= 0.f && hammerbro.vertical_flip == EntityState::Flip::NoFlip){
     hammerbro.throw_counter.run();
 
     const auto spawn_hammer_if_can = [&](int value){
@@ -74,18 +76,18 @@ static auto hammerbro_controller_base(
 
   auto copy = textures::hammerbro_walk[0];
 
-  entity_gravity(hammerbro, level);
-  monster_run_movement_animation(hammerbro, *current_walk_frames);
+  entity_controller::gravity(hammerbro, level);
+  monster_controller::run_movement_animation(hammerbro, *current_walk_frames);
 
   //Interaction with player
-  monster_die_when_hit_by_fireball(hammerbro, level);
-  monster_die_when_on_bouncing_block(hammerbro, level);
+  monster_controller::die_when_hit_by_fireball(hammerbro, level);
+  monster_controller::die_when_on_bouncing_block(hammerbro, level);
 
-  if (hammerbro.vertical_flip == Drawable::Flip::UseFlip) return;
+  if (hammerbro.vertical_flip == EntityState::Flip::UseFlip) return;
 
-  monster_kill_player_on_touch(hammerbro, level.player);
-  monster_die_when_stomped(hammerbro, level, [&]{
-    monster_bounce_out(hammerbro);
+  monster_controller::kill_player_on_touch(hammerbro, level.player);
+  monster_controller::die_when_stomped(hammerbro, level, [&]{
+    monster_controller::bounce_out(hammerbro);
   });
 
   //Walking
@@ -145,7 +147,7 @@ static auto hammerbro_controller_base(
 }
 
 static auto green_hammerbro_controller(HammerBroState& bro, LevelState& level){
-  hammerbro_controller_base(
+  controller_base(
       bro, 
       level, 
       textures::hammerbro_walk, 
@@ -154,7 +156,7 @@ static auto green_hammerbro_controller(HammerBroState& bro, LevelState& level){
 }
 
 static auto red_hammerbro_controller(HammerBroState& bro, LevelState& level){
-  hammerbro_controller_base(
+  controller_base(
       bro, 
       level, 
       textures::red_hammerbro_walk, 
@@ -162,13 +164,19 @@ static auto red_hammerbro_controller(HammerBroState& bro, LevelState& level){
   );
 }
 
+} //namespace mario::hammerbro_controller
+
+namespace mario{
+
 template<>
 struct Controller<HammerBroState>{
   static auto run(HammerBroState& bro, LevelState& level){
     using Type = HammerBroState::Type;
     switch(bro.type){
-      case Type::Green: green_hammerbro_controller(bro, level); break;
-      case Type::Red: red_hammerbro_controller(bro, level); break;
+      case Type::Green: hammerbro_controller::green_hammerbro_controller(bro, level); break;
+      case Type::Red: hammerbro_controller::red_hammerbro_controller(bro, level); break;
     }
   }
 };
+
+} //namespace mario

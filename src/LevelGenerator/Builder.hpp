@@ -8,7 +8,9 @@
 #include "States/LevelState.hpp"
 #include <glm/glm.hpp>
 
-namespace level_generator{
+namespace mario::level_generator{
+
+using renderer::Texture;
 
 static auto put_solid(LevelState& level, const glm::vec2& position, const Texture& texture){
   level.hitbox_grid_element(position) = 1;
@@ -114,4 +116,4 @@ static auto& put_q_block_with_entity(
   return block;
 }
 
-} //namespace level_generator
+} //namespace mario::level_generator

@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace util{
+namespace mario::util{
 
 template<typename T>
 struct Generator{
@@ -39,4 +39,4 @@ struct Generator{
   }
 };
 
-} //namespace util
+} //namespace mario::util

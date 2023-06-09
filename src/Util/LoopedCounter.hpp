@@ -3,7 +3,7 @@
 #include "Window.hpp"
 #include "Util/Util.hpp"
 
-namespace util{
+namespace mario::util{
 
 struct LoopedCounter{
   float value = 0;
@@ -57,4 +57,4 @@ struct InfiniteCounter : LoopedCounter{
   }
 };
 
-} //namespace util
+} //namespace mario::util

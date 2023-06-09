@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct SpikeState : MonsterState{
   static constexpr auto WalkSpeed = 2.f;
 
@@ -12,10 +14,12 @@ struct SpikeState : MonsterState{
     spike.walk_speed = 3.f;
     spike.set_direction(direction);
     spike.current_texture = &textures::spike_walk[0];
-    spike.texture_flip = Drawable::Flip::UseFlip;
+    spike.texture_flip = EntityState::Flip::UseFlip;
     spike.can_be_stomped = false;
     spike.reward_for_killing = 100;
 
     return spike;
   }
 };
+
+} //namespace mario

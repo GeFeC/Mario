@@ -7,6 +7,8 @@
 
 #include <vector>
 
+namespace mario{
+
 struct CoinPusherState{
   static constexpr auto ContainsEntity = false;
 
@@ -19,3 +21,5 @@ struct CoinPusherState{
     return coins[active_coin_index];
   }
 };
+
+} //namespace mario

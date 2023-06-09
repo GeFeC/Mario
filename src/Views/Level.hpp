@@ -15,6 +15,8 @@
 #include <sstream>
 #include <iomanip>
 
+namespace mario::views{
+
 static auto render_water(const LevelState& level, const glm::vec2& offset){
   static constexpr auto WaterTransparency = 0.5f;
 
@@ -60,7 +62,7 @@ static auto render_stats(const LevelState& level){
   const auto font_size = fonts::normal.size * 3.5f;
   static constexpr auto WindowWidth = config::FrameBufferSize.x;
 
-  auto text = Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
+  auto text = renderer::Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
   text.update();
   const auto center_x = WindowWidth / 2 - text.get_size().x / 2;
   const auto step_y = 2.f / 3.f * BlockBase::Size;
@@ -75,7 +77,7 @@ static auto render_stats(const LevelState& level){
   renderer::print(text, glm::vec2(0));
 
   //Mini coin
-  renderer::draw(Drawable{
+  renderer::draw(renderer::Drawable{
     glm::vec2(center_x + 9 * font_size, step_y * 2),
     glm::vec2(font_size),
     &textures::mini_coin
@@ -91,7 +93,7 @@ static auto render_stats(const LevelState& level){
 
     static constexpr auto MaxBossBarSize = glm::vec2(100.f * 6.f, 50.f);
 
-    renderer::draw_plain(PlainDrawable{
+    renderer::draw_plain(renderer::PlainDrawable{
       glm::vec2(WindowWidth / 2 - MaxBossBarSize.x / 2, step_y * 5),
       glm::vec2(*stats.boss_hp * MaxBossBarSize.x / stats.max_boss_hp, MaxBossBarSize.y),
       glm::vec4(1.f)
@@ -103,7 +105,7 @@ static auto render_loading_screen(const LevelState& level){
   const auto font_size = fonts::normal.size * 3.5f;
 
   //Background;
-  renderer::draw(Drawable{
+  renderer::draw(renderer::Drawable{
     glm::vec2(0, 0),
     config::FrameBufferSize,
     &textures::black
@@ -113,7 +115,7 @@ static auto render_loading_screen(const LevelState& level){
   //Header:
   const auto& stats = level.stats;
 
-  auto text = Text(
+  auto text = renderer::Text(
     &fonts::normal, 
     "WORLD " + std::to_string(stats.level_major) + "-" + std::to_string(stats.level_minor),
     font_size / fonts::normal.size
@@ -128,7 +130,7 @@ static auto render_loading_screen(const LevelState& level){
   renderer::print(text, glm::vec2(0));
 
   //Mario:
-  renderer::draw(Drawable{
+  renderer::draw(renderer::Drawable{
     glm::vec2(
       config::FrameBufferSize.x / 2 - BlockBase::Size * 1.5f, 
       center_pos.y - (BlockBase::Size - font_size * 1.f) 
@@ -166,7 +168,7 @@ static auto render_all_points_particles(const LevelState& level){
 }
 
 static auto render_level(const LevelState& level){
-  renderer::draw(Drawable{
+  renderer::draw(renderer::Drawable{
     glm::vec2(0, 0),
     config::FrameBufferSize,
     level.background_texture
@@ -214,3 +216,5 @@ static auto render_level(const LevelState& level){
     render_all_points_particles(level);  
   });
 }
+
+} //namespace mario::views

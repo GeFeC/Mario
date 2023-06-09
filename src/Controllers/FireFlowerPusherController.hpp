@@ -4,14 +4,16 @@
 #include "States/FireFlowerPusherState.hpp"
 #include "States/LevelState.hpp"
 
-static auto pusher_push_out(FireFlowerPusherState& pusher, LevelState& level){
+namespace mario::pusher_controller{
+
+static auto push_out(FireFlowerPusherState& pusher, LevelState& level){
   auto& flower = pusher.fire_flower;
 
   flower.should_be_pushed_out = true;
   flower.is_visible = true;
 }
 
-static auto pusher_controller(FireFlowerPusherState& pusher, LevelState& level){
+static auto controller(FireFlowerPusherState& pusher, LevelState& level){
   auto& flower = pusher.fire_flower;
 
   fire_flower_controller(flower, level);
@@ -24,3 +26,5 @@ static auto pusher_controller(FireFlowerPusherState& pusher, LevelState& level){
     flower.position.y -= value * BlockBase::Size;
   }
 }
+
+} //namespace mario::pusher_controller

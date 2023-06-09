@@ -2,8 +2,8 @@
 
 #include "Renderer/Font.hpp"
 
-namespace fonts{
-  inline static constexpr auto SourceDir = "../resources/fonts/";
+namespace mario::fonts{
 
-  inline Font normal("font.ttf");
-};
+inline renderer::Font normal("font.ttf");
+
+} //namespace mario::fonts

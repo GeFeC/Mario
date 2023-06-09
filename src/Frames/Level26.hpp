@@ -7,9 +7,9 @@
 #include "States/BossState.hpp"
 #include "res/textureGroups.hpp"
 
-#include <memory>
+namespace mario::frames{
 
-static auto run_frame_level26(AppState& app){
+static auto run_level26(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level26;
   level.type = LevelState::Type::Boss;
@@ -20,7 +20,7 @@ static auto run_frame_level26(AppState& app){
     &textures::bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
     level.cloud_textures = &texture_groups::blue_cloud;
@@ -45,3 +45,5 @@ static auto run_frame_level26(AppState& app){
     objects.push(FireBarState({ 19, 7 }, 4));
   });
 }
+
+} //namespace mario::frames

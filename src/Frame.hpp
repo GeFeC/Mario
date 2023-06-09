@@ -6,11 +6,13 @@
 
 #include <vector>
 
+namespace mario::frames{
+
 template<typename SetupFunction, typename LoopFunction>
 static auto run_frame(
     AppState& app_state,
     AppState::Frame frame, 
-    const std::vector<TextureGroup>& textures, 
+    const std::vector<renderer::TextureGroup>& textures, 
     const SetupFunction& setup, 
     const LoopFunction& loop
 ){
@@ -39,3 +41,5 @@ static auto run_frame(
     texture.free();
   }
 }
+
+} //namespace mario::frames

@@ -6,6 +6,8 @@
 #include "States/LevelState.hpp"
 #include "Controllers/EntityController.hpp"
 
+namespace mario{
+
 template<>
 struct Controller<FireBarState>{
   static auto run(FireBarState& bar, LevelState& level){
@@ -21,8 +23,10 @@ struct Controller<FireBarState>{
       fireball.position = bar.position + rotation;
 
       if (!level.is_finished){
-        entity_kill_player_on_touch(fireball, level.player);
+        entity_controller::kill_player_on_touch(fireball, level.player);
       }
     }
   }
 };
+
+} //namespace mario

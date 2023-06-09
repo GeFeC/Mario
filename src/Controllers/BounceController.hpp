@@ -8,21 +8,19 @@
 #include "Window.hpp"
 #include "Util/Util.hpp"
 
-#include <iostream>
+namespace mario::bounce_controller{
 
-namespace bounce{
-  template<typename BounceBlock>
-  inline auto start(BounceBlock& block){
-    auto& bounce_state = block.bounce_state;
+template<typename BounceBlock>
+inline auto start(BounceBlock& block){
+  auto& bounce_state = block.bounce_state;
 
-    bounce_state.is_bouncing = true;
-    bounce_state.temp_y = block.position.y;
-    bounce_state.power = bounce_state.initial_power;
-  }
+  bounce_state.is_bouncing = true;
+  bounce_state.temp_y = block.position.y;
+  bounce_state.power = bounce_state.initial_power;
 }
 
 template<typename BounceBlock>
-inline auto bounce_controller(BounceBlock& block){
+inline auto controller(BounceBlock& block){
   auto& bounce_state = block.bounce_state;
 
   if (bounce_state.is_bouncing){
@@ -37,3 +35,5 @@ inline auto bounce_controller(BounceBlock& block){
     }
   }
 }
+
+} //namespace mario::bounce_controller

@@ -11,16 +11,18 @@
 #include "States/BossState.hpp"
 #include "res/textures.hpp"
 
+namespace mario{
+
 template<>
 struct Controller<KingBeetleState>{
   static auto run(KingBeetleState& boss, LevelState& level){
     if (boss.hp > 0){
-      monster_run_movement_animation(boss, textures::beetle_walk);
+      monster_controller::run_movement_animation(boss, textures::beetle_walk);
     }
 
-    monster_endure_fireball(boss, level.player);
-    entity_gravity(boss, level);
-    boss_controller(boss, level);
+    monster_controller::endure_fireball(boss, level.player);
+    entity_controller::gravity(boss, level);
+    boss_controller::controller(boss, level);
 
     if (boss.hp == 0) {
       return;
@@ -42,16 +44,16 @@ struct Controller<KingBeetleState>{
     for (auto& fireball : boss.fireballs){
       fireball.explosion.run();
 
-      entity_gravity(fireball, level);
-      entity_kill_player_on_touch(fireball, level.player);
-      entity_movement(fireball, level);
+      entity_controller::gravity(fireball, level);
+      entity_controller::kill_player_on_touch(fireball, level.player);
+      entity_controller::movement(fireball, level);
 
       if (fireball.is_active && fireball.is_on_ground && boss.did_fireballs_seperate){
-        fireball_reset(fireball);
+        fireball_controller::reset(fireball);
       }
 
       if (fireball.is_active && fireball.acceleration.left == 0.f && fireball.acceleration.right == 0.f) {
-        fireball_reset(fireball);
+        fireball_controller::reset(fireball);
       }
 
       if (boss.fireball_cooldown <= 0.f) {
@@ -87,7 +89,7 @@ struct Controller<KingBeetleState>{
       minion.walk_speed = BeetleState::DefaultWalkSpeed;
       minion.should_collide = true;
       minion.was_hit = false;
-      minion.vertical_flip = Drawable::Flip::NoFlip;
+      minion.vertical_flip = EntityState::Flip::NoFlip;
 
       switch(boss.minion_respawn_side){
         case RespawnSide::Left: 
@@ -105,11 +107,11 @@ struct Controller<KingBeetleState>{
     }
     
     //Minion Attacking
-    const auto boss_was_hit_by_shell = shell_monster_did_hit_monster_with_shell(minion, boss);
+    const auto boss_was_hit_by_shell = shell_monster_controller::did_hit_monster_with_shell(minion, boss);
     if (boss.can_be_hit_by_shell && boss_was_hit_by_shell){
       boss.can_be_hit_by_shell = false;
-      boss_take_damage(boss);
-      monster_bounce_out(minion);
+      boss_controller::take_damage(boss);
+      monster_controller::bounce_out(minion);
       minion.was_hit = true;
     }
 
@@ -118,3 +120,5 @@ struct Controller<KingBeetleState>{
     }
   }
 };
+
+} //namespace mario

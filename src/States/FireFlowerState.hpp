@@ -4,6 +4,8 @@
 #include "States/PointsParticlesState.hpp"
 #include "Util/Generator.hpp"
 
+namespace mario{
+
 struct FireFlowerState : BlockBase{
   static constexpr auto RewardForEating = 1000;
 
@@ -22,3 +24,4 @@ struct FireFlowerState : BlockBase{
   }
 };
 
+} //namespace mario

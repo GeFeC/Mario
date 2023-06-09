@@ -31,7 +31,40 @@
 #include <unordered_map>
 #include <functional>
 
-static auto app_update_level(AppState& app){
+namespace mario::app_controller{
+
+static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppState&)>{
+  { AppState::Frame::Level11, frames::run_level11 },
+  { AppState::Frame::Level12, frames::run_level12 },
+  { AppState::Frame::Level13, frames::run_level13 },
+  { AppState::Frame::Level14, frames::run_level14 },
+  { AppState::Frame::Level15, frames::run_level15 },
+  { AppState::Frame::Level16, frames::run_level16 },
+
+  { AppState::Frame::Level21, frames::run_level21 },
+  { AppState::Frame::Level22, frames::run_level22 },
+  { AppState::Frame::Level23, frames::run_level23 },
+  { AppState::Frame::Level24, frames::run_level24 },
+  { AppState::Frame::Level25, frames::run_level25 },
+  { AppState::Frame::Level26, frames::run_level26 },
+
+  { AppState::Frame::Level31, frames::run_level31 },
+  { AppState::Frame::Level32, frames::run_level32 },
+  { AppState::Frame::Level33, frames::run_level33 },
+  { AppState::Frame::Level34, frames::run_level34 },
+  { AppState::Frame::Level35, frames::run_level35 },
+  { AppState::Frame::Level36, frames::run_level36 },
+
+  { AppState::Frame::Level41, frames::run_level41 },
+};
+
+static auto controller(AppState& app){
+  auto& frame = app.current_frame;
+
+  const auto& run_level = frame_functions[frame];
+  run_level(app);
+
+  //reset level:
   const auto stats = app.current_level.stats;
   const auto player_form = app.current_level.player.form;
   const auto player_growth = app.current_level.player.growth;
@@ -46,35 +79,4 @@ static auto app_update_level(AppState& app){
   app.current_level.current_checkpoint = current_checkpoint;
 }
 
-static auto app_frame_functions = std::unordered_map<AppState::Frame, void(*)(AppState&)>{
-  { AppState::Frame::Level11, run_frame_level11 },
-  { AppState::Frame::Level12, run_frame_level12 },
-  { AppState::Frame::Level13, run_frame_level13 },
-  { AppState::Frame::Level14, run_frame_level14 },
-  { AppState::Frame::Level15, run_frame_level15 },
-  { AppState::Frame::Level16, run_frame_level16 },
-
-  { AppState::Frame::Level21, run_frame_level21 },
-  { AppState::Frame::Level22, run_frame_level22 },
-  { AppState::Frame::Level23, run_frame_level23 },
-  { AppState::Frame::Level24, run_frame_level24 },
-  { AppState::Frame::Level25, run_frame_level25 },
-  { AppState::Frame::Level26, run_frame_level26 },
-
-  { AppState::Frame::Level31, run_frame_level31 },
-  { AppState::Frame::Level32, run_frame_level32 },
-  { AppState::Frame::Level33, run_frame_level33 },
-  { AppState::Frame::Level34, run_frame_level34 },
-  { AppState::Frame::Level35, run_frame_level35 },
-  { AppState::Frame::Level36, run_frame_level36 },
-
-  { AppState::Frame::Level41, run_frame_level41 },
-};
-
-static auto app_controller(AppState& app){
-  auto& frame = app.current_frame;
-
-  const auto& run_level = app_frame_functions[frame];
-  run_level(app);
-  app_update_level(app);
-}
+} //namespace mario::app_controller

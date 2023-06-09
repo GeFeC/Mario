@@ -4,6 +4,8 @@
 #include "States/PointsParticlesState.hpp"
 #include "Util/Generator.hpp"
 
+namespace mario{
+
 inline constexpr auto QBlockReward = 200;
 
 template<typename Pusher>
@@ -18,3 +20,4 @@ struct QBlockState : BouncingBlockState, BlinkingBlockBase{
   }
 };
 
+} //namespace mario

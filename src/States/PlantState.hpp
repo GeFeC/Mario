@@ -2,6 +2,8 @@
 
 #include "MonsterState.hpp"
 
+namespace mario{
+
 struct PlantState : MonsterState{
   static constexpr auto MaxOffset = BlockBase::Size * 11 / 8;
   float offset = 0.f;
@@ -52,3 +54,5 @@ public:
     return plant;
   }
 };
+
+} //namespace mario

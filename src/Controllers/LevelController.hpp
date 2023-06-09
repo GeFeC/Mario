@@ -39,14 +39,16 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 
-static auto level_background_controller(LevelState& level){
+namespace mario::level_controller{
+
+static auto background(LevelState& level){
   level.cloud_offset += window::delta_time;
 
   static constexpr auto CloudMaxOffset = 18.f;
   if (level.cloud_offset > CloudMaxOffset) level.cloud_offset -= CloudMaxOffset;
 }
 
-static auto level_finish(LevelState& level, AppState& app){
+static auto finish(LevelState& level, AppState& app){
   const auto finish = level.finish_position; 
   auto& player = level.player;
 
@@ -89,7 +91,7 @@ static auto get_worlds_first_level(AppState::Frame level){
   return util::enum_multiply(world_number, config::LevelsInWorld);
 }
 
-static auto level_restart_when_player_fell_out(AppState& app){
+static auto restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
 
@@ -123,7 +125,7 @@ static auto level_restart_when_player_fell_out(AppState& app){
   }
 }
 
-static auto level_camera(LevelState& level){
+static auto camera(LevelState& level){
   auto& player = level.player;
   auto player_y = player.position.y - BlockBase::Size + player.size.y;
   
@@ -162,7 +164,7 @@ static auto level_camera(LevelState& level){
   }
 }
 
-static auto level_checkpoints_controller(LevelState& level){
+static auto checkpoints(LevelState& level){
   auto& player = level.player;
 
   for (const auto& checkpoint : level.checkpoints){
@@ -176,7 +178,7 @@ static auto level_checkpoints_controller(LevelState& level){
   }
 }
 
-static auto level_controller(AppState& app){
+static auto controller(AppState& app){
   auto& level = app.current_level;
 
   //Level loading
@@ -185,8 +187,8 @@ static auto level_controller(AppState& app){
     return;
   }
 
-  level_checkpoints_controller(level);
-  level_restart_when_player_fell_out(app);
+  checkpoints(level);
+  restart_when_player_fell_out(app);
 
   //Blinking and counters
   level.blink_state = blink_controller();
@@ -201,7 +203,7 @@ static auto level_controller(AppState& app){
 
   if (!level.is_finished) {
     stats_controller(level.stats);
-    player_controller(player, level);
+    player_controller::controller(player, level);
 
     if (level.stats.time <= 0){
       player.is_dead = true;
@@ -210,10 +212,10 @@ static auto level_controller(AppState& app){
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
   //Game objects
-  level_background_controller(level);
+  background(level);
   level.game_objects.run_controllers<Controller>(level);
 
-  level_finish(level, app);
+  finish(level, app);
 
   //Counting coins
   static constexpr auto CoinsToGetHP = 100;
@@ -223,9 +225,11 @@ static auto level_controller(AppState& app){
   }
 
   //Camera
-  level_camera(level);
+  camera(level);
 
   //Timers
   LevelState::timer += window::delta_time;
   level.purple_flying_koopa_timer += window::delta_time;
 }
+
+} //namespace mario::level_controller

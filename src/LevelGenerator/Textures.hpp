@@ -6,12 +6,12 @@
 #include <unordered_set>
 #include <unordered_map>
 
-namespace level_generator{
+namespace mario::level_generator{
 
 const auto no_texture = &textures::dirt;
 
-using pair = std::pair<Tile, TextureGroup>;
-static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
+using pair = std::pair<Tile, renderer::TextureGroup>;
+static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::Air, no_texture),
   pair(Tile::Checkpoint, no_texture),
   pair(Tile::Hitbox, no_texture),
@@ -118,4 +118,4 @@ static auto id_to_texture = std::unordered_map<Tile, TextureGroup>{
 
 static auto allocated_textures = std::unordered_set<Tile>{};
 
-}
+} //namespace mario::level_generator

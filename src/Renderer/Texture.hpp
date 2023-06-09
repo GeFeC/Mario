@@ -10,6 +10,8 @@
 #include <vector>
 #include <stdexcept>
 
+namespace mario::renderer{
+
 struct Texture{
 private:
   std::string source_path;
@@ -127,3 +129,5 @@ public:
     return *textures[index];
   }
 };
+
+} //namespace mario::renderer

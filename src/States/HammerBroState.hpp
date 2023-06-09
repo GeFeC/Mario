@@ -7,6 +7,8 @@
 #include "Util/Generator.hpp"
 #include "res/textures.hpp"
 
+namespace mario{
+
 struct HammerBroState : MonsterState{
   static constexpr auto MaxWalkDistance = BlockBase::Size;
   static constexpr auto JumpPower = -30.f;
@@ -82,3 +84,5 @@ struct HammerBroState : MonsterState{
     hammer.gravity = HammerThrowForce;
   }
 };
+
+} //namespace mario

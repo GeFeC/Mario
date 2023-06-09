@@ -10,13 +10,15 @@
 
 #include "PolyControllers.hpp"
 
+namespace mario{
+
 template<>
 struct Controller<BricksBlockState>{
   static auto run(BricksBlockState& block, LevelState& level){
-    bounce_controller(block);
+    bounce_controller::controller(block);
 
     auto& player = level.player;
-    if (player_hit_block_above(player, block) && block.is_solid){
+    if (player_controller::did_hit_block_above(player, block) && block.is_solid){
       if (player.growth == PlayerState::Growth::Big){
         level.hitbox_grid_element(block.position / BlockBase::Size) = 0;
 
@@ -43,16 +45,18 @@ struct Controller<BricksBlockState>{
         }
       }
 
-      bounce::start(block);
+      bounce_controller::start(block);
     }
 
     //Particles:
 
     if (block.are_particles_active){
       for (auto& particle : block.particles){
-        entity_gravity(particle, level);
-        entity_movement(particle, level);
+        entity_controller::gravity(particle, level);
+        entity_controller::movement(particle, level);
       }    
     } 
   }
 };
+
+} //namespace mario

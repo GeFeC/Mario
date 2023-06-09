@@ -7,7 +7,9 @@
 #include "States/BossState.hpp"
 #include "res/textureGroups.hpp"
 
-static auto run_frame_level36(AppState& app){
+namespace mario::frames{
+
+static auto run_level36(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level36;
   level.type = LevelState::Type::Boss;
@@ -18,7 +20,7 @@ static auto run_frame_level36(AppState& app){
     &textures::snow_bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::snow_bg;
     level.cloud_textures = &texture_groups::blue_cloud;
@@ -43,3 +45,5 @@ static auto run_frame_level36(AppState& app){
     level.player.position.x = 2 * BlockBase::Size;
   });
 }
+
+} //namespace mario::frames

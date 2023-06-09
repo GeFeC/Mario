@@ -1,5 +1,7 @@
 #pragma once
 
+namespace mario{
+
 template<typename T>
 struct Controller{
   static auto run(T& t){}
@@ -24,3 +26,5 @@ template<typename T>
 struct EntitiesView{
   static auto run(const T& t){}
 };
+
+} //namespace mario

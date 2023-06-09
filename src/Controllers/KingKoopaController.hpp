@@ -7,7 +7,9 @@
 #include "Controllers/BossController.hpp"
 #include "Util/Util.hpp"
 
-static auto king_koopa_reset(KingKoopaState& boss){
+namespace mario::king_koopa_controller{
+
+static auto reset(KingKoopaState& boss){
   boss.in_shell = false;
 
   const auto previous_height = boss.size.y;
@@ -21,10 +23,14 @@ static auto king_koopa_reset(KingKoopaState& boss){
   boss.current_texture = &textures::green_koopa_walk[0];
 };
 
+} //namespace mario::king_koopa_controller
+
+namespace mario{
+
 template<>
 struct Controller<KingKoopaState>{
   static auto run(KingKoopaState& boss, LevelState& level){
-    if (boss.hp == 0) king_koopa_reset(boss);
+    if (boss.hp == 0) king_koopa_controller::reset(boss);
 
     //Speeding up
     if (boss.withdraw_delay <= 0.f){
@@ -50,7 +56,7 @@ struct Controller<KingKoopaState>{
       if (boss.withdraw_duration <= 0.f){
         boss.in_shell = false;
 
-        king_koopa_reset(boss);
+        king_koopa_controller::reset(boss);
       }
     }
 
@@ -58,12 +64,14 @@ struct Controller<KingKoopaState>{
 
     //Movement
     if (boss.hp > 0 && !boss.in_shell){
-      monster_run_movement_animation(boss, textures::green_koopa_walk);
+      monster_controller::run_movement_animation(boss, textures::green_koopa_walk);
     }
 
-    boss_controller(boss, level);
-    entity_gravity(boss, level);
+    boss_controller::controller(boss, level);
+    entity_controller::gravity(boss, level);
 
-    boss_react_when_hit_by_fireball(boss, level);
+    boss_controller::react_when_hit_by_fireball(boss, level);
   }
 };
+
+} //namespace mario

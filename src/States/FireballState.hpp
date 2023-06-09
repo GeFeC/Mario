@@ -4,6 +4,8 @@
 #include "States/BlockState.hpp"
 #include "EntityState.hpp"
 
+namespace mario{
+
 struct ExplosionState : BlockBase{
   util::LoopedCounter counter;
 
@@ -52,3 +54,5 @@ struct FireballState : EntityState{
     is_visible = false;
   }
 };
+
+} //namespace mario

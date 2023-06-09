@@ -17,7 +17,7 @@
 #include <iostream>
 #include <unordered_set>
 
-namespace level_generator{
+namespace mario::level_generator{
 
 static auto generate_horizontal_level_clouds(LevelState& level, int spread = 2){
   auto& clouds = level.game_objects.get_vec<CloudState>();
@@ -124,4 +124,4 @@ static auto generate_level(LevelState& level, const std::string& file_path){
   }
 }
 
-} //namespace level_generator
+} //namespace mario::level_generator

@@ -14,7 +14,9 @@
 
 #include <GLFW/glfw3.h>
 
-static auto plant_controller_base(PlantState& plant, LevelState& level){
+namespace mario::plant_controller{
+
+static auto controller_base(PlantState& plant, LevelState& level){
   //Points
   for (auto& p : plant.points_generator.items){
     points_particles_controller(p);
@@ -25,8 +27,8 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
   //Interactions with player
   auto& player = level.player;
 
-  entity_kill_player_on_touch(plant, player);
-  monster_die_when_hit_by_fireball(plant, level);
+  entity_controller::kill_player_on_touch(plant, player);
+  monster_controller::die_when_hit_by_fireball(plant, level);
 
   if (plant.was_hit) plant.is_visible = false;
 
@@ -65,24 +67,30 @@ static auto plant_controller_base(PlantState& plant, LevelState& level){
 }
 
 static auto green_plant_controller(PlantState& plant, LevelState& level){
-  plant_controller_base(plant, level);
+  controller_base(plant, level);
   
-  monster_run_movement_animation(plant, textures::plant);
+  monster_controller::run_movement_animation(plant, textures::plant);
 }
 
 static auto red_plant_controller(PlantState& plant, LevelState& level){
-  plant_controller_base(plant, level);
+  controller_base(plant, level);
   
-  monster_run_movement_animation(plant, textures::red_plant);
+  monster_controller::run_movement_animation(plant, textures::red_plant);
 }
+
+} //namespace mario::plant_controller
+
+namespace mario{
 
 template<>
 struct Controller<PlantState>{
   static auto run(PlantState& plant, LevelState& level){
     using Type = PlantState::Type;
     switch(plant.type){
-      case Type::Green: green_plant_controller(plant, level); return;
-      case Type::Red: red_plant_controller(plant, level); return;
+      case Type::Green: plant_controller::green_plant_controller(plant, level); return;
+      case Type::Red: plant_controller::red_plant_controller(plant, level); return;
     }
   }
 };
+
+} //namespace mario

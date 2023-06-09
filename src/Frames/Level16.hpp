@@ -6,9 +6,9 @@
 #include "res/textureGroups.hpp"
 #include "Controllers/BossController.hpp"
 
-#include <memory>
+namespace mario::frames{
 
-static auto run_frame_level16(AppState& app){
+static auto run_level16(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level16;
   level.type = LevelState::Type::Boss;
@@ -21,7 +21,7 @@ static auto run_frame_level16(AppState& app){
     &textures::mushroom_bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
@@ -42,3 +42,5 @@ static auto run_frame_level16(AppState& app){
     level.player.position.x = 2 * BlockBase::Size;
   });
 }
+
+} //namespace mario::frames

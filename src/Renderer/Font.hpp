@@ -11,6 +11,8 @@
 #include <vector>
 #include <stdexcept>
 
+namespace mario::renderer{
+
 class Font{
 private:
   struct Glyph{
@@ -93,3 +95,5 @@ public:
     }
   }
 };
+
+} //namespace mario::renderer

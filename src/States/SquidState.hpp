@@ -2,6 +2,8 @@
 
 #include "States/MonsterState.hpp"
 
+namespace mario{
+
 struct SquidState : MonsterState{
   static constexpr auto AttackDistance = 3.f * BlockBase::Size;
 
@@ -23,3 +25,5 @@ struct SquidState : MonsterState{
     return squid;
   }
 };
+
+} //namespace mario

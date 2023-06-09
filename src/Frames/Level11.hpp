@@ -9,7 +9,9 @@
 #include "res/textures.hpp"
 #include "Frames/LevelBase.hpp"
 
-static auto run_frame_level11(AppState& app){
+namespace mario::frames{
+
+static auto run_level11(AppState& app){
   auto level = LevelFrameSharedData{};
   level.frame = AppState::Frame::Level11;
   level.type = LevelState::Type::Horizontal;
@@ -19,7 +21,7 @@ static auto run_frame_level11(AppState& app){
     &textures::mushroom_bg
   };
 
-  run_frame_levelbase(app, level, [](AppState& app){
+  run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::mushroom_bg;
     level.cloud_textures = &texture_groups::red_cloud;
@@ -34,3 +36,5 @@ static auto run_frame_level11(AppState& app){
     level_generator::put_q_block_with_coins(level, { 189, 3 }, 5);
   });
 }
+
+} //namespace mario::frames

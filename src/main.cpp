@@ -15,15 +15,15 @@
 #include <GLFW/glfw3.h>
 
 auto main() -> int{
-  window::init();
-  renderer::init();
+  mario::window::init();
+  mario::renderer::init();
 
-  auto app = AppState();
-  app.current_frame = AppState::Frame::Level36;
+  auto app = mario::AppState();
+  app.current_frame = mario::AppState::Frame::Level41;
 
-  window::show();
+  mario::window::show();
 
-  while(!window::should_close()){
-    app_controller(app);
+  while(!mario::window::should_close()){
+    mario::app_controller::controller(app);
   }
 }

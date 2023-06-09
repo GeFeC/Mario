@@ -4,6 +4,8 @@
 #include "Window.hpp"
 #include "Util/Util.hpp"
 
+namespace mario{
+
 static auto points_particles_controller(PointsParticlesState& points){
   if (points.is_active && points.offset < PointsParticlesState::MaxOffset){
     const auto current_step = window::delta_time * 120.f; 
@@ -20,3 +22,4 @@ static auto points_particles_controller(PointsParticlesState& points){
   }
 }
 
+} //namespace mario

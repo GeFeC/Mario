@@ -12,7 +12,7 @@
 #include <iostream>
 #include <array>
 
-namespace renderer{
+namespace mario::renderer{
 
 static auto vertex_shader_script = R"(
   #version 330 core
@@ -302,4 +302,4 @@ auto draw_with_shadow(const F& callable){
   callable();
 }
 
-} //namespace renderer
+} //namespace mario::renderer

@@ -35,8 +35,9 @@
 #include "Util/Util.hpp"
 #include "Util/Poly.hpp"
 
-#include <memory>
 #include <vector>
+
+namespace mario{
 
 struct StatsState{
   int hp = 5;
@@ -82,8 +83,8 @@ struct LevelState{
 
   util::vector2d<int> hitbox_grid;
 
-  Texture const* background_texture = nullptr;
-  TextureGroup const* cloud_textures = nullptr;
+  renderer::Texture const* background_texture = nullptr;
+  renderer::TextureGroup const* cloud_textures = nullptr;
 
   StatsState stats;
   PlayerState player;
@@ -166,3 +167,5 @@ struct LevelState{
     return hitbox_grid[position.x][position.y];
   }
 };
+
+} //namespace mario
