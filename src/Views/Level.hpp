@@ -24,29 +24,27 @@ static auto render_water(const LevelState& level, const glm::vec2& offset){
   waves_offset += window::delta_time * 40.f;
   if (waves_offset >= BlockBase::Size) waves_offset -= BlockBase::Size;
 
-  if (level.type == LevelState::Type::Horizontal){
-    for (int i = 0; i < LevelState::HorizontalLevelSize.x + 1; ++i){ //one more than level size because of animation
-      auto block = BlockBase{};
-      block.position = { i * BlockBase::Size - waves_offset, level.water_level * BlockBase::Size };
-      block.size = glm::vec2(BlockBase::Size);
-      block.texture = &textures::water_top;
-      block.alpha = WaterTransparency;
+  for (int i = 0; i < level.max_size().x + 1; ++i){ //one more than level size because of animation
+    auto block = BlockBase{};
+    block.position = { i * BlockBase::Size - waves_offset, level.water_level * BlockBase::Size };
+    block.size = glm::vec2(BlockBase::Size);
+    block.texture = &textures::water_top;
+    block.alpha = WaterTransparency;
 
-      BlocksView<BlockState>::run(block, offset);
-    }
-
-    const auto water_area = util::make_pair_from_vec2(LevelState::HorizontalLevelSize);
-
-    util::for_2d([&](int x, int y){
-      auto block = BlockBase{};
-      block.position = { x * BlockBase::Size, y * BlockBase::Size };
-      block.size = glm::vec2(BlockBase::Size);
-      block.texture = &textures::water_bottom;
-      block.alpha = WaterTransparency;
-
-      BlocksView<BlockState>::run(block, offset);
-    }, std::make_pair(0.f, level.water_level + 1.f), water_area);
+    BlocksView<BlockState>::run(block, offset);
   }
+
+  const auto water_area = util::make_pair_from_vec2(level.max_size());
+
+  util::for_2d([&](int x, int y){
+    auto block = BlockBase{};
+    block.position = { x * BlockBase::Size, y * BlockBase::Size };
+    block.size = glm::vec2(BlockBase::Size);
+    block.texture = &textures::water_bottom;
+    block.alpha = WaterTransparency;
+
+    BlocksView<BlockState>::run(block, offset);
+  }, std::make_pair(0.f, level.water_level + 1.f), water_area);
 }
 
 static auto render_stats(const LevelState& level){

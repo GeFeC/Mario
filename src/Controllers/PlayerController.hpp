@@ -332,7 +332,8 @@ static auto controller(PlayerState& player, LevelState& level) -> void{
     movement(player, level);
     entity_controller::movement(player, level);
 
-    if (level.biome == LevelState::Biome::Underwater && player.position.y < config::FrameBufferSize.y){
+    const auto is_player_under_level = player.position.y / BlockBase::Size > level.max_size().y;
+    if (level.biome == LevelState::Biome::Underwater && !is_player_under_level){
       swim(player, level);
     }
     else{

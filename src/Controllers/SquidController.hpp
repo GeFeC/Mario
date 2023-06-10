@@ -25,7 +25,7 @@ struct Controller<SquidState>{
       return;
     }
 
-    if (squid.position.y > config::FrameBufferSize.y) squid.is_active = false;
+    if (squid.position.y / BlockBase::Size > level.max_size().y) squid.is_active = false;
     if (!squid.is_active) return;
     squid.position.y = std::max(squid.position.y, BlockBase::Size);
 
@@ -51,10 +51,11 @@ struct Controller<SquidState>{
           ? Direction::Right 
           : Direction::Left;
 
-        const auto is_outside_of_screen 
-          = player.position.x - squid.position.x > config::FrameBufferSize.x / 2.f;
+        const auto is_far_from_player 
+          = player.position.x - squid.position.x > config::FrameBufferSize.x
+          || player.position.y - squid.position.y > config::FrameBufferSize.y;
 
-        if (is_outside_of_screen){
+        if (is_far_from_player){
           squid.direction = Direction::Left;
         }
       }
