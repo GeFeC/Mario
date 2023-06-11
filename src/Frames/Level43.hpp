@@ -25,7 +25,6 @@ static auto run_level43(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
     level.cloud_textures = &texture_groups::blue_cloud;
-    level.biome = LevelState::Biome::Underwater;
     level.water_level = 1.f;
 
     level.game_objects.push(FishState::make_red({ 4, 111 }))

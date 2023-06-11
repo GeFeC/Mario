@@ -23,7 +23,6 @@ static auto run_level41(AppState& app){
   run_levelbase(app, level, [](AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
-    level.biome = LevelState::Biome::Underwater;
     level.water_level = 1.f;
 
     level_generator::generate_level(level, "level41_1.csv");

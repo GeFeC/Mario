@@ -74,11 +74,6 @@ struct LevelState{
     Boss
   } type = Type::Horizontal;
 
-  enum class Biome{
-    Underwater,
-    Land
-  } biome = Biome::Land;
-
   util::vector2d<int> hitbox_grid;
 
   renderer::Texture const* background_texture = nullptr;

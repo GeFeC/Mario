@@ -3,6 +3,7 @@
 #include "Controllers/CollisionController.hpp"
 #include "Controllers/EntityController.hpp"
 #include "Controllers/FireballController.hpp"
+#include "States/BlockState.hpp"
 #include "States/EntityState.hpp"
 
 #include "config.hpp"
@@ -199,6 +200,10 @@ static auto transform_to_fire(PlayerState& player){
   }
 }
 
+static auto is_in_water(PlayerState& player, const LevelState& level){
+  return player.position.y + player.size.y - BlockBase::Size >= level.water_level * BlockBase::Size;
+}
+
 static auto textures(PlayerState& player, const LevelState& level){
   player.current_texture = player.default_texture();
 
@@ -233,7 +238,7 @@ static auto textures(PlayerState& player, const LevelState& level){
   }
 
   //Swimming
-  if (level.biome == LevelState::Biome::Underwater && !player.is_on_ground){
+  if (is_in_water(player, level) && !player.is_on_ground){
     player.current_texture = player.swim_texture(player.swim_counter.int_value());
   }
 
@@ -318,7 +323,7 @@ static auto fireballs(PlayerState& player, const LevelState& level){
   fireball.is_visible = true;
 }
 
-static auto controller(PlayerState& player, LevelState& level) -> void{
+static auto controller(PlayerState& player, LevelState& level){
   if (player.is_changing_to_fire){
     transform_to_fire(player);
   }
@@ -333,7 +338,7 @@ static auto controller(PlayerState& player, LevelState& level) -> void{
     entity_controller::movement(player, level);
 
     const auto is_player_under_level = player.position.y / BlockBase::Size > level.max_size().y;
-    if (level.biome == LevelState::Biome::Underwater && !is_player_under_level){
+    if (!is_player_under_level && is_in_water(player, level)){
       swim(player, level);
     }
     else{

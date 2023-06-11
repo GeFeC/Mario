@@ -14,7 +14,6 @@ static auto run_level42(AppState& app){
   level.type = LevelState::Type::Horizontal;
   level.number = { 4, 2 };
   level.extra_textures = {
-    texture_groups::red_flying_koopa,
     texture_groups::blue_cloud,
     texture_groups::red_fish,
     &textures::dirt,
@@ -27,7 +26,6 @@ static auto run_level42(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::bg;
     level.cloud_textures = &texture_groups::blue_cloud;
-    level.biome = LevelState::Biome::Land;
     level.water_level = LevelState::BlocksInColumn - 1;
 
     for (int i = 22; i < LevelState::HorizontalLevelSize.x; i += FishState::random_value(5, 8)){
