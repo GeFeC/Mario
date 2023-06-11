@@ -11,6 +11,8 @@
 #include "Window.hpp"
 #include "config.hpp"
 
+#include "Terminal.hpp"
+
 namespace mario::entity_controller{
 
 static auto detect_collision_with_level = [](EntityState& entity, const LevelState& level, auto callable){
@@ -160,6 +162,8 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
 }
 
 static auto kill_player_on_touch(const EntityState& entity, PlayerState& player){
+  if (terminal::god_mode) return;
+
   if (!entity.is_active) return;
   if (entity.was_hit) return;
   if (entity.is_dead) return;

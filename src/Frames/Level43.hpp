@@ -27,7 +27,6 @@ static auto run_level43(AppState& app){
     level.cloud_textures = &texture_groups::blue_cloud;
     level.biome = LevelState::Biome::Underwater;
     level.water_level = 1.f;
-    level.player.position.y = 0.f;
 
     level.game_objects.push(FishState::make_red({ 4, 111 }))
       .set_direction(EntityState::DirectionRight);

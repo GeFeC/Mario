@@ -20,6 +20,8 @@ namespace mario::views{
 static auto render_water(const LevelState& level, const glm::vec2& offset){
   static constexpr auto WaterTransparency = 0.5f;
 
+  if (level.water_level == util::BigValue) return;
+
   static auto waves_offset = 0.f;
   waves_offset += window::delta_time * 40.f;
   if (waves_offset >= BlockBase::Size) waves_offset -= BlockBase::Size;

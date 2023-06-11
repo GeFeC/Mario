@@ -143,7 +143,7 @@ struct LevelState{
   float purple_flying_koopa_timer = 0.f;
 
   float cloud_offset = 0.f;
-  float water_level = BlocksInColumn;
+  float water_level = util::BigValue;
 
   float load_delay = 3.f;
   float finish_delay = 2.f;

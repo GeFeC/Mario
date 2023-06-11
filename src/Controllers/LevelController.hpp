@@ -55,10 +55,12 @@ static auto finish(LevelState& level, AppState& app){
   if (level.is_finished){
     level.score_adding_after_finish_delay -= window::delta_time;
 
+    //Going through pipe:
     if (level.player.position.y / BlockBase::Size < finish.y + 1){
       level.player.position.y += window::delta_time * BlockBase::Size;
     }
 
+    //Give points for the remaining time:
     if (level.stats.time > 0) {
       if (level.score_adding_after_finish_delay <= 0.f){
         const auto multiplier = std::min(2, level.stats.time);

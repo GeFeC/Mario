@@ -10,6 +10,8 @@
 #include "States/AppState.hpp"
 #include "Frame.hpp"
 
+#include "Terminal.hpp"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
@@ -21,6 +23,7 @@ auto main() -> int{
   auto app = mario::AppState();
   app.current_frame = mario::AppState::Frame::Level43;
 
+  mario::terminal::run(app);
   mario::window::show();
 
   while(!mario::window::should_close()){
