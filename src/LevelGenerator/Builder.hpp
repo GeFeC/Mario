@@ -100,15 +100,14 @@ static auto& put_q_block_with_entity(
     LevelState& level, 
     const Entity& entity
 ){
-  const auto position = (entity.position + glm::vec2(0.f, entity.size.y)) / BlockBase::Size - glm::vec2(0.f, 1.f);
+  const auto block_position = (entity.position + glm::vec2(0.f, entity.size.y - BlockBase::Size)) / BlockBase::Size;
 
-  level_generator::put_hitbox_block(level, position);
+  level_generator::put_hitbox_block(level, block_position);
 
-  auto& block = level.game_objects.push(QBlockState<EntityPusherState<Entity>>(position));
+  auto& block = level.game_objects.push(QBlockState<EntityPusherState<Entity>>(block_position));
   auto& pusher_entity = block.pusher.entity;
 
   pusher_entity = entity;
-  pusher_entity.position.y -= entity.size.y - BlockBase::Size;
   pusher_entity.is_active = false;
   pusher_entity.is_in_q_block = true;
   pusher_entity.is_visible = false;
