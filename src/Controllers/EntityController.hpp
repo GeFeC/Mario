@@ -169,7 +169,14 @@ static auto kill_player_on_touch(const EntityState& entity, PlayerState& player)
   if (entity.is_dead) return;
   if (player.is_dead) return;
   if (player_is_on_entity(player, entity)) return;
-  if (!collision_controller::intersects(player, entity)) return;
+
+  const auto entity_hitbox_offset = 1.f / 5.f;
+  const auto entity_hitbox = collision_controller::Rect(
+    entity.position + glm::vec2(entity.size * entity_hitbox_offset / 2.f),
+    glm::vec2(entity.size * (1 - entity_hitbox_offset))
+  );
+
+  if (!collision_controller::intersects(player, entity_hitbox)) return;
 
   if (player.growth == PlayerState::Growth::Big){
     player.is_shrinking = true;

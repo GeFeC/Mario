@@ -38,6 +38,8 @@ static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
 }
 
 static auto walk(BossState& boss, const LevelState& level){
+  if (boss.hp == 0) return;
+
   boss.position.x += boss.direction * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
 
   static constexpr auto LevelWidth = config::FrameBufferSize.x - BlockBase::Size;
@@ -64,6 +66,7 @@ static auto controller(BossState& boss, LevelState& level){
   if (boss.hp == 0){
     boss.vertical_flip = EntityState::Flip::UseFlip;
     boss.should_collide = false;
+    boss.was_hit = true;
     level.is_finished = true;
     return; 
   }
