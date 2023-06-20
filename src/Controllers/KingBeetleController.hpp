@@ -23,6 +23,7 @@ struct Controller<KingBeetleState>{
     monster_controller::endure_fireball(boss, level.player);
     entity_controller::gravity(boss, level);
     boss_controller::controller(boss, level);
+    boss_controller::walk(boss, level);
 
     if (boss.hp == 0) {
       return;

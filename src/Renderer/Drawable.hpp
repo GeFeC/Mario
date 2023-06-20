@@ -29,4 +29,8 @@ struct PlainDrawable{
   glm::vec4 color;
 };
 
+struct RotatableDrawable : Drawable{
+  float rotation = 0.f;
+};
+
 } //namespace mario::renderer

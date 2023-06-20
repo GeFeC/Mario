@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Controllers/CollisionController.hpp"
+#include "Renderer/Drawable.hpp"
 #include "Renderer/Renderer.hpp"
 
 #include "States/BlockState.hpp"
@@ -229,6 +230,22 @@ struct EntitiesView<BossState>{
 
 template<> struct EntitiesView<KingGoombaState> : EntitiesView<BossState>{};
 template<> struct EntitiesView<KingKoopaState> : EntitiesView<BossState>{};
+
+template<> struct EntitiesView<KingCheepState>{ 
+  static auto run(const KingCheepState& boss, const glm::vec2& offset){
+    auto drawable = renderer::RotatableDrawable();
+
+    drawable.position = boss.position;
+    drawable.size = boss.size;
+    drawable.rotation = boss.rotation;
+    drawable.texture = boss.current_texture;
+    drawable.flip.vertical = boss.vertical_flip;
+
+    renderer::highlight_mode = boss.is_highlighted;
+    renderer::draw(drawable);
+    renderer::highlight_mode = false;
+  }
+};
 
 template<> struct EntitiesView<KingBeetleState>{
   static auto run(const KingBeetleState& boss, const glm::vec2& offset){

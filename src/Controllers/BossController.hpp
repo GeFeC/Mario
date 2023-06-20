@@ -21,6 +21,8 @@ static auto get_hitbox(BossState& boss){
 }
 
 static auto take_damage(BossState& boss){
+  if (boss.hp == 0) return;
+
   boss.hp--;
   boss.blink_cooldown = 0.05f;
   boss.is_highlighted = true;
@@ -33,6 +35,18 @@ static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
     take_damage(boss);
     fireball.acceleration.left = fireball.acceleration.right = 0.f;
   });
+}
+
+static auto walk(BossState& boss, const LevelState& level){
+  boss.position.x += boss.direction * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
+
+  static constexpr auto LevelWidth = config::FrameBufferSize.x - BlockBase::Size;
+  if (boss.position.x + boss.size.x >= LevelWidth) boss.direction = EntityState::DirectionLeft;
+  if (boss.position.x <= BlockBase::Size) boss.direction = EntityState::DirectionRight;
+
+  static constexpr auto GroundPosition = config::FrameBufferSize.y - BlockBase::Size;
+  boss.position.x = std::clamp(boss.position.x, BlockBase::Size, LevelWidth);
+  boss.position.y = std::min(boss.position.y, GroundPosition);
 }
 
 static auto controller(BossState& boss, LevelState& level){
@@ -60,17 +74,6 @@ static auto controller(BossState& boss, LevelState& level){
   if (level.player.form == PlayerState::Form::Normal){
     level.player.is_dead = true;
   }
-
-  //Walking
-  boss.position.x += boss.direction * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
-
-  static constexpr auto LevelWidth = config::FrameBufferSize.x - BlockBase::Size;
-  if (boss.position.x + boss.size.x >= LevelWidth) boss.direction = EntityState::DirectionLeft;
-  if (boss.position.x <= BlockBase::Size) boss.direction = EntityState::DirectionRight;
-
-  static constexpr auto GroundPosition = config::FrameBufferSize.y - BlockBase::Size;
-  boss.position.x = std::clamp(boss.position.x, BlockBase::Size, LevelWidth);
-  boss.position.y = std::min(boss.position.y, GroundPosition);
 }
 
 } //namespace mario::boss_controller

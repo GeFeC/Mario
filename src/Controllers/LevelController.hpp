@@ -32,6 +32,7 @@
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"
 #include "Controllers/KingBeetleController.hpp"
+#include "Controllers/KingCheepController.hpp"
 
 #include "Util/LoopedCounter.hpp"
 #include "Util/Util.hpp"

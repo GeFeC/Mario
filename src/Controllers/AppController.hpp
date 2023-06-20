@@ -29,11 +29,11 @@
 #include "Frames/Level43.hpp"
 #include "Frames/Level44.hpp"
 #include "Frames/Level45.hpp"
+#include "Frames/Level46.hpp"
 
 #include "Util/Util.hpp"
 
 #include <unordered_map>
-#include <functional>
 
 namespace mario::app_controller{
 
@@ -64,6 +64,7 @@ static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppSta
   { AppState::Frame::Level43, frames::run_level43 },
   { AppState::Frame::Level44, frames::run_level44 },
   { AppState::Frame::Level45, frames::run_level45 },
+  { AppState::Frame::Level46, frames::run_level46 },
 };
 
 static auto controller(AppState& app){

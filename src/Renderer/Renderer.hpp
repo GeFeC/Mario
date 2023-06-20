@@ -20,6 +20,7 @@ static auto vertex_shader_script = R"(
   layout (location = 0) in vec2 position;
   layout (location = 1) in vec2 texture_position;
 
+  uniform mat4 rotation = mat4(1.0);
   uniform mat4 projection;
   uniform vec4 rect;
 
@@ -45,7 +46,7 @@ static auto vertex_shader_script = R"(
     mat4 model = mat4(1.0);
     model = translate(model, vec2(rect.x, rect.y));
     model = scale(model, vec2(rect.z, rect.w));
-    gl_Position = projection * model * vec4(position, 0.0, 1.0);
+    gl_Position = projection * model * rotation * vec4(position, 0.0, 1.0);
   }
 )";
 
@@ -256,6 +257,19 @@ static auto draw(const Drawable& drawable, bool is_glyph = false){
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
   draw_base(drawable, is_glyph, glm::vec2(0));
+}
+
+static auto draw(const RotatableDrawable& drawable){
+  auto rotation_matrix = glm::mat4(1.0f);
+  rotation_matrix = glm::translate(rotation_matrix, glm::vec3(0.5f, 0.5f, 0.f));
+  rotation_matrix = glm::rotate(rotation_matrix, drawable.rotation, glm::vec3(0.f, 0.f, 1.f));
+  rotation_matrix = glm::translate(rotation_matrix, glm::vec3(-0.5f, -0.5f, 0.f));
+
+  set_uniform("rotation", rotation_matrix);
+
+  draw(drawable | util::as<Drawable>);
+
+  set_uniform("rotation", glm::mat4(1.0f));
 }
 
 static auto draw_plain(const PlainDrawable& drawable){

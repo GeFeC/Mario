@@ -68,6 +68,7 @@ struct Controller<KingKoopaState>{
     }
 
     boss_controller::controller(boss, level);
+    boss_controller::walk(boss, level);
     entity_controller::gravity(boss, level);
 
     boss_controller::react_when_hit_by_fireball(boss, level);

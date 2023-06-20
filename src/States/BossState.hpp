@@ -80,4 +80,18 @@ struct KingBeetleState : BossState{
   } 
 };
 
+struct KingCheepState : BossState{
+  static constexpr auto Size = glm::vec2(3.f, 3.f) * BlockBase::Size;
+
+  float timer = 0.f;
+  float rotation = 0.f;
+
+  KingCheepState() : BossState(){
+    size = Size;
+    walk_speed = 6.f;
+    hp = MaxHp;
+  }
+};
+
+
 } //namespace mario
