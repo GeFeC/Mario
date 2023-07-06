@@ -40,6 +40,13 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 
+namespace mario{
+
+template<typename T>
+static auto run_controller(T& t, LevelState& level){}
+
+} //namespace mario
+
 namespace mario::level_controller{
 
 static auto background(LevelState& level){
@@ -216,7 +223,10 @@ static auto controller(AppState& app){
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
   //Game objects
   background(level);
-  level.game_objects.run_controllers<Controller>(level);
+  
+  level.game_objects.for_each([&](auto& object){
+    run_controller(object, level);
+  });
 
   finish(level, app);
 

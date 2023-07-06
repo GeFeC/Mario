@@ -103,16 +103,13 @@ static auto purple_koopa_controller(JumpingKoopaState& koopa, LevelState& level)
 
 namespace mario{
 
-template<>
-struct Controller<JumpingKoopaState>{
-  static auto run(JumpingKoopaState& koopa, LevelState& level){
-    using Type = KoopaState::Type;
-    switch(koopa.type){
-      case Type::Green: jumping_koopa_controller::green_koopa_controller(koopa, level); return;
-      case Type::Red: jumping_koopa_controller::red_koopa_controller(koopa, level); return;
-      case Type::Purple: jumping_koopa_controller::purple_koopa_controller(koopa, level); return;
-    }
+static auto run_controller(JumpingKoopaState& koopa, LevelState& level){
+  using Type = KoopaState::Type;
+  switch(koopa.type){
+    case Type::Green: jumping_koopa_controller::green_koopa_controller(koopa, level); return;
+    case Type::Red: jumping_koopa_controller::red_koopa_controller(koopa, level); return;
+    case Type::Purple: jumping_koopa_controller::purple_koopa_controller(koopa, level); return;
   }
-};
+}
 
 } //namespace mario

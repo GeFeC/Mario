@@ -293,7 +293,7 @@ static auto draw_plain(const PlainDrawable& drawable){
 static auto print(const Text& text, const glm::vec2& offset){
   if (!text.is_visible) return;
 
-  for (int i = 0; i < text.get_length(); ++i){
+  for (auto i = std::size_t(0); i < text.get_length(); ++i){
     auto current_char = text.text[i];
 
     if (current_char == '\n'){

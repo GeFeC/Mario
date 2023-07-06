@@ -79,16 +79,13 @@ static auto yellow_goomba_controller(GoombaState& goomba, LevelState& level){
 
 namespace mario{
 
-template<>
-struct Controller<GoombaState>{
-  static auto run(GoombaState& goomba, LevelState& level){
-    using Type = GoombaState::Type;
-    switch(goomba.type){
-      case Type::Normal: goomba_controller::normal_goomba_controller(goomba, level); return;
-      case Type::Red: goomba_controller::red_goomba_controller(goomba, level); return;
-      case Type::Yellow: goomba_controller::yellow_goomba_controller(goomba, level); return;
-    }
+static auto run_controller(GoombaState& goomba, LevelState& level){
+  using Type = GoombaState::Type;
+  switch(goomba.type){
+    case Type::Normal: goomba_controller::normal_goomba_controller(goomba, level); return;
+    case Type::Red: goomba_controller::red_goomba_controller(goomba, level); return;
+    case Type::Yellow: goomba_controller::yellow_goomba_controller(goomba, level); return;
   }
-};
+}
 
 } //namespace mario

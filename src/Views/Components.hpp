@@ -37,225 +37,177 @@ static auto render_points_particles(const std::vector<PointsParticlesState>& poi
   }
 }
 
-} //namespace mario::views
+template<typename T, typename = util::not_derived<T, EntityState>>
+static auto render_entity(const T&, const LevelState&) {}
 
-namespace mario{
+static auto render_entity(const PlantState&, const LevelState&) {}
 
-template<>
-struct EntitiesView<EntityState>{
-  static auto run(const EntityState& entity, const glm::vec2& offset){
-    if (!views::is_component_on_screen(entity, offset)) return;
+template<typename T, typename = util::not_derived<T, BlockBase>>
+static auto render_block(const T&, const LevelState&){}
 
-    renderer::draw(renderer::Drawable{
-      entity.position - offset,
-      entity.size,
-      entity.current_texture,
-      1.f,
-      { entity.direction * entity.texture_flip, entity.vertical_flip },
-      entity.is_visible
-    });
-  }
-};
+template<typename T>
+static auto render_background(const T&, const LevelState&) {}
 
-template<> struct EntitiesView<GoombaState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<KoopaState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<JumpingKoopaState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<FlyingKoopaState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<MushroomState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<BeetleState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<SpikeState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<FishState> : EntitiesView<EntityState>{};
-template<> struct EntitiesView<SquidState> : EntitiesView<EntityState>{};
-template<> struct PlantsView<PlantState> : EntitiesView<EntityState>{};
+template<typename T>
+static auto render_plant(const T&, const LevelState&) {}
 
-template<> 
-struct BlocksView<BlockState>{
-  static auto run(const BlockBase& block, const glm::vec2& offset){
-    if (!views::is_component_on_screen(block, offset)) return;
+static auto render_entity(const EntityState& entity, const LevelState& level){
+  const auto& offset = level.camera_offset;
+  if (!views::is_component_on_screen(entity, offset)) return;
 
-    using renderer::Drawable;
-    renderer::draw(Drawable{
-      block.position - offset,
-      glm::vec2(BlockBase::Size),
-      block.texture,
-      block.alpha,
-      { EntityState::Flip::NoFlip, EntityState::Flip::NoFlip },
-      block.is_visible
-    });
-  }
-};
-
-template<> 
-struct BackgroundView<BackgroundHillState> : BlocksView<BlockState>{};
-
-template<> 
-struct BackgroundView<BackgroundBushState> : BlocksView<BlockState>{};
-
-template<>
-struct BackgroundView<CloudState>{
-  static auto run(
-      const CloudState& cloud, 
-      const LevelState& level,
-      const glm::vec2& offset
-  ){
-    auto& textures = *level.cloud_textures;
-
-    const auto& top_left = textures[0];
-    const auto& top_right = textures[1];
-    const auto& top_center = textures[2];
-    const auto& bottom_left = textures[3];
-    const auto& bottom_right = textures[4];
-    const auto& bottom_center = textures[5];
-
-    const auto [position, size] = cloud;
-    const auto x = position.x - level.cloud_offset;
-    const auto y = position.y;
-
-    BlocksView<BlockState>::run(BlockState({ x, y  }, &top_left), offset);
-    BlocksView<BlockState>::run(BlockState({ x, (y + 1)  }, &bottom_left), offset);
-
-    for (int i = 0; i < size; ++i){
-      BlocksView<BlockState>::run(BlockState({ (x + i + 1), y  }, &top_center), offset);
-      BlocksView<BlockState>::run(BlockState({ (x + i + 1), (y + 1)  }, &bottom_center), offset);
-    }
-
-    BlocksView<BlockState>::run(BlockState({ (x + size + 1), y  }, &top_right), offset);
-    BlocksView<BlockState>::run(BlockState({ (x + size + 1), (y + 1)  }, &bottom_right), offset);
-  }
-};
-
-template<>
-struct BlocksView<CoinBlockState>{
-  static auto run(const CoinBlockState& block, const glm::vec2& offset){
-    BlocksView<BlockState>::run(block, offset);
-  }
-};
-
-template<>
-struct BlocksView<BricksBlockState>{
-  static auto run(const BricksBlockState& block, const glm::vec2& offset){
-    for (const auto& particle : block.particles){
-      EntitiesView<EntityState>::run(particle, offset);
-    }
-
-    BlocksView<BlockState>::run(block, offset);
-  }
-};
-
-static auto render_player(const PlayerState& player, const glm::vec2& offset){
-  for (const auto& fireball : player.fireballs){
-    EntitiesView<EntityState>::run(fireball, offset);
-    BlocksView<BlockState>::run(fireball.explosion, offset);
-  } 
-
-  EntitiesView<EntityState>::run(player, offset);
+  renderer::draw(renderer::Drawable{
+    entity.position - offset,
+    entity.size,
+    entity.current_texture,
+    1.f,
+    { entity.direction * entity.texture_flip, entity.vertical_flip },
+    entity.is_visible
+  });
 }
 
-template<>
-struct EntitiesView<FireBarState>{
-  static auto run(const FireBarState& bar, const glm::vec2& offset){
-    for (const auto& fireball : bar.fireballs){
-      EntitiesView<EntityState>::run(fireball, offset);
-    }
+static auto render_block(const BlockBase& block, const LevelState& level){
+  const auto& offset = level.camera_offset;
+  if (!views::is_component_on_screen(block, offset)) return;
+
+  using renderer::Drawable;
+  renderer::draw(Drawable{
+    block.position - offset,
+    glm::vec2(BlockBase::Size),
+    block.texture,
+    block.alpha,
+    { EntityState::Flip::NoFlip, EntityState::Flip::NoFlip },
+    block.is_visible
+  });
+}
+
+static auto render_background(const CloudState& cloud, const LevelState& level){
+  auto& textures = *level.cloud_textures;
+
+  const auto& top_left = textures[0];
+  const auto& top_right = textures[1];
+  const auto& top_center = textures[2];
+  const auto& bottom_left = textures[3];
+  const auto& bottom_right = textures[4];
+  const auto& bottom_center = textures[5];
+
+  const auto [position, size] = cloud;
+  const auto x = position.x - level.cloud_offset;
+  const auto y = position.y;
+
+  render_block(BlockState({ x, y  }, &top_left), level);
+  render_block(BlockState({ x, y + 1  }, &bottom_left), level);
+
+  for (int i = 0; i < size; ++i){
+    render_block(BlockState({ x + i + 1, y  }, &top_center), level);
+    render_block(BlockState({ x + i + 1, y + 1  }, &bottom_center), level);
   }
-};
 
-template<>
-struct EntitiesView<HammerBroState>{
-  static auto run(const HammerBroState& bro, const glm::vec2& offset){
-    for (auto& item : bro.hammer_generator.items){
-      EntitiesView<EntityState>::run(item, offset);
-    }
+  render_block(BlockState({ x + size + 1, y  }, &top_right), level);
+  render_block(BlockState({ x + size + 1, y + 1  }, &bottom_right), level);
+}
 
-    EntitiesView<EntityState>::run(bro, offset);
+static auto render_block(const BricksBlockState& block, const LevelState& level){
+  for (const auto& particle : block.particles){
+    render_entity(particle, level);
   }
-};
 
-template<>
-struct EntitiesView<PlatformState>{
-  static auto run(const PlatformState& platform, const glm::vec2& offset){
-    for (int i = 0; i < platform.width; ++i){
-      using renderer::Drawable;
+  render_block(block | util::as<BlockBase>, level);
+}
 
-      renderer::draw(Drawable{
-        platform.position + glm::vec2(i * PlatformState::ElementSize, 0) - offset,
-        glm::vec2(PlatformState::ElementSize),
-        &textures::platform
-      });
-    }
+static auto render_player(const PlayerState& player, const LevelState& level){
+  for (const auto& fireball : player.fireballs){
+    render_entity(fireball, level);
+    render_block(fireball.explosion, level);
+  } 
+
+  render_entity(player, level);
+}
+
+static auto render_entity(const FireBarState& bar, const LevelState& level){
+  for (const auto& fireball : bar.fireballs){
+    render_entity(fireball, level);
   }
-};
+}
 
-template<> struct EntitiesView<LoopedPlatformState> : EntitiesView<PlatformState> {};
-
-template<>
-struct BlocksView<QBlockState<CoinPusherState>>{
-  static auto run(const QBlockState<CoinPusherState>& block, const glm::vec2& offset){
-    for (auto& coin : block.pusher.coins){
-      BlocksView<BlockState>::run(coin, offset);
-    }
-
-    BlocksView<BlockState>::run(block, offset);
+static auto render_entity(const HammerBroState& bro, const LevelState& level){
+  for (auto& item : bro.hammer_generator.items){
+    render_entity(item, level);
   }
-};
 
-template<>
-struct BlocksView<QBlockState<FireFlowerPusherState>>{
-  static auto run(const QBlockState<FireFlowerPusherState>& block, const glm::vec2& offset){
-    BlocksView<BlockState>::run(block.pusher.fire_flower, offset);
-    BlocksView<BlockState>::run(block, offset);
+  render_entity(bro | util::as<EntityState>, level);
+}
+
+static auto render_entity(const PlatformState& platform, const LevelState& level){
+  for (int i = 0; i < platform.width; ++i){
+    using renderer::Drawable;
+
+    renderer::draw(Drawable{
+      platform.position + glm::vec2(i * PlatformState::ElementSize, 0) - level.camera_offset,
+      glm::vec2(PlatformState::ElementSize),
+      &textures::platform
+    });
   }
-};
+}
 
-template<typename Entity>
-struct BlocksView<QBlockState<EntityPusherState<Entity>>>{
-  static auto run(
-      const QBlockState<EntityPusherState<Entity>>& block, 
-      const glm::vec2& offset
-  ){
-    EntitiesView<Entity>::run(block.pusher.entity, offset);
-
-    BlocksView<BlockState>::run(block, offset);
+static auto render_block(const QBlockState<CoinPusherState>& block, const LevelState& level){
+  for (auto& coin : block.pusher.coins){
+    render_block(coin, level);
   }
-};
 
-template<>
-struct EntitiesView<BossState>{
-  static auto run(const BossState& boss, const glm::vec2& offset){
-    renderer::highlight_mode = boss.is_highlighted;
-    EntitiesView<EntityState>::run(boss, offset);
-    renderer::highlight_mode = false;
+  render_block(block | util::as<BlockBase>, level);
+}
+
+static auto render_block(const QBlockState<FireFlowerPusherState>& block, const LevelState& level){
+  render_block(block.pusher.fire_flower, level);
+  render_block(block | util::as<BlockBase>, level);
+}
+
+template<typename T>
+static auto render_block(const QBlockState<EntityPusherState<T>>& block, const LevelState& level){
+  render_entity(block.pusher.entity, level);
+
+  render_block(block | util::as<BlockBase>, level);
+}
+
+static auto render_entity(const BossState& boss, const LevelState& level){
+  renderer::highlight_mode = boss.is_highlighted;
+  render_entity(boss | util::as<EntityState>, level);
+  renderer::highlight_mode = false;
+}
+
+static auto render_entity(const KingCheepState& boss, const LevelState& level){
+  auto drawable = renderer::RotatableDrawable();
+
+  drawable.position = boss.position;
+  drawable.size = boss.size;
+  drawable.rotation = boss.rotation;
+  drawable.texture = boss.current_texture;
+  drawable.flip.vertical = boss.vertical_flip;
+
+  renderer::highlight_mode = boss.is_highlighted;
+  renderer::draw(drawable);
+  renderer::highlight_mode = false;
+}
+
+static auto render_entity(const KingBeetleState& boss, const LevelState& level){
+  for (const auto& f : boss.fireballs){
+    render_entity(f, level);
+    render_block(f.explosion, level);
   }
-};
 
-template<> struct EntitiesView<KingGoombaState> : EntitiesView<BossState>{};
-template<> struct EntitiesView<KingKoopaState> : EntitiesView<BossState>{};
+  render_entity(boss | util::as<BossState>, level);
+}
 
-template<> struct EntitiesView<KingCheepState>{ 
-  static auto run(const KingCheepState& boss, const glm::vec2& offset){
-    auto drawable = renderer::RotatableDrawable();
+static auto render_plant(const PlantState& plant, const LevelState& level){
+  render_entity(plant | util::as<EntityState>, level);
+}
 
-    drawable.position = boss.position;
-    drawable.size = boss.size;
-    drawable.rotation = boss.rotation;
-    drawable.texture = boss.current_texture;
-    drawable.flip.vertical = boss.vertical_flip;
+static auto render_background(const BackgroundBushState& bush, const LevelState& level){
+  render_block(bush, level);
+}
 
-    renderer::highlight_mode = boss.is_highlighted;
-    renderer::draw(drawable);
-    renderer::highlight_mode = false;
-  }
-};
+static auto render_background(const BackgroundHillState& bush, const LevelState& level){
+  render_block(bush, level);
+}
 
-template<> struct EntitiesView<KingBeetleState>{
-  static auto run(const KingBeetleState& boss, const glm::vec2& offset){
-    for (const auto& f : boss.fireballs){
-      EntitiesView<EntityState>::run(f, offset);
-      BlocksView<BlockState>::run(f.explosion, offset);
-    }
-
-    EntitiesView<BossState>::run(boss, offset);
-  }
-};
-
-} //namespace mario
+} //namespace mario::views

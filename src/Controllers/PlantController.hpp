@@ -82,15 +82,12 @@ static auto red_plant_controller(PlantState& plant, LevelState& level){
 
 namespace mario{
 
-template<>
-struct Controller<PlantState>{
-  static auto run(PlantState& plant, LevelState& level){
-    using Type = PlantState::Type;
-    switch(plant.type){
-      case Type::Green: plant_controller::green_plant_controller(plant, level); return;
-      case Type::Red: plant_controller::red_plant_controller(plant, level); return;
-    }
+static auto run_controller(PlantState& plant, LevelState& level){
+  using Type = PlantState::Type;
+  switch(plant.type){
+    case Type::Green: plant_controller::green_plant_controller(plant, level); return;
+    case Type::Red: plant_controller::red_plant_controller(plant, level); return;
   }
-};
+}
 
 } //namespace mario

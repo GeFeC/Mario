@@ -86,14 +86,11 @@ static auto red_fish_controller(FishState& fish, LevelState& level){
 
 namespace mario{
 
-template<>
-struct Controller<FishState>{
-  static auto run(FishState& fish, LevelState& level){
-    switch(fish.type){
-      case FishState::Type::Grey: fish_controller::grey_fish_controller(fish, level); break;
-      case FishState::Type::Red: fish_controller::red_fish_controller(fish, level); break;
-    }
+static auto run_controller(FishState& fish, LevelState& level){
+  switch(fish.type){
+    case FishState::Type::Grey: fish_controller::grey_fish_controller(fish, level); break;
+    case FishState::Type::Red: fish_controller::red_fish_controller(fish, level); break;
   }
-};
+}
 
 } //namespace mario

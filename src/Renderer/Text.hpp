@@ -97,7 +97,7 @@ public:
     auto x = position.x;
     auto y = position.y;
 
-    for (int i = 0; i < glyphs.size(); ++i){
+    for (auto i = std::size_t(0); i < glyphs.size(); ++i){
       auto& glyph = glyphs[i];
 
       if (text[i] == '\n'){

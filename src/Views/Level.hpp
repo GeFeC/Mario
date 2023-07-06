@@ -17,7 +17,7 @@
 
 namespace mario::views{
 
-static auto render_water(const LevelState& level, const glm::vec2& offset){
+static auto render_water(const LevelState& level){
   static constexpr auto WaterTransparency = 0.5f;
 
   if (level.water_level == util::BigValue) return;
@@ -33,7 +33,7 @@ static auto render_water(const LevelState& level, const glm::vec2& offset){
     block.texture = &textures::water_top;
     block.alpha = WaterTransparency;
 
-    BlocksView<BlockState>::run(block, offset);
+    render_block(block, level);
   }
 
   const auto water_area = util::make_pair_from_vec2(level.max_size());
@@ -45,7 +45,7 @@ static auto render_water(const LevelState& level, const glm::vec2& offset){
     block.texture = &textures::water_bottom;
     block.alpha = WaterTransparency;
 
-    BlocksView<BlockState>::run(block, offset);
+    render_block(block, level);
   }, std::make_pair(0.f, level.water_level + 1.f), water_area);
 }
 
@@ -175,31 +175,40 @@ static auto render_level(const LevelState& level){
   });
 
   //Rendering game objects
+
   renderer::draw_with_shadow([&]{
-    level.game_objects.run_controllers<BackgroundView>(level.camera_offset, level);
+    level.game_objects.for_each([&](auto& object){
+      render_plant(object, level);
+    });
   });
 
   renderer::draw_with_shadow([&]{
-    if (level.is_finished) render_player(level.player, level.camera_offset);
+    level.game_objects.for_each([&](auto& object){
+      render_background(object, level);
+    });
   });
 
   renderer::draw_with_shadow([&]{
-    level.game_objects.run_controllers<PlantsView>(level.camera_offset, level);
+    if (level.is_finished) render_player(level.player, level);
   });
 
   renderer::draw_with_shadow([&]{
-    level.game_objects.run_controllers<BlocksView>(level.camera_offset, level);
+    level.game_objects.for_each([&](auto& object){
+      render_block(object, level);
+    });
   });
 
   renderer::draw_with_shadow([&]{
-    level.game_objects.run_controllers<EntitiesView>(level.camera_offset, level);
+    level.game_objects.for_each([&](auto& object){
+      render_entity(object, level);
+    });
   });
 
   renderer::draw_with_shadow([&]{
-    if (!level.is_finished) render_player(level.player, level.camera_offset);
+    if (!level.is_finished) render_player(level.player, level);
   });
 
-  render_water(level, level.camera_offset);
+  render_water(level);
 
   renderer::draw_with_shadow([&]{
     if (level.load_delay > 0.f){

@@ -138,43 +138,6 @@ struct Array : std::tuple<std::vector<Ts>...>{
   auto for_each_derived(const Function& function) const{
     const_cast<this_type*>(this)->for_each_derived<T>([&](const auto& e){ function(e); });
   }
-
-  template<bool IsConst, template<typename> typename Controller, typename... Deps>
-  auto run_controllers_base(Deps&... deps){
-    auto deps_tuple = std::make_tuple(std::ref(deps)...);
-    
-    for_each([&](auto& object){
-      using object_type = std::decay_t<decltype(object)>;
-      using fun_info = FunctionInfo<decltype(Controller<object_type>::run)>;
-      using fun_param_ptrs_t = typename fun_info::params_ptr_types;
-      const auto params = fun_param_ptrs_t{};
-
-      std::apply([&](auto, auto... params){
-        if constexpr (!IsConst)
-          Controller<object_type>::run(
-            object,
-            std::get<std::remove_pointer_t<decltype(params)>&>(deps_tuple)...
-          );
-
-        if constexpr (IsConst)
-          Controller<object_type>::run(
-            object,
-            std::get<const std::remove_pointer_t<decltype(params)>&>(deps_tuple)...
-          );
-      }, params);
-    });
-  }
-
-  template<template<typename> typename Controller, typename... Deps>
-  auto run_controllers(Deps&... deps) const{
-    const_cast<this_type*>(this)->run_controllers_base<true, Controller, Deps...>(deps...);
-  }
-
-  template<template<typename> typename Controller, typename... Deps>
-  auto run_controllers(Deps&... deps) {
-    run_controllers_base<false, Controller, Deps...>(deps...);
-  }
-
 };
 
 } //namespace mario::util::poly

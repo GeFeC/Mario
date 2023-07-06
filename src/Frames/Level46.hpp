@@ -34,7 +34,7 @@ static auto run_level46(AppState& app){
     auto& objects = level.game_objects;
 
     //Fish generator
-    for (int i = 0; i < 2; ++i){
+    for (int i = 0; i < 3; ++i){
       //Fish appearing from right:
 
       objects.push(FishState::make_red({ 

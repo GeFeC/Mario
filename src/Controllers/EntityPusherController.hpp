@@ -20,7 +20,7 @@ static auto entity_controller(MushroomPusherState& pusher, LevelState& level){
 
 template<typename Entity>
 static auto entity_controller(EntityPusherState<Entity>& pusher, LevelState& level){
-  Controller<Entity>::run(pusher.entity, level);
+  run_controller(pusher.entity, level);
 }
 
 template<typename Entity>

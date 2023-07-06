@@ -82,7 +82,7 @@ struct KingBeetleState : BossState{
 
 struct KingCheepState : BossState{
   static constexpr auto Size = glm::vec2(3.f, 3.f) * BlockBase::Size;
-  static constexpr auto MaxHp = 30;
+  static constexpr auto MaxHp = 20;
 
   float timer = 0.f;
   float rotation = 0.f;

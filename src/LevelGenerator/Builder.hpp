@@ -71,15 +71,11 @@ static auto put_q_block_with_mushroom(
   auto& block = level.game_objects.push(QBlockState<MushroomPusherState>(position));
   auto& mushroom = block.pusher.entity;
 
-  mushroom.type = mushroom_type;
-
   using MushroomType = MushroomState::Type;
-  mushroom = [&]{
-    switch(mushroom.type){
-      case MushroomType::Red: return MushroomState::make_red(position);
-      case MushroomType::Green: return MushroomState::make_green(position);
-    }
-  }();
+  switch(mushroom_type){
+    case MushroomType::Red: mushroom = MushroomState::make_red(position); break;
+    case MushroomType::Green: mushroom = MushroomState::make_green(position); break;
+  }
 }
 
 static auto put_checkpoint(LevelState& level, const glm::vec2& position){
