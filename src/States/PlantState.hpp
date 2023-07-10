@@ -20,9 +20,11 @@ struct PlantState : MonsterState{
     Green, Red
   } type;
 
-private:
+protected:
+
+  template<typename T = PlantState>
   static auto make(const glm::vec2& position){
-    auto plant = PlantState();
+    auto plant = T();
     plant.position = (position + glm::vec2(0.5f, 1.f)) * BlockBase::Size;
     plant.size = glm::vec2(BlockBase::Size, BlockBase::Size * 11 / 8);
     plant.current_texture = &textures::plant[0];
@@ -53,6 +55,7 @@ public:
 
     return plant;
   }
+
 };
 
 } //namespace mario

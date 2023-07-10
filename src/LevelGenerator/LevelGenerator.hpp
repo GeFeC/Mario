@@ -80,7 +80,8 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);
     else if (tile == Tile::GrassBot) put_nonsolid(level, { x, y }, textures::grass_bot);
     else if (tile == Tile::SnowBot) put_nonsolid(level, { x, y }, textures::snow_bot);
-    else if (tile == Tile::Bricks) put_bricks(level, { x, y });
+    else if (tile == Tile::Bricks) put_bricks(level, BricksBlockState(texture_groups::bricks, { x, y }));
+    else if (tile == Tile::BlueBricks) put_bricks(level, BricksBlockState(texture_groups::blue_bricks, { x, y }));
 
     else if (any_tile(HillTiles, tile)) put_hill(level, { x, y }, tile);
     else if (any_tile(BushTiles, tile)) put_bush(level, { x, y }, tile);
@@ -104,6 +105,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::PurpleKoopaWings) objects.push(JumpingKoopaState::make_purple({ x, y }));
     else if (tile == Tile::GreenPlant) objects.push(PlantState::make_green({ x, y }));
     else if (tile == Tile::RedPlant) objects.push(PlantState::make_red({ x, y }));
+    else if (tile == Tile::BlackPlant) objects.push(BlackPlantState::make({ x, y }));
     else if (tile == Tile::Hammerbro) objects.push(HammerBroState::make({ x, y }));
     else if (tile == Tile::RedHammerbro) objects.push(HammerBroState::make_red({ x, y }));
     else if (tile == Tile::Beetle) objects.push(BeetleState::make({ x, y }));

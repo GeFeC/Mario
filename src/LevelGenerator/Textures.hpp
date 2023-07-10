@@ -17,6 +17,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::Hitbox, no_texture),
   pair(Tile::Finish, no_texture),
   pair(Tile::Dirt, &textures::dirt),
+  pair(Tile::BlueDirt, &textures::blue_dirt),
   pair(Tile::GreenGround, &textures::green_ground),
   pair(Tile::WaterGround, &textures::water_ground),
   pair(Tile::Coral, &textures::coral),
@@ -39,6 +40,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::SnowBot, &textures::snow_bot),
 
   pair(Tile::Bricks, texture_groups::bricks),
+  pair(Tile::BlueBricks, texture_groups::blue_bricks),
   pair(Tile::QBlock, no_texture),
   pair(Tile::QBlockMushroom, texture_groups::mushroom),
   pair(Tile::QBlockGreenMushroom, texture_groups::green_mushroom),
@@ -95,6 +97,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::Coin, texture_groups::coin),
 
   pair(Tile::Stone, &textures::stone),
+  pair(Tile::BlueStone, &textures::blue_stone),
 
   //Entities
   pair(Tile::YellowGoomba, texture_groups::yellow_goomba),
@@ -103,6 +106,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::Spike, texture_groups::spike),
   pair(Tile::GreenPlant, texture_groups::plant),
   pair(Tile::RedPlant, texture_groups::red_plant),
+  pair(Tile::BlackPlant, texture_groups::black_plant),
   pair(Tile::RedKoopa, texture_groups::red_koopa),
   pair(Tile::RedKoopaWings, texture_groups::red_flying_koopa),
   pair(Tile::GreenKoopa, texture_groups::green_koopa),

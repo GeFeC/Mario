@@ -168,15 +168,12 @@ static auto red_hammerbro_controller(HammerBroState& bro, LevelState& level){
 
 namespace mario{
 
-template<>
-struct Controller<HammerBroState>{
-  static auto run(HammerBroState& bro, LevelState& level){
-    using Type = HammerBroState::Type;
-    switch(bro.type){
-      case Type::Green: hammerbro_controller::green_hammerbro_controller(bro, level); break;
-      case Type::Red: hammerbro_controller::red_hammerbro_controller(bro, level); break;
-    }
+static auto run_controller(HammerBroState& bro, LevelState& level){
+  using Type = HammerBroState::Type;
+  switch(bro.type){
+    case Type::Green: hammerbro_controller::green_hammerbro_controller(bro, level); break;
+    case Type::Red: hammerbro_controller::red_hammerbro_controller(bro, level); break;
   }
-};
+}
 
 } //namespace mario

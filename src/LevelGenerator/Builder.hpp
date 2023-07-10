@@ -27,12 +27,14 @@ static auto put_nonsolid(LevelState& level, const glm::vec2& position, const Tex
   block.is_solid = false;
 }
 
-static auto put_bricks(LevelState& level, const glm::vec2& position){
-  level.hitbox_grid_element(position) = 1;
+static auto put_bricks(LevelState& level, const BricksBlockState& bricks){
+  const auto& position = bricks.position / BlockBase::Size;
 
+  level.hitbox_grid_element(position) = 1;
   put_solid(level, position, textures::dirt);
   level.game_objects.back<BlockState>().is_visible = false;
-  level.game_objects.push(BricksBlockState(position));
+
+  level.game_objects.push(bricks);
   level.game_objects.back<BricksBlockState>().hitbox_block_index = level.game_objects.size<BlockState>() - 1;
 };
 

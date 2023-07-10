@@ -31,6 +31,8 @@
 #include "Frames/Level45.hpp"
 #include "Frames/Level46.hpp"
 
+#include "Frames/Level51.hpp"
+
 #include "Util/Util.hpp"
 
 #include <unordered_map>
@@ -65,6 +67,8 @@ static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppSta
   { AppState::Frame::Level44, frames::run_level44 },
   { AppState::Frame::Level45, frames::run_level45 },
   { AppState::Frame::Level46, frames::run_level46 },
+
+  { AppState::Frame::Level51, frames::run_level51 },
 };
 
 static auto controller(AppState& app){

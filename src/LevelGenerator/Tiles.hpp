@@ -11,8 +11,10 @@ enum class Tile{
   Finish = 87,
 
   Stone = 81,
+  BlueStone = 17,
   GreenGround = 13,
   Dirt = 0,
+  BlueDirt = 18,
   Bridge = 109,
   MushroomRight = 5,
   MushroomCenter = 7,
@@ -29,6 +31,7 @@ enum class Tile{
   SnowBot = 88,
   Cloud = 15,
   Bricks = 16,
+  BlueBricks = 19,
   Coin = 74,
   QBlock = 20,
   QBlockMushroom = 75,
@@ -92,6 +95,7 @@ enum class Tile{
 
   GreenPlant = 60,
   RedPlant = 61,
+  BlackPlant = 111,
 
   RedKoopa = 62,
   RedKoopaWings = 63,

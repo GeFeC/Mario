@@ -41,6 +41,7 @@ template<typename T, typename = util::not_derived<T, EntityState>>
 static auto render_entity(const T&, const LevelState&) {}
 
 static auto render_entity(const PlantState&, const LevelState&) {}
+static auto render_entity(const BlackPlantState&, const LevelState&) {}
 
 template<typename T, typename = util::not_derived<T, BlockBase>>
 static auto render_block(const T&, const LevelState&){}
@@ -199,6 +200,15 @@ static auto render_entity(const KingBeetleState& boss, const LevelState& level){
 }
 
 static auto render_plant(const PlantState& plant, const LevelState& level){
+  render_entity(plant | util::as<EntityState>, level);
+}
+
+static auto render_plant(const BlackPlantState& plant, const LevelState& level){
+  for (const auto& f : plant.fireball_generator.items){
+    render_entity(f, level);
+    render_block(f.explosion, level);
+  }
+
   render_entity(plant | util::as<EntityState>, level);
 }
 

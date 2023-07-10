@@ -104,6 +104,11 @@ inline const auto red_plant = TextureGroup({
   &textures::red_plant[1]
 });
 
+inline const auto black_plant = TextureGroup({
+  &textures::black_plant[0],
+  &textures::black_plant[1]
+});
+
 inline const auto q_block = TextureGroup({
   &textures::q_block[0],
   &textures::q_block[1],
@@ -136,6 +141,11 @@ inline const auto fire_flower = q_block.with({
 inline const auto bricks = TextureGroup({
   &textures::bricks,
   &textures::bricks_particles_normal
+});
+
+inline const auto blue_bricks = TextureGroup({
+  &textures::blue_bricks,
+  &textures::bricks_particles_blue
 });
 
 inline const auto mario = TextureGroup({

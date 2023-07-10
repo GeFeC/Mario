@@ -50,6 +50,8 @@ static auto controller_base(PlantState& plant, LevelState& level){
       plant.direction = Direction::GoingDown;
     }
 
+    if (plant.current_cooldown > 0.f) return;
+
     if (plant.direction == Direction::GoingDown && plant.offset > 0.f){
       plant.offset -= offset;
       plant.position.y += offset * plant.vertical_flip;

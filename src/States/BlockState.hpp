@@ -71,18 +71,19 @@ struct BricksBlockState : BouncingBlockState{
   std::array<EntityState, ParticlesCount> particles;  
   bool are_particles_active = false;
 
-  BricksBlockState(){
-    this->texture = &textures::bricks;
+  explicit BricksBlockState(const renderer::TextureGroup& bricks_textures){
+    this->texture = &bricks_textures[0];
 
     for (auto& particle : particles){
       particle.is_visible = false;
-      particle.current_texture = &textures::bricks_particles_normal;
+      particle.current_texture = &bricks_textures[1];
       particle.size = glm::vec2(ParticleSize);
       particle.should_collide = false;
     }
   }
 
-  explicit BricksBlockState(const glm::vec2& position) : BricksBlockState(){
+  BricksBlockState(const renderer::TextureGroup& bricks_textures, const glm::vec2& position) 
+    : BricksBlockState(bricks_textures){
     this->position = position * BlockBase::Size;
 
     for (auto& particle : particles){

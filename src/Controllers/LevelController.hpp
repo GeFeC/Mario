@@ -19,6 +19,7 @@
 #include "Controllers/ShellMonsterController.hpp"
 #include "Controllers/SpikeController.hpp"
 #include "Controllers/PlantController.hpp"
+#include "Controllers/BlackPlantController.hpp"
 #include "Controllers/JumpingKoopaController.hpp"
 #include "Controllers/FlyingKoopaController.hpp"
 #include "Controllers/BeetleController.hpp"

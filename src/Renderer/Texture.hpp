@@ -89,6 +89,7 @@ public:
 struct TextureGroup{
 private:
   std::vector<Texture*> textures;
+
 public:
   TextureGroup() = default;
 

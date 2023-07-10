@@ -13,15 +13,21 @@ inline auto black = Texture("black.png");
 inline auto bg = Texture("normal_background.png");
 inline auto mushroom_bg = Texture("mushroom_background.png");
 inline auto snow_bg = Texture("snow_background.png");
+inline auto underground_bg = Texture("underground_background.png");
 
 inline auto platform = Texture("platform.png");
 
 //Blocks and Background objects
 inline auto bricks_particles_normal = Texture("bricks_particle/normal.png");
+inline auto bricks_particles_blue = Texture("bricks_particle/blue.png");
 
 inline auto bricks = Texture("tile/bricks.png");  
+inline auto blue_bricks = Texture("tile/bluebricks.png");  
 inline auto dirt = Texture("tile/dirt.png");
+inline auto blue_dirt = Texture("tile/bluedirt.png");
+
 inline auto stone = Texture("tile/stone.png");
+inline auto blue_stone = Texture("tile/bluestone.png");
 inline auto green_ground = Texture("tile/greenground.png");
 inline auto water_ground = Texture("tile/waterground.png");
 inline auto coral = Texture("tile/coral.png");
@@ -329,6 +335,11 @@ inline auto plant = std::array<Texture, 2>{
 inline auto red_plant = std::array<Texture, 2>{
   Texture("entity/plant/red0.png"),
   Texture("entity/plant/red1.png")
+};
+
+inline auto black_plant = std::array<Texture, 2>{
+  Texture("entity/plant/black0.png"),
+  Texture("entity/plant/black1.png")
 };
 
 inline auto mushroom = Texture("entity/mushroom/mushroom.png");

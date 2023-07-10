@@ -9,6 +9,7 @@
 #include "States/QBlockState.hpp"
 #include "States/FireFlowerState.hpp"
 #include "States/PlantState.hpp"
+#include "States/BlackPlantState.hpp"
 #include "States/GoombaState.hpp"
 #include "States/KoopaState.hpp"
 #include "States/JumpingKoopaState.hpp"
@@ -108,6 +109,7 @@ struct LevelState{
     SpikeState,
     MushroomState,
     PlantState,
+    BlackPlantState,
     HammerBroState,
     FishState,
     SquidState,
