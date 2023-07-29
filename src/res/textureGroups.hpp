@@ -252,11 +252,4 @@ inline const auto red_hill = TextureGroup({
   &textures::red_hill_center_dot
 });
 
-inline const auto red_pipe = TextureGroup({
-  &textures::red_pipe_top_left,
-  &textures::red_pipe_top_right,
-  &textures::red_pipe_bottom_left,
-  &textures::red_pipe_bottom_right
-});
-
 } //namespace mario::texture_groups

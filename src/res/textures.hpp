@@ -105,6 +105,10 @@ inline auto green_pipe_top_left = Texture("pipe/green_left_top.png");
 inline auto green_pipe_top_right = Texture("pipe/green_right_top.png");
 inline auto green_pipe_bottom_left = Texture("pipe/green_left_bottom.png");
 inline auto green_pipe_bottom_right = Texture("pipe/green_right_bottom.png");
+inline auto green_pipe_bottom_horizontal = Texture("pipe/green_center_bottom_horizontal.png");
+inline auto green_pipe_top_horizontal = Texture("pipe/green_center_top_horizontal.png");
+inline auto green_pipe_bottom_horizontal_output = Texture("pipe/green_left_bottom_horizontal.png");
+inline auto green_pipe_top_horizontal_output = Texture("pipe/green_left_top_horizontal.png");
 
 inline auto white_pipe_top_left = Texture("pipe/white_left_top.png");
 inline auto white_pipe_top_right = Texture("pipe/white_right_top.png");

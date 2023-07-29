@@ -43,6 +43,10 @@ enum class Tile{
   GreenPipeBottomRight = 37,
   GreenPipeTopLeft = 39,
   GreenPipeBottomLeft = 41,
+  GreenPipeBottom = 44,
+  GreenPipeTop = 43,
+  GreenPipeTopOutput = 40,
+  GreenPipeBottomOutput = 42,
 
   RedPipeTopRight = 31,
   RedPipeBottomRight = 32,

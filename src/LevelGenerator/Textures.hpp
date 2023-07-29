@@ -56,6 +56,10 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::GreenPipeBottomRight, &textures::green_pipe_bottom_right),
   pair(Tile::GreenPipeTopLeft, &textures::green_pipe_top_left),
   pair(Tile::GreenPipeBottomLeft, &textures::green_pipe_bottom_left),
+  pair(Tile::GreenPipeBottom, &textures::green_pipe_bottom_horizontal),
+  pair(Tile::GreenPipeTop, &textures::green_pipe_top_horizontal),
+  pair(Tile::GreenPipeBottomOutput, &textures::green_pipe_bottom_horizontal_output),
+  pair(Tile::GreenPipeTopOutput, &textures::green_pipe_top_horizontal_output),
 
   pair(Tile::WhitePipeTopRight, &textures::white_pipe_top_right),
   pair(Tile::WhitePipeBottomRight, &textures::white_pipe_bottom_right),

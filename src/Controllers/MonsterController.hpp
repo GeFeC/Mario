@@ -56,7 +56,7 @@ static auto become_active_when_seen(MonsterState& entity, const LevelState& leve
   const auto player_field_of_view_y = player.position.y - level.camera_offset.y;
 
   if (entity.position.x - player.position.x > player_field_of_view_x) return;
-  if (player.position.y - entity.position.y - entity.size.y > player_field_of_view_y) return;
+  if (std::abs(player.position.y - entity.position.y - entity.size.y) > player_field_of_view_y) return;
 
   entity.is_active = true;
 };
