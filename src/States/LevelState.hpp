@@ -37,6 +37,7 @@
 #include "Util/Poly.hpp"
 
 #include <vector>
+#include <limits>
 
 namespace mario{
 
@@ -148,6 +149,8 @@ struct LevelState{
   float score_adding_after_finish_delay = 0.f;
   int blink_state = 0;
   bool is_finished = false;
+
+  int min_scroll_y = std::numeric_limits<int>::max();
 
   auto max_size() const{
     switch(type){

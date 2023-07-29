@@ -151,8 +151,9 @@ static auto camera(LevelState& level){
     }
 
     const auto max_scroll_y = level.max_size().y * BlockBase::Size - config::FrameBufferSize.y;
+    const auto min_scroll_y = level.min_scroll_y * BlockBase::Size;
     if (level.type == LevelState::Type::Vertical){
-      level.camera_offset.y = std::clamp(level.camera_offset.y, 0.f, max_scroll_y);
+      level.camera_offset.y = std::clamp<float>(level.camera_offset.y, min_scroll_y, max_scroll_y);
     }
   }
 

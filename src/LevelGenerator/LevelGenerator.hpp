@@ -66,15 +66,20 @@ static auto generate_level(LevelState& level, const std::string& file_path){
   auto counter = 0;
 
   auto& objects = level.game_objects;
+
   while(ss >> tile_id){
+    const auto x = counter % (level.max_size().x | util::as<int>);
+    const auto y = counter / (level.max_size().x | util::as<int>);
+
+    counter++;
+
     const auto tile = tile_id | util::as<level_generator::Tile>;
 
     if (tile_id >= 0){
       allocated_textures.insert(tile);
+      level.min_scroll_y = std::min(y, level.min_scroll_y);
     }
 
-    const auto x = counter % (level.max_size().x | util::as<int>);
-    const auto y = counter / (level.max_size().x | util::as<int>);
 
     if (tile == Tile::MushroomBot2) put_nonsolid(level, { x, y }, textures::mushroom_bot2);
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);
@@ -121,8 +126,6 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (&id_to_texture.at(tile).front() != level_generator::no_texture || tile == Tile::Dirt) {
       put_solid(level, { x, y }, id_to_texture.at(tile).front());
     }
-
-    counter++;
   }
 }
 
