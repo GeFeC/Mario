@@ -150,6 +150,8 @@ struct LevelState{
   int blink_state = 0;
   bool is_finished = false;
 
+  bool is_dark = false;
+
   int min_scroll_y = std::numeric_limits<int>::max();
 
   auto max_size() const{

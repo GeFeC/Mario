@@ -8,6 +8,8 @@ namespace mario::textures{
 
 using renderer::Texture;
 
+inline auto darkness_view = Texture("darkness_view.png");
+
 inline auto black = Texture("black.png");
 
 inline auto bg = Texture("normal_background.png");

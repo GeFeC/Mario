@@ -210,6 +210,57 @@ static auto render_level(const LevelState& level){
 
   render_water(level);
 
+  //Darkness
+
+  if (level.is_dark){
+
+    static constexpr auto PlayerViewSizeInDarkness = 3.f * BlockBase::Size;
+    const auto player_center = level.player.position + level.player.size / 2.f - level.camera_offset;
+
+    const auto player_view_min = glm::vec2(
+      player_center.x - PlayerViewSizeInDarkness,
+      player_center.y - PlayerViewSizeInDarkness
+    );
+
+    const auto player_view_max = glm::vec2(
+      player_center.x + PlayerViewSizeInDarkness,
+      player_center.y + PlayerViewSizeInDarkness
+    );
+
+    renderer::draw(renderer::Drawable{
+      player_view_min,
+      glm::vec2(PlayerViewSizeInDarkness * 2.f),
+      &textures::darkness_view
+    });
+
+    renderer::draw_plain(renderer::PlainDrawable{
+      { 0, 0 },
+      { config::FrameBufferSize.x, player_view_min.y },
+      { 0.f, 0.f, 0.f, 1.f }
+    });
+
+    renderer::draw_plain(renderer::PlainDrawable{
+      { 0, player_view_max.y },
+      { config::FrameBufferSize.x, config::FrameBufferSize.y - player_view_max.y },
+      { 0.f, 0.f, 0.f, 1.f }
+    });
+
+    renderer::draw_plain(renderer::PlainDrawable{
+      { 0, player_view_min.y },
+      { player_view_min.x, player_view_max.y - player_view_min.y },
+      { 0.f, 0.f, 0.f, 1.f }
+    });
+
+    renderer::draw_plain(renderer::PlainDrawable{
+      { player_view_max.x, player_view_min.y },
+      { config::FrameBufferSize.x - player_view_max.x, player_view_max.y - player_view_min.y },
+      { 0.f, 0.f, 0.f, 1.f }
+    });
+
+  }
+
+  //Stats and loading screen
+
   renderer::draw_with_shadow([&]{
     if (level.load_delay > 0.f){
       render_loading_screen(level);
@@ -222,6 +273,7 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     render_all_points_particles(level);  
   });
+
 }
 
 } //namespace mario::views
