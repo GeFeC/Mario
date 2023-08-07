@@ -69,19 +69,6 @@ static auto run_levelbase(
       level.camera_offset.y = player.position.y - LevelState::BlocksInColumn / 2.f * BlockSize;
     }
 
-    //Hitbox Borders:
-    if (level.type == LevelState::Type::Vertical){
-      for (int i = 0; i < LevelState::MaxVerticalLevelSize.y; ++i){
-        auto& normal_blocks = level.game_objects.template get_vec<BlockState>();
-
-        normal_blocks.emplace_back(glm::vec2(-1, i), level_generator::no_texture);
-        normal_blocks.back().is_visible = false; 
-
-        normal_blocks.emplace_back(glm::vec2(LevelState::MaxVerticalLevelSize.x, i), level_generator::no_texture);
-        normal_blocks.back().is_visible = false; 
-      }
-    }
-
     //Textures:
     for (const auto texture : level_generator::allocated_textures){
       textures.push_back(level_generator::id_to_texture.at(texture));
