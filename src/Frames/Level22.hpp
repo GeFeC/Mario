@@ -29,7 +29,9 @@ static auto run_level22(AppState& app){
     level_generator::generate_level(level, "level22_1.csv");
     level_generator::generate_level(level, "level22_2.csv");
 
-    //Additional Entities
+    create_hitbox_on_sides(level);
+
+    //Entities
     auto& objects = level.game_objects;
     objects.push(FlyingKoopaState::make_purple({ 10, 71.5 }, { 2, 2 }));
     objects.push(FlyingKoopaState::make_purple({ 7, 40.5 }, { 0, 3 }));

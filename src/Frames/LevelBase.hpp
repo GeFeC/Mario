@@ -25,6 +25,16 @@ struct LevelFrameSharedData{
   } number;
 };
 
+static auto create_hitbox_on_sides(LevelState& level){
+  for (int i = 0; i < LevelState::MaxVerticalLevelSize.y; ++i){
+    level.game_objects.push(BlockState({ -1, i }, &textures::dirt))
+      .is_visible = false;
+
+    level.game_objects.push(BlockState({ LevelState::MaxVerticalLevelSize.x, i }, &textures::dirt))
+      .is_visible = false;
+  }
+}
+
 template<typename Function>
 static auto run_levelbase(
     AppState& app, 

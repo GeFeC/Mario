@@ -29,6 +29,8 @@ static auto run_level24(AppState& app){
     level_generator::generate_level(level, "level24_1.csv");
     level_generator::generate_level(level, "level24_2.csv");
 
+    create_hitbox_on_sides(level);
+
     level_generator::put_q_block_with_coins(level, { 16, 70 }, 10);
     level_generator::put_q_block_with_coins(level, { 14, 9 }, 5);
     level_generator::put_q_block_with_coins(level, { 15, 9 }, 5);
