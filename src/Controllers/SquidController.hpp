@@ -6,7 +6,6 @@
 
 #include "States/BlockState.hpp"
 #include "States/SquidState.hpp"
-#include "PolyControllers.hpp"
 #include "Window.hpp"
 #include "config.hpp"
 

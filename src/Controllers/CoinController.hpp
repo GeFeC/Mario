@@ -5,7 +5,6 @@
 #include "States/LevelState.hpp"
 
 #include "Controllers/CollisionController.hpp"
-#include "PolyControllers.hpp"
 
 #include "Util/Util.hpp"
 

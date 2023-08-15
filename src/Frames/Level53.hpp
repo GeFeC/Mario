@@ -27,7 +27,6 @@ static auto run_level53(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::underground_bg;
     level.is_dark = true;
-    level.player.position = glm::vec2(102, 3) * BlockBase::Size;
 
     level_generator::generate_level(level, "level53_1.csv");
     level_generator::generate_level(level, "level53_2.csv");

@@ -10,6 +10,7 @@ struct FireBarState{
 
   glm::vec2 position;
   std::vector<FireballState> fireballs;
+  float initial_rotation = 0.f;
 
   FireBarState(const glm::vec2& position, int length) : fireballs(length) {
     const auto fireball_size = fireballs[0].size.x;

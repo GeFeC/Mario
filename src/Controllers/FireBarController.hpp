@@ -1,7 +1,5 @@
 #pragma once
 
-#include "PolyControllers.hpp"
-
 #include "States/FireBarState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/EntityController.hpp"
@@ -14,9 +12,10 @@ static auto run_controller(FireBarState& bar, LevelState& level){
     fireball.current_texture = &textures::fireball[level.fireball_counter.int_value()];
 
     const auto y = BlockBase::Size * i * 0.8f;
+    const auto initial_rotation = glm::radians(bar.initial_rotation);
     const auto rotation = glm::vec2(
-      -y * glm::sin(LevelState::timer * FireBarState::RotationSpeed),
-      y * glm::cos(LevelState::timer * FireBarState::RotationSpeed)
+      -y * glm::sin(initial_rotation + LevelState::timer * FireBarState::RotationSpeed),
+      y * glm::cos(initial_rotation + LevelState::timer * FireBarState::RotationSpeed)
     );
     fireball.position = bar.position + rotation;
 

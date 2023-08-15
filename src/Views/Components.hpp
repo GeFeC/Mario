@@ -15,8 +15,6 @@
 #include "config.hpp"
 #include "res/textures.hpp"
 
-#include "PolyControllers.hpp"
-
 namespace mario::views{
 
 static auto is_component_on_screen(const collision_controller::Rect& component, const glm::vec2& offset){
