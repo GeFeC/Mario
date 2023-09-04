@@ -68,6 +68,8 @@ inline auto blue_cloud_bottom_left = Texture("cloud/blue_left_bottom.png");
 inline auto blue_cloud_bottom_center = Texture("cloud/blue_center_bottom.png");
 inline auto blue_cloud_bottom_right = Texture("cloud/blue_right_bottom.png");
 
+inline auto small_stone = Texture("small_stone.png");
+
 inline auto white_bush_center = Texture("bush/snow_center.png");
 inline auto white_bush_left = Texture("bush/snow_left.png");
 inline auto white_bush_right = Texture("bush/snow_right.png");

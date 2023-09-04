@@ -88,6 +88,8 @@ enum class Tile{
   WhiteBushLeft = 98,
   WhiteBushCenter = 97,
 
+  SmallStone = 116,
+
   Coral = 106,
   WaterGround = 107,
 

@@ -42,7 +42,7 @@
 namespace mario{
 
 struct StatsState{
-  int hp = 5;
+  int hp = 10'000;
   int score = 0;
   int time = 100;
   int coins = 0;

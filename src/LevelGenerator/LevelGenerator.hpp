@@ -85,6 +85,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);
     else if (tile == Tile::GrassBot) put_nonsolid(level, { x, y }, textures::grass_bot);
     else if (tile == Tile::SnowBot) put_nonsolid(level, { x, y }, textures::snow_bot);
+    else if (tile == Tile::SmallStone) put_nonsolid(level, { x, y }, textures::small_stone);
     else if (tile == Tile::Bricks) put_bricks(level, BricksBlockState(texture_groups::bricks, { x, y }));
     else if (tile == Tile::BlueBricks) put_bricks(level, BricksBlockState(texture_groups::blue_bricks, { x, y }));
 
