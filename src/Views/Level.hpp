@@ -178,13 +178,13 @@ static auto render_level(const LevelState& level){
 
   renderer::draw_with_shadow([&]{
     level.game_objects.for_each([&](auto& object){
-      render_plant(object, level);
+      render_background(object, level);
     });
   });
 
   renderer::draw_with_shadow([&]{
     level.game_objects.for_each([&](auto& object){
-      render_background(object, level);
+      render_plant(object, level);
     });
   });
 

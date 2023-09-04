@@ -34,6 +34,7 @@
 #include "Controllers/KingKoopaController.hpp"
 #include "Controllers/KingBeetleController.hpp"
 #include "Controllers/KingCheepController.hpp"
+#include "Controllers/KingPlantController.hpp"
 
 #include "Util/LoopedCounter.hpp"
 #include "Util/Util.hpp"

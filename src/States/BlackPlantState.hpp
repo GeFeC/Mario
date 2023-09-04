@@ -16,6 +16,7 @@ struct BlackPlantState : PlantState{
   util::Generator<FireballState> fireball_generator;
   util::LoopedCounter shot_counter = util::LoopedCounter(util::BigValue, 10.f, 1);
   EntityState::Direction fireball_direction = DirectionLeft;
+  float shot_boost = 1.f;
 
   static auto make(const glm::vec2& position){
     auto plant = PlantState::make<BlackPlantState>(position);

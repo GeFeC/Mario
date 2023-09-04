@@ -29,11 +29,10 @@ static auto take_damage(BossState& boss){
 }
 
 static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
-  auto boss_hitbox = get_hitbox(boss);
-
-  monster_controller::react_when_hit_by_fireball(boss_hitbox, level, [&](auto& fireball){
+  monster_controller::react_when_hit_by_fireball(boss, level, [&](auto& fireball){
     take_damage(boss);
     fireball.acceleration.left = fireball.acceleration.right = 0.f;
+    fireball.position.x = util::BigValue;
   });
 }
 

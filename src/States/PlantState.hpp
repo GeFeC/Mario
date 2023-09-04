@@ -4,7 +4,7 @@
 
 namespace mario{
 
-struct PlantState : MonsterState{
+struct PlantState : virtual MonsterState{
   static constexpr auto MaxOffset = BlockBase::Size * 11 / 8;
   float offset = 0.f;
   float cooldown_duration = 0.f;
@@ -19,6 +19,10 @@ struct PlantState : MonsterState{
   enum class Type{
     Green, Red
   } type;
+
+  auto motion_boost(){
+    return size.x / BlockBase::Size;
+  }
 
 protected:
 

@@ -2,10 +2,11 @@
 
 #include "States/MonsterState.hpp"
 #include "States/FireballState.hpp"
+#include "States/BlackPlantState.hpp"
 
 namespace mario{
 
-struct BossState : MonsterState{
+struct BossState : virtual MonsterState{
   static constexpr auto WalkSpeed = 7.f;
   static constexpr auto MaxHp = 20;
 
@@ -94,5 +95,16 @@ struct KingCheepState : BossState{
   }
 };
 
+struct KingPlantState : BossState, BlackPlantState{
+  static constexpr auto Size = glm::vec2(3.f, 3.f * 11.f / 8.f) * BlockBase::Size;
+  static constexpr auto MaxHp = 20;
+
+  KingPlantState() : BossState(){
+    ((*this) | util::as<BlackPlantState&>) = BlackPlantState::make({ 0, 0 });
+
+    hp = MaxHp;
+    size = Size;
+  }
+};
 
 } //namespace mario

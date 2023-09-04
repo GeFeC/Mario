@@ -38,11 +38,17 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
       plant.fireball_generator.make_item_if_needed();
       auto& fireball = plant.fireball_generator.item();
 
+      const auto vertical_flip = (plant.vertical_flip + 1) / 2.f;
+
       fireball.is_visible = true;
       fireball.is_active = true;
-      fireball.gravity = BlackPlantState::FireballGravity;
-      fireball.set_direction(plant.fireball_direction, util::random_value(20, 60) / 10.f);
-      fireball.position = plant.position + glm::vec2(plant.size.x) / 2.f - fireball.size / 2.f;
+      fireball.gravity = BlackPlantState::FireballGravity * vertical_flip;
+      fireball.set_direction(plant.fireball_direction, util::random_value(20, 60) / 10.f * plant.shot_boost);
+      fireball.position = plant.position + glm::vec2(
+          plant.size.x / 2.f,
+          !vertical_flip * plant.size.y + plant.vertical_flip * BlockBase::Size / 2.f
+        ) - fireball.size / 2.f;
+
       plant.fireball_direction = -plant.fireball_direction;
 
       plant.shot_counter.reset();

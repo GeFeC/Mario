@@ -101,7 +101,7 @@ template<typename T>
 As<T> as;
 
 template<typename Obj, typename T>
-auto operator|(const Obj& obj, const As<T>& as){
+decltype(auto) operator|(Obj&& obj, const As<T>& as){
   return static_cast<T>(obj);
 }
 
