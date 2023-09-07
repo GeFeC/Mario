@@ -10,7 +10,11 @@ namespace mario{
 
 static auto run_controller(SpikeState& spike, LevelState& level){
   entity_controller::gravity(spike, level);
-  entity_controller::movement(spike, level);
+
+  if (spike.can_move){
+    entity_controller::movement(spike, level);
+  }
+
   monster_controller::turn_around(spike);
   monster_controller::points_particles(spike);
 

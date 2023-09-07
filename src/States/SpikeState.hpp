@@ -7,6 +7,8 @@ namespace mario{
 struct SpikeState : MonsterState{
   static constexpr auto WalkSpeed = 2.f;
 
+  bool can_move = true;
+
   static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
     auto spike = SpikeState();
     spike.position = position * BlockBase::Size;

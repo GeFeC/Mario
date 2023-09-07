@@ -33,6 +33,10 @@ static auto run_level54(AppState& app){
     level.game_objects.push(FlyingKoopaState::make_green({ 9.5, 39.5 }, { 6, 0 }));
     level.game_objects.push(FlyingKoopaState::make_green({ 9.5, 50.5 }, { 6, 0 }));
     level.game_objects.push(BlockState({ 20, 108 }, &textures::blue_dirt));
+
+    level.game_objects.for_each_type<SpikeState>([](auto& spike){
+      spike.can_move = false; //Spikes don't need to walk in this level
+    });
   });
 }
 
