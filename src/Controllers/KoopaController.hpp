@@ -39,7 +39,7 @@ static auto red_koopa_controller(KoopaState& koopa, LevelState& level){
 }
 
 static auto purple_koopa_speedup(KoopaState& koopa, const LevelState& level){
-  if (koopa.in_shell || koopa.vertical_flip == EntityState::Flip::UseFlip) return;
+  if (koopa.in_shell || koopa.vertical_flip.is_flipped()) return;
 
   if (level.purple_koopa_counter.value > 8.f){
     koopa.walk_speed = 10.f;

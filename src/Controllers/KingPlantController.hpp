@@ -16,13 +16,13 @@ static auto run_controller(KingPlantState& boss, LevelState& level){
       case 0: 
         boss.position.x = (2.5f + util::random_value(0, 3) * 4.f) * BlockBase::Size;
         boss.position.y = 11.2f * BlockBase::Size;
-        boss.vertical_flip = EntityState::Flip::NoFlip;
+        boss.vertical_flip = util::Flip::no_flip();
         break;
       
       case 1:
-        boss.position.y = -KingPlantState::Size.y;
-        boss.vertical_flip = EntityState::Flip::UseFlip;
         boss.position.x = (4.5f + util::random_value(0, 2) * 4.f) * BlockBase::Size;
+        boss.position.y = -KingPlantState::Size.y;
+        boss.vertical_flip = util::Flip::flip();
         break;
     }
   }

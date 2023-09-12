@@ -29,19 +29,19 @@ static auto run_level55(AppState& app){
 
     for (int i = 0; i < 9; ++i){
       level.game_objects.push(PlantState::make_red({ 4 * i, -0.5f }))
-      .vertical_flip = EntityState::Flip::UseFlip;
+      .vertical_flip = util::Flip::flip();
     }
 
     for (int i = 0; i < 7; ++i){
       level.game_objects.push(PlantState::make_red({ 62 + 4 * i, -0.5f }))
-      .vertical_flip = EntityState::Flip::UseFlip;
+      .vertical_flip = util::Flip::flip();
     }
 
     level.game_objects.push(BlackPlantState::make({ 44, -0.5f }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
 
     level.game_objects.push(BlackPlantState::make({ 55, -0.5f }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
 
     level.game_objects.push(FireBarState({ 112, 7 }, 4));
     level.game_objects.push(FireBarState({ 112, 7 }, 4))
@@ -64,14 +64,14 @@ static auto run_level55(AppState& app){
 
     for (int i = 0; i < 9; ++i){
       level.game_objects.push(BlackPlantState::make({ 141 + i * 4, -0.5f }))
-      .vertical_flip = EntityState::Flip::UseFlip;
+      .vertical_flip = util::Flip::flip();
     }
 
     level.game_objects.push(PlantState::make_red({ 192, -0.5f }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
 
     level.game_objects.push(PlantState::make_red({ 196, -0.5f }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
 
     level_generator::put_q_block_with_entity(level, HammerBroState::make({ 133, 6 }));
 

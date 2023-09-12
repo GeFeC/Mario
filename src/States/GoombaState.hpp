@@ -20,22 +20,20 @@ private:
   }
 
 public:
-  static auto make_normal(const glm::vec2& position, Direction direction = DirectionLeft){
+  static auto make_normal(const glm::vec2& position){
     auto goomba = make(position);
     goomba.type = Type::Normal;
 
-    goomba.set_direction(direction);
     goomba.current_texture = &textures::goomba_walk[0];
     goomba.reward_for_killing = 100;
 
     return goomba;
   }
 
-  static auto make_red(const glm::vec2& position, Direction direction = DirectionLeft){
+  static auto make_red(const glm::vec2& position){
     auto goomba = make(position);
     goomba.type = Type::Red;
 
-    goomba.set_direction(direction);
     goomba.current_texture = &textures::red_goomba_walk[0];
     goomba.fall_from_edge = false;
     goomba.is_active = true;
@@ -44,12 +42,11 @@ public:
     return goomba;
   }
 
-  static auto make_yellow(const glm::vec2& position, Direction direction = DirectionLeft){
+  static auto make_yellow(const glm::vec2& position){
     auto goomba = make(position);
     goomba.type = Type::Yellow;
 
     goomba.walk_speed = 8.f;
-    goomba.set_direction(direction);
     goomba.current_texture = &textures::yellow_goomba_walk[0];
     goomba.fall_from_edge = false;
     goomba.is_active = true;

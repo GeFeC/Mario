@@ -30,7 +30,7 @@ static auto detect_collision_above(PlayerState& player, LevelState& level){
 }
 
 static auto swim(PlayerState& player, LevelState& level){
-  player.swim_counter.run();
+  player.swim_counter.run(window::delta_time);
 
   if (player.is_dead) return;
   player.gravity = std::min(player.gravity, PlayerState::MaxGravityWhenSwimming);
@@ -79,15 +79,14 @@ static auto gravity(PlayerState& player, LevelState& level){
 static auto movement(PlayerState& player, LevelState& level){
   if (!player.can_move) return;
 
-  const auto Right = EntityState::DirectionRight;
-  const auto Left = EntityState::DirectionLeft;
+  static constexpr auto SpeedBoostMultiplier = 12;
+  const auto speed_boost = window::delta_time * SpeedBoostMultiplier;
 
-  const auto speed_boost = window::delta_time * 12;
-
+  using util::Direction;
   //Keyboard events:
   if (window::is_key_pressed(GLFW_KEY_RIGHT)){
     player.acceleration.right += speed_boost;
-    player.direction = Right;
+    player.direction = Direction::right();
   }
   else{ 
     player.acceleration.right -= speed_boost / player.slip;
@@ -95,7 +94,7 @@ static auto movement(PlayerState& player, LevelState& level){
 
   if (window::is_key_pressed(GLFW_KEY_LEFT)){
     player.acceleration.left += speed_boost;
-    player.direction = Left;
+    player.direction = Direction::left();
   }
   else{
     player.acceleration.left -= speed_boost / player.slip;
@@ -123,7 +122,7 @@ static auto movement(PlayerState& player, LevelState& level){
 }
 
 static auto grow(PlayerState& player){
-  player.growth_counter.run();
+  player.growth_counter.run(window::delta_time);
   player.grow_state = player.growth_counter.int_value();
 
   if(player.growth_counter.stopped_counting()){
@@ -134,7 +133,7 @@ static auto grow(PlayerState& player){
 
 static auto shrink(PlayerState& player){
   player.form = PlayerState::Form::Normal;
-  player.growth_counter.run();
+  player.growth_counter.run(window::delta_time);
   player.grow_state = 2 - player.growth_counter.int_value();
 
   if (player.growth_counter.stopped_counting()){
@@ -188,7 +187,7 @@ static auto update_growth(PlayerState& player){
 }
 
 static auto transform_to_fire(PlayerState& player){
-  player.transformation_counter.run();
+  player.transformation_counter.run(window::delta_time);
   const auto transformation_state = player.transformation_counter.int_value();
 
   if (transformation_state == 1) player.form = PlayerState::Form::Black;
@@ -205,6 +204,7 @@ static auto is_in_water(PlayerState& player, const LevelState& level){
 }
 
 static auto textures(PlayerState& player, const LevelState& level){
+  //Standing
   player.current_texture = player.default_texture();
 
   if (player.is_growing_up || player.is_shrinking) return;
@@ -225,9 +225,11 @@ static auto textures(PlayerState& player, const LevelState& level){
     current_walk_animation_frame = 0.f;
   }
 
+  //Turning
   const auto total_speed = player.acceleration.right - player.acceleration.left;
-  const auto is_turning_left = total_speed > 0 && player.direction == EntityState::DirectionLeft;
-  const auto is_turning_right = total_speed < 0 && player.direction == EntityState::DirectionRight;
+
+  const auto is_turning_left = total_speed > 0 && player.direction.is_left();
+  const auto is_turning_right = total_speed < 0 && player.direction.is_right();
 
   if (is_turning_left || is_turning_right){
     player.current_texture = player.turn_texture();
@@ -317,10 +319,9 @@ static auto fireballs(PlayerState& player, const LevelState& level){
   if (fireball_ptr == player.fireballs.end()) return;
 
   auto& fireball = *fireball_ptr;
-  fireball.position = player.position + player.size / 2.f - fireball.size / 2.f;
-  fireball.set_direction(player.direction, PlayerState::FireballSpeed);
-  fireball.is_active = true;
-  fireball.is_visible = true;
+
+  const auto fireball_position = player.position + player.size / 2.f - fireball.size / 2.f;
+  fireball.shoot(fireball_position, player.direction, PlayerState::FireballSpeed);
 }
 
 static auto controller(PlayerState& player, LevelState& level){
@@ -360,7 +361,7 @@ static auto controller(PlayerState& player, LevelState& level){
 static auto can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{
   using collision_controller::CollisionPadding;
 
-  if (player.direction == EntityState::DirectionLeft){
+  if (player.direction.is_left()){
     return player.position.x - block.position.x 
       == util::in_range(-CollisionPadding, block.size.x - CollisionPadding);
   }

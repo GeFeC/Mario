@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Util/Util.hpp"
+#include "Util/Interval.hpp"
 #include "config.hpp"
 
 namespace mario::collision_controller{

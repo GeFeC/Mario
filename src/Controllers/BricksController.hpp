@@ -34,8 +34,8 @@ static auto run_controller(BricksBlockState& block, LevelState& level){
         particle.gravity = util::random_value(-25, -20);
 
         const auto direction = util::random_value(0, 1) 
-          ? EntityState::DirectionRight 
-          : EntityState::DirectionLeft;
+          ? util::Direction::right()
+          : util::Direction::left();
 
         particle.set_direction(direction, util::random_value(2, 5));
       }

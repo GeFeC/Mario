@@ -49,11 +49,11 @@ static auto run_level46(AppState& app){
       
       objects.push(FishState::make_red({ 
         king_cheep_controller::minion_random_position_from_left()
-      })).set_direction(FishState::DirectionRight);
+      })).set_direction(util::Direction::right());
 
       objects.push(FishState::make_grey({ 
         king_cheep_controller::minion_random_position_from_left()
-      })).set_direction(FishState::DirectionRight);
+      })).set_direction(util::Direction::right());
     }
 
     auto& boss = objects.push(KingCheepState());

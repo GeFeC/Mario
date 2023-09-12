@@ -2,7 +2,7 @@
 
 #include "Renderer/Drawable.hpp"
 #include "Renderer/Font.hpp"
-#include "Util/Util.hpp"
+#include "Util/Cast.hpp"
 
 #include <glm/glm.hpp>
 

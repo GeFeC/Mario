@@ -32,25 +32,31 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
   }
 
   if (plant.offset >= PlantState::MaxOffset){
-    plant.shot_counter.run();
+    plant.shot_counter.run(window::delta_time);
 
     if (plant.shot_counter.int_value() == 1 && !plant.was_hit){
       plant.fireball_generator.make_item_if_needed();
       auto& fireball = plant.fireball_generator.item();
 
-      const auto vertical_flip = (plant.vertical_flip + 1) / 2.f;
+      const auto is_flipped = plant.vertical_flip.is_flipped();
+      const auto fireball_position_y = is_flipped 
+        * plant.size.y 
+        + plant.vertical_flip.as_int() 
+        * BlockBase::Size 
+        / 2.f;
 
-      fireball.is_visible = true;
-      fireball.is_active = true;
-      fireball.gravity = BlackPlantState::FireballGravity * vertical_flip;
-      fireball.set_direction(plant.fireball_direction, util::random_value(20, 60) / 10.f * plant.shot_boost);
-      fireball.position = plant.position + glm::vec2(
-          plant.size.x / 2.f,
-          !vertical_flip * plant.size.y + plant.vertical_flip * BlockBase::Size / 2.f
-        ) - fireball.size / 2.f;
+      const auto fireball_position = plant.position
+        + glm::vec2(plant.size.x / 2.f, fireball_position_y)
+        - fireball.size / 2.f;
 
+      fireball.shoot(
+        fireball_position, 
+        plant.fireball_direction, 
+        util::random_value(20, 60) / 10.f * plant.shot_boost
+      );
+
+      fireball.gravity = BlackPlantState::FireballGravity * !is_flipped;
       plant.fireball_direction = -plant.fireball_direction;
-
       plant.shot_counter.reset();
     }
   }

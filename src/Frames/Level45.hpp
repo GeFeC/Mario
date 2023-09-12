@@ -44,13 +44,13 @@ static auto run_level45(AppState& app){
     .is_active = true;
 
     level.game_objects.push(FishState::make_red({ 7, 97 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_red({ 5, 100 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_red({ 7, 105 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
   });
 }

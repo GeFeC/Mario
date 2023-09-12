@@ -37,7 +37,7 @@
 #include "Controllers/KingPlantController.hpp"
 
 #include "Util/LoopedCounter.hpp"
-#include "Util/Util.hpp"
+#include "Util/Enum.hpp"
 #include "Window.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
@@ -110,7 +110,7 @@ static auto restart_when_player_fell_out(AppState& app){
   if (player.position.y > (level.max_size().y + 1) * BlockBase::Size) {
     player.can_move = false;
     //set speed to 0
-    player.set_direction(EntityState::DirectionLeft, 0);
+    player.set_direction(util::Direction::left(), 0);
   }
 
   const auto position_required_to_restart_level 
@@ -204,12 +204,12 @@ static auto controller(AppState& app){
 
   //Blinking and counters
   level.blink_state = blink_controller();
-  level.coin_spin_counter.run();
-  level.fire_flower_blink_counter.run();
+  level.coin_spin_counter.run(window::delta_time);
+  level.fire_flower_blink_counter.run(window::delta_time);
 
-  level.purple_koopa_counter.run();
-  level.fireball_counter.run();
-  level.hammer_counter.run();
+  level.purple_koopa_counter.run(window::delta_time);
+  level.fireball_counter.run(window::delta_time);
+  level.hammer_counter.run(window::delta_time);
 
   auto& player = level.player;
 

@@ -60,11 +60,11 @@ static auto push_shell_on_player_touch(
   }
 
   if (entity.position.x - player.position.x > 0){
-    entity.set_direction(EntityState::DirectionRight);
+    entity.set_direction(util::Direction::right());
     return;
   }
 
-  entity.set_direction(EntityState::DirectionLeft);
+  entity.set_direction(util::Direction::left());
 };
 
 static auto get_hitbox(const ShellMonsterState& entity){
@@ -87,7 +87,7 @@ static auto did_hit_monster_with_shell(
   if (&target == &monster) return false;
   if (!target.should_collide) return false;
   if (!target.is_active) return false;
-  if (monster.vertical_flip == EntityState::Flip::UseFlip) return false;
+  if (monster.vertical_flip.is_flipped()) return false;
   if (!monster.in_shell) return false;
 
   if (monster.acceleration.left != monster.shell_speed && monster.acceleration.right != monster.shell_speed) 

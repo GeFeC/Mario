@@ -1,25 +1,23 @@
 #pragma once
 
 #include "Renderer/Texture.hpp"
+#include "Util/Direction.hpp"
 
 #include <glm/glm.hpp>
 
 namespace mario::renderer{
 
 struct Drawable{
+  struct Flip{
+    util::Flip horizontal = util::Flip::no_flip();
+    util::Flip vertical = util::Flip::no_flip();
+  } flip; 
+
   glm::vec2 position;
   glm::vec2 size;
   Texture const* texture;
   float alpha = 1.f;
-
-  struct Flip{
-    static constexpr auto UseFlip = -1;
-    static constexpr auto NoFlip = 1;
-
-    int horizontal = NoFlip;
-    int vertical = NoFlip;
-  } flip;
-
+  
   bool is_visible = true;
 };
 

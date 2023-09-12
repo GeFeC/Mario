@@ -3,7 +3,7 @@
 #include "Util/LoopedCounter.hpp"
 #include "States/MonsterState.hpp"
 #include "States/HammerState.hpp"
-#include "Util/Util.hpp"
+#include "Util/Random.hpp"
 #include "Util/Generator.hpp"
 #include "res/textures.hpp"
 
@@ -26,8 +26,8 @@ struct HammerBroState : MonsterState{
   } jump_state = JumpState::Up;
 
   util::Generator<HammerState> hammer_generator;
-  util::LoopedCounter throw_counter;
-  Direction walk_direction = DirectionLeft;
+  util::LoopedCounter throw_counter = util::LoopedCounter(util::BigValue, 3.f, 1);
+  util::Direction walk_direction = util::Direction::left();
 
   float jump_delay;
   float throw_delay;
@@ -36,8 +36,6 @@ struct HammerBroState : MonsterState{
   int hammers_count = 0;
   int hammers_spawned = 0;
   bool started_jumping = false;
-
-  HammerBroState() : throw_counter(util::BigValue, 3.f, 1) {}
 
   static auto new_jump_delay(){
     return util::random_value(3, 5);
@@ -54,7 +52,6 @@ struct HammerBroState : MonsterState{
     bro.size = glm::vec2(1, 2) * BlockBase::Size;
     bro.walk_speed = 3.f;
     bro.current_texture = &textures::hammerbro_walk[0];
-    bro.set_direction(DirectionLeft);
     bro.jump_delay = new_jump_delay();
     bro.throw_delay = new_throw_delay();
     bro.reward_for_killing = 500;

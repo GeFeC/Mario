@@ -3,6 +3,7 @@
 #include "States/PlantState.hpp"
 #include "States/FireballState.hpp"
 
+#include "Util/Direction.hpp"
 #include "Util/LoopedCounter.hpp"
 #include "Util/Generator.hpp"
 
@@ -15,7 +16,7 @@ struct BlackPlantState : PlantState{
 
   util::Generator<FireballState> fireball_generator;
   util::LoopedCounter shot_counter = util::LoopedCounter(util::BigValue, 10.f, 1);
-  EntityState::Direction fireball_direction = DirectionLeft;
+  util::Direction fireball_direction = util::Direction::left();
   float shot_boost = 1.f;
 
   static auto make(const glm::vec2& position){

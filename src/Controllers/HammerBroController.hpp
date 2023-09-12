@@ -51,16 +51,19 @@ static auto controller_base(
 
   auto current_walk_frames = &walk_frames;
 
-  if (hammerbro.throw_delay <= 0.f && hammerbro.vertical_flip == EntityState::Flip::NoFlip){
-    hammerbro.throw_counter.run();
+  if (hammerbro.throw_delay <= 0.f && !hammerbro.vertical_flip.is_flipped()){
+    hammerbro.throw_counter.run(window::delta_time);
 
-    const auto spawn_hammer_if_can = [&](int value){
+    const auto spawn_hammer_if_can = [&](int hammer_index){
       const auto hammers_spawned = hammerbro.hammers_spawned;
-      if (hammerbro.throw_counter.int_value() == value && hammers_spawned == value - 1){
+      if (hammerbro.throw_counter.int_value() == hammer_index && hammers_spawned == hammer_index - 1){
         hammerbro.spawn_hammer();
         ++hammerbro.hammers_spawned;
       }
-      if (hammerbro.throw_counter.value - value == util::in_range(-0.4f, 0.4f) && hammers_spawned == value){
+
+      const auto spawn_cooldown_ended = hammerbro.throw_counter.value - hammer_index == util::in_range(-0.4f, 0.4f);
+
+      if (spawn_cooldown_ended && hammers_spawned == hammer_index){
         current_walk_frames = &walk_frames_with_hammer;
       }
     };
@@ -81,7 +84,7 @@ static auto controller_base(
   monster_controller::die_when_hit_by_fireball(hammerbro, level);
   monster_controller::die_when_on_bouncing_block(hammerbro, level);
 
-  if (hammerbro.vertical_flip == EntityState::Flip::UseFlip) return;
+  if (hammerbro.vertical_flip.is_flipped()) return;
 
   monster_controller::kill_player_on_touch(hammerbro, level.player);
   monster_controller::die_when_stomped(hammerbro, level, [&]{
@@ -99,16 +102,17 @@ static auto controller_base(
     hammerbro.position.x = hammerbro.initial_x + HammerBroState::MaxWalkDistance;
   }
 
-  hammerbro.position.x += hammerbro.walk_speed * hammerbro.walk_direction 
-    * EntityState::MovementSpeedMultiplier * window::delta_time;
-
+  hammerbro.position.x += hammerbro.walk_speed 
+    * hammerbro.walk_direction.as_int()
+    * EntityState::MovementSpeedMultiplier 
+    * window::delta_time;
 
   //Turning
   if (hammerbro.position.x < level.player.position.x){
-    hammerbro.direction = EntityState::DirectionRight;
+    hammerbro.direction = util::Direction::right();
   }
   else{
-    hammerbro.direction = EntityState::DirectionLeft;
+    hammerbro.direction = util::Direction::left();
   }
 
   //Jumping

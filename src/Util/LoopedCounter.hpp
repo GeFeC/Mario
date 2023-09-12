@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Window.hpp"
-#include "Util/Util.hpp"
+#include "Util/Cast.hpp"
 
 namespace mario::util{
 
@@ -25,10 +24,10 @@ struct LoopedCounter{
     return loops == max_loops;
   }
 
-  auto run(){
+  auto run(float delta_time){
     if (loops == max_loops) return;
 
-    value += step * window::delta_time;
+    value += step * delta_time;
     if (value >= limit){
       value = 0.f;
       ++loops;
@@ -48,8 +47,8 @@ struct LoopedCounter{
 struct InfiniteCounter : LoopedCounter{
   InfiniteCounter(float limit, float step) : LoopedCounter(limit, step, 0) {}
 
-  auto run(){
-    value += step * window::delta_time;
+  auto run(float delta_time){
+    value += step * delta_time;
     if (value >= limit){
       value = 0.f;
       ++loops;

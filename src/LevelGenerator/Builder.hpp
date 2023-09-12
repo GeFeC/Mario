@@ -6,6 +6,7 @@
 #include "States/FireFlowerState.hpp"
 #include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
+#include "Util/Direction.hpp"
 #include <glm/glm.hpp>
 
 namespace mario::level_generator{
@@ -61,8 +62,7 @@ static auto put_q_block_with_flower(LevelState& level, const glm::vec2& position
   block.pusher.fire_flower = FireFlowerState(position);
 }
 
-using Direction = EntityState::Direction;
-static constexpr auto DirectionLeft = EntityState::DirectionLeft;
+using Direction = util::Direction;
 
 static auto put_q_block_with_mushroom(
     LevelState& level, 

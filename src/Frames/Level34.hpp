@@ -37,19 +37,19 @@ static auto run_level34(AppState& app){
     objects.push(FlyingKoopaState::make_red({ 48, 9 }, { 3, 0 }));
 
     objects.push(PlantState::make_red({ 41, 1.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
     objects.push(PlantState::make_red({ 88, -0.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
     objects.push(PlantState::make_red({ 102, 2.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
     objects.push(PlantState::make_red({ 104, 1.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
     objects.push(PlantState::make_red({ 106, 0.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
     objects.push(PlantState::make_red({ 108, -0.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
     objects.push(PlantState::make_red({ 110, -1.5 }))
-    .vertical_flip = EntityState::Flip::UseFlip;
+    .vertical_flip = util::Flip::flip();
 
     for (int i = 0; i < 10; ++i){
       const auto sign = i % 2 ? 1 : -1;

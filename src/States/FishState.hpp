@@ -42,8 +42,7 @@ private:
     fish.size = glm::vec2(BlockBase::Size);
     fish.walk_speed = 1.f;
     fish.reward_for_killing = 100.f;
-    fish.texture_flip = Flip::UseFlip;
-    fish.set_direction(DirectionLeft);
+    fish.texture_flip = util::Flip::flip();
     fish.should_collide = false;
     fish.can_be_stomped = false;
 

@@ -35,8 +35,8 @@ static auto jumping_fish_motion(FishState& fish, const LevelState& level){
       fish.gravity_boost = 0.5f;
     }
 
-    if (fish_see_player_on_left) fish.set_direction(EntityState::DirectionLeft);
-    else if (fish_see_player_on_right) fish.set_direction(EntityState::DirectionRight);
+    if (fish_see_player_on_left) fish.set_direction(util::Direction::left());
+    else if (fish_see_player_on_right) fish.set_direction(util::Direction::right());
   }
   else{
     entity_controller::gravity(fish, level);

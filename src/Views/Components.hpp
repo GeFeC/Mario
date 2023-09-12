@@ -11,7 +11,7 @@
 
 #include "States/PlatformState.hpp"
 #include "States/PointsParticlesState.hpp"
-#include "Util/Util.hpp"
+#include "Util/Interval.hpp"
 
 #include "config.hpp"
 #include "res/textures.hpp"
@@ -55,29 +55,32 @@ static auto render_entity(const EntityState& entity, const LevelState& level){
   const auto& offset = level.camera_offset;
   if (!views::is_component_on_screen(entity, offset)) return;
 
-  renderer::draw(renderer::Drawable{
-    entity.position - offset,
-    entity.size,
-    entity.current_texture,
-    1.f,
-    { entity.direction * entity.texture_flip, entity.vertical_flip },
-    entity.is_visible
-  });
+  auto drawable = renderer::Drawable{};
+  drawable.position = entity.position - offset;
+  drawable.size = entity.size;
+  drawable.texture = entity.current_texture;
+  drawable.is_visible = entity.is_visible;
+  drawable.flip = { 
+    util::Flip(entity.direction.as_int() * entity.texture_flip.as_int()), 
+    entity.vertical_flip 
+  };
+
+  renderer::draw(drawable);
 }
 
 static auto render_block(const BlockBase& block, const LevelState& level){
   const auto& offset = level.camera_offset;
   if (!views::is_component_on_screen(block, offset)) return;
 
-  using renderer::Drawable;
-  renderer::draw(Drawable{
-    block.position - offset,
-    glm::vec2(BlockBase::Size),
-    block.texture,
-    block.alpha,
-    { EntityState::Flip::NoFlip, EntityState::Flip::NoFlip },
-    block.is_visible
-  });
+  auto drawable = renderer::Drawable{};
+  drawable.position = block.position - offset;
+  drawable.size = glm::vec2(BlockBase::Size);
+  drawable.texture = block.texture;
+  drawable.alpha = block.alpha;
+  drawable.flip = { util::Flip::no_flip(), util::Flip::no_flip() };
+  drawable.is_visible = block.is_visible;
+
+  renderer::draw(drawable);
 }
 
 static auto render_background(const CloudState& cloud, const LevelState& level){
@@ -139,13 +142,13 @@ static auto render_entity(const HammerBroState& bro, const LevelState& level){
 
 static auto render_entity(const PlatformState& platform, const LevelState& level){
   for (int i = 0; i < platform.width; ++i){
-    using renderer::Drawable;
+    auto drawable = renderer::Drawable{};
 
-    renderer::draw(Drawable{
-      platform.position + glm::vec2(i * PlatformState::ElementSize, 0) - level.camera_offset,
-      glm::vec2(PlatformState::ElementSize),
-      &textures::platform
-    });
+    drawable.position = platform.position + glm::vec2(i * PlatformState::ElementSize, 0) - level.camera_offset;
+    drawable.size = glm::vec2(PlatformState::ElementSize);
+    drawable.texture = &textures::platform;
+
+    renderer::draw(drawable);
   }
 }
 

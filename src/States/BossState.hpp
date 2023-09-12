@@ -54,7 +54,7 @@ struct KingKoopaState : BossState{
   KingKoopaState() : BossState(){
     size = Size;
     walk_speed = WalkSpeed;
-    texture_flip = EntityState::Flip::UseFlip;
+    texture_flip = util::Flip::flip();
   }
 };
 
@@ -76,7 +76,7 @@ struct KingBeetleState : BossState{
   KingBeetleState() : BossState() {
     size = Size;
     walk_speed = WalkSpeed;
-    texture_flip = EntityState::Flip::UseFlip;
+    texture_flip = util::Flip::flip();
     hp = MaxHp;
   } 
 };

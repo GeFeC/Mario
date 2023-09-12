@@ -1,92 +1,19 @@
 #pragma once
 
+#include "Shaders/VertexShader.hpp"
+#include "Shaders/FragmentShader.hpp"
 #include "Drawable.hpp"
 #include "Text.hpp"
-#include "Util/Util.hpp"
+#include "Util/Cast.hpp"
 #include "config.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <iostream>
 #include <array>
 
 namespace mario::renderer{
-
-static auto vertex_shader_script = R"(
-  #version 330 core
-
-  layout (location = 0) in vec2 position;
-  layout (location = 1) in vec2 texture_position;
-
-  uniform mat4 rotation = mat4(1.0);
-  uniform mat4 projection;
-  uniform vec4 rect;
-
-  out vec2 f_texture_position;
-
-  mat4 translate(mat4 model, vec2 vector){
-    model[3][0] = vector.x;
-    model[3][1] = vector.y;
-  
-    return model;
-  }
-
-  mat4 scale(mat4 model, vec2 vector){
-    model[0][0] = vector.x;
-    model[1][1] = vector.y;
-  
-    return model;
-  }
-
-  void main(){
-    f_texture_position = texture_position;
-
-    mat4 model = mat4(1.0);
-    model = translate(model, vec2(rect.x, rect.y));
-    model = scale(model, vec2(rect.z, rect.w));
-    gl_Position = projection * model * rotation * vec4(position, 0.0, 1.0);
-  }
-)";
-
-static auto fragment_shader_script = R"(
-  #version 330 core
-
-  in vec2 f_texture_position;
-
-  uniform mat4 projection;
-
-  uniform sampler2D pixel_map;
-  uniform vec4 f_color;
-
-  uniform float texture_alpha = 1;
-  uniform int is_texture = 1;
-  uniform int is_glyph = 0;
-  uniform int is_shadow = 0;
-  uniform int is_highlighted = 0;
-
-  out vec4 color;
-
-  void main(){
-    vec4 texture_pixel = texture(pixel_map, f_texture_position);
-    texture_pixel.a *= texture_alpha;
-    float alpha = texture_pixel.r;
-
-    const float shadow = 0.1;
-    vec4 face_color = 
-      texture_pixel * (1 - is_glyph) * (1 - is_shadow) * (is_texture)
-      + f_color * (1 - is_texture) * (1 - is_shadow)
-      + vec4(shadow, shadow, shadow, texture_pixel.a * 0.5) * is_shadow * (1 - is_glyph)
-      + vec4(1, 1, 1, texture_pixel.a) * is_highlighted * (1 - is_shadow);
-
-    vec4 glyph_color = 
-      is_glyph * vec4(1.0, 1.0, 1.0, alpha) * (1 - is_shadow)
-      + vec4(shadow, shadow, shadow, alpha * 0.5) * is_glyph * is_shadow;
-
-    color = face_color + glyph_color;
-  }
-)";
 
 enum class ShaderType{
   Vertex = GL_VERTEX_SHADER,
@@ -231,15 +158,15 @@ inline bool highlight_mode = false;
 static auto draw_base(const Drawable& drawable, bool is_glyph, const glm::vec2& offset){
   if (!drawable.is_visible) return;
 
-  const auto flip_offset_x = drawable.size.x * (drawable.flip.horizontal - 1) / 2;
-  const auto flip_offset_y = drawable.size.y * (drawable.flip.vertical - 1) / 2;
+  const auto flip_offset_x = drawable.size.x * (drawable.flip.horizontal.as_binary() - 1);
+  const auto flip_offset_y = drawable.size.y * (drawable.flip.vertical.as_binary() - 1);
 
   using renderer::ShadowOffset;
   set_uniform("rect", {
     glm::round(drawable.position.x - flip_offset_x + renderer::shadow_mode * ShadowOffset - offset.x),
     glm::round(drawable.position.y - flip_offset_y + renderer::shadow_mode * ShadowOffset - offset.y),
-    glm::round(drawable.size.x * drawable.flip.horizontal),
-    glm::round(drawable.size.y * drawable.flip.vertical)
+    glm::round(drawable.size.x * drawable.flip.horizontal.as_int()),
+    glm::round(drawable.size.y * drawable.flip.vertical.as_int())
   });
 
   set_uniform("texture_alpha", drawable.alpha);

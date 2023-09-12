@@ -28,42 +28,42 @@ static auto run_level43(AppState& app){
     level.water_level = 1.f;
 
     level.game_objects.push(FishState::make_red({ 4, 111 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_red({ 6, 115 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
 
     level.game_objects.push(FishState::make_red({ 5, 76 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_red({ 10, 81 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_red({ 2, 87 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_red({ 6, 97 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
 
     level.game_objects.push(FishState::make_grey({ 9, 112 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_grey({ 7, 117 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_grey({ 2, 82 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_grey({ 6, 84 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_grey({ 4, 90 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level.game_objects.push(FishState::make_grey({ 9, 96 }))
-      .set_direction(EntityState::DirectionRight);
+      .set_direction(util::Direction::right());
 
     level_generator::generate_level(level, "level43_1.csv");
     level_generator::generate_level(level, "level43_2.csv");

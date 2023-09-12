@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Renderer/Drawable.hpp"
 #include "States/LevelState.hpp"
 #include "Renderer/Renderer.hpp"
 #include "Controllers/LevelController.hpp"
 
 #include "Views/Components.hpp"
 
-#include "Util/Util.hpp"
+#include "Util/Loop.hpp"
 #include "config.hpp"
 #include "res/fonts.hpp"
 #include "res/textures.hpp"
@@ -36,7 +37,8 @@ static auto render_water(const LevelState& level){
     render_block(block, level);
   }
 
-  const auto water_area = util::make_pair_from_vec2(level.max_size());
+  const auto water_area_position = std::make_pair(0.f, level.water_level + 1.f);
+  const auto water_area_size = std::make_pair(level.max_size().x, level.max_size().y);
 
   util::for_2d([&](int x, int y){
     auto block = BlockBase{};
@@ -46,7 +48,7 @@ static auto render_water(const LevelState& level){
     block.alpha = WaterTransparency;
 
     render_block(block, level);
-  }, std::make_pair(0.f, level.water_level + 1.f), water_area);
+  }, water_area_position, water_area_size);
 }
 
 static auto render_stats(const LevelState& level){
@@ -77,11 +79,11 @@ static auto render_stats(const LevelState& level){
   renderer::print(text, glm::vec2(0));
 
   //Mini coin
-  renderer::draw(renderer::Drawable{
-    glm::vec2(center_x + 9 * font_size, step_y * 2),
-    glm::vec2(font_size),
-    &textures::mini_coin
-  });
+  auto mini_coin = renderer::Drawable{};
+  mini_coin.position = glm::vec2(center_x + 9 * font_size, step_y * 2);
+  mini_coin.size = glm::vec2(font_size);
+  mini_coin.texture = &textures::mini_coin;
+  renderer::draw(mini_coin);
 
   if (level.type == LevelState::Type::Boss && stats.boss_hp != nullptr){
     text.text = "BOSS";
@@ -105,12 +107,13 @@ static auto render_loading_screen(const LevelState& level){
   const auto font_size = fonts::normal.size * 3.5f;
 
   //Background;
-  renderer::draw(renderer::Drawable{
-    glm::vec2(0, 0),
-    config::FrameBufferSize,
-    &textures::black
+  auto background = renderer::Drawable{};
 
-  });
+  background.position = { 0, 0 };
+  background.size = config::FrameBufferSize;
+  background.texture = &textures::black;
+
+  renderer::draw(background);
 
   //Header:
   const auto& stats = level.stats;
@@ -130,14 +133,15 @@ static auto render_loading_screen(const LevelState& level){
   renderer::print(text, glm::vec2(0));
 
   //Mario:
-  renderer::draw(renderer::Drawable{
-    glm::vec2(
-      config::FrameBufferSize.x / 2 - BlockBase::Size * 1.5f, 
-      center_pos.y - (BlockBase::Size - font_size * 1.f) 
-    ),
-    glm::vec2(BlockBase::Size),
-    &textures::small_mario
-  });
+  auto mario = renderer::Drawable{};
+  mario.position = glm::vec2(
+    config::FrameBufferSize.x / 2 - BlockBase::Size * 1.5f, 
+    center_pos.y - (BlockBase::Size - font_size * 1.f) 
+  );
+  mario.size = glm::vec2(BlockBase::Size);
+  mario.texture = &textures::small_mario;
+
+  renderer::draw(mario);
 
   //HP:
   text.text = "X " + std::to_string(stats.hp);
@@ -168,11 +172,11 @@ static auto render_all_points_particles(const LevelState& level){
 }
 
 static auto render_level(const LevelState& level){
-  renderer::draw(renderer::Drawable{
-    glm::vec2(0, 0),
-    config::FrameBufferSize,
-    level.background_texture
-  });
+  auto background = renderer::Drawable{};
+  background.position = { 0, 0 };
+  background.size = config::FrameBufferSize;
+  background.texture = level.background_texture;
+  renderer::draw(background);
 
   //Rendering game objects
 
@@ -227,11 +231,11 @@ static auto render_level(const LevelState& level){
       player_center.y + PlayerViewSizeInDarkness
     );
 
-    renderer::draw(renderer::Drawable{
-      player_view_min,
-      glm::vec2(PlayerViewSizeInDarkness * 2.f),
-      &textures::darkness_view
-    });
+    auto darkness_view = renderer::Drawable{};
+    darkness_view.position = player_view_min;
+    darkness_view.size = glm::vec2(PlayerViewSizeInDarkness * 2.f);
+    darkness_view.texture = &textures::darkness_view;
+    renderer::draw(darkness_view);
 
     renderer::draw_plain(renderer::PlainDrawable{
       { 0, 0 },

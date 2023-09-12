@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Util/Direction.hpp"
 #include "Renderer/Texture.hpp"
 #include "Renderer/Drawable.hpp"
 #include "res/textures.hpp"
@@ -11,26 +12,20 @@
 namespace mario{
 
 struct EntityState{
-  using Direction = int;
-  using Flip = renderer::Drawable::Flip;
-
   inline static constexpr auto GravityForce = 70.f;
   inline static constexpr auto MovementSpeedMultiplier = 100.f;
-
-  inline static constexpr auto DirectionLeft = -1;
-  inline static constexpr auto DirectionRight = 1;
 
   struct Acceleration{
     float left = 0.f, right = 0.f;
   } acceleration;
   
   renderer::Texture const* current_texture = nullptr;
-  Direction direction = DirectionRight;
+  util::Direction direction = util::Direction::right();
   glm::vec2 position = { 0.f, 0.f };
   glm::vec2 size = { 0.f, 0.f };
 
-  int vertical_flip = Flip::NoFlip;
-  int texture_flip = Flip::NoFlip;
+  util::Flip vertical_flip = util::Flip::no_flip();
+  util::Flip texture_flip = util::Flip::no_flip();
   
   float gravity = 0.f;
   float gravity_boost = 1.f;
@@ -49,10 +44,10 @@ struct EntityState{
   bool should_collide = true;
   bool fall_from_edge = true;
 
-  auto set_direction(Direction direction, int speed){
+  auto set_direction(util::Direction direction, int speed){
     this->direction = direction;
 
-    if (direction == DirectionRight){
+    if (direction.is_right()){
       acceleration.right = speed;
       acceleration.left = 0.f;
       return;

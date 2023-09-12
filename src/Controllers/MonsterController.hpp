@@ -70,7 +70,7 @@ static auto become_active_when_seen(MonsterState& entity, const LevelState& leve
 static auto bounce_out(MonsterState& entity){
   entity.gravity = MonsterState::BounceDiePower;
   entity.should_collide = false;
-  entity.vertical_flip = EntityState::Flip::UseFlip;
+  entity.vertical_flip = util::Flip::flip();
 }
 
 static auto bounce_die(MonsterState& entity, StatsState& stats){
@@ -163,13 +163,12 @@ static auto turn_around(MonsterState& entity){
   if (entity.acceleration.left == 0 && entity.acceleration.right == 0){
     entity.direction = -entity.direction;
 
-    if (entity.direction == EntityState::DirectionLeft){
+    if (entity.direction.is_left()){
       entity.acceleration.left = entity.walk_speed;
+      return;
     }
 
-    if (entity.direction == EntityState::DirectionRight){
-      entity.acceleration.right = entity.walk_speed;
-    }
+    entity.acceleration.right = entity.walk_speed;
   }
 }
 

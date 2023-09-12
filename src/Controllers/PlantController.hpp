@@ -37,7 +37,7 @@ static auto controller_base(PlantState& plant, LevelState& level){
   if (plant.current_cooldown == 0.f){
     if (plant.direction == Direction::GoingUp && plant.offset < PlantState::MaxOffset){
       plant.offset += offset;
-      plant.position.y -= offset * plant.vertical_flip * plant.motion_boost();
+      plant.position.y -= offset * plant.vertical_flip.as_int() * plant.motion_boost();
       return;
     }
     else{
@@ -52,7 +52,7 @@ static auto controller_base(PlantState& plant, LevelState& level){
 
     if (plant.direction == Direction::GoingDown && plant.offset > 0.f){
       plant.offset -= offset;
-      plant.position.y += offset * plant.vertical_flip * plant.motion_boost();
+      plant.position.y += offset * plant.vertical_flip.as_int() * plant.motion_boost();
       return;
     }
     else{

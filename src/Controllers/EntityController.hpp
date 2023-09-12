@@ -64,12 +64,12 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   if (y >= level_size.y || y - 1 <= 0) return;
 
   static constexpr auto Air = 0;
-  if (level.hitbox_grid[right_x][y] == Air && entity.direction == EntityState::DirectionRight){
+  if (level.hitbox_grid[right_x][y] == Air && entity.direction.is_right()){
     entity.acceleration.left = entity.acceleration.right = 0.f;
     entity.position.x = (right_x - 1) * BlockBase::Size + Offset;
   }
 
-  if (level.hitbox_grid[left_x][y] == Air && entity.direction == EntityState::DirectionLeft){
+  if (level.hitbox_grid[left_x][y] == Air && entity.direction.is_left()){
     entity.acceleration.left = entity.acceleration.right = 0.f;
     entity.position.x = left_x * BlockBase::Size - Offset;
   }

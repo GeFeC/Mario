@@ -66,16 +66,16 @@ static auto run_controller(KingCheepState& boss, LevelState& level){
 
     if (was_fish_killed){
       fish.was_hit = false;
-      fish.vertical_flip = FishState::Flip::NoFlip;
+      fish.vertical_flip = util::Flip::no_flip();
     }
 
-    if (fish.direction == FishState::DirectionLeft){
+    if (fish.direction.is_left()){
       if (fish.position.x < -BlockBase::Size || was_fish_killed){
         fish.position = king_cheep_controller::minion_random_position_from_right() * BlockBase::Size;
       }
     }              
 
-    if (fish.direction == FishState::DirectionRight){
+    if (fish.direction.is_right()){
       if (fish.position.x > config::FrameBufferSize.x || was_fish_killed){
         fish.position = king_cheep_controller::minion_random_position_from_left() * BlockBase::Size;
       }

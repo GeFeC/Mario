@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Renderer/Texture.hpp"
-#include "Util/Util.hpp"
+#include "Util/Cast.hpp"
 #include "config.hpp"
 
 #include <ft2build.h>

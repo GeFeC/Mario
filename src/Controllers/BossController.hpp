@@ -39,11 +39,11 @@ static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
 static auto walk(BossState& boss, const LevelState& level){
   if (boss.hp == 0) return;
 
-  boss.position.x += boss.direction * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
+  boss.position.x += boss.direction.as_int() * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
 
   static constexpr auto LevelWidth = config::FrameBufferSize.x - BlockBase::Size;
-  if (boss.position.x + boss.size.x >= LevelWidth) boss.direction = EntityState::DirectionLeft;
-  if (boss.position.x <= BlockBase::Size) boss.direction = EntityState::DirectionRight;
+  if (boss.position.x + boss.size.x >= LevelWidth) boss.direction = util::Direction::left();
+  if (boss.position.x <= BlockBase::Size) boss.direction = util::Direction::right();
 
   static constexpr auto GroundPosition = config::FrameBufferSize.y - BlockBase::Size;
   boss.position.x = std::clamp(boss.position.x, BlockBase::Size, LevelWidth);
@@ -63,7 +63,7 @@ static auto controller(BossState& boss, LevelState& level){
   boss.blink_cooldown -= window::delta_time;
 
   if (boss.hp == 0){
-    boss.vertical_flip = EntityState::Flip::UseFlip;
+    boss.vertical_flip = util::Flip::flip();
     boss.should_collide = false;
     boss.was_hit = true;
     level.is_finished = true;

@@ -24,7 +24,7 @@ struct MonsterState : EntityState{
 
   util::Generator<PointsParticlesState> points_generator;
 
-  auto set_direction(Direction direction){
+  auto set_direction(util::Direction direction){
     EntityState::set_direction(direction, walk_speed);
   }
 

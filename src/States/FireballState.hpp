@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Window.hpp"
 #include "Util/LoopedCounter.hpp"
 #include "States/BlockState.hpp"
 #include "EntityState.hpp"
@@ -24,7 +25,7 @@ struct ExplosionState : BlockBase{
 
   auto run(){
     if (!started) return;
-    counter.run();
+    counter.run(window::delta_time);
 
     if (counter.stopped_counting()) {
       is_visible = false;
@@ -52,6 +53,13 @@ struct FireballState : EntityState{
     size = glm::vec2(BlockBase::Size / 2);
     current_texture = &textures::fireball[0];
     is_visible = false;
+  }
+
+  auto shoot(const glm::vec2& position, util::Direction direction, int speed){
+    this->position = position;
+    set_direction(direction, speed);
+    is_visible = true;
+    is_active = true;
   }
 };
 

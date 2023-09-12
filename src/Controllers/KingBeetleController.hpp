@@ -7,6 +7,7 @@
 #include "Controllers/FireballController.hpp"
 
 #include "States/BossState.hpp"
+#include "Util/Direction.hpp"
 #include "res/textures.hpp"
 
 namespace mario{
@@ -29,13 +30,14 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
   static constexpr auto FireballSpeed = 10.f;
   static constexpr auto FireballGravity = -20.f;
 
+  using util::Direction;
   if (boss.fireballs[0].is_on_ground && !boss.did_fireballs_seperate){
     boss.did_fireballs_seperate = true;
     boss.fireballs[0].gravity = boss.fireballs[1].gravity = FireballGravity * 2 / 3;
     boss.fireballs[0].is_on_ground = boss.fireballs[1].is_on_ground = false;
 
-    boss.fireballs[0].set_direction(EntityState::DirectionLeft, FireballSpeed);
-    boss.fireballs[1].set_direction(EntityState::DirectionRight, FireballSpeed);
+    boss.fireballs[0].set_direction(Direction::left(), FireballSpeed);
+    boss.fireballs[1].set_direction(Direction::right(), FireballSpeed);
   }
 
   for (auto& fireball : boss.fireballs){
@@ -54,13 +56,11 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
     }
 
     if (boss.fireball_cooldown <= 0.f) {
-      const auto direction = (boss.direction + 1) / 2.f;
+      const auto direction = boss.direction.as_binary();
 
-      fireball.position = boss.position + glm::vec2(direction * boss.size.x, boss.size.y / 2.f);
-      fireball.is_active = true;
-      fireball.set_direction(boss.direction, FireballSpeed);
+      const auto fireball_position = boss.position + glm::vec2(direction * boss.size.x, boss.size.y / 2.f);
+      fireball.shoot(fireball_position, boss.direction, FireballSpeed);
       fireball.gravity = FireballGravity;
-      fireball.is_visible = true;
     }
   }
 
@@ -86,18 +86,18 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
     minion.walk_speed = BeetleState::DefaultWalkSpeed;
     minion.should_collide = true;
     minion.was_hit = false;
-    minion.vertical_flip = EntityState::Flip::NoFlip;
+    minion.vertical_flip = util::Flip::no_flip();
 
     switch(boss.minion_respawn_side){
       case RespawnSide::Left: 
         minion.position = glm::vec2(2.5f, 3.f) * BlockBase::Size;
-        minion.set_direction(EntityState::DirectionRight);
+        minion.set_direction(Direction::right());
         boss.minion_respawn_side = RespawnSide::Right;
         break;
 
       case RespawnSide::Right: 
         minion.position = glm::vec2(16.5f, 3.f) * BlockBase::Size;
-        minion.set_direction(EntityState::DirectionLeft);
+        minion.set_direction(Direction::left());
         boss.minion_respawn_side = RespawnSide::Left;
         break;
     };

@@ -31,10 +31,10 @@ static auto controller_base(
 
     //Turning around
     if (previous_x - koopa.position.x >= 0.f){
-      koopa.direction = EntityState::DirectionLeft;
+      koopa.direction = util::Direction::left();
     }
     else{
-      koopa.direction = EntityState::DirectionRight;
+      koopa.direction = util::Direction::right();
     }
 
     monster_controller::run_movement_animation(koopa, walk_frames_with_wings);

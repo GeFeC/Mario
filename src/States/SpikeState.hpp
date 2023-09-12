@@ -9,14 +9,13 @@ struct SpikeState : MonsterState{
 
   bool can_move = true;
 
-  static auto make(const glm::vec2& position, Direction direction = DirectionLeft){
+  static auto make(const glm::vec2& position){
     auto spike = SpikeState();
     spike.position = position * BlockBase::Size;
     spike.size = glm::vec2(BlockBase::Size);
     spike.walk_speed = 3.f;
-    spike.set_direction(direction);
     spike.current_texture = &textures::spike_walk[0];
-    spike.texture_flip = EntityState::Flip::UseFlip;
+    spike.texture_flip = util::Flip::flip();
     spike.can_be_stomped = false;
     spike.reward_for_killing = 100;
 

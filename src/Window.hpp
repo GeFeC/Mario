@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util/Util.hpp"
+#include "Util/Cast.hpp"
 #include "config.hpp"
 
 #include <glad/glad.h>

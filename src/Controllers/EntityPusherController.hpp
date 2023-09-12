@@ -33,8 +33,8 @@ static auto push_out(EntityPusherState<Entity>& pusher, LevelState& level){
   auto& player = level.player;
   const auto block = BouncingBlockState(entity.position / BlockBase::Size);
 
-  if (player.position.x < block.position.x) entity.set_direction(EntityState::DirectionRight);
-  if (player.position.x > block.position.x) entity.set_direction(EntityState::DirectionLeft);
+  if (player.position.x < block.position.x) entity.set_direction(util::Direction::right());
+  if (player.position.x > block.position.x) entity.set_direction(util::Direction::left());
 }
 
 template<typename Entity>
