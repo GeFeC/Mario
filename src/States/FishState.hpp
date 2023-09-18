@@ -55,7 +55,8 @@ private:
 public:
   static auto make_grey(const glm::vec2& position){
     auto fish = make(position);
-    
+
+    fish.set_direction(util::Direction::left());
     fish.type = Type::Grey;
     fish.current_texture = &textures::grey_fish_swim[0];
 
@@ -67,7 +68,7 @@ public:
     
     fish.type = Type::Red;
     fish.walk_speed = 2.f;
-    fish.set_direction(fish.direction);
+    fish.set_direction(util::Direction::left());
     fish.current_texture = &textures::red_fish_swim[0];
 
     return fish;

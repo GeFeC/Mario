@@ -56,6 +56,7 @@ static auto become_active_when_seen(MonsterState& entity, const LevelState& leve
   const auto player_field_of_view_y = player.position.y - level.camera_offset.y;
 
   if (entity.position.x - player.position.x > player_field_of_view_x) return;
+  if (player.position.x > entity.position.x) return;
 
   if (level.type == LevelState::Type::Vertical){
     const auto player_can_see_entity 

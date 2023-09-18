@@ -96,10 +96,10 @@ static auto red_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
 static auto purple_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
   koopa_controller::purple_koopa_speedup(koopa, level);
 
-  static auto previous_walk_speed = 0;
+  static auto previous_walk_speed = 0.f;
 
   auto& timer = level.purple_flying_koopa_timer;
-  if (koopa.has_wings){
+  if (koopa.has_wings && !koopa.vertical_flip.is_flipped()){
     if (previous_walk_speed != koopa.walk_speed) {
       timer = timer * previous_walk_speed / koopa.walk_speed;
     }

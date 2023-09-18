@@ -60,6 +60,10 @@ struct EntityState{
   auto turn_around(){
     acceleration.left = acceleration.right = 0.f;
   }
+
+  auto total_speed(){
+    return std::abs(acceleration.right - acceleration.left);
+  }
 };
 
 } //namespace mario

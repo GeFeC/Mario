@@ -9,6 +9,8 @@
 namespace mario{
 
 static auto run_controller(SpikeState& spike, LevelState& level){
+  if (spike.position.y > (level.max_size().y + 1) * BlockBase::Size) return;
+
   entity_controller::gravity(spike, level);
 
   if (spike.can_move){

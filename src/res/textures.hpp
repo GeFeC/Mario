@@ -16,6 +16,7 @@ inline auto bg = Texture("normal_background.png");
 inline auto mushroom_bg = Texture("mushroom_background.png");
 inline auto snow_bg = Texture("snow_background.png");
 inline auto underground_bg = Texture("underground_background.png");
+inline auto sky_bg = Texture("sky_background.png");
 
 inline auto platform = Texture("platform.png");
 
@@ -34,6 +35,7 @@ inline auto green_ground = Texture("tile/greenground.png");
 inline auto water_ground = Texture("tile/waterground.png");
 inline auto coral = Texture("tile/coral.png");
 inline auto bridge = Texture("tile/bridge.png");
+inline auto cloud_block = Texture("tile/cloud.png");
 
 inline auto water_top = Texture("tile/water1.png");
 inline auto water_bottom = Texture("tile/water2.png");
@@ -333,6 +335,13 @@ inline auto red_hammerbro_walk = std::array<Texture, 2>{
 inline auto red_hammerbro_walk_with_hammer = std::array<Texture, 2>{
   Texture("entity/hammerbro/red3.png"),
   Texture("entity/hammerbro/red4.png")
+};
+
+inline auto lakito_hidden = Texture("entity/lakito/0.png");
+inline auto lakito_shown = Texture("entity/lakito/1.png");
+inline auto lakito_throw = std::array<Texture, 2>{
+  Texture("entity/lakito/throw0.png"),
+  Texture("entity/lakito/throw1.png")
 };
 
 inline auto plant = std::array<Texture, 2>{

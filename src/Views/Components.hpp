@@ -7,6 +7,7 @@
 #include "States/BlackPlantState.hpp"
 #include "States/BlockState.hpp"
 #include "States/BossState.hpp"
+#include "States/LakitoState.hpp"
 #include "States/LevelState.hpp"
 
 #include "States/PlatformState.hpp"
@@ -66,6 +67,11 @@ static auto render_entity(const EntityState& entity, const LevelState& level){
   };
 
   renderer::draw(drawable);
+}
+
+static auto render_entity(const LakitoState& lakito, const LevelState& level){
+  render_entity(lakito.thrown_spike, level);
+  render_entity(lakito | util::as<EntityState>, level);
 }
 
 static auto render_block(const BlockBase& block, const LevelState& level){

@@ -5,10 +5,11 @@
 namespace mario{
 
 struct FlyingKoopaState : KoopaState{
-  bool has_wings = true;
   glm::vec2 initial_position;
   glm::vec2 movement_axis;
+
   float start_time = 0.f;
+  bool has_wings = true;
 
   static auto make(const glm::vec2& position, const glm::vec2& axis){
     auto koopa = KoopaState::make<FlyingKoopaState>(position);

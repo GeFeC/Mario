@@ -29,6 +29,7 @@
 #include "Controllers/PlatformController.hpp"
 #include "Controllers/FishController.hpp"
 #include "Controllers/SquidController.hpp"
+#include "Controllers/LakitoController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"
@@ -226,9 +227,11 @@ static auto controller(AppState& app){
   //Game objects
   background(level);
   
-  level.game_objects.for_each([&](auto& object){
-    run_controller(object, level);
-  });
+  if (!level.is_finished){
+    level.game_objects.for_each([&](auto& object){
+      run_controller(object, level);
+    });
+  }
 
   finish(level, app);
 

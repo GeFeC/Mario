@@ -128,7 +128,6 @@ static auto handle_shell(
     }
   }(); 
 
-
   auto shell_kill_entity = [&](MonsterState& target_entity){
     if (!did_hit_monster_with_shell(entity, target_entity)) return;
 

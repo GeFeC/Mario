@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Renderer/Texture.hpp"
 #include "res/textures.hpp"
 
 namespace mario::texture_groups{
@@ -92,6 +93,13 @@ inline const auto beetle = TextureGroup({
 inline const auto spike = TextureGroup({
   &textures::spike_walk[0],
   &textures::spike_walk[1]
+});
+
+inline const auto lakito = TextureGroup({
+  &textures::lakito_hidden,
+  &textures::lakito_shown,
+  &textures::lakito_throw[0],
+  &textures::lakito_throw[1]
 });
 
 inline const auto plant = TextureGroup({
