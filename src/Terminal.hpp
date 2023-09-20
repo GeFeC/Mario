@@ -26,11 +26,13 @@ static auto run(AppState& app){
         app.current_level.player.position = glm::vec2(x, y) * BlockBase::Size;
       }
 
+      //Invincibility
       if (cmd == "god"){
         god_mode = !god_mode;
         std::cerr << "God mode: " << std::array{ "OFF", "ON" }[god_mode] << '\n';
       }
 
+      //Level change
       if (cmd == "lvl"){
         auto major = 0, minor = 0;
         std::cin >> major >> minor;
@@ -41,6 +43,12 @@ static auto run(AppState& app){
 
         app.current_frame = (major * config::LevelsInWorld + minor) | util::as<AppState::Frame>;
         app.current_level.current_checkpoint = LevelState::CheckpointNotSet;
+      }
+
+      //Teleport to checkpoint
+      if (cmd == "tpch"){
+        auto& level = app.current_level;
+        level.player.position = level.checkpoints[0];        
       }
     }
   }).detach();

@@ -21,7 +21,7 @@ auto main() -> int{
   mario::renderer::init();
 
   auto app = mario::AppState();
-  app.current_frame = mario::AppState::Frame::Level61;
+  app.current_frame = mario::AppState::Frame::Level62;
 
   mario::terminal::run(app);
   mario::window::show();
