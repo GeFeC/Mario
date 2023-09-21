@@ -31,8 +31,6 @@ static auto run_level35(AppState& app){
     level_generator::generate_level(level, "level35_1.csv");
     level_generator::generate_level(level, "level35_2.csv");
 
-    create_hitbox_on_sides(level);
-
     auto& objects = level.game_objects;
     objects.push(FireBarState({ 16, 133 }, 6));
     

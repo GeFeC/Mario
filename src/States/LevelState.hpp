@@ -55,37 +55,7 @@ struct StatsState{
 };
 
 struct LevelState{
-  static constexpr auto BlocksInRow = 20;
-  static constexpr auto BlocksInColumn = 12;
-
-  static constexpr auto HorizontalLevelSize = glm::vec2(200, BlocksInColumn);
-  static constexpr auto MaxVerticalLevelSize = glm::vec2(BlocksInRow, 150);
-  static constexpr auto BossLevelSize = glm::vec2(BlocksInRow, BlocksInColumn);
-
-  static constexpr auto CheckpointNotSet = glm::vec2(-1);
-  static constexpr auto MinPlayerRelativeY = 5 * BlockBase::Size;
-  static constexpr auto MaxPlayerRelativeY = 9 * BlockBase::Size;
-
-  static constexpr auto PlayerPositionToStartLevelScrolling = glm::vec2(9 * BlockBase::Size, 0.f);
-  static constexpr auto PlayerYToRestartLevel = 10000.f;
-
-  inline static float timer = 0.f;
-
-  enum class Type{
-    Horizontal,
-    Vertical,
-    Boss
-  } type = Type::Horizontal;
-
-  util::vector2d<int> hitbox_grid;
-
-  renderer::Texture const* background_texture = nullptr;
-  renderer::TextureGroup const* cloud_textures = nullptr;
-
-  StatsState stats;
-  PlayerState player;
-
-  util::poly::Array<
+  using GameObjectsArray = util::poly::Array<
     //Background
     CloudState,
     BackgroundHillState,
@@ -128,7 +98,38 @@ struct LevelState{
     KingBeetleState,
     KingCheepState,
     KingPlantState
-  > game_objects;
+  >;
+
+  static constexpr auto BlocksInRow = 20;
+  static constexpr auto BlocksInColumn = 12;
+
+  static constexpr auto HorizontalLevelSize = glm::vec2(200, BlocksInColumn);
+  static constexpr auto MaxVerticalLevelSize = glm::vec2(BlocksInRow, 150);
+  static constexpr auto BossLevelSize = glm::vec2(BlocksInRow, BlocksInColumn);
+
+  static constexpr auto CheckpointNotSet = glm::vec2(-1);
+  static constexpr auto MinPlayerRelativeY = 5 * BlockBase::Size;
+  static constexpr auto MaxPlayerRelativeY = 9 * BlockBase::Size;
+
+  static constexpr auto PlayerPositionToStartLevelScrolling = glm::vec2(9 * BlockBase::Size, 0.f);
+  static constexpr auto PlayerYToRestartLevel = 10000.f;
+
+  inline static float timer = 0.f;
+
+  enum class Type{
+    Horizontal,
+    Vertical,
+    Boss
+  } type = Type::Horizontal;
+
+  util::vector2d<int> hitbox_grid;
+
+  renderer::Texture const* background_texture = nullptr;
+  renderer::TextureGroup const* cloud_textures = nullptr;
+
+  GameObjectsArray game_objects;
+  StatsState stats;
+  PlayerState player;
 
   std::vector<glm::vec2> checkpoints;
   glm::vec2 current_checkpoint = CheckpointNotSet;

@@ -25,16 +25,6 @@ struct LevelFrameSharedData{
   } number;
 };
 
-static auto create_hitbox_on_sides(LevelState& level){
-  for (int i = 0; i < LevelState::MaxVerticalLevelSize.y; ++i){
-    level.game_objects.push(BlockState({ -1, i }, &textures::dirt))
-      .is_visible = false;
-
-    level.game_objects.push(BlockState({ LevelState::MaxVerticalLevelSize.x, i }, &textures::dirt))
-      .is_visible = false;
-  }
-}
-
 template<typename Function>
 static auto run_levelbase(
     AppState& app, 
@@ -64,6 +54,7 @@ static auto run_levelbase(
 
     //Checkpoints:
     static constexpr auto BlockSize = BlockBase::Size;
+
     if (level.current_checkpoint == LevelState::CheckpointNotSet){
       const auto level_height = level.max_size().y;
       level.current_checkpoint = { BlockSize, (level_height - 3.f) * BlockSize };
@@ -84,8 +75,8 @@ static auto run_levelbase(
       textures.push_back(level_generator::id_to_texture.at(texture));
     }
 
-    for (const auto& texture : level_data.extra_textures){
-      textures.push_back(texture);
+    for (auto texture : level_data.extra_textures){
+      texture.allocate();
     }
   };
 

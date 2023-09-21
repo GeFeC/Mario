@@ -58,7 +58,6 @@ static auto run_level62(AppState& app){
       level.game_objects.push(LakitoState::make({ 2 + i, 10 + i }));
     }
 
-    create_hitbox_on_sides(level);
     level_generator::generate_vertical_level_clouds(level);
     level_generator::generate_level(level, "level62_1.csv");
     level_generator::generate_level(level, "level62_2.csv");

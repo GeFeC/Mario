@@ -31,7 +31,7 @@ public:
   explicit Texture(GLuint id) noexcept : id(id) {}
   
   auto allocate(){
-    if (allocated) return;
+    if (allocated) return this;
 
     allocated = true;
 
@@ -64,6 +64,8 @@ public:
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(image_buffer);
+
+    return this;
   }
 
   auto set_min_filter(int min_filter) const{
