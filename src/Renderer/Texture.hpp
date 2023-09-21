@@ -87,20 +87,22 @@ public:
 };
 
 struct TextureGroup{
+  using TexturePtr = Texture*;
+
 private:
-  std::vector<Texture*> textures;
+  std::vector<TexturePtr> textures;
 
 public:
   TextureGroup() = default;
 
-  TextureGroup(Texture* texture){
+  TextureGroup(TexturePtr texture){
     textures.push_back(texture);
   }
 
-  explicit TextureGroup(const std::vector<Texture*>& textures)
+  explicit TextureGroup(const std::vector<TexturePtr>& textures)
   : textures(textures){}
 
-  auto with(const std::vector<Texture*>& textures) const{
+  auto with(const std::vector<TexturePtr>& textures) const{
     auto textures_copy = this->textures;
 
     for (const auto& texture : textures){
