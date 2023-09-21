@@ -24,6 +24,7 @@ static auto run_level54(AppState& app){
     level.background_texture = &textures::underground_bg;
 
     level.is_dark = true;
+    level.should_handle_hitbox_on_sides = false;
 
     level.player.position = glm::vec2(2, 5) * BlockBase::Size;
 

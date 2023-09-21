@@ -26,6 +26,7 @@ static auto lakito_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown
 
     thrown_spike.is_active = false;
     thrown_spike.position.y = util::BigValue;
+    thrown_spike.is_on_ground = false;
   }
 }
 
@@ -42,6 +43,8 @@ static auto run_controller(LakitoState& lakito, LevelState& level){
   if (lakito.vertical_flip.is_flipped()){
     entity_controller::gravity(lakito, level);
   }
+
+  lakito_thrown_spike_controller(lakito.thrown_spike, level);
 
   if (!lakito.is_active || lakito.vertical_flip.is_flipped()) return;
 
@@ -69,8 +72,6 @@ static auto run_controller(LakitoState& lakito, LevelState& level){
   }
 
   //Throwing spike
-  lakito_thrown_spike_controller(lakito.thrown_spike, level);
-
   lakito.throw_counter.run(window::delta_time);
 
   if (lakito.throw_counter.value == util::in_range(9.f, 10.f)){

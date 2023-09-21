@@ -150,10 +150,12 @@ struct LevelState{
   float load_delay = 3.f;
   float finish_delay = 2.f;
   float score_adding_after_finish_delay = 0.f;
-  int blink_state = 0;
-  bool is_finished = false;
 
+  int blink_state = 0;
+
+  bool is_finished = false;
   bool is_dark = false;
+  bool should_handle_hitbox_on_sides = true;
 
   int min_scroll_y = std::numeric_limits<int>::max();
 

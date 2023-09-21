@@ -7,6 +7,7 @@
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
 #include "States/MonsterState.hpp"
+#include "Util/Loop.hpp"
 #include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
@@ -20,8 +21,30 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
     return;
   }
 
+  //Get blocks surrounding entity
+  const auto min_index = std::make_pair(
+    entity.position.x / BlockBase::Size - 1,
+    std::max(entity.position.y / BlockBase::Size - 1, 0.f)
+  );
+
+  const auto max_index = std::make_pair(
+    min_index.first + 1 + entity.size.x / BlockBase::Size + 1,
+    std::min(min_index.second + 1 + entity.size.y / BlockBase::Size + 1, level.max_size().y)
+  );
+
+  auto blocks_surrounding_entity = std::vector<BlockState>();
+  util::for_2d([&](auto x, auto y){
+    const auto is_block_outside_the_world = x != util::in_range(0.f, level.max_size().x - 1);
+
+    if (is_block_outside_the_world && !level.should_handle_hitbox_on_sides) return;
+
+    if (is_block_outside_the_world || level.hitbox_grid[x][y] == 1){
+      blocks_surrounding_entity.push_back(BlockState({ x, y }, &textures::dirt));
+    }
+  }, min_index, max_index);
+
   //Blocks
-  for (const auto& block : level.game_objects.get_vec<BlockState>()){
+  for (const auto& block : blocks_surrounding_entity){
     if (!block.is_solid) continue;
 
     const auto collision_state = collision_controller::controller(

@@ -158,6 +158,10 @@ static auto render_entity(const PlatformState& platform, const LevelState& level
   }
 }
 
+static auto render_entity(const LoopedPlatformState& platform, const LevelState& level){
+  render_entity(platform | util::as<PlatformState>, level);
+}
+
 static auto render_block(const QBlockState<CoinPusherState>& block, const LevelState& level){
   for (auto& coin : block.pusher.coins){
     render_block(coin, level);
