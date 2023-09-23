@@ -9,6 +9,8 @@
 namespace mario{
 
 static auto run_controller(SpikeState& spike, LevelState& level){
+  monster_controller::points_particles(spike);
+
   if (spike.position.y > (level.max_size().y + 1) * BlockBase::Size) return;
 
   entity_controller::gravity(spike, level);
@@ -18,7 +20,6 @@ static auto run_controller(SpikeState& spike, LevelState& level){
   }
 
   monster_controller::turn_around(spike);
-  monster_controller::points_particles(spike);
 
   monster_controller::run_movement_animation(spike, textures::spike_walk);
 

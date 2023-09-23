@@ -30,22 +30,22 @@ struct Rect{
 };
 
 
-static auto CollisionPadding = 10.f;
+static constexpr auto CollisionPadding = 10.f;
 
-static auto intersects_in_x(const Rect& object1, const Rect& object2){
+static auto intersects_in_x(const Rect& object1, const Rect& object2, float padding = CollisionPadding){
   return object1.position.x - object2.position.x 
-    == util::in_range(-object1.size.x + CollisionPadding, object2.size.x - CollisionPadding);
+    == util::in_range(-object1.size.x + padding, object2.size.x - padding);
 }
 
-static auto intersects_in_y(const Rect& object1, const Rect& object2){
+static auto intersects_in_y(const Rect& object1, const Rect& object2, float padding = CollisionPadding){
   return object1.position.y - object2.position.y 
-    == util::in_range(-object1.size.y + CollisionPadding, object2.size.y - CollisionPadding);
+    == util::in_range(-object1.size.y + padding, object2.size.y - padding);
 }
 
-static auto intersects(const Rect& object1, const Rect& object2) {
+static auto intersects(const Rect& object1, const Rect& object2, float padding = CollisionPadding) {
   return 
-    intersects_in_x(object1, object2) &&
-    intersects_in_y(object1, object2);
+    intersects_in_x(object1, object2, padding) &&
+    intersects_in_y(object1, object2, padding);
 }
 
 static auto controller(const Rect& object1, const Rect& object2){

@@ -62,7 +62,7 @@ struct LevelState{
     BackgroundBushState,
 
     //Blocks
-    BlockState, CoinBlockState, BricksBlockState,
+    BlockState, CoinBlockState, BricksBlockState, UnstableCloudState,
     QBlockState<CoinPusherState>,
     QBlockState<FireFlowerPusherState>,
     QBlockState<MushroomPusherState>,

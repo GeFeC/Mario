@@ -3,6 +3,7 @@
 #include "LevelGenerator/Builder.hpp"
 #include "LevelGenerator/Textures.hpp"
 
+#include "States/BlockState.hpp"
 #include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Util/File.hpp"
@@ -80,7 +81,6 @@ static auto generate_level(LevelState& level, const std::string& file_path){
       level.min_scroll_y = std::min(y, level.min_scroll_y);
     }
 
-
     if (tile == Tile::MushroomBot2) put_nonsolid(level, { x, y }, textures::mushroom_bot2);
     else if (tile == Tile::MushroomBot1) put_nonsolid(level, { x, y }, textures::mushroom_bot1);
     else if (tile == Tile::GrassBot) put_nonsolid(level, { x, y }, textures::grass_bot);
@@ -88,6 +88,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::SmallStone) put_nonsolid(level, { x, y }, textures::small_stone);
     else if (tile == Tile::Bricks) put_bricks(level, BricksBlockState(texture_groups::bricks, { x, y }));
     else if (tile == Tile::BlueBricks) put_bricks(level, BricksBlockState(texture_groups::blue_bricks, { x, y }));
+    else if (tile == Tile::UnstableCloud) put_unstable_cloud(level, { x, y });
 
     else if (any_tile(HillTiles, tile)) put_hill(level, { x, y }, tile);
     else if (any_tile(BushTiles, tile)) put_bush(level, { x, y }, tile);

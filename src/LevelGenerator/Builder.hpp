@@ -29,12 +29,15 @@ static auto put_nonsolid(LevelState& level, const glm::vec2& position, const Tex
   block.is_solid = false;
 }
 
+static auto put_unstable_cloud(LevelState& level, const glm::vec2& position){
+  put_hitbox_block(level, position);
+  level.game_objects.push(UnstableCloudState(position));
+}
+
 static auto put_bricks(LevelState& level, const BricksBlockState& bricks){
   const auto& position = bricks.position / BlockBase::Size;
 
-  level.hitbox_grid_element(position) = Hitbox::Solid;
-  put_solid(level, position, textures::dirt);
-  level.game_objects.back<BlockState>().is_visible = false;
+  put_hitbox_block(level, position);
 
   level.game_objects.push(bricks);
   level.game_objects.back<BricksBlockState>().hitbox_block_index = level.game_objects.size<BlockState>() - 1;

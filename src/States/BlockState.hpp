@@ -107,6 +107,10 @@ struct CloudState{
   int size;
 };
 
+struct UnstableCloudState : BlockState{
+  UnstableCloudState(const glm::vec2& position) : BlockState(position, &textures::cloud_unstable) {}
+};
+
 struct BackgroundHillState : BlockState{
   explicit BackgroundHillState(const glm::vec2& position, renderer::Texture const* texture)
     : BlockState(position, texture) {}

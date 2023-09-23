@@ -36,6 +36,7 @@ static auto water_ground = Texture("tile/waterground.png");
 static auto coral = Texture("tile/coral.png");
 static auto bridge = Texture("tile/bridge.png");
 static auto cloud_block = Texture("tile/cloud.png");
+static auto cloud_unstable = Texture("tile/cloud_unstable.png");
 
 static auto water_top = Texture("tile/water1.png");
 static auto water_bottom = Texture("tile/water2.png");

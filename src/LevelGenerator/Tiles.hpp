@@ -38,6 +38,7 @@ enum class Tile{
   QBlockGreenMushroom = 76,
   QBlockCoins = 77,
   QBlockFireFlower = 78,
+  UnstableCloud = 117,
 
   GreenPipeTopRight = 35,
   GreenPipeBottomRight = 37,
