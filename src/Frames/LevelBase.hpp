@@ -62,7 +62,7 @@ static auto run_levelbase(
     player.position = level.current_checkpoint;
 
     //Generating Level:
-    level.generate_hitbox_grid();
+    level.initialise_hitbox_grid();
     extra_setup(app);
 
     //Camera:

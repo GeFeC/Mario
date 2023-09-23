@@ -122,7 +122,12 @@ struct LevelState{
     Boss
   } type = Type::Horizontal;
 
-  util::vector2d<int> hitbox_grid;
+  enum class HitboxState{
+    NonSolid,
+    Solid
+  };
+
+  util::vector2d<HitboxState> hitbox_grid;
 
   renderer::Texture const* background_texture = nullptr;
   renderer::TextureGroup const* cloud_textures = nullptr;
@@ -168,9 +173,9 @@ struct LevelState{
     }
   }
 
-  auto generate_hitbox_grid(){
+  auto initialise_hitbox_grid(){
     const auto size = max_size();
-    hitbox_grid.resize(size.x, std::vector<int>(size.y, 0));
+    hitbox_grid.resize(size.x, std::vector<HitboxState>(size.y, HitboxState::NonSolid));
   }
 
   auto& hitbox_grid_element(const glm::vec2& position){

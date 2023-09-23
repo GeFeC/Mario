@@ -12,9 +12,10 @@
 namespace mario::level_generator{
 
 using renderer::Texture;
+using Hitbox = LevelState::HitboxState;
 
 static auto put_solid(LevelState& level, const glm::vec2& position, const Texture& texture){
-  level.hitbox_grid_element(position) = 1;
+  level.hitbox_grid_element(position) = Hitbox::Solid; 
   return level.game_objects.push(BlockState(position, &texture));
 }
 
@@ -31,7 +32,7 @@ static auto put_nonsolid(LevelState& level, const glm::vec2& position, const Tex
 static auto put_bricks(LevelState& level, const BricksBlockState& bricks){
   const auto& position = bricks.position / BlockBase::Size;
 
-  level.hitbox_grid_element(position) = 1;
+  level.hitbox_grid_element(position) = Hitbox::Solid;
   put_solid(level, position, textures::dirt);
   level.game_objects.back<BlockState>().is_visible = false;
 

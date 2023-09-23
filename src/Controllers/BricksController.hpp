@@ -16,7 +16,7 @@ static auto run_controller(BricksBlockState& block, LevelState& level){
   auto& player = level.player;
   if (player_controller::did_hit_block_above(player, block) && block.is_solid){
     if (player.growth == PlayerState::Growth::Big){
-      level.hitbox_grid_element(block.position / BlockBase::Size) = 0;
+      level.hitbox_grid_element(block.position / BlockBase::Size) = LevelState::HitboxState::NonSolid;
 
       block.is_visible = false;
       block.is_solid = false;

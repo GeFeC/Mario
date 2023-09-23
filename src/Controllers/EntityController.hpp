@@ -38,7 +38,7 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
 
     if (is_block_outside_the_world && !level.should_handle_hitbox_on_sides) return;
 
-    if (is_block_outside_the_world || level.hitbox_grid[x][y] == 1){
+    if (is_block_outside_the_world || level.hitbox_grid[x][y] == LevelState::HitboxState::Solid){
       blocks_surrounding_entity.push_back(BlockState({ x, y }, &textures::dirt));
     }
   }, min_index, max_index);
@@ -86,13 +86,13 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   if (right_x >= level_size.x || right_x < 0) return;
   if (y >= level_size.y || y - 1 <= 0) return;
 
-  static constexpr auto Air = 0;
-  if (level.hitbox_grid[right_x][y] == Air && entity.direction.is_right()){
+  using Hitbox = LevelState::HitboxState;
+  if (level.hitbox_grid[right_x][y] == Hitbox::NonSolid && entity.direction.is_right()){
     entity.acceleration.left = entity.acceleration.right = 0.f;
     entity.position.x = (right_x - 1) * BlockBase::Size + Offset;
   }
 
-  if (level.hitbox_grid[left_x][y] == Air && entity.direction.is_left()){
+  if (level.hitbox_grid[left_x][y] == Hitbox::NonSolid && entity.direction.is_left()){
     entity.acceleration.left = entity.acceleration.right = 0.f;
     entity.position.x = left_x * BlockBase::Size - Offset;
   }
