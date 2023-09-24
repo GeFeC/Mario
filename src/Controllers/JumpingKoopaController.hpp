@@ -31,7 +31,6 @@ static auto controller_base(
   monster_controller::die_when_on_bouncing_block(koopa, level);
 
   //Interaction with player
-  auto& player = level.player;
   monster_controller::die_when_hit_by_fireball(koopa, level);
   monster_controller::become_active_when_seen(koopa, level);
 
@@ -42,7 +41,7 @@ static auto controller_base(
       koopa.gravity = 0;
     });
 
-    monster_controller::kill_player_on_touch(koopa_hitbox, player);
+    monster_controller::kill_player_on_touch(koopa_hitbox, level);
   }
 }
 

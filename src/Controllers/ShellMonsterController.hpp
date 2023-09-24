@@ -124,7 +124,7 @@ static auto handle_shell(
     if (distance < 0 && entity.acceleration.left == entity.shell_speed) return;
 
     if (entity.walk_speed > 0){
-      monster_controller::kill_player_on_touch(entity_hitbox, player);
+      monster_controller::kill_player_on_touch(entity_hitbox, level);
     }
   }(); 
 

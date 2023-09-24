@@ -228,11 +228,9 @@ static auto controller(AppState& app){
   //Game objects
   background(level);
   
-  if (!level.is_finished){
-    level.game_objects.for_each([&](auto& object){
-      run_controller(object, level);
-    });
-  }
+  level.game_objects.for_each([&](auto& object){
+    run_controller(object, level);
+  });
 
   finish(level, app);
 

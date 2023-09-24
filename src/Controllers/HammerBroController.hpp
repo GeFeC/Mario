@@ -19,7 +19,7 @@ static auto hammer_controller(HammerState& hammer, LevelState& level){
 
   if (!hammer.is_active) return;
 
-  entity_controller::kill_player_on_touch(hammer, level.player);
+  entity_controller::kill_player_on_touch(hammer, level);
   entity_controller::movement(hammer, level);
   entity_controller::gravity(hammer, level);
 
@@ -86,7 +86,7 @@ static auto controller_base(
 
   if (hammerbro.vertical_flip.is_flipped()) return;
 
-  monster_controller::kill_player_on_touch(hammerbro, level.player);
+  monster_controller::kill_player_on_touch(hammerbro, level);
   monster_controller::die_when_stomped(hammerbro, level, [&]{
     monster_controller::bounce_out(hammerbro);
   });

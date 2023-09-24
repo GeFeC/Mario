@@ -169,7 +169,7 @@ static auto gravity(EntityState& entity, const LevelState& level){
   });
 }
 
-static auto player_is_on_entity(const PlayerState& player, const EntityState& entity) -> bool{
+static auto player_is_on_entity(const EntityState& entity, const PlayerState& player) -> bool{
   if (!entity.can_be_stomped) return false;
 
   if (collision_controller::intersects_in_x(player, entity)){
@@ -184,14 +184,18 @@ static auto player_is_on_entity(const PlayerState& player, const EntityState& en
   return false;
 }
 
-static auto kill_player_on_touch(const EntityState& entity, PlayerState& player){
+static auto kill_player_on_touch(const EntityState& entity, LevelState& level){
   if (terminal::god_mode) return;
+
+  if (level.is_finished) return;
 
   if (!entity.is_active) return;
   if (entity.was_hit) return;
   if (entity.is_dead) return;
+
+  auto& player = level.player;
   if (player.is_dead) return;
-  if (player_is_on_entity(player, entity)) return;
+  if (player_is_on_entity(entity, player)) return;
 
   const auto entity_hitbox_offset = 1.f / 5.f;
   const auto entity_hitbox = collision_controller::Rect(
@@ -209,14 +213,14 @@ static auto kill_player_on_touch(const EntityState& entity, PlayerState& player)
   }
 };
 
-static auto was_stomped(const PlayerState& player, const EntityState& entity) -> bool{
+static auto was_stomped(const EntityState& entity, const PlayerState& player) -> bool{
   if (!entity.can_be_stomped) return false;
   if (entity.was_hit) return false;
   if (entity.is_dead) return false;
   if (player.is_dead) return false;
   if (player.gravity < 0) return false;
 
-  return player_is_on_entity(player, entity);
+  return player_is_on_entity(entity, player);
 }
 
 } //namespace mario::entity_controller

@@ -11,7 +11,7 @@
 namespace mario{
 
 static auto lakito_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown_spike, LevelState& level){
-  entity_controller::kill_player_on_touch(thrown_spike, level.player);
+  entity_controller::kill_player_on_touch(thrown_spike, level);
   entity_controller::gravity(thrown_spike, level);
   monster_controller::run_movement_animation(thrown_spike, textures::lakito_throw);
 
@@ -36,9 +36,10 @@ static auto run_controller(LakitoState& lakito, LevelState& level){
     monster_controller::bounce_die(lakito, level.stats);
   });
   monster_controller::points_particles(lakito);
+  monster_controller::die_when_hit_by_fireball(lakito, level);
 
   entity_controller::movement(lakito, level);
-  entity_controller::kill_player_on_touch(lakito, level.player);
+  entity_controller::kill_player_on_touch(lakito, level);
 
   if (lakito.vertical_flip.is_flipped()){
     entity_controller::gravity(lakito, level);

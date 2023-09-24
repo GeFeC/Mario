@@ -21,10 +21,12 @@ static auto jumping_fish_motion(FishState& fish, const LevelState& level){
     const auto fish_see_distance = FishState::random_value(5, 10);
 
     const auto fish_see_player_on_left 
-      = distance_to_player < BlockBase::Size * fish_see_distance && fish.jump_direction == FishState::JumpDirection::Left;
+      = distance_to_player < BlockBase::Size * fish_see_distance 
+      && fish.jump_direction == FishState::JumpDirection::Left;
 
     const auto fish_see_player_on_right
-      = distance_to_player < -BlockBase::Size * fish_see_distance && fish.jump_direction == FishState::JumpDirection::Right;
+      = distance_to_player < -BlockBase::Size * fish_see_distance 
+      && fish.jump_direction == FishState::JumpDirection::Right;
 
     const auto fish_see_player = fish_see_player_on_right || fish_see_player_on_left;
 
@@ -55,7 +57,7 @@ static auto controller_base(FishState& fish, LevelState& level){
     });
   }
 
-  entity_controller::kill_player_on_touch(fish, level.player);
+  entity_controller::kill_player_on_touch(fish, level);
   monster_controller::become_active_when_seen(fish, level);
   monster_controller::die_when_hit_by_fireball(fish, level);
   monster_controller::points_particles(fish);

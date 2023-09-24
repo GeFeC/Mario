@@ -22,8 +22,7 @@ static auto run_walk_animation(GoombaState& goomba, const std::array<renderer::T
 
 static auto controller_base(GoombaState& goomba, LevelState& level){
   //Interactions with player
-  auto& player = level.player;
-  monster_controller::kill_player_on_touch(goomba, player);
+  monster_controller::kill_player_on_touch(goomba, level);
   monster_controller::become_active_when_seen(goomba, level);
   monster_controller::die_when_hit_by_fireball(goomba, level);
 

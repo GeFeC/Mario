@@ -72,7 +72,7 @@ static auto controller(BossState& boss, LevelState& level){
 
   //Interactions with player
   auto boss_hitbox = get_hitbox(boss);
-  entity_controller::kill_player_on_touch(boss_hitbox, level.player);
+  entity_controller::kill_player_on_touch(boss_hitbox, level);
   if (level.player.form == PlayerState::Form::Normal){
     level.player.is_dead = true;
   }

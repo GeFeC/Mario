@@ -20,7 +20,7 @@ static auto run_controller(FireBarState& bar, LevelState& level){
     fireball.position = bar.position + rotation;
 
     if (!level.is_finished){
-      entity_controller::kill_player_on_touch(fireball, level.player);
+      entity_controller::kill_player_on_touch(fireball, level);
     }
   }
 }

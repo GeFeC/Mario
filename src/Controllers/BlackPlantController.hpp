@@ -21,7 +21,7 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
     if (!fireball.is_active) continue;
 
     entity_controller::gravity(fireball, level);
-    entity_controller::kill_player_on_touch(fireball, level.player);
+    entity_controller::kill_player_on_touch(fireball, level);
     entity_controller::movement(fireball, level);
 
     const auto fireball_out_of_screen = fireball.position.y > level.max_size().y * BlockBase::Size;

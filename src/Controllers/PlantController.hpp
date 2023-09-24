@@ -10,8 +10,6 @@
 #include "res/textures.hpp"
 #include "Window.hpp"
 
-#include <GLFW/glfw3.h>
-
 namespace mario::plant_controller{
 
 static auto controller_base(PlantState& plant, LevelState& level){
@@ -23,9 +21,7 @@ static auto controller_base(PlantState& plant, LevelState& level){
   if (!plant.should_collide) return;
 
   //Interactions with player
-  auto& player = level.player;
-
-  entity_controller::kill_player_on_touch(plant, player);
+  entity_controller::kill_player_on_touch(plant, level);
   monster_controller::die_when_hit_by_fireball(plant, level);
 
   if (plant.was_hit) plant.is_visible = false;

@@ -11,9 +11,9 @@ static auto points_particles(MonsterState& monster){
   }
 }
 
-static auto kill_player_on_touch(const MonsterState& monster, PlayerState& player){
+static auto kill_player_on_touch(const MonsterState& monster, LevelState& level){
   if (monster.was_hit) return;
-  entity_controller::kill_player_on_touch(monster | util::as<EntityState>, player);
+  entity_controller::kill_player_on_touch(monster | util::as<EntityState>, level);
 };
 
 template<typename Function>
@@ -27,7 +27,7 @@ static auto die_when_stomped(
   auto& player = level.player;
   auto& stats = level.stats;
 
-  if (entity_controller::was_stomped(player, entity)){
+  if (entity_controller::was_stomped(entity, player)){
     set_entity_dead();
 
     player.gravity = PlayerState::BouncePower;

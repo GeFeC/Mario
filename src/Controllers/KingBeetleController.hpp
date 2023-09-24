@@ -44,7 +44,7 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
     fireball.explosion.run();
 
     entity_controller::gravity(fireball, level);
-    entity_controller::kill_player_on_touch(fireball, level.player);
+    entity_controller::kill_player_on_touch(fireball, level);
     entity_controller::movement(fireball, level);
 
     if (fireball.is_active && fireball.is_on_ground && boss.did_fireballs_seperate){
