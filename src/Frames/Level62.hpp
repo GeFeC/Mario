@@ -32,30 +32,28 @@ static auto run_level62(AppState& app){
 
     level.game_objects.push(FlyingKoopaState::make_purple({ 7, 144 }, { 0, 4 }));
     level.game_objects.push(FlyingKoopaState::make_purple({ 12, 144 }, { 0, -4 }));
-    level.game_objects.push(LakitoState::make({ 19, 131 }));
     level.game_objects.push(FireBarState({ 17, 145 }, 6));
+    level.game_objects.push(PlatformState({ 9, 114 }, { -7, -7 }, 6));
+    level.game_objects.push(PlatformState({ 18, 90 }, { 0, -5 }, 4));
+
+    level.game_objects.push(LakitoState::make({ 19, 131 }));
     level.game_objects.push(LakitoState::make({ 19, 120 }));
-    level.game_objects.push(PlatformState({ 16, 114 }, { -16, -10 }, 8));
-    level.game_objects.push(PlatformState({ 18, 64 }, { 0, -5 }, 4));
+    level.game_objects.push(LakitoState::make({ 19, 109 }));
+    level.game_objects.push(LakitoState::make({ 0, 88 }));
+    level.game_objects.push(LakitoState::make({ 19, 88 }));
+    level.game_objects.push(LakitoState::make({ 6, 86 }));
+    level.game_objects.push(LakitoState::make({ 13, 86 }));
 
-    level.game_objects.push(LakitoState::make({ 19, 105 }));
-    level.game_objects.push(LakitoState::make({ 19, 91 }));
-    level.game_objects.push(LakitoState::make({ 19, 79 }));
-    level.game_objects.push(LakitoState::make({ 0, 62 }));
-    level.game_objects.push(LakitoState::make({ 19, 62 }));
-    level.game_objects.push(LakitoState::make({ 6, 60 }));
-    level.game_objects.push(LakitoState::make({ 13, 60 }));
-
-    level.game_objects.push(FireBarState({ 9, 68 }, 6));
-    level.game_objects.push(FireBarState({ 15, 67 }, 6));
+    level.game_objects.push(FireBarState({ 9, 94 }, 6));
+    level.game_objects.push(FireBarState({ 15, 93 }, 6));
 
     for (int i = 0; i < 5; ++i){
-      level.game_objects.push(FlyingKoopaState::make_green({ 13 - i * 2, 57 }, { 0.5f, 0.0f }));
-      level.game_objects.push(FlyingKoopaState::make_green({ 13 - i * 2, 53 }, { 0.5f, 0.0f }));
+      level.game_objects.push(FlyingKoopaState::make_green({ 13 - i * 2, 79 }, { 0.5f, 0.0f }));
+      level.game_objects.push(FlyingKoopaState::make_green({ 13 - i * 2, 83 }, { 0.5f, 0.0f }));
     }
 
     for (int i = 0; i < 9; ++i){
-      level.game_objects.push(LakitoState::make({ 2 + i, 10 + i }));
+      level.game_objects.push(LakitoState::make({ 2 + i, 59 + i }));
     }
 
     level_generator::generate_vertical_level_clouds(level);

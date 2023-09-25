@@ -28,12 +28,8 @@ static auto run_level13(AppState& app){
     auto& objects = level.game_objects;
     objects.push(FireBarState({ 13, 133 }, 3));
     objects.push(FireBarState({ 5, 104 }, 5));
-    objects.push(FireBarState({ 6, 61 }, 3));
-    objects.push(FireBarState({ 11, 58 }, 3));
-    objects.push(FireBarState({ 16, 55 }, 3));
-    objects.push(FireBarState({ 7, 45 }, 7));
-    objects.push(FireBarState({ 7, 24 }, 5));
-    objects.push(FireBarState({ 4, 4 }, 7));
+    objects.push(FireBarState({ 10, 61 }, 4));
+    objects.push(FireBarState({ 4, 54 }, 7));
 
     level_generator::put_q_block_with_coins(level, { 4, 65 }, 5);
 

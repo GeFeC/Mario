@@ -31,8 +31,8 @@ static auto run_level33(AppState& app){
     level_generator::generate_level(level, "level33_3.csv");
 
     level_generator::put_q_block_with_coins(level, { 17, 113 }, 5);
-    level_generator::put_q_block_with_entity(level, HammerBroState::make_red({ 9, 31 }));
-    level.game_objects.push(PlatformState({ 8, 98 }, { 0, -38 }, 8));
+    level_generator::put_q_block_with_entity(level, HammerBroState::make_red({ 9, 73 }));
+    level.game_objects.push(PlatformState({ 8, 98 }, { 0, -15 }, 8));
   });
 }
 
