@@ -116,9 +116,7 @@ static auto restart_when_player_fell_out(AppState& app){
   }
 
   const auto position_required_to_restart_level 
-    = LevelState::PlayerYToRestartLevel 
-    + level.max_size().y 
-    * BlockBase::Size;
+    = LevelState::PlayerYToRestartLevel + level.camera_offset.y;
 
   if (player.position.y > position_required_to_restart_level){
     app.should_restart_current_frame = true;
@@ -144,20 +142,20 @@ static auto camera(LevelState& level){
   auto player_y = player.position.y - BlockBase::Size + player.size.y;
   
   //Vertical level scroll
-  if (level.type == LevelState::Type::Vertical){
-    if (player_y - level.camera_offset.y < LevelState::MinPlayerRelativeY){
+  if (level.type == LevelState::Type::Vertical && !player.is_dead){
+    //Scroll up
+    if (!level.is_level_underground() && player_y - level.camera_offset.y < LevelState::MinPlayerRelativeY){
       level.camera_offset.y = player_y - LevelState::MinPlayerRelativeY;
     }
 
-    if (player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY){
+    //Scroll down
+    if (level.is_level_underground() && player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY){
       level.camera_offset.y = player_y - LevelState::MaxPlayerRelativeY;
     }
 
     const auto max_scroll_y = level.max_size().y * BlockBase::Size - config::FrameBufferSize.y;
     const auto min_scroll_y = level.min_scroll_y * BlockBase::Size;
-    if (level.type == LevelState::Type::Vertical){
-      level.camera_offset.y = std::clamp<float>(level.camera_offset.y, min_scroll_y, max_scroll_y);
-    }
+    level.camera_offset.y = std::clamp<float>(level.camera_offset.y, min_scroll_y, max_scroll_y);
   }
 
   //Horizontal level scroll

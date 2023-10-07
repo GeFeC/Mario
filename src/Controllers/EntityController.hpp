@@ -142,9 +142,12 @@ static auto gravity_base(EntityState& entity, const LevelState& level, const Cal
 
   auto position_increaser = entity.gravity * window::delta_time * 70.f;
 
-  detect_collision_with_level(entity, level, [&](const auto& collision_state){
-    collision_callback(collision_state, position_increaser);
-  });
+  static constexpr auto ViewHeight = LevelState::BlocksInColumn * BlockBase::Size;
+  if (entity.position.y < level.camera_offset.y + ViewHeight || level.is_level_underground()){
+    detect_collision_with_level(entity, level, [&](const auto& collision_state){
+      collision_callback(collision_state, position_increaser);
+    });
+  }
 
   static constexpr auto MaxGravityForce = 100.f;
 

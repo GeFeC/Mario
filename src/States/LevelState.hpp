@@ -181,6 +181,14 @@ struct LevelState{
   auto& hitbox_grid_element(const glm::vec2& position){
     return hitbox_grid[position.x][position.y];
   }
+
+  auto is_level_underground() const{
+    return background_texture == &textures::underground_bg;
+  }
+
+  auto is_level_water() const{
+    return water_level < max_size().y;
+  }
 };
 
 } //namespace mario
