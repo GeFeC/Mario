@@ -10,16 +10,16 @@
 
 namespace mario::shell_monster_controller{
 
-static auto controller(
+static auto run(
     ShellMonsterState& entity, 
     const LevelState& level, 
     const std::array<renderer::Texture, 2>& walk_frames
 ){
-  entity_controller::gravity(entity, level);
-  entity_controller::movement(entity, level);
-  monster_controller::turn_around(entity);
+  entity_controller::handle_gravity(entity, level);
+  entity_controller::handle_movement(entity, level);
+  monster_controller::handle_turning_around(entity);
 
-  monster_controller::points_particles(entity);
+  monster_controller::handle_points_particles(entity);
 
   if (entity.is_dead || entity.in_shell) return;
 

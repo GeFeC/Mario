@@ -81,7 +81,7 @@ static auto run_levelbase(
   };
 
   const auto loop = [](auto& app){
-    level_controller::controller(app);
+    level_controller::run(app);
     views::render_level(app.current_level);
   };
 

@@ -63,9 +63,9 @@ static auto run_controller(KingKoopaState& boss, LevelState& level){
     monster_controller::run_movement_animation(boss, textures::green_koopa_walk);
   }
 
-  boss_controller::controller(boss, level);
-  boss_controller::walk(boss, level);
-  entity_controller::gravity(boss, level);
+  boss_controller::run(boss, level);
+  boss_controller::handle_walking(boss, level);
+  entity_controller::handle_gravity(boss, level);
 
   boss_controller::react_when_hit_by_fireball(boss, level);
 }

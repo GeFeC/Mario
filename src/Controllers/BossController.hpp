@@ -36,7 +36,7 @@ static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
   });
 }
 
-static auto walk(BossState& boss, const LevelState& level){
+static auto handle_walking(BossState& boss, const LevelState& level){
   if (boss.hp == 0) return;
 
   boss.position.x += boss.direction.as_int() * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
@@ -50,7 +50,7 @@ static auto walk(BossState& boss, const LevelState& level){
   boss.position.y = std::min(boss.position.y, GroundPosition);
 }
 
-static auto controller(BossState& boss, LevelState& level){
+static auto run(BossState& boss, LevelState& level){
   if (boss.blink_cooldown <= 0.f){
     boss.is_highlighted = false;
   }

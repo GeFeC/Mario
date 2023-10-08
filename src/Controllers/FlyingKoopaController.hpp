@@ -8,7 +8,7 @@
 
 namespace mario::flying_koopa_controller{
 
-static auto controller_base(
+static auto run_controller_base(
     FlyingKoopaState& koopa, 
     LevelState& level, 
     const std::array<renderer::Texture, 2>& walk_frames_with_wings,
@@ -41,7 +41,7 @@ static auto controller_base(
   }
   else{
     koopa.set_direction(koopa.direction);
-    shell_monster_controller::controller(koopa, level, walk_frames_without_wings);
+    shell_monster_controller::run(koopa, level, walk_frames_without_wings);
   }
 
   //Interaction with player
@@ -59,8 +59,8 @@ static auto controller_base(
   }
 }
 
-static auto green_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
-  controller_base(
+static auto run_green_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
+  run_controller_base(
     koopa,
     level,
     textures::green_flying_koopa_walk,
@@ -75,8 +75,8 @@ static auto green_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
   );
 }
 
-static auto red_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
-  controller_base(
+static auto run_red_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
+  run_controller_base(
     koopa,
     level,
     textures::red_flying_koopa_walk,
@@ -91,8 +91,8 @@ static auto red_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
   );
 }
 
-static auto purple_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
-  koopa_controller::purple_koopa_speedup(koopa, level);
+static auto run_purple_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
+  koopa_controller::handle_purple_koopa_speedup(koopa, level);
 
   static auto previous_walk_speed = 0.f;
 
@@ -105,7 +105,7 @@ static auto purple_koopa_controller(FlyingKoopaState& koopa, LevelState& level){
     previous_walk_speed = koopa.walk_speed;
   }
 
-  controller_base(
+  run_controller_base(
     koopa,
     level,
     textures::purple_flying_koopa_walk,
@@ -127,9 +127,9 @@ namespace mario{
 static auto run_controller(FlyingKoopaState& koopa, LevelState& level){
   using Type = KoopaState::Type;
   switch(koopa.type){
-    case Type::Green: flying_koopa_controller::green_koopa_controller(koopa, level); return;
-    case Type::Red: flying_koopa_controller::red_koopa_controller(koopa, level); return;
-    case Type::Purple: flying_koopa_controller::purple_koopa_controller(koopa, level); return;
+    case Type::Green: flying_koopa_controller::run_green_koopa_controller(koopa, level); return;
+    case Type::Red: flying_koopa_controller::run_red_koopa_controller(koopa, level); return;
+    case Type::Purple: flying_koopa_controller::run_purple_koopa_controller(koopa, level); return;
   }
 }
 

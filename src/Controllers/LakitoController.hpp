@@ -8,11 +8,11 @@
 #include "Window.hpp"
 #include "res/textures.hpp"
 
-namespace mario{
+namespace mario::lakito_controller{
 
-static auto lakito_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown_spike, LevelState& level){
+static auto run_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown_spike, LevelState& level){
   entity_controller::kill_player_on_touch(thrown_spike, level);
-  entity_controller::gravity(thrown_spike, level);
+  entity_controller::handle_gravity(thrown_spike, level);
   monster_controller::run_movement_animation(thrown_spike, textures::lakito_throw);
 
   if (thrown_spike.is_on_ground){
@@ -30,22 +30,26 @@ static auto lakito_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown
   }
 }
 
+} //namespace mario::lakito_controller
+
+namespace mario{
+
 static auto run_controller(LakitoState& lakito, LevelState& level){
   monster_controller::become_active_when_seen(lakito, level);
   monster_controller::die_when_stomped(lakito, level, [&]{
     monster_controller::bounce_die(lakito, level.stats);
   });
-  monster_controller::points_particles(lakito);
+  monster_controller::handle_points_particles(lakito);
   monster_controller::die_when_hit_by_fireball(lakito, level);
 
-  entity_controller::movement(lakito, level);
+  entity_controller::handle_movement(lakito, level);
   entity_controller::kill_player_on_touch(lakito, level);
 
   if (lakito.vertical_flip.is_flipped()){
-    entity_controller::gravity(lakito, level);
+    entity_controller::handle_gravity(lakito, level);
   }
 
-  lakito_thrown_spike_controller(lakito.thrown_spike, level);
+  lakito_controller::run_thrown_spike_controller(lakito.thrown_spike, level);
 
   if (!lakito.is_active || lakito.vertical_flip.is_flipped()) return;
 

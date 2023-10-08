@@ -11,20 +11,20 @@
 
 namespace mario::mushroom_controller{
 
-static auto controller_base(MushroomState& mushroom, LevelState& level){
+static auto run_controller_base(MushroomState& mushroom, LevelState& level){
   //Interaction with blocks
   monster_controller::bounce_when_on_bouncing_block(mushroom, level);
 
-  entity_controller::gravity(mushroom, level);
-  entity_controller::movement(mushroom, level);
-  monster_controller::turn_around(mushroom);
+  entity_controller::handle_gravity(mushroom, level);
+  entity_controller::handle_movement(mushroom, level);
+  monster_controller::handle_turning_around(mushroom);
 
   for (auto& p : mushroom.points_generator.items){
-    points_particles_controller(p);
+    points_particles_controller::run(p);
   }
 }
 
-static auto green_mushroom_controller(MushroomState& mushroom, LevelState& level){
+static auto run_green_mushroom_controller(MushroomState& mushroom, LevelState& level){
   auto& player = level.player;
   if (player.is_dead) return;
 
@@ -37,10 +37,10 @@ static auto green_mushroom_controller(MushroomState& mushroom, LevelState& level
     level.stats.hp++;
   }
 
-  controller_base(mushroom, level);
+  run_controller_base(mushroom, level);
 }
 
-static auto red_mushroom_controller(MushroomState& mushroom, LevelState& level){
+static auto run_red_mushroom_controller(MushroomState& mushroom, LevelState& level){
   auto& player = level.player;
   if (player.is_dead) return;
 
@@ -56,7 +56,7 @@ static auto red_mushroom_controller(MushroomState& mushroom, LevelState& level){
     level.stats.score += mushroom.reward_for_killing;
   }
 
-  controller_base(mushroom, level);
+  run_controller_base(mushroom, level);
 }
 
 } //namespace mario::mushroom_controller

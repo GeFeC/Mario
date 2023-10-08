@@ -13,10 +13,10 @@ static auto push_out(FireFlowerPusherState& pusher, LevelState& level){
   flower.is_visible = true;
 }
 
-static auto controller(FireFlowerPusherState& pusher, LevelState& level){
+static auto run(FireFlowerPusherState& pusher, LevelState& level){
   auto& flower = pusher.fire_flower;
 
-  fire_flower_controller(flower, level);
+  fire_flower_controller::run(flower, level);
   flower.texture = &textures::fire_flower[level.fire_flower_blink_counter.int_value()];
 
   if (flower.should_be_pushed_out && flower.offset < 1.f){

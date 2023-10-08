@@ -32,7 +32,7 @@ static auto run_controller(KingCheepState& boss, LevelState& level){
     monster_controller::run_movement_animation(boss, textures::red_fish_swim);
   }
   else{
-    entity_controller::gravity(boss, level);
+    entity_controller::handle_gravity(boss, level);
 
     level.game_objects.for_each_type<FishState>([](FishState& fish){
       //Freeze fish:
@@ -42,7 +42,7 @@ static auto run_controller(KingCheepState& boss, LevelState& level){
   }
 
   boss_controller::react_when_hit_by_fireball(boss, level);
-  boss_controller::controller(boss, level);
+  boss_controller::run(boss, level);
 
   if (boss.hp == 0) return;
   

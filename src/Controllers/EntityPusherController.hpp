@@ -3,8 +3,6 @@
 #include "States/EntityPusherState.hpp"
 #include "States/LevelState.hpp"
 
-#include "Controllers/GoombaController.hpp"
-#include "Controllers/JumpingKoopaController.hpp"
 #include "Controllers/MushroomController.hpp"
 #include <type_traits>
 
@@ -13,8 +11,8 @@ namespace mario::pusher_controller{
 static auto entity_controller(MushroomPusherState& pusher, LevelState& level){
   using MushroomType = MushroomState::Type;
   switch(pusher.entity.type){
-    case MushroomType::Red: mushroom_controller::red_mushroom_controller(pusher.entity, level); break;
-    case MushroomType::Green: mushroom_controller::green_mushroom_controller(pusher.entity, level); break;
+    case MushroomType::Red: mushroom_controller::run_red_mushroom_controller(pusher.entity, level); break;
+    case MushroomType::Green: mushroom_controller::run_green_mushroom_controller(pusher.entity, level); break;
   }
 }
 
@@ -38,7 +36,7 @@ static auto push_out(EntityPusherState<Entity>& pusher, LevelState& level){
 }
 
 template<typename Entity>
-static auto controller(
+static auto run(
     EntityPusherState<Entity>& pusher, 
     LevelState& level
 ){

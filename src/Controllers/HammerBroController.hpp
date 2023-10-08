@@ -14,14 +14,14 @@
 
 namespace mario::hammerbro_controller{
 
-static auto hammer_controller(HammerState& hammer, LevelState& level){
+static auto run_hammer_controller(HammerState& hammer, LevelState& level){
   hammer.current_texture = &textures::hammer[level.hammer_counter.int_value()];
 
   if (!hammer.is_active) return;
 
   entity_controller::kill_player_on_touch(hammer, level);
-  entity_controller::movement(hammer, level);
-  entity_controller::gravity(hammer, level);
+  entity_controller::handle_movement(hammer, level);
+  entity_controller::handle_gravity(hammer, level);
 
   if (hammer.position.y > level.camera_offset.y + config::FrameBufferSize.y) {
     hammer.is_active = false;
@@ -29,7 +29,7 @@ static auto hammer_controller(HammerState& hammer, LevelState& level){
   }
 }
 
-static auto controller_base(
+static auto run_controller_base(
     HammerBroState& hammerbro, 
     LevelState& level,
     const std::array<renderer::Texture, 2>& walk_frames,
@@ -41,7 +41,7 @@ static auto controller_base(
   }
 
   for (auto& hammer : hammerbro.hammer_generator.items){
-    hammer_controller(hammer, level);
+    run_hammer_controller(hammer, level);
   }
 
   monster_controller::become_active_when_seen(hammerbro, level);
@@ -72,12 +72,12 @@ static auto controller_base(
   }
 
   for (auto& p : hammerbro.points_generator.items){
-    points_particles_controller(p);
+    points_particles_controller::run(p);
   }
 
   auto copy = textures::hammerbro_walk[0];
 
-  entity_controller::gravity(hammerbro, level);
+  entity_controller::handle_gravity(hammerbro, level);
   monster_controller::run_movement_animation(hammerbro, *current_walk_frames);
 
   //Interaction with player
@@ -148,8 +148,8 @@ static auto controller_base(
   hammerbro.throw_delay = HammerBroState::new_throw_delay();
 }
 
-static auto green_hammerbro_controller(HammerBroState& bro, LevelState& level){
-  controller_base(
+static auto run_green_hammerbro_controller(HammerBroState& bro, LevelState& level){
+  run_controller_base(
       bro, 
       level, 
       textures::hammerbro_walk, 
@@ -157,8 +157,8 @@ static auto green_hammerbro_controller(HammerBroState& bro, LevelState& level){
   );
 }
 
-static auto red_hammerbro_controller(HammerBroState& bro, LevelState& level){
-  controller_base(
+static auto run_red_hammerbro_controller(HammerBroState& bro, LevelState& level){
+  run_controller_base(
       bro, 
       level, 
       textures::red_hammerbro_walk, 
@@ -173,8 +173,8 @@ namespace mario{
 static auto run_controller(HammerBroState& bro, LevelState& level){
   using Type = HammerBroState::Type;
   switch(bro.type){
-    case Type::Green: hammerbro_controller::green_hammerbro_controller(bro, level); break;
-    case Type::Red: hammerbro_controller::red_hammerbro_controller(bro, level); break;
+    case Type::Green: hammerbro_controller::run_green_hammerbro_controller(bro, level); break;
+    case Type::Red: hammerbro_controller::run_red_hammerbro_controller(bro, level); break;
   }
 }
 

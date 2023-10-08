@@ -5,9 +5,9 @@
 
 namespace mario::monster_controller{
 
-static auto points_particles(MonsterState& monster){
+static auto handle_points_particles(MonsterState& monster){
   for (auto& p : monster.points_generator.items){
-    points_particles_controller(p);
+    points_particles_controller::run(p);
   }
 }
 
@@ -127,7 +127,7 @@ static auto react_when_on_bouncing_block(
     if (block.bounce_state.is_bouncing){
       if (entity.is_dead || !entity.should_collide) return;
 
-      const auto collision_state = collision_controller::controller(
+      const auto collision_state = collision_controller::run(
         collision_controller::Rect(entity), 
         collision_controller::Rect(block)
       );
@@ -164,7 +164,7 @@ static auto run_movement_animation(MonsterState& entity, const std::array<render
   entity.current_texture = &walk_frames[counter % 2];
 }
 
-static auto turn_around(MonsterState& entity){
+static auto handle_turning_around(MonsterState& entity){
   if (entity.acceleration.left == 0 && entity.acceleration.right == 0){
     entity.direction = -entity.direction;
 

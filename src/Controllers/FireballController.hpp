@@ -17,14 +17,14 @@ static auto reset(FireballState& fireball){
   fireball.position = glm::vec2(-util::BigValue);
 }
 
-static auto controller(FireballState& fireball, const LevelState& level){
+static auto run(FireballState& fireball, const LevelState& level){
   if (fireball.is_on_ground){
     fireball.gravity = FireballState::BouncePower;
     fireball.is_on_ground = false;
   }
 
-  entity_controller::movement(fireball, level);
-  entity_controller::gravity(fireball, level);
+  entity_controller::handle_movement(fireball, level);
+  entity_controller::handle_gravity(fireball, level);
   fireball.explosion.run();
 
   if (fireball.is_active && fireball.acceleration.left == 0 && fireball.acceleration.right == 0){

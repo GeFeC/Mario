@@ -29,10 +29,10 @@ static auto controller_base(GoombaState& goomba, LevelState& level){
   //Interaction with blocks
   monster_controller::die_when_on_bouncing_block(goomba, level);
 
-  entity_controller::gravity(goomba, level);
-  entity_controller::movement(goomba, level);
-  monster_controller::turn_around(goomba);
-  monster_controller::points_particles(goomba);
+  entity_controller::handle_gravity(goomba, level);
+  entity_controller::handle_movement(goomba, level);
+  monster_controller::handle_turning_around(goomba);
+  monster_controller::handle_points_particles(goomba);
 
   if (goomba.is_dead){
     goomba.death_delay -= window::delta_time;

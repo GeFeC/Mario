@@ -24,7 +24,7 @@ static auto run_controller(KingGoombaState& boss, LevelState& level){
   }
   
   static constexpr auto GroundPosition = config::FrameBufferSize.y - BlockBase::Size;
-  entity_controller::gravity_base(boss, level, [&](const auto&, auto& position_increaser){
+  entity_controller::handle_gravity_base(boss, level, [&](const auto&, auto& position_increaser){
     if (boss.hp == 0.f) return;
 
     if (boss.position.y + boss.size.y >= GroundPosition){
@@ -32,8 +32,8 @@ static auto run_controller(KingGoombaState& boss, LevelState& level){
     }
   });
 
-  boss_controller::controller(boss, level);
-  boss_controller::walk(boss, level);
+  boss_controller::run(boss, level);
+  boss_controller::handle_walking(boss, level);
   boss_controller::react_when_hit_by_fireball(boss, level);
 }
 

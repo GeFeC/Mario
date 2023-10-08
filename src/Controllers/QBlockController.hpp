@@ -18,8 +18,8 @@ namespace mario{
 
 template<typename Pusher>
 static auto run_controller(QBlockState<Pusher>& block, LevelState& level){
-  bounce_controller::controller(block);
-  pusher_controller::controller(block.pusher, level);
+  bounce_controller::run(block);
+  pusher_controller::run(block.pusher, level);
 
   if (block.bounce_state.can_bounce){
     block.texture = &textures::q_block[level.blink_state];
@@ -29,7 +29,7 @@ static auto run_controller(QBlockState<Pusher>& block, LevelState& level){
   if (player_controller::did_hit_block_above(player, block) && !player.is_dead && block.bounce_state.can_bounce){
     pusher_controller::push_out(block.pusher, level);
 
-    bounce_controller::start(block);
+    bounce_controller::bounce(block);
     block.is_visible = true;
 
     block.texture = &textures::null_block;

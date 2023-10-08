@@ -14,11 +14,11 @@
 
 namespace mario::platform_controller{
 
-static auto collision_controller(
+static auto handle_collisions(
     PlatformState& platform, 
     LevelState& level, 
     const glm::vec2& previous_pos
-  ){
+){
   const auto is_entity_on_platform = [&](const EntityState& entity){
     if (entity.gravity < 0) return false;
 
@@ -65,7 +65,7 @@ static auto collision_controller(
         entity.position.x = platform_right_edge_pos - entity.size.x + MonsterState::EdgeDetectionOffset;
       }
 
-      monster_controller::turn_around(entity);
+      monster_controller::handle_turning_around(entity);
     }
   });
 }
@@ -81,7 +81,7 @@ static auto run_controller(PlatformState& platform, LevelState& level){
   const auto previous_pos = platform.position;
   platform.position = platform.initial_position + (sin | util::as<float>) * platform.transport_distance;
 
-  platform_controller::collision_controller(platform, level, previous_pos);
+  platform_controller::handle_collisions(platform, level, previous_pos);
   if (!platform.is_active){
     //Make glm::sin return -1 
     platform.timer = glm::radians(-90.f * platform.move_distance() / PlatformSpeed);
@@ -97,7 +97,7 @@ static auto run_controller(LoopedPlatformState& platform, LevelState& level){
   static constexpr auto LoopedPlatformSpeed = 5.f; 
   platform.position += platform.transport_distance * LoopedPlatformSpeed * window::delta_time;
 
-  platform_controller::collision_controller(platform, level, previous_pos);
+  platform_controller::handle_collisions(platform, level, previous_pos);
 
   if (platform.position.y > config::FrameBufferSize.y) platform.position.y = -PlatformState::ElementSize;
   if (platform.position.y < -PlatformState::ElementSize) platform.position.y = config::FrameBufferSize.y;

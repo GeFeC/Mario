@@ -11,15 +11,19 @@
 namespace mario{
 
 static auto run_controller(KingPlantState& boss, LevelState& level){
+  static constexpr auto LowerPosition = 0;
+  static constexpr auto UpperPosition = 1;
+
+  //Get random position
   if (boss.offset <= 0.f){
     switch(util::random_value(0, 1)){
-      case 0: 
+      case LowerPosition: 
         boss.position.x = (2.5f + util::random_value(0, 3) * 4.f) * BlockBase::Size;
         boss.position.y = 11.2f * BlockBase::Size;
         boss.vertical_flip = util::Flip::no_flip();
         break;
       
-      case 1:
+      case UpperPosition:
         boss.position.x = (4.5f + util::random_value(0, 2) * 4.f) * BlockBase::Size;
         boss.position.y = -KingPlantState::Size.y;
         boss.vertical_flip = util::Flip::flip();
@@ -27,12 +31,13 @@ static auto run_controller(KingPlantState& boss, LevelState& level){
     }
   }
 
-  boss_controller::controller(boss, level);
+  //Boss controller
+  boss_controller::run(boss, level);
   boss_controller::react_when_hit_by_fireball(boss, level);
   run_controller(boss | util::as<BlackPlantState&>, level);
 
   if (boss.hp == 0){
-    entity_controller::gravity(boss, level);
+    entity_controller::handle_gravity(boss, level);
   }
 }
 

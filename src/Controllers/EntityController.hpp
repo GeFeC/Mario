@@ -47,7 +47,7 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   for (const auto& block : blocks_surrounding_entity){
     if (!block.is_solid) continue;
 
-    const auto collision_state = collision_controller::controller(
+    const auto collision_state = collision_controller::run(
       collision_controller::Rect(entity), 
       collision_controller::Rect(block)
     );
@@ -61,7 +61,7 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
       platform.size()
     );
 
-    const auto collision_state = collision_controller::controller(
+    const auto collision_state = collision_controller::run(
       collision_controller::Rect(entity), 
       platform_rect
     );
@@ -98,7 +98,7 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   }
 };
 
-static auto movement(EntityState& entity, const LevelState& level){
+static auto handle_movement(EntityState& entity, const LevelState& level){
   if (entity.is_dead || !entity.is_active) return;
 
   auto left_boost = window::delta_time * entity.acceleration.left * EntityState::MovementSpeedMultiplier;
@@ -131,7 +131,7 @@ static auto movement(EntityState& entity, const LevelState& level){
 }
 
 template<typename Callable>
-static auto gravity_base(EntityState& entity, const LevelState& level, const Callable& collision_callback){
+static auto handle_gravity_base(EntityState& entity, const LevelState& level, const Callable& collision_callback){
   if (entity.is_dead && entity.death_delay > 0.f) return;
   if (!entity.is_active) return;
 
@@ -155,8 +155,8 @@ static auto gravity_base(EntityState& entity, const LevelState& level, const Cal
   entity.position.y += position_increaser;
 }
 
-static auto gravity(EntityState& entity, const LevelState& level){
-  gravity_base(entity, level, [&](const auto& collision_state, auto& position_increaser){
+static auto handle_gravity(EntityState& entity, const LevelState& level){
+  handle_gravity_base(entity, level, [&](const auto& collision_state, auto& position_increaser){
     if (entity.death_delay <= 0.f) return;
 
     if (collision_state.distance_above < -position_increaser){
@@ -172,7 +172,7 @@ static auto gravity(EntityState& entity, const LevelState& level){
   });
 }
 
-static auto player_is_on_entity(const EntityState& entity, const PlayerState& player) -> bool{
+static auto is_player_on_entity(const EntityState& entity, const PlayerState& player) -> bool{
   if (!entity.can_be_stomped) return false;
 
   if (collision_controller::intersects_in_x(player, entity)){
@@ -198,7 +198,7 @@ static auto kill_player_on_touch(const EntityState& entity, LevelState& level){
 
   auto& player = level.player;
   if (player.is_dead) return;
-  if (player_is_on_entity(entity, player)) return;
+  if (is_player_on_entity(entity, player)) return;
 
   const auto entity_hitbox_offset = 1.f / 5.f;
   const auto entity_hitbox = collision_controller::Rect(
@@ -223,7 +223,7 @@ static auto was_stomped(const EntityState& entity, const PlayerState& player) ->
   if (player.is_dead) return false;
   if (player.gravity < 0) return false;
 
-  return player_is_on_entity(entity, player);
+  return is_player_on_entity(entity, player);
 }
 
 } //namespace mario::entity_controller

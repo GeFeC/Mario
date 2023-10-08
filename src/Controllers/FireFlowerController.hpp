@@ -8,11 +8,11 @@
 
 #include "Window.hpp"
 
-namespace mario{
+namespace mario::fire_flower_controller{
 
-static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
+static auto run(FireFlowerState& flower, LevelState& level){
   for (auto& p : flower.points_generator.items){
-    points_particles_controller(p);
+    points_particles_controller::run(p);
   }
 
   //Interaction with player
@@ -37,4 +37,4 @@ static auto fire_flower_controller(FireFlowerState& flower, LevelState& level){
   }
 }
 
-} //namespace mario
+} //namespace mario::fire_flower_controller

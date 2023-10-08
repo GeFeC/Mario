@@ -48,7 +48,7 @@ static auto intersects(const Rect& object1, const Rect& object2, float padding =
     intersects_in_y(object1, object2, padding);
 }
 
-static auto controller(const Rect& object1, const Rect& object2){
+static auto run(const Rect& object1, const Rect& object2){
   using util::BigValue;
   auto collision_state = CollisionState{ BigValue, BigValue, BigValue, BigValue };
 

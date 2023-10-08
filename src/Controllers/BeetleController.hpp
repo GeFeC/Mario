@@ -8,7 +8,7 @@
 namespace mario{
 
 static auto run_controller(BeetleState& beetle, LevelState& level){
-  shell_monster_controller::controller(beetle, level, textures::beetle_walk);
+  shell_monster_controller::run(beetle, level, textures::beetle_walk);
 
   //Interaction with blocks
   monster_controller::die_when_on_bouncing_block(beetle, level);

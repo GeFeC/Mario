@@ -89,7 +89,7 @@ static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppSta
   { AppState::Frame::Level63, frames::run_level63 },
 };
 
-static auto controller(AppState& app){
+static auto run(AppState& app){
   auto& frame = app.current_frame;
 
   const auto& run_level = frame_functions[frame];

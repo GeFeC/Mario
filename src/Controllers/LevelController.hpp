@@ -53,14 +53,14 @@ static auto run_controller(T& t, LevelState& level){}
 
 namespace mario::level_controller{
 
-static auto background(LevelState& level){
+static auto handle_background(LevelState& level){
   level.cloud_offset += window::delta_time;
 
   static constexpr auto CloudMaxOffset = 18.f;
   if (level.cloud_offset > CloudMaxOffset) level.cloud_offset -= CloudMaxOffset;
 }
 
-static auto finish(LevelState& level, AppState& app){
+static auto handle_finishing(LevelState& level, AppState& app){
   const auto finish = level.finish_position; 
   auto& player = level.player;
 
@@ -137,7 +137,7 @@ static auto restart_when_player_fell_out(AppState& app){
   }
 }
 
-static auto camera(LevelState& level){
+static auto handle_camera(LevelState& level){
   auto& player = level.player;
   auto player_y = player.position.y - BlockBase::Size + player.size.y;
   
@@ -176,7 +176,7 @@ static auto camera(LevelState& level){
   }
 }
 
-static auto checkpoints(LevelState& level){
+static auto handle_checkpoints(LevelState& level){
   auto& player = level.player;
 
   for (const auto& checkpoint : level.checkpoints){
@@ -190,7 +190,7 @@ static auto checkpoints(LevelState& level){
   }
 }
 
-static auto controller(AppState& app){
+static auto run(AppState& app){
   auto& level = app.current_level;
 
   //Level loading
@@ -199,11 +199,11 @@ static auto controller(AppState& app){
     return;
   }
 
-  checkpoints(level);
+  handle_checkpoints(level);
   restart_when_player_fell_out(app);
 
   //Blinking and counters
-  level.blink_state = blink_controller();
+  level.blink_state = blink_controller::run();
   level.coin_spin_counter.run(window::delta_time);
   level.fire_flower_blink_counter.run(window::delta_time);
 
@@ -214,8 +214,8 @@ static auto controller(AppState& app){
   auto& player = level.player;
 
   if (!level.is_finished) {
-    stats_controller(level.stats);
-    player_controller::controller(player, level);
+    stats_controller::run(level.stats);
+    player_controller::run(player, level);
 
     if (level.stats.time <= 0){
       player.is_dead = true;
@@ -224,13 +224,13 @@ static auto controller(AppState& app){
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;
   //Game objects
-  background(level);
+  handle_background(level);
   
   level.game_objects.for_each([&](auto& object){
     run_controller(object, level);
   });
 
-  finish(level, app);
+  handle_finishing(level, app);
 
   //Counting coins
   static constexpr auto CoinsToGetHP = 100;
@@ -240,7 +240,7 @@ static auto controller(AppState& app){
   }
 
   //Camera
-  camera(level);
+  handle_camera(level);
 
   //Timers
   LevelState::timer += window::delta_time;

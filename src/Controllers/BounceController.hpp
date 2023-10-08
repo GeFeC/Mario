@@ -11,7 +11,7 @@
 namespace mario::bounce_controller{
 
 template<typename BounceBlock>
-inline auto start(BounceBlock& block){
+static auto bounce(BounceBlock& block){
   auto& bounce_state = block.bounce_state;
 
   bounce_state.is_bouncing = true;
@@ -20,7 +20,7 @@ inline auto start(BounceBlock& block){
 }
 
 template<typename BounceBlock>
-inline auto controller(BounceBlock& block){
+static auto run(BounceBlock& block){
   auto& bounce_state = block.bounce_state;
 
   if (bounce_state.is_bouncing){

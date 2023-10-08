@@ -12,10 +12,10 @@
 
 namespace mario::plant_controller{
 
-static auto controller_base(PlantState& plant, LevelState& level){
+static auto run_controller_base(PlantState& plant, LevelState& level){
   //Points
   for (auto& p : plant.points_generator.items){
-    points_particles_controller(p);
+    points_particles_controller::run(p);
   }
 
   if (!plant.should_collide) return;
@@ -62,14 +62,14 @@ static auto controller_base(PlantState& plant, LevelState& level){
   plant.current_cooldown = std::max(plant.current_cooldown - window::delta_time, 0.f);
 }
 
-static auto green_plant_controller(PlantState& plant, LevelState& level){
-  controller_base(plant, level);
+static auto run_green_plant_controller(PlantState& plant, LevelState& level){
+  run_controller_base(plant, level);
   
   monster_controller::run_movement_animation(plant, textures::plant);
 }
 
-static auto red_plant_controller(PlantState& plant, LevelState& level){
-  controller_base(plant, level);
+static auto run_red_plant_controller(PlantState& plant, LevelState& level){
+  run_controller_base(plant, level);
   
   monster_controller::run_movement_animation(plant, textures::red_plant);
 }
@@ -81,8 +81,8 @@ namespace mario{
 static auto run_controller(PlantState& plant, LevelState& level){
   using Type = PlantState::Type;
   switch(plant.type){
-    case Type::Green: plant_controller::green_plant_controller(plant, level); return;
-    case Type::Red: plant_controller::red_plant_controller(plant, level); return;
+    case Type::Green: plant_controller::run_green_plant_controller(plant, level); return;
+    case Type::Red: plant_controller::run_red_plant_controller(plant, level); return;
   }
 }
 

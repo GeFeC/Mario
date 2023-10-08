@@ -15,14 +15,15 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
 
   if (!plant.is_active) return;
 
+  //Existing fireballs movement and reseting
   for (auto& fireball : plant.fireball_generator.items){
     fireball.explosion.run();
 
     if (!fireball.is_active) continue;
 
-    entity_controller::gravity(fireball, level);
+    entity_controller::handle_gravity(fireball, level);
+    entity_controller::handle_movement(fireball, level);
     entity_controller::kill_player_on_touch(fireball, level);
-    entity_controller::movement(fireball, level);
 
     const auto fireball_out_of_screen = fireball.position.y > level.max_size().y * BlockBase::Size;
     const auto fireball_stopped = fireball.acceleration.left == 0.f && fireball.acceleration.right == 0.f;
@@ -31,6 +32,7 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
     }
   }
 
+  //Shooting
   if (plant.offset >= PlantState::MaxOffset){
     plant.shot_counter.run(window::delta_time);
 
@@ -64,7 +66,7 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
     plant.shot_counter.reset();
   }
 
-  plant_controller::controller_base(plant, level);
+  plant_controller::run_controller_base(plant, level);
   monster_controller::run_movement_animation(plant, textures::black_plant);
 }
 

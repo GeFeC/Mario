@@ -29,7 +29,7 @@ static auto detect_collision_above(PlayerState& player, LevelState& level){
   });
 }
 
-static auto swim(PlayerState& player, LevelState& level){
+static auto handle_swimming(PlayerState& player, LevelState& level){
   player.swim_counter.run(window::delta_time);
 
   if (player.is_dead) return;
@@ -55,7 +55,7 @@ static auto swim(PlayerState& player, LevelState& level){
   detect_collision_above(player, level);
 }
 
-static auto jump(PlayerState& player, LevelState& level){
+static auto handle_jumping(PlayerState& player, LevelState& level){
   if (player.is_dead) return;
 
   if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown){
@@ -67,16 +67,16 @@ static auto jump(PlayerState& player, LevelState& level){
   detect_collision_above(player, level);
 }
 
-static auto gravity(PlayerState& player, LevelState& level){
+static auto handle_gravity(PlayerState& player, LevelState& level){
   player.gravity_boost = 1.f;
   if (!player.is_dead && player.gravity < 0 && !window::is_key_pressed(GLFW_KEY_UP)){
     player.gravity_boost = 2.f;
   }
 
-  entity_controller::gravity(player, level);
+  entity_controller::handle_gravity(player, level);
 }
 
-static auto movement(PlayerState& player, LevelState& level){
+static auto handle_movement(PlayerState& player, LevelState& level){
   if (!player.can_move) return;
 
   static constexpr auto SpeedBoostMultiplier = 12;
@@ -145,7 +145,7 @@ static auto shrink(PlayerState& player){
   }
 }
 
-static auto invincibility(PlayerState& player){
+static auto handle_invincibility(PlayerState& player){
   if (player.invincibility_delay <= 0.f) {
     player.is_visible = true;
     return;
@@ -203,7 +203,7 @@ static auto is_in_water(PlayerState& player, const LevelState& level){
   return player.position.y + player.size.y - BlockBase::Size >= level.water_level * BlockBase::Size;
 }
 
-static auto textures(PlayerState& player, const LevelState& level){
+static auto handle_textures(PlayerState& player, const LevelState& level){
   //Standing
   player.current_texture = player.default_texture();
 
@@ -253,7 +253,7 @@ static auto textures(PlayerState& player, const LevelState& level){
   }
 }
 
-static auto death(PlayerState& player){
+static auto handle_death(PlayerState& player){
   if (player.is_dead && player.death_delay > 0.f){
     player.death_delay -= window::delta_time;
   }
@@ -266,7 +266,7 @@ static auto death(PlayerState& player){
   }
 }
 
-static auto squat(PlayerState& player, LevelState& level){
+static auto handle_squating(PlayerState& player, LevelState& level){
   if (player.is_on_ground){
     player.mobs_killed_in_row = 1;
   }
@@ -298,9 +298,9 @@ static auto squat(PlayerState& player, LevelState& level){
   }
 }
 
-static auto fireballs(PlayerState& player, const LevelState& level){
+static auto handle_fireballs(PlayerState& player, const LevelState& level){
   for (auto& fireball : player.fireballs){
-    fireball_controller::controller(fireball, level); 
+    fireball_controller::run(fireball, level); 
   }
 
   if (player.form != PlayerState::Form::Fire) return;
@@ -324,7 +324,7 @@ static auto fireballs(PlayerState& player, const LevelState& level){
   fireball.shoot(fireball_position, player.direction, PlayerState::FireballSpeed);
 }
 
-static auto controller(PlayerState& player, LevelState& level){
+static auto run(PlayerState& player, LevelState& level){
   if (player.is_changing_to_fire){
     transform_to_fire(player);
   }
@@ -335,27 +335,27 @@ static auto controller(PlayerState& player, LevelState& level){
     shrink(player);
   }
   else{
-    movement(player, level);
-    entity_controller::movement(player, level);
+    handle_movement(player, level);
+    entity_controller::handle_movement(player, level);
 
     const auto is_player_under_level = player.position.y / BlockBase::Size > level.max_size().y;
     if (!is_player_under_level && is_in_water(player, level)){
-      swim(player, level);
+      handle_swimming(player, level);
     }
     else{
-      jump(player, level);
+      handle_jumping(player, level);
     }
 
-    gravity(player, level);
-    squat(player, level);
-    invincibility(player);
-    fireballs(player, level);
+    handle_squating(player, level);
+    handle_gravity(player, level);
+    handle_invincibility(player);
+    handle_fireballs(player, level);
 
-    death(player);
+    handle_death(player);
   } 
 
   update_growth(player);
-  textures(player, level);
+  handle_textures(player, level);
 }
 
 static auto can_hit_block_above(const PlayerState& player, const BouncingBlockState& block) -> bool{

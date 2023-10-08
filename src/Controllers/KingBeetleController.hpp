@@ -18,9 +18,9 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
   }
 
   monster_controller::endure_fireball(boss, level.player);
-  entity_controller::gravity(boss, level);
-  boss_controller::controller(boss, level);
-  boss_controller::walk(boss, level);
+  entity_controller::handle_gravity(boss, level);
+  boss_controller::run(boss, level);
+  boss_controller::handle_walking(boss, level);
 
   if (boss.hp == 0) {
     return;
@@ -43,9 +43,9 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
   for (auto& fireball : boss.fireballs){
     fireball.explosion.run();
 
-    entity_controller::gravity(fireball, level);
+    entity_controller::handle_gravity(fireball, level);
     entity_controller::kill_player_on_touch(fireball, level);
-    entity_controller::movement(fireball, level);
+    entity_controller::handle_movement(fireball, level);
 
     if (fireball.is_active && fireball.is_on_ground && boss.did_fireballs_seperate){
       fireball_controller::reset(fireball);

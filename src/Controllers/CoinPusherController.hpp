@@ -14,7 +14,7 @@ static auto push_out(CoinPusherState& pusher, LevelState& level){
   auto block_pos = coin.position;
   
   coin.is_visible = true;
-  bounce_controller::start(coin);
+  bounce_controller::bounce(coin);
 
   ++level.stats.coins;
   level.stats.score += QBlockReward;
@@ -26,15 +26,15 @@ static auto push_out(CoinPusherState& pusher, LevelState& level){
   points.set_active(QBlockReward, block_pos);
 }
 
-static auto controller(CoinPusherState& pusher, const LevelState& level){
+static auto run(CoinPusherState& pusher, const LevelState& level){
   for (auto& points : pusher.points_generator.items){
-    points_particles_controller(points);
+    points_particles_controller::run(points);
   }
 
   for (auto& coin : pusher.coins){
     coin.texture = &textures::spinning_coin[level.coin_spin_counter.int_value()];
 
-    bounce_controller::controller(coin);
+    bounce_controller::run(coin);
 
     if (!coin.bounce_state.is_bouncing){
       coin.is_visible = false;
