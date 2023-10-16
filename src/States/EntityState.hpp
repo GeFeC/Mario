@@ -12,8 +12,8 @@
 namespace mario{
 
 struct EntityState{
-  inline static constexpr auto GravityForce = 70.f;
-  inline static constexpr auto MovementSpeedMultiplier = 100.f;
+  static constexpr auto GravityForce = 70.f;
+  static constexpr auto MovementSpeedMultiplier = 100.f;
 
   struct Acceleration{
     float left = 0.f, right = 0.f;
@@ -21,6 +21,8 @@ struct EntityState{
   
   renderer::Texture const* current_texture = nullptr;
   util::Direction direction = util::Direction::right();
+  util::Flip gravity_flip = util::Flip::no_flip();
+
   glm::vec2 position = { 0.f, 0.f };
   glm::vec2 size = { 0.f, 0.f };
 

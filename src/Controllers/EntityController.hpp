@@ -152,22 +152,33 @@ static auto handle_gravity_base(EntityState& entity, const LevelState& level, co
   static constexpr auto MaxGravityForce = 100.f;
 
   position_increaser = std::min(position_increaser, MaxGravityForce);
-  entity.position.y += position_increaser;
+  entity.position.y += position_increaser * entity.gravity_flip.as_int();
 }
 
 static auto handle_gravity(EntityState& entity, const LevelState& level){
-  handle_gravity_base(entity, level, [&](const auto& collision_state, auto& position_increaser){
+  handle_gravity_base(
+      entity, 
+      level, 
+      [&](const collision_controller::CollisionState& collision_state, auto& position_increaser_ref){
     if (entity.death_delay <= 0.f) return;
 
-    if (collision_state.distance_above < -position_increaser){
-      position_increaser = -collision_state.distance_above + 1.f;
-      entity.gravity = 0.f;
-    }
+    const auto position_increaser = position_increaser_ref * entity.gravity_flip.as_int();
 
     using collision_controller::CollisionPadding;
     if (collision_state.distance_below == util::in_range(-CollisionPadding, position_increaser)){
-      entity.is_on_ground = true;
-      position_increaser = collision_state.distance_below;
+      if (!entity.gravity_flip.is_flipped()) entity.is_on_ground = true;
+
+      position_increaser_ref = collision_state.distance_below * entity.gravity_flip.as_int();
+      entity.gravity = 0;
+    }
+
+    if (collision_state.distance_above == util::BigValue) return;
+
+    if (-collision_state.distance_above == util::in_range(position_increaser, CollisionPadding)){
+      if (entity.gravity_flip.is_flipped()) entity.is_on_ground = true;
+
+      position_increaser_ref = -collision_state.distance_above * entity.gravity_flip.as_int();
+      entity.gravity = 0;
     }
   });
 }

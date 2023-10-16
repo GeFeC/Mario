@@ -54,10 +54,10 @@ static auto run(const Rect& object1, const Rect& object2){
 
   if (intersects_in_x(object1, object2)){
     collision_state.distance_below 
-      = -(object1.position.y + object1.size.y - object2.position.y);
+      = -(object1.position.y + object1.size.y - object2.position.y - CollisionPadding / 2);
 
     collision_state.distance_above 
-      = std::abs(object2.position.y + object2.size.y - object1.position.y - CollisionPadding);
+      = -(object2.position.y + object2.size.y - object1.position.y - CollisionPadding / 2);
   }
 
   if (intersects_in_y(object1, object2)){

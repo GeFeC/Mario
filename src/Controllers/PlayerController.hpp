@@ -19,10 +19,6 @@ namespace mario::player_controller{
 
 static auto detect_collision_above(PlayerState& player, LevelState& level){
   entity_controller::detect_collision_with_level(player, level, [&](const auto& collision_state){
-    if (collision_state.distance_above < -player.gravity){
-      player.gravity = -collision_state.distance_above;
-    }
-
     if (collision_state.distance_below < BlockBase::Size && !window::is_key_pressed(GLFW_KEY_UP)){
       player.jump_cooldown = false;
     }
