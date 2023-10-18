@@ -33,6 +33,7 @@ enum class Tile{
   Bricks = 16,
   BlueBricks = 19,
   Coin = 74,
+  PurpleCoin = 118,
   QBlock = 20,
   QBlockMushroom = 75,
   QBlockGreenMushroom = 76,

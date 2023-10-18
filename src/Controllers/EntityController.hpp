@@ -2,6 +2,7 @@
 
 #include "Controllers/CollisionController.hpp"
 #include "Renderer/Drawable.hpp"
+#include "Renderer/Renderer.hpp"
 #include "States/BlockState.hpp"
 #include "States/EntityPusherState.hpp"
 #include "States/EntityState.hpp"
@@ -74,27 +75,33 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   if (entity.is_on_platform) return;
 
   //Checking if entity should change direction not to fall from edge
-  static constexpr auto Offset = MonsterState::EdgeDetectionOffset;
+  const auto Offset = MonsterState::EdgeDetectionOffset;
 
-  const auto y = (entity.position.y + entity.size.y + Offset) / BlockBase::Size;
-  const auto left_x = (entity.position.x + Offset) / BlockBase::Size;
-  const auto right_x = (entity.position.x + BlockBase::Size - Offset) / BlockBase::Size;
+  const auto entity_bottom_position = entity.position.y 
+    + entity.size.y * entity.gravity_flip.as_binary()
+    + collision_controller::CollisionPadding * entity.gravity_flip.as_int();
+
+  const int y = entity_bottom_position / BlockBase::Size;
+
+  const int left_x = (entity.position.x + Offset) / BlockBase::Size;
+  const int right_x = (entity.position.x + BlockBase::Size - Offset) / BlockBase::Size;
 
   const auto level_size = level.max_size();
 
   if (left_x >= level_size.x || left_x < 0) return;
   if (right_x >= level_size.x || right_x < 0) return;
-  if (y >= level_size.y || y - 1 <= 0) return;
+  if (y >= level_size.y || y <= entity.gravity_flip.as_int()) return;
 
   using Hitbox = LevelState::HitboxState;
+
   if (level.hitbox_grid[right_x][y] == Hitbox::NonSolid && entity.direction.is_right()){
-    entity.acceleration.left = entity.acceleration.right = 0.f;
+    entity.turn_around();
     entity.position.x = (right_x - 1) * BlockBase::Size + Offset;
   }
 
   if (level.hitbox_grid[left_x][y] == Hitbox::NonSolid && entity.direction.is_left()){
-    entity.acceleration.left = entity.acceleration.right = 0.f;
-    entity.position.x = left_x * BlockBase::Size - Offset;
+    entity.turn_around();
+    entity.position.x = (left_x + 1) * BlockBase::Size - Offset;
   }
 };
 
@@ -187,12 +194,17 @@ static auto is_player_on_entity(const EntityState& entity, const PlayerState& pl
   if (!entity.can_be_stomped) return false;
 
   if (collision_controller::intersects_in_x(player, entity)){
-    const auto distance = entity.position.y - player.position.y - player.size.y;
-    const auto hitbox_tolerance = entity.can_be_stomped
-      ? -entity.size.y + BlockBase::Size / 6.f
-      : -BlockBase::Size / 6.f;
+    const auto& gravity_flip = entity.gravity_flip;
 
-    return distance == util::in_range(hitbox_tolerance, 0);
+    const auto distance = gravity_flip.is_flipped()
+      ? player.position.y - entity.position.y - entity.size.y
+      : entity.position.y - player.position.y - player.size.y;
+
+    const auto hitbox_tolerance = entity.can_be_stomped
+      ? entity.size.y - BlockBase::Size / 6.f
+      : BlockBase::Size / 6.f;
+
+    return distance == util::in_range(-hitbox_tolerance, 0);
   }
 
   return false;
@@ -211,10 +223,10 @@ static auto kill_player_on_touch(const EntityState& entity, LevelState& level){
   if (player.is_dead) return;
   if (is_player_on_entity(entity, player)) return;
 
-  const auto entity_hitbox_offset = 1.f / 5.f;
+  static constexpr auto EntityHitboxOffset = 1.f / 5.f;
   const auto entity_hitbox = collision_controller::Rect(
-    entity.position + glm::vec2(entity.size * entity_hitbox_offset / 2.f),
-    glm::vec2(entity.size * (1 - entity_hitbox_offset))
+    entity.position + entity.size * EntityHitboxOffset / 2.f,
+    entity.size * (1 - EntityHitboxOffset)
   );
 
   if (!collision_controller::intersects(player, entity_hitbox)) return;

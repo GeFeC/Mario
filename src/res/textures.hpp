@@ -128,6 +128,12 @@ static auto coin = std::array<Texture, 3>{
   Texture("coin/2.png")
 };
 
+static auto purple_coin = std::array<Texture, 3>{
+  Texture("coin/purple0.png"),
+  Texture("coin/purple1.png"),
+  Texture("coin/purple2.png")
+};
+
 static auto q_block = std::array<Texture, 3>{
   Texture("q_block/0.png"),
   Texture("q_block/1.png"),

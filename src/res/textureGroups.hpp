@@ -13,6 +13,12 @@ static const auto coin = TextureGroup({
   &textures::coin[2]
 });
 
+static const auto purple_coin = TextureGroup({
+  &textures::purple_coin[0],
+  &textures::purple_coin[1],
+  &textures::purple_coin[2]
+});
+
 static const auto squid = TextureGroup({
   &textures::squid1,
   &textures::squid2

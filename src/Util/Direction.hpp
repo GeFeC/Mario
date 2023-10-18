@@ -17,6 +17,10 @@ public:
   constexpr auto as_binary() const{
     return (direction + 1) / 2.f;
   }
+
+  constexpr auto toggle(){
+    direction = -direction;
+  }
 };
 
 struct Direction : DirectionBase{
@@ -36,11 +40,27 @@ struct Direction : DirectionBase{
     return !is_right();
   }
 
+  constexpr auto is_down() const{
+    return is_right();
+  }
+
+  constexpr auto is_up() const{
+    return is_right();
+  }
+
   static auto left(){
     return Direction(-1);
   }
 
+  static auto up(){
+    return Direction(-1);
+  }
+
   static auto right(){
+    return Direction(1);
+  }
+
+  static auto down(){
     return Direction(1);
   }
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "States/StatsState.hpp"
 #include "States/BlockState.hpp"
 #include "States/EntityPusherState.hpp"
 #include "States/EntityState.hpp"
@@ -28,6 +29,7 @@
 #include "States/CoinPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
 
+#include "Util/Direction.hpp"
 #include "Util/LoopedCounter.hpp"
 
 #include "Renderer/Text.hpp"
@@ -42,18 +44,6 @@
 
 namespace mario{
 
-struct StatsState{
-  int hp = 10'000;
-  int score = 0;
-  int time = 100;
-  int coins = 0;
-  int level_major = 1;
-  int level_minor = 1;
-
-  int max_boss_hp = 0;
-  int* boss_hp = nullptr;
-};
-
 struct LevelState{
   using GameObjectsArray = util::poly::Array<
     //Background
@@ -62,7 +52,10 @@ struct LevelState{
     BackgroundBushState,
 
     //Blocks
-    BlockState, CoinBlockState, BricksBlockState, UnstableCloudState,
+    BlockState, 
+    CoinBlockState, PurpleCoinBlockState,
+    BricksBlockState, 
+    UnstableCloudState,
     QBlockState<CoinPusherState>,
     QBlockState<FireFlowerPusherState>,
     QBlockState<MushroomPusherState>,

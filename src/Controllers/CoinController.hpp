@@ -15,16 +15,26 @@ static auto run_controller(CoinBlockState& coin, LevelState& level){
 
   static constexpr auto CollisionPadding = 5;
   auto& player = level.player;
-  
-  const auto hovers_in_x = player.position.x - coin.position.x
-    == util::in_range(-player.size.x + CollisionPadding, coin.size.x - CollisionPadding); 
 
-  const auto hovers_in_y = player.position.y - coin.position.y 
-    == util::in_range(-player.size.y + CollisionPadding, coin.size.y - CollisionPadding); 
-
-  if (hovers_in_x && hovers_in_y){
+  if (collision_controller::intersects(player, coin, CollisionPadding)){
     coin.position.y = util::BigValue;
     ++level.stats.coins;
+  }
+}
+
+static auto run_controller(PurpleCoinBlockState& coin, LevelState& level){
+  coin.texture = &textures::purple_coin[level.blink_state];
+
+  static constexpr auto CollisionPadding = 5;
+  auto& player = level.player;
+
+  if (collision_controller::intersects(player, coin, CollisionPadding)){
+    coin.position.y = util::BigValue;
+
+    level.stats.move_direction.toggle();
+    player.vertical_flip.toggle();
+    player.gravity_flip.toggle();
+    player.gravity = -player.gravity;
   }
 }
 

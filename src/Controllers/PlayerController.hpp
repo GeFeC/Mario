@@ -269,7 +269,11 @@ static auto handle_squating(PlayerState& player, LevelState& level){
 
   auto is_forced_to_squat = false;
   entity_controller::detect_collision_with_level(player, level, [&](const auto& collision_state){
-    if (collision_state.distance_above == util::in_range(0, 20) && player.is_squating){
+    const auto distance_to_block_above_head = player.gravity_flip.is_flipped()
+      ? collision_state.distance_below
+      : collision_state.distance_above;
+
+    if (distance_to_block_above_head == util::in_range(0, 20) && player.is_squating){
       is_forced_to_squat = true;
     }
   });
@@ -278,7 +282,7 @@ static auto handle_squating(PlayerState& player, LevelState& level){
     if (window::is_key_pressed(GLFW_KEY_DOWN) || is_forced_to_squat){
       if (player.size.y == BlockBase::Size * 2){
         player.is_squating = true;
-        player.position.y += BlockBase::Size;
+        player.position.y += BlockBase::Size * player.gravity_flip.as_binary();
       }
 
       player.size.y = BlockBase::Size;
@@ -286,7 +290,7 @@ static auto handle_squating(PlayerState& player, LevelState& level){
     else{
       if (player.size.y == BlockBase::Size){
         player.is_squating = false;
-        player.position.y -= BlockBase::Size;
+        player.position.y -= BlockBase::Size * player.gravity_flip.as_binary();
       }
 
       player.size.y = BlockBase::Size * 2;

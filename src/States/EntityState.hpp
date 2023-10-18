@@ -46,6 +46,11 @@ struct EntityState{
   bool should_collide = true;
   bool fall_from_edge = true;
 
+  auto flip_gravity(){
+    gravity_flip.toggle();
+    vertical_flip.toggle();
+  }
+
   auto set_direction(util::Direction direction, int speed){
     this->direction = direction;
 

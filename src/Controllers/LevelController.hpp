@@ -109,16 +109,24 @@ static auto restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
 
-  if (player.position.y > (level.max_size().y + 1) * BlockBase::Size) {
+  const auto started_falling = player.gravity_flip.is_flipped()
+    ? player.position.y < -BlockBase::Size
+    : player.position.y > (level.max_size().y + 1) * BlockBase::Size;
+
+  if (started_falling) {
     player.can_move = false;
     //set speed to 0
     player.set_direction(util::Direction::left(), 0);
   }
 
   const auto position_required_to_restart_level 
-    = LevelState::PlayerYToRestartLevel + level.camera_offset.y;
+    = LevelState::PlayerYToRestartLevel * player.gravity_flip.as_int() + level.camera_offset.y;
 
-  if (player.position.y > position_required_to_restart_level){
+  const auto is_falling_delay_over = player.gravity_flip.is_flipped()
+    ? player.position.y < position_required_to_restart_level
+    : player.position.y > position_required_to_restart_level;
+
+  if (is_falling_delay_over){
     app.should_restart_current_frame = true;
     level.stats.hp--;
     player.form = PlayerState::Form::Normal;

@@ -103,6 +103,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::WhiteBushCenter, &textures::white_bush_center),
   
   pair(Tile::Coin, texture_groups::coin),
+  pair(Tile::PurpleCoin, texture_groups::purple_coin),
 
   pair(Tile::Stone, &textures::stone),
   pair(Tile::BlueStone, &textures::blue_stone),

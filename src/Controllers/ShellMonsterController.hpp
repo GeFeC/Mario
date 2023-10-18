@@ -35,7 +35,7 @@ static auto hide_in_shell(ShellMonsterState& entity, const renderer::Texture& de
   const auto previous_size = entity.size.y;
   entity.size.y = entity.shell_height;
 
-  entity.position.y += previous_size - entity.size.y;
+  entity.position.y += (previous_size - entity.size.y) * entity.gravity_flip.as_binary();
 }
 
 static auto push_shell_on_player_touch(
@@ -87,7 +87,7 @@ static auto did_hit_monster_with_shell(
   if (&target == &monster) return false;
   if (!target.should_collide) return false;
   if (!target.is_active) return false;
-  if (monster.vertical_flip.is_flipped()) return false;
+  if (monster.was_hit) return false;
   if (!monster.in_shell) return false;
 
   if (monster.acceleration.left != monster.shell_speed && monster.acceleration.right != monster.shell_speed) 

@@ -41,8 +41,6 @@ struct BouncingBlockBase{
   int hitbox_block_index = -1;
 };
 
-struct BlinkingBlockBase{};
-
 struct BlockState : BlockBase{
   BlockState(const glm::vec2& position, renderer::Texture const* texture){
     this->position = position * BlockBase::Size;
@@ -57,11 +55,15 @@ struct BouncingBlockState : BlockBase, BouncingBlockBase{
   }
 };
 
-struct CoinBlockState : BlockBase, BlinkingBlockBase{
+struct CoinBlockState : BlockBase{
   explicit CoinBlockState(const glm::vec2& position){
     this->position = position * BlockBase::Size;
     this->texture = &textures::coin[0];
   }
+};
+
+struct PurpleCoinBlockState : CoinBlockState{
+  explicit PurpleCoinBlockState(const glm::vec2& position) : CoinBlockState(position) {}
 };
 
 struct BricksBlockState : BouncingBlockState{

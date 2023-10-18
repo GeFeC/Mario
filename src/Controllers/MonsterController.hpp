@@ -31,7 +31,9 @@ static auto die_when_stomped(
     set_entity_dead();
 
     player.gravity = PlayerState::BouncePower;
-    player.position.y = entity.position.y - player.size.y;
+    player.position.y = entity.gravity_flip.is_flipped()
+      ? entity.position.y + entity.size.y
+      : entity.position.y - player.size.y;
 
     stats.score += entity.reward_for_killing * player.mobs_killed_in_row;
     entity.spawn_points(player.mobs_killed_in_row);

@@ -94,6 +94,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (any_tile(BushTiles, tile)) put_bush(level, { x, y }, tile);
 
     else if (tile == Tile::Coin) objects.push(CoinBlockState({ x, y }));
+    else if (tile == Tile::PurpleCoin) objects.push(PurpleCoinBlockState({ x, y }));
 
     else if (tile == Tile::QBlockMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Red);
     else if (tile == Tile::QBlockGreenMushroom) put_q_block_with_mushroom(level, { x, y }, MushroomState::Type::Green);

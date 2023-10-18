@@ -105,7 +105,12 @@ static auto run(AppState& app){
 
   app.current_level = LevelState{};
 
-  app.current_level.stats = stats;
+  //reset stats position:
+  auto& new_stats = app.current_level.stats;
+  new_stats = stats;
+  new_stats.move_direction = util::Direction::up();
+  new_stats.position_y = StatsState::MinPositionY;
+
   app.current_level.stats.boss_hp = nullptr;
   app.current_level.player.form = player_form;
   app.current_level.player.growth = player_growth;

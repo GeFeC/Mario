@@ -9,7 +9,7 @@ namespace mario{
 inline constexpr auto QBlockReward = 200;
 
 template<typename Pusher>
-struct QBlockState : BouncingBlockState, BlinkingBlockBase{
+struct QBlockState : BouncingBlockState{
   //Contents pusher
   using PusherType = Pusher;
   Pusher pusher;

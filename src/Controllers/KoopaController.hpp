@@ -39,7 +39,7 @@ static auto run_red_koopa_controller(KoopaState& koopa, LevelState& level){
 }
 
 static auto handle_purple_koopa_speedup(KoopaState& koopa, const LevelState& level){
-  if (koopa.in_shell || koopa.vertical_flip.is_flipped()) return;
+  if (koopa.in_shell || koopa.was_hit) return;
 
   if (level.purple_koopa_counter.value > 8.f){
     koopa.walk_speed = 10.f;
