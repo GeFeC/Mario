@@ -68,14 +68,9 @@ static auto push_shell_on_player_touch(
 };
 
 static auto get_hitbox(const ShellMonsterState& entity){
-  auto hitbox = ShellMonsterState();
-  hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - BlockBase::Size);
+  auto hitbox = entity;
+  hitbox.position = entity.position + glm::vec2(0.f, entity.size.y - BlockBase::Size) * entity.gravity_flip.as_binary();
   hitbox.size = glm::vec2(BlockBase::Size);
-  hitbox.is_dead = entity.is_dead;
-  hitbox.is_active = entity.is_active;
-  hitbox.should_collide = entity.should_collide;
-  hitbox.vertical_flip = entity.vertical_flip;
-  hitbox.was_hit = entity.was_hit;
 
   return hitbox;
 }
@@ -111,7 +106,6 @@ static auto handle_shell(
     return;
   }
 
-  auto entity_hitbox = get_hitbox(entity);
   if (glfwGetTime() - entity.shell_push_cooldown >= 0.2f){
     monster_controller::die_when_stomped(entity, level, [&]{ 
       hide_in_shell(entity, dead_texture); 
@@ -123,6 +117,7 @@ static auto handle_shell(
     if (distance > 0 && entity.acceleration.right == entity.shell_speed) return;
     if (distance < 0 && entity.acceleration.left == entity.shell_speed) return;
 
+    auto entity_hitbox = get_hitbox(entity);
     if (entity.walk_speed > 0){
       monster_controller::kill_player_on_touch(entity_hitbox, level);
     }

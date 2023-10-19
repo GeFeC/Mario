@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 
 #include "Renderer/Renderer.hpp"
+#include "States/MonsterState.hpp"
 #include "Window.hpp"
 #include "config.hpp"
 #include "res/fonts.hpp"

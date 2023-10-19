@@ -192,6 +192,7 @@ static auto handle_gravity(EntityState& entity, const LevelState& level){
 
 static auto is_player_on_entity(const EntityState& entity, const PlayerState& player) -> bool{
   if (!entity.can_be_stomped) return false;
+  if (entity.gravity_flip != player.gravity_flip) return false;
 
   if (collision_controller::intersects_in_x(player, entity)){
     const auto& gravity_flip = entity.gravity_flip;

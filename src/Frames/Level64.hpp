@@ -34,6 +34,10 @@ static auto run_level64(AppState& app){
 
     auto& objects = level.game_objects;
     objects.push(SpikeState::make({ 101, 5 })).flip_gravity();
+    auto& spike = objects.push(SpikeState::make({ 159, 4 }));
+    spike.flip_gravity();
+    spike.can_move = false;
+
     objects.push(JumpingKoopaState::make_purple({ 105, 5.5 })).flip_gravity();
     objects.push(JumpingKoopaState::make_purple({ 109, 5.5 })).flip_gravity();
     objects.push(GoombaState::make_yellow({ 29, 3 })).flip_gravity();
@@ -46,6 +50,12 @@ static auto run_level64(AppState& app){
     objects.push(FlyingKoopaState::make_green({ 64, 2 }, { 2, 0 }));
     objects.push(FlyingKoopaState::make_green({ 83, 7 }, { 2, 0 }));
     objects.push(KoopaState::make_red({ 40, 5.5 })).flip_gravity();
+
+    objects.push(LakitoState::make({ 157, 3 }));
+    objects.push(LakitoState::make({ 143, 3 }));
+
+    objects.push(PlantState::make_green({ 174, 1.5 })).vertical_flip = util::Flip::flip();
+    objects.push(PlantState::make_green({ 184, 1.5 })).vertical_flip = util::Flip::flip();
 
     level_generator::generate_horizontal_level_clouds(level, 10);
     level_generator::generate_level(level, "level64_1.csv");

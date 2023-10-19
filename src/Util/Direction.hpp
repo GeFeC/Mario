@@ -10,6 +10,14 @@ public:
   constexpr explicit DirectionBase(int direction) : direction(direction) {}
   constexpr DirectionBase() : direction(1) {}
 
+  constexpr auto operator==(const DirectionBase& other) const{
+    return direction == other.direction;
+  }
+
+  constexpr auto operator!=(const DirectionBase& other) const{
+    return !operator==(other);
+  }
+
   constexpr auto as_int() const{
     return direction;
   }
