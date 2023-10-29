@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Controllers/CollisionController.hpp"
 #include "Controllers/MonsterController.hpp"
 
 #include "States/EntityState.hpp"
@@ -22,7 +23,11 @@ static auto handle_collisions(
   const auto is_entity_on_platform = [&](const EntityState& entity){
     if (entity.gravity < 0) return false;
 
-    if (entity.position.x - platform.position.x == util::in_range(-entity.size.x, platform.size().x)){
+    const auto platform_hitbox = collision_controller::Rect{ platform.position, platform.size() };
+    if (collision_controller::intersects_in_x(entity, platform_hitbox)){
+      if (entity.gravity_flip.is_flipped()){
+        return entity.position.y - platform.position.y - platform.size().y == util::in_range(-15.f, 15.f);
+      }
       return entity.position.y + entity.size.y - platform.position.y == util::in_range(-15.f, 15.f);
     } 
 

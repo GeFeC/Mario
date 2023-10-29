@@ -16,6 +16,8 @@ static auto run_controller(CoinBlockState& coin, LevelState& level){
   static constexpr auto CollisionPadding = 5;
   auto& player = level.player;
 
+  if (player.is_dead) return;
+
   if (collision_controller::intersects(player, coin, CollisionPadding)){
     coin.position.y = util::BigValue;
     ++level.stats.coins;
@@ -27,6 +29,8 @@ static auto run_controller(PurpleCoinBlockState& coin, LevelState& level){
 
   static constexpr auto CollisionPadding = 5;
   auto& player = level.player;
+
+  if (player.is_dead) return;
 
   if (collision_controller::intersects(player, coin, CollisionPadding)){
     coin.position.y = util::BigValue;

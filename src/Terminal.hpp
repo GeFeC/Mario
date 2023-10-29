@@ -18,6 +18,11 @@ static auto run(AppState& app){
 
       std::cin >> cmd;
 
+      //Gravity Flip
+      if (cmd == "flip"){
+        app.current_level.player.flip_gravity();
+      }
+
       //Teleportation
       if (cmd == "tp"){
         auto x = 0, y = 0;

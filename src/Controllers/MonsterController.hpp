@@ -59,10 +59,10 @@ static auto become_active_when_seen(MonsterState& entity, const LevelState& leve
 
   if (entity.position.x - player.position.x > player_field_of_view_x) return;
 
-  const auto entity_is_far_behind_the_player 
+  const auto entity_is_far_behind_player 
     = player.position.x > entity.position.x + LevelState::BlocksInRow * BlockBase::Size;
 
-  if (entity_is_far_behind_the_player && level.type == LevelState::Type::Horizontal) return;
+  if (entity_is_far_behind_player && level.type == LevelState::Type::Horizontal) return;
 
   if (level.type == LevelState::Type::Vertical){
     const auto player_can_see_entity 

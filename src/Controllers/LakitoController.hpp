@@ -54,6 +54,17 @@ static auto run_controller(LakitoState& lakito, LevelState& level){
   if (!lakito.is_active || lakito.vertical_flip.is_flipped()) return;
 
   //Movement
+
+  if (level.type == LevelState::Type::Vertical){
+    //set acceleration to 0 when outside the world borders:
+    const auto lakito_pos_min = 2 * -lakito.size.x;
+    const auto lakito_pos_max = LevelState::MaxVerticalLevelSize.x * BlockBase::Size + lakito.size.x;
+
+    if (lakito.position.x != util::in_range(lakito_pos_min, lakito_pos_max)){
+      lakito.acceleration.left = lakito.acceleration.right = 0.f;
+    }
+  }
+
   auto speed_boost_multiplier = std::max(level.player.total_speed(), 3.f);
 
   const auto half_of_player_view = BlockBase::Size * LevelState::BlocksInRow / 2.f;

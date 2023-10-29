@@ -10,8 +10,6 @@ struct PlatformState{
   inline static constexpr auto ElementSize = BlockBase::Size / 2.f;
   inline static constexpr auto Speed = 800;
 
-  std::vector<EntityState*> passengers;
-
   glm::vec2 position;
   glm::vec2 initial_position;
   glm::vec2 transport_distance;

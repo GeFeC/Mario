@@ -187,6 +187,8 @@ static auto handle_camera(LevelState& level){
 static auto handle_checkpoints(LevelState& level){
   auto& player = level.player;
 
+  if (player.is_dead) return;
+
   for (const auto& checkpoint : level.checkpoints){
     if (level.type == LevelState::Type::Horizontal && player.position.x >= checkpoint.x){
       level.current_checkpoint = checkpoint;
