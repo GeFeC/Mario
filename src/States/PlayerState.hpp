@@ -67,6 +67,12 @@ struct PlayerState : EntityState{
     swim_counter.disable();
   }
 
+  auto set_form_to_fire(){
+    growth = PlayerState::Growth::Big;
+    form = PlayerState::Form::Fire;
+    position.x = 2 * BlockBase::Size;
+  }
+
   auto default_texture() const{
     if (form == Form::Normal){
       switch(growth){

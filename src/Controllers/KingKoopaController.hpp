@@ -14,7 +14,7 @@ static auto reset(KingKoopaState& boss){
   boss.size.y = KingKoopaState::Size.y;
   boss.position.y += previous_height - boss.size.y;
 
-  boss.walk_speed = BossState::WalkSpeed;
+  boss.walk_speed = KingKoopaState::WalkSpeed;
   boss.withdraw_delay = KingKoopaState::get_withdraw_delay();
   boss.speedup_delay = KingKoopaState::SpeedUpDelay;
   boss.withdraw_duration = KingKoopaState::WithdrawDuration;

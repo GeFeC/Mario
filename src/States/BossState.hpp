@@ -3,10 +3,17 @@
 #include "States/MonsterState.hpp"
 #include "States/FireballState.hpp"
 #include "States/BlackPlantState.hpp"
+#include "Util/Random.hpp"
 
 namespace mario{
 
-struct BossState : virtual MonsterState{
+/*
+ *  Dummy structure created only for checking if entity is a boss at copile time. Every boss inherits from it 
+ * */
+struct BossBase{};
+
+template<typename EntityBase = MonsterState>
+struct BossState : EntityBase, BossBase{
   static constexpr auto WalkSpeed = 7.f;
   static constexpr auto MaxHp = 20;
 
@@ -15,14 +22,14 @@ struct BossState : virtual MonsterState{
   bool is_highlighted = false;
 
   BossState(){
-    current_texture = &textures::dirt;
-    is_active = true;
-    can_be_stomped = false;
+    EntityBase::current_texture = &textures::dirt;
+    EntityBase::is_active = true;
+    EntityBase::can_be_stomped = false;
     hp = MaxHp;
   }
 };
 
-struct KingGoombaState : BossState{
+struct KingGoombaState : BossState<>{
   static constexpr auto Size = glm::vec2(3.75, 4.5) * BlockBase::Size;
   static constexpr auto JumpPower = -20.f;
 
@@ -33,7 +40,7 @@ struct KingGoombaState : BossState{
   }
 };
 
-struct KingKoopaState : BossState{
+struct KingKoopaState : BossState<>{
   static constexpr auto Size = glm::vec2(3.f, 4.5f) * BlockBase::Size;
   static constexpr auto ShellSpeed = 15.f;
 
@@ -58,10 +65,10 @@ struct KingKoopaState : BossState{
   }
 };
 
-struct KingBeetleState : BossState{
+struct KingBeetleState : BossState<>{
+  static constexpr auto MaxHp = 10;
   static constexpr auto Size = glm::vec2(3.f) * BlockBase::Size;
   static constexpr auto WalkSpeed = 4.f;
-  static constexpr auto MaxHp = 10.f;
   static constexpr auto FireballCooldown = 4.f;
 
   std::array<FireballState, 2> fireballs;
@@ -81,7 +88,7 @@ struct KingBeetleState : BossState{
   } 
 };
 
-struct KingCheepState : BossState{
+struct KingCheepState : BossState<>{
   static constexpr auto Size = glm::vec2(3.f, 3.f) * BlockBase::Size;
   static constexpr auto MaxHp = 20;
 
@@ -95,7 +102,7 @@ struct KingCheepState : BossState{
   }
 };
 
-struct KingPlantState : BossState, BlackPlantState{
+struct KingPlantState : BossState<BlackPlantState>{
   static constexpr auto Size = glm::vec2(3.f, 3.f * 11.f / 8.f) * BlockBase::Size;
   static constexpr auto MaxHp = 20;
 
@@ -104,6 +111,10 @@ struct KingPlantState : BossState, BlackPlantState{
 
     hp = MaxHp;
     size = Size;
+
+    shot_boost = 1.5f;
+    cooldown_duration = 0.5f;
+    speed = 150.f;
   }
 };
 

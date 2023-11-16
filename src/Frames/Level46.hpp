@@ -57,15 +57,10 @@ static auto run_level46(AppState& app){
     }
 
     auto& boss = objects.push(KingCheepState());
-
     boss.position = glm::vec2(16, 6) * BlockBase::Size;
+    level.stats.boss_hp = { &boss.hp, KingCheepState::MaxHp };
 
-    level.stats.boss_hp = &boss.hp;
-    level.stats.max_boss_hp = KingCheepState::MaxHp;
-
-    level.player.growth = PlayerState::Growth::Big;
-    level.player.form = PlayerState::Form::Fire;
-    level.player.position.x = 2 * BlockBase::Size;
+    level.player.set_form_to_fire();
   });
 }
 

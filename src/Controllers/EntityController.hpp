@@ -156,7 +156,7 @@ static auto handle_gravity_base(EntityState& entity, const LevelState& level, co
       collision_callback(collision_state, position_increaser);
     });
   }
-  else{
+  else if (&entity != &level.player){
     entity.position.y = util::BigValue;
   }
 

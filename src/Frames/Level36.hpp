@@ -24,25 +24,20 @@ static auto run_level36(AppState& app){
     auto& level = app.current_level;
     level.background_texture = &textures::snow_bg;
     level.cloud_textures = &texture_groups::blue_cloud;
-    level.player.slip = 1.5f;
 
     level_generator::generate_horizontal_level_clouds(level);
     level_generator::generate_level(level, "level36_1.csv");
     level_generator::generate_level(level, "level36_2.csv");
 
     auto& objects = level.game_objects;
-    auto& boss = objects.push(KingBeetleState());
-
     objects.push(BeetleState::make({ 2.5f, 13.f }));
 
+    auto& boss = objects.push(KingBeetleState());
     boss.position = glm::vec2(16, 6) * BlockBase::Size;
+    level.stats.boss_hp = { &boss.hp, KingBeetleState::MaxHp };
 
-    level.stats.boss_hp = &boss.hp;
-    level.stats.max_boss_hp = KingBeetleState::MaxHp;
-
-    level.player.growth = PlayerState::Growth::Big;
-    level.player.form = PlayerState::Form::Fire;
-    level.player.position.x = 2 * BlockBase::Size;
+    level.player.set_form_to_fire();
+    level.player.slip = 1.5f;
   });
 }
 

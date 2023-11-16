@@ -182,7 +182,8 @@ static auto render_block(const QBlockState<EntityPusherState<T>>& block, const L
   render_block(block | util::as<BlockBase>, level);
 }
 
-static auto render_entity(const BossState& boss, const LevelState& level){
+template<typename T>
+static auto render_entity(const BossState<T>& boss, const LevelState& level){
   renderer::highlight_mode = boss.is_highlighted;
   render_entity(boss | util::as<EntityState>, level);
   renderer::highlight_mode = false;
@@ -208,7 +209,7 @@ static auto render_entity(const KingBeetleState& boss, const LevelState& level){
     render_block(f.explosion, level);
   }
 
-  render_entity(boss | util::as<BossState>, level);
+  render_entity(boss | util::as<BossState<>>, level);
 }
 
 static auto render_plant(const BlackPlantState& plant, const LevelState& level){

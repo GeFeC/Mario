@@ -113,7 +113,7 @@ static auto run(AppState& app){
   new_stats.move_direction = util::Direction::up();
   new_stats.position_y = StatsState::MinPositionY;
 
-  app.current_level.stats.boss_hp = nullptr;
+  app.current_level.stats.boss_hp = StatsState::BossHp();
   app.current_level.player.form = player_form;
   app.current_level.player.growth = player_growth;
   app.current_level.current_checkpoint = current_checkpoint;

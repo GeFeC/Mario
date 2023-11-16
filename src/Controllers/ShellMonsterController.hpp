@@ -131,7 +131,7 @@ static auto handle_shell(
 
   //Killing Entities with shell
   level.game_objects.for_each_derived<MonsterState>([&](auto& target){
-    if constexpr (std::is_base_of_v<BossState, std::decay_t<decltype(target)>>) return;
+    if constexpr (std::is_base_of_v<BossBase, std::decay_t<decltype(target)>>) return;
     if constexpr (std::is_convertible_v<decltype(target), PlantState>) return;
 
     shell_kill_entity(target);

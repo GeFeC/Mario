@@ -8,7 +8,8 @@
 
 namespace mario::boss_controller{
 
-static auto get_hitbox(BossState& boss){
+template<typename T>
+static auto get_hitbox(BossState<T>& boss){
   auto boss_hitbox = MonsterState{ boss };
   boss_hitbox.is_active = true;
   boss_hitbox.size = glm::vec2(2.f) * BlockBase::Size;
@@ -20,7 +21,8 @@ static auto get_hitbox(BossState& boss){
   return boss_hitbox;
 }
 
-static auto take_damage(BossState& boss){
+template<typename T>
+static auto take_damage(BossState<T>& boss){
   if (boss.hp == 0) return;
 
   boss.hp--;
@@ -28,7 +30,8 @@ static auto take_damage(BossState& boss){
   boss.is_highlighted = true;
 }
 
-static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
+template<typename T>
+static auto react_when_hit_by_fireball(BossState<T>& boss, LevelState& level){
   monster_controller::react_when_hit_by_fireball(boss, level, [&](auto& fireball){
     take_damage(boss);
     fireball.acceleration.left = fireball.acceleration.right = 0.f;
@@ -36,7 +39,8 @@ static auto react_when_hit_by_fireball(BossState& boss, LevelState& level){
   });
 }
 
-static auto handle_walking(BossState& boss, const LevelState& level){
+template<typename T>
+static auto handle_walking(BossState<T>& boss, const LevelState& level){
   if (boss.hp == 0) return;
 
   boss.position.x += boss.direction.as_int() * window::delta_time * boss.walk_speed * EntityState::MovementSpeedMultiplier;
@@ -50,7 +54,8 @@ static auto handle_walking(BossState& boss, const LevelState& level){
   boss.position.y = std::min(boss.position.y, GroundPosition);
 }
 
-static auto run(BossState& boss, LevelState& level){
+template<typename T>
+static auto run(BossState<T>& boss, LevelState& level){
   if (boss.blink_cooldown <= 0.f){
     boss.is_highlighted = false;
   }

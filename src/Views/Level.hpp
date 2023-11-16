@@ -85,7 +85,7 @@ static auto render_stats(const LevelState& level){
   mini_coin.texture = &textures::mini_coin;
   renderer::draw(mini_coin);
 
-  if (level.type == LevelState::Type::Boss && stats.boss_hp != nullptr){
+  if (level.type == LevelState::Type::Boss && stats.boss_hp.current != nullptr){
     text.text = "BOSS";
     text.update();
     text.position = glm::vec2(WindowWidth / 2.f - text.get_size().x / 2.f, step_y * 4);
@@ -97,7 +97,7 @@ static auto render_stats(const LevelState& level){
 
     renderer::draw_plain(renderer::PlainDrawable{
       glm::vec2(WindowWidth / 2 - MaxBossBarSize.x / 2, step_y * 5),
-      glm::vec2(*stats.boss_hp * MaxBossBarSize.x / stats.max_boss_hp, MaxBossBarSize.y),
+      glm::vec2(*stats.boss_hp.current * MaxBossBarSize.x / stats.boss_hp.max, MaxBossBarSize.y),
       glm::vec4(1.f)
     });
   }

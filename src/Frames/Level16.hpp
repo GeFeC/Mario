@@ -30,16 +30,11 @@ static auto run_level16(AppState& app){
     level_generator::generate_level(level, "level16_1.csv");
     level_generator::generate_level(level, "level16_2.csv");
 
-    auto& objects = level.game_objects; 
-    auto& boss = objects.push(KingGoombaState());
+    auto& boss = level.game_objects.push(KingGoombaState());
     boss.position = glm::vec2(16, 8) * BlockBase::Size;
+    level.stats.boss_hp = { &boss.hp, KingGoombaState::MaxHp };
 
-    level.stats.boss_hp = &boss.hp;
-    level.stats.max_boss_hp = KingGoombaState::MaxHp;
-
-    level.player.growth = PlayerState::Growth::Big;
-    level.player.form = PlayerState::Form::Fire;
-    level.player.position.x = 2 * BlockBase::Size;
+    level.player.set_form_to_fire();
   });
 }
 

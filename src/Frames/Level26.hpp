@@ -30,19 +30,15 @@ static auto run_level26(AppState& app){
     level_generator::generate_level(level, "level26_2.csv");
 
     auto& objects = level.game_objects;
-    auto& boss = objects.push(KingKoopaState());
-
-    boss.position = glm::vec2(16, 6) * BlockBase::Size;
-
-    level.stats.boss_hp = &boss.hp;
-    level.stats.max_boss_hp = KingKoopaState::MaxHp;
-
-    level.player.growth = PlayerState::Growth::Big;
-    level.player.form = PlayerState::Form::Fire;
-    level.player.position.x = 2 * BlockBase::Size;
-
     objects.push(FireBarState({ 0, 7 }, 4));
     objects.push(FireBarState({ 19, 7 }, 4));
+
+    auto& boss = objects.push(KingKoopaState());
+    boss.position = glm::vec2(16, 6) * BlockBase::Size;
+
+    level.stats.boss_hp = { &boss.hp, KingKoopaState::MaxHp };
+
+    level.player.set_form_to_fire();
   });
 }
 
