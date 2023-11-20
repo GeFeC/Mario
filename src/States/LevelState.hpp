@@ -90,7 +90,8 @@ struct LevelState{
     KingKoopaState,
     KingBeetleState,
     KingCheepState,
-    KingPlantState
+    KingPlantState,
+    KingLakitoState
   >;
 
   static constexpr auto BlocksInRow = 20;

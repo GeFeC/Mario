@@ -19,6 +19,8 @@ static auto run_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown_sp
     auto& new_spike = level.game_objects.push(SpikeState::make({ 0, 0 }));
     new_spike.position = thrown_spike.position;
     new_spike.is_active = true;
+    new_spike.gravity_flip = thrown_spike.gravity_flip;
+    new_spike.vertical_flip = thrown_spike.gravity_flip;
 
     if (new_spike.position.x < level.player.position.x){
       new_spike.set_direction(util::Direction::right());
@@ -93,19 +95,14 @@ static auto run_controller(LakitoState& lakito, LevelState& level){
   if (lakito.throw_counter.value == util::in_range(9.f, 10.f)){
     lakito.current_texture = &textures::lakito_hidden;
 
-    static constexpr auto ThrownSpikeBouncePower = -20.f;
-    if (!lakito.was_spike_thrown){
-      auto& spike = lakito.thrown_spike;
-      spike.position = lakito.position;
-      spike.is_active = true;
-      spike.gravity = ThrownSpikeBouncePower;
-      spike.is_on_ground = false;
-      lakito.was_spike_thrown = true;
+    if (lakito.should_throw_spike){
+      lakito.throw_spike(20.f);
+      lakito.should_throw_spike = false;
     }
   }
   else{
     lakito.current_texture = &textures::lakito_shown;
-      lakito.was_spike_thrown = false;
+    lakito.should_throw_spike = true;
   }
 }
 

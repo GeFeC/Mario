@@ -1,9 +1,12 @@
 #pragma once
 
+#include "States/LakitoState.hpp"
 #include "States/MonsterState.hpp"
 #include "States/FireballState.hpp"
 #include "States/BlackPlantState.hpp"
+#include "Util/LoopedCounter.hpp"
 #include "Util/Random.hpp"
+#include <iostream>
 
 namespace mario{
 
@@ -30,7 +33,7 @@ struct BossState : EntityBase, BossBase{
 };
 
 struct KingGoombaState : BossState<>{
-  static constexpr auto Size = glm::vec2(3.75, 4.5) * BlockBase::Size;
+  static constexpr auto Size = glm::vec2(3.00, 3.6) * BlockBase::Size;
   static constexpr auto JumpPower = -20.f;
 
   KingGoombaState() : BossState(){
@@ -41,8 +44,8 @@ struct KingGoombaState : BossState<>{
 };
 
 struct KingKoopaState : BossState<>{
-  static constexpr auto Size = glm::vec2(3.f, 4.5f) * BlockBase::Size;
-  static constexpr auto ShellSpeed = 15.f;
+  static constexpr auto Size = glm::vec2(2.5f, 3.75f) * BlockBase::Size;
+  static constexpr auto ShellSpeed = 20.f;
 
   static constexpr auto SpeedUpDelay = 0.5f;
   static constexpr auto WithdrawDuration = 2.f;
@@ -67,7 +70,7 @@ struct KingKoopaState : BossState<>{
 
 struct KingBeetleState : BossState<>{
   static constexpr auto MaxHp = 10;
-  static constexpr auto Size = glm::vec2(3.f) * BlockBase::Size;
+  static constexpr auto Size = glm::vec2(2.5f) * BlockBase::Size;
   static constexpr auto WalkSpeed = 4.f;
   static constexpr auto FireballCooldown = 4.f;
 
@@ -89,7 +92,7 @@ struct KingBeetleState : BossState<>{
 };
 
 struct KingCheepState : BossState<>{
-  static constexpr auto Size = glm::vec2(3.f, 3.f) * BlockBase::Size;
+  static constexpr auto Size = glm::vec2(2.5f, 2.5f) * BlockBase::Size;
   static constexpr auto MaxHp = 20;
 
   float timer = 0.f;
@@ -103,7 +106,7 @@ struct KingCheepState : BossState<>{
 };
 
 struct KingPlantState : BossState<BlackPlantState>{
-  static constexpr auto Size = glm::vec2(3.f, 3.f * 11.f / 8.f) * BlockBase::Size;
+  static constexpr auto Size = glm::vec2(2.5f, 2.5f * 11.f / 8.f) * BlockBase::Size;
   static constexpr auto MaxHp = 20;
 
   KingPlantState() : BossState(){
@@ -117,5 +120,34 @@ struct KingPlantState : BossState<BlackPlantState>{
     speed = 150.f;
   }
 };
+
+struct KingLakitoState : BossState<LakitoState>{
+  static constexpr auto InitialPosition = glm::vec2(8.5f, 7.f) * BlockBase::Size;
+  static constexpr auto Size = glm::vec2(2.5f, 2.5f * 11.f / 8.f) * BlockBase::Size;
+  static constexpr auto MaxHp = 10;
+
+  float timer = 0.f;
+
+  std::array<ThrownSpikeState, 2> extra_thrown_spikes;
+
+  KingLakitoState() : BossState(){
+    ((*this) | util::as<LakitoState&>) = LakitoState::make({ 0, 0 });
+
+    throw_counter = util::InfiniteCounter(10.f, 3.f);
+    can_be_stomped = false;
+    is_active = true;
+    size = Size;
+    position = InitialPosition;
+    hp = MaxHp;
+    should_collide = true;
+    flip_gravity();
+
+    for (auto& spike : extra_thrown_spikes){
+      spike = ThrownSpikeState::make();
+    }
+  }
+};
+
+
 
 } //namespace mario

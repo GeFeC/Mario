@@ -12,11 +12,8 @@ template<typename T>
 static auto get_hitbox(BossState<T>& boss){
   auto boss_hitbox = MonsterState{ boss };
   boss_hitbox.is_active = true;
-  boss_hitbox.size = glm::vec2(2.f) * BlockBase::Size;
-  boss_hitbox.position = glm::vec2(
-    boss.position.x + boss.size.x / 2 - boss_hitbox.size.x / 2,
-    boss.position.y + boss.size.y - 2.f * BlockBase::Size
-  );
+  boss_hitbox.size = boss.size - glm::vec2(0.5f, 0.5f);
+  boss_hitbox.position = boss.position + glm::vec2(0.25f, 0.25f);
 
   return boss_hitbox;
 }

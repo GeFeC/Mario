@@ -67,6 +67,12 @@ struct PlayerState : EntityState{
     swim_counter.disable();
   }
 
+  auto flip_gravity(){
+    EntityState::flip_gravity();
+
+    for (auto& f : fireballs) f.flip_gravity();
+  }
+
   auto set_form_to_fire(){
     growth = PlayerState::Growth::Big;
     form = PlayerState::Form::Fire;

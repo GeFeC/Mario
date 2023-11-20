@@ -18,13 +18,13 @@ static auto run_controller(KingPlantState& boss, LevelState& level){
   if (boss.offset <= 0.f){
     switch(util::random_value(0, 1)){
       case LowerPosition: 
-        boss.position.x = (2.5f + util::random_value(0, 3) * 4.f) * BlockBase::Size;
+        boss.position.x = (2.75f + util::random_value(0, 3) * 4.f) * BlockBase::Size;
         boss.position.y = 11.2f * BlockBase::Size;
         boss.vertical_flip = util::Flip::no_flip();
         break;
       
       case UpperPosition:
-        boss.position.x = (4.5f + util::random_value(0, 2) * 4.f) * BlockBase::Size;
+        boss.position.x = (4.75f + util::random_value(0, 2) * 4.f) * BlockBase::Size;
         boss.position.y = -KingPlantState::Size.y;
         boss.vertical_flip = util::Flip::flip();
         break;

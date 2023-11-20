@@ -49,7 +49,7 @@ struct FireballState : EntityState{
   ExplosionState explosion;
 
   FireballState(){
-    position = glm::vec2(-util::BigValue);
+    position = glm::vec2(0);
     size = glm::vec2(BlockBase::Size / 2);
     current_texture = &textures::fireball[0];
     is_visible = false;

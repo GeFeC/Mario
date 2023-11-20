@@ -18,6 +18,8 @@ static auto reset(FireballState& fireball){
 }
 
 static auto run(FireballState& fireball, const LevelState& level){
+  if (fireball.position.y < -fireball.size.y * 2 && fireball.is_active) reset(fireball);
+
   if (fireball.is_on_ground){
     fireball.gravity = FireballState::BouncePower;
     fireball.is_on_ground = false;

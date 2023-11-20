@@ -229,6 +229,15 @@ static auto render_plant(const KingPlantState& boss, const LevelState& level){
 
 static auto render_entity(const KingPlantState& boss, const LevelState& level){}
 
+static auto render_entity(const KingLakitoState& boss, const LevelState& level){
+  renderer::highlight_mode = boss.is_highlighted;
+  for (auto& spike : boss.extra_thrown_spikes){
+    render_entity(spike, level);
+  }
+  render_entity(boss | util::as<LakitoState>, level);
+  renderer::highlight_mode = false;
+}
+
 static auto render_plant(const PlantState& plant, const LevelState& level){
   render_entity(plant | util::as<EntityState>, level);
 }
