@@ -1,11 +1,14 @@
 #pragma once
 
 #include "Renderer/Drawable.hpp"
-#include "States/LevelState.hpp"
 #include "Renderer/Renderer.hpp"
+#include "States/LevelState.hpp"
 #include "Controllers/LevelController.hpp"
 
-#include "Views/Components.hpp"
+#include "Views/Entities.hpp"
+#include "Views/Plants.hpp"
+#include "Views/Background.hpp"
+#include "Views/Player.hpp"
 
 #include "Util/Loop.hpp"
 #include "config.hpp"
@@ -171,15 +174,7 @@ static auto render_all_points_particles(const LevelState& level){
   });
 }
 
-static auto render_level(const LevelState& level){
-  auto background = renderer::Drawable{};
-  background.position = { 0, 0 };
-  background.size = config::FrameBufferSize;
-  background.texture = level.background_texture;
-  renderer::draw(background);
-
-  //Rendering game objects
-
+static auto render_all_level_objects(const LevelState& level){
   renderer::draw_with_shadow([&]{
     level.game_objects.for_each([&](auto& object){
       render_background(object, level);
@@ -211,73 +206,83 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     if (!level.is_finished) render_player(level.player, level);
   });
+}
 
-  render_water(level);
+static auto render_level_background(const LevelState& level){
+  auto background = renderer::Drawable{};
+  background.position = { 0, 0 };
+  background.size = config::FrameBufferSize;
+  background.texture = level.background_texture;
+  renderer::draw(background);
+}
 
-  //Darkness
+static auto render_darkness(const LevelState& level){
+  static constexpr auto PlayerViewSizeInDarkness = 3.f * BlockBase::Size;
+  const auto player_center = level.player.position + level.player.size / 2.f - level.camera_offset;
 
-  if (level.is_dark){
+  const auto player_view_min = glm::vec2(
+    player_center.x - PlayerViewSizeInDarkness,
+    player_center.y - PlayerViewSizeInDarkness
+  );
 
-    static constexpr auto PlayerViewSizeInDarkness = 3.f * BlockBase::Size;
-    const auto player_center = level.player.position + level.player.size / 2.f - level.camera_offset;
+  const auto player_view_max = glm::vec2(
+    player_center.x + PlayerViewSizeInDarkness,
+    player_center.y + PlayerViewSizeInDarkness
+  );
 
-    const auto player_view_min = glm::vec2(
-      player_center.x - PlayerViewSizeInDarkness,
-      player_center.y - PlayerViewSizeInDarkness
-    );
+  auto darkness_view = renderer::Drawable{};
+  darkness_view.position = player_view_min;
+  darkness_view.size = glm::vec2(PlayerViewSizeInDarkness * 2.f);
+  darkness_view.texture = &textures::darkness_view;
+  renderer::draw(darkness_view);
 
-    const auto player_view_max = glm::vec2(
-      player_center.x + PlayerViewSizeInDarkness,
-      player_center.y + PlayerViewSizeInDarkness
-    );
-
-    auto darkness_view = renderer::Drawable{};
-    darkness_view.position = player_view_min;
-    darkness_view.size = glm::vec2(PlayerViewSizeInDarkness * 2.f);
-    darkness_view.texture = &textures::darkness_view;
-    renderer::draw(darkness_view);
-
-    renderer::draw_plain(renderer::PlainDrawable{
-      { 0, 0 },
-      { config::FrameBufferSize.x, player_view_min.y },
-      { 0.f, 0.f, 0.f, 1.f }
-    });
-
-    renderer::draw_plain(renderer::PlainDrawable{
-      { 0, player_view_max.y },
-      { config::FrameBufferSize.x, config::FrameBufferSize.y - player_view_max.y },
-      { 0.f, 0.f, 0.f, 1.f }
-    });
-
-    renderer::draw_plain(renderer::PlainDrawable{
-      { 0, player_view_min.y },
-      { player_view_min.x, player_view_max.y - player_view_min.y },
-      { 0.f, 0.f, 0.f, 1.f }
-    });
-
-    renderer::draw_plain(renderer::PlainDrawable{
-      { player_view_max.x, player_view_min.y },
-      { config::FrameBufferSize.x - player_view_max.x, player_view_max.y - player_view_min.y },
-      { 0.f, 0.f, 0.f, 1.f }
-    });
-
-  }
-
-  //Stats and loading screen
-
-  renderer::draw_with_shadow([&]{
-    if (level.load_delay > 0.f){
-      render_loading_screen(level);
-    }
-
-    render_stats(level);
+  renderer::draw_plain(renderer::PlainDrawable{
+    { 0, 0 },
+    { config::FrameBufferSize.x, player_view_min.y },
+    { 0.f, 0.f, 0.f, 1.f }
   });
 
-  //Points particles
+  renderer::draw_plain(renderer::PlainDrawable{
+    { 0, player_view_max.y },
+    { config::FrameBufferSize.x, config::FrameBufferSize.y - player_view_max.y },
+    { 0.f, 0.f, 0.f, 1.f }
+  });
+
+  renderer::draw_plain(renderer::PlainDrawable{
+    { 0, player_view_min.y },
+    { player_view_min.x, player_view_max.y - player_view_min.y },
+    { 0.f, 0.f, 0.f, 1.f }
+  });
+
+  renderer::draw_plain(renderer::PlainDrawable{
+    { player_view_max.x, player_view_min.y },
+    { config::FrameBufferSize.x - player_view_max.x, player_view_max.y - player_view_min.y },
+    { 0.f, 0.f, 0.f, 1.f }
+  });
+
+}
+
+static auto render_level(const LevelState& level){
+  render_level_background(level);
+  render_all_level_objects(level);
+
+  if (level.is_dark){
+    render_darkness(level);
+  }
+
   renderer::draw_with_shadow([&]{
     render_all_points_particles(level);  
   });
 
+  render_water(level);
+
+  if (level.load_delay > 0.f){
+    render_loading_screen(level);
+  }
+
+  renderer::draw_with_shadow([&]{
+    render_stats(level);
+  });
 }
 
 } //namespace mario::views
