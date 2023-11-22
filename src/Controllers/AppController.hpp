@@ -45,6 +45,8 @@
 #include "Frames/Level65.hpp"
 #include "Frames/Level66.hpp"
 
+#include "Frames/Level71.hpp"
+
 #include "Util/Util.hpp"
 
 #include <unordered_map>
@@ -93,6 +95,8 @@ static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppSta
   { AppState::Frame::Level64, frames::run_level64 },
   { AppState::Frame::Level65, frames::run_level65 },
   { AppState::Frame::Level66, frames::run_level66 },
+
+  { AppState::Frame::Level71, frames::run_level71 },
 };
 
 static auto run(AppState& app){

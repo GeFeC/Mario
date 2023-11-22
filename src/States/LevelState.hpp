@@ -136,6 +136,8 @@ struct LevelState{
 
   glm::vec2 camera_offset;
 
+  float background_opacity = 0.f;
+  util::InfiniteCounter background_pulse_counter = util::InfiniteCounter(5.f, 1.f);
   util::InfiniteCounter coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
   util::InfiniteCounter fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
   util::InfiniteCounter fireball_counter = util::InfiniteCounter(4.f, 20.f);
@@ -180,8 +182,8 @@ struct LevelState{
     return background_texture == &textures::underground_bg;
   }
 
-  auto is_level_water() const{
-    return water_level < max_size().y;
+  auto is_level_in_castle() const{
+    return background_texture == &textures::castle_bg;
   }
 };
 

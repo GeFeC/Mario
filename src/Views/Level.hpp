@@ -210,9 +210,15 @@ static auto render_all_level_objects(const LevelState& level){
 
 static auto render_level_background(const LevelState& level){
   auto background = renderer::Drawable{};
-  background.position = { 0, 0 };
+
+  background.position = { 0.f, 0.f };
   background.size = config::FrameBufferSize;
   background.texture = level.background_texture;
+
+  if (level.is_level_in_castle()){
+    background.alpha = level.background_opacity;
+  }
+
   renderer::draw(background);
 }
 

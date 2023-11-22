@@ -201,8 +201,26 @@ static auto handle_checkpoints(LevelState& level){
   }
 }
 
+static auto handle_level_background_pulsing(LevelState& level){
+  auto& opacity = level.background_opacity;
+  opacity = std::max(opacity - window::delta_time, 0.f);
+
+  auto& counter = level.background_pulse_counter;
+  counter.run(window::delta_time);
+  if (counter.loops >= 1){
+    counter.loops = 0;
+
+    opacity = 1.f;
+    counter.limit = util::random_value(10, 30) / 10.f;
+  }
+}
+
 static auto run(AppState& app){
   auto& level = app.current_level;
+
+  if (level.is_level_in_castle()){
+    handle_level_background_pulsing(level);
+  }
 
   //Level loading
   if (level.load_delay > 0.f) {

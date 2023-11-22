@@ -17,6 +17,7 @@ static auto mushroom_bg = Texture("mushroom_background.png");
 static auto snow_bg = Texture("snow_background.png");
 static auto underground_bg = Texture("underground_background.png");
 static auto sky_bg = Texture("sky_background.png");
+static auto castle_bg = Texture("castle_background.png");
 
 static auto platform = Texture("platform.png");
 
@@ -33,6 +34,7 @@ static auto stone = Texture("tile/stone.png");
 static auto blue_stone = Texture("tile/bluestone.png");
 static auto green_ground = Texture("tile/greenground.png");
 static auto water_ground = Texture("tile/waterground.png");
+static auto castle_stone = Texture("tile/whiteground2.png");
 static auto coral = Texture("tile/coral.png");
 static auto bridge = Texture("tile/bridge.png");
 static auto cloud_block = Texture("tile/cloud.png");

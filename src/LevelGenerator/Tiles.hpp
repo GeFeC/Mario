@@ -13,6 +13,7 @@ enum class Tile{
   Stone = 81,
   BlueStone = 17,
   GreenGround = 13,
+  CastleStone = 1,
   Dirt = 0,
   BlueDirt = 18,
   Bridge = 109,
