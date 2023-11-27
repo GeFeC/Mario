@@ -113,6 +113,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::YellowGoomba, texture_groups::yellow_goomba),
   pair(Tile::RedGoomba, texture_groups::red_goomba),
   pair(Tile::Goomba, texture_groups::goomba),
+  pair(Tile::FlameGoomba, texture_groups::flame_goomba),
   pair(Tile::Spike, texture_groups::spike),
   pair(Tile::GreenPlant, texture_groups::plant),
   pair(Tile::RedPlant, texture_groups::red_plant),

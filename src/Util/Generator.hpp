@@ -12,7 +12,6 @@ struct Generator{
 
   Generator(){
     items.reserve(8);
-    items.emplace_back();
     current_item_index = 0;
   };
 

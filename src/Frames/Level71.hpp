@@ -2,6 +2,7 @@
 
 #include "States/AppState.hpp"
 #include "Frames/LevelBase.hpp"
+#include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
 namespace mario::frames{
@@ -12,7 +13,8 @@ static auto run_level71(AppState& app){
   level.type = LevelState::Type::Horizontal;
   level.number = { 7, 1 };
   level.extra_textures = {
-    &textures::castle_bg
+    &textures::castle_bg,
+    texture_groups::flame_goomba
   };
 
   run_levelbase(app, level, [](AppState& app){

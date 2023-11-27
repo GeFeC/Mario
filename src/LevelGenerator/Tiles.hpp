@@ -101,6 +101,7 @@ enum class Tile{
   Goomba = 58,
   RedGoomba = 57,
   YellowGoomba = 56,
+  FlameGoomba = 120,
 
   GreenPlant = 60,
   RedPlant = 61,

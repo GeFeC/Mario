@@ -270,6 +270,11 @@ static auto goomba_walk = std::array<Texture, 2>{
 };
 static auto goomba_dead = Texture("entity/goomba/dead.png");
 
+static auto flame_goomba_walk = std::array<Texture, 2>{
+  Texture("entity/goomba/flame0.png"),
+  Texture("entity/goomba/flame1.png")
+};
+
 static auto red_goomba_walk = std::array<Texture, 2>{
   Texture("entity/goomba/red0.png"),
   Texture("entity/goomba/red1.png")

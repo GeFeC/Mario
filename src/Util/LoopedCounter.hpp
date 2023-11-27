@@ -24,14 +24,20 @@ struct LoopedCounter{
     return loops == max_loops;
   }
 
-  auto run(float delta_time){
+  template<typename Callable>
+  auto run(float delta_time, Callable loop_end_callback){
     if (loops == max_loops) return;
 
     value += step * delta_time;
     if (value >= limit){
+      loop_end_callback();
       value = 0.f;
       ++loops;
     }
+  }
+
+  auto run(float delta_time){
+    run(delta_time, []{});
   }
 
   auto reset(){

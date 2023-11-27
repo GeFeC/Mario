@@ -1,5 +1,6 @@
 #pragma once
 
+#include "States/FlameGoombaState.hpp"
 #include "States/StatsState.hpp"
 #include "States/BlockState.hpp"
 #include "States/EntityPusherState.hpp"
@@ -67,6 +68,7 @@ struct LevelState{
 
     //Entities
     GoombaState,
+    FlameGoombaState,
     KoopaState,
     JumpingKoopaState,
     FlyingKoopaState,

@@ -105,6 +105,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::YellowGoomba) objects.push(GoombaState::make_yellow({ x, y }));
     else if (tile == Tile::RedGoomba) objects.push(GoombaState::make_red({ x, y }));
     else if (tile == Tile::Goomba) objects.push(GoombaState::make_normal({ x, y }));
+    else if (tile == Tile::FlameGoomba) objects.push(FlameGoombaState::make({ x, y }));
     else if (tile == Tile::RedKoopa) objects.push(KoopaState::make_red({ x, y }));
     else if (tile == Tile::GreenKoopa) objects.push(KoopaState::make_green({ x, y }));
     else if (tile == Tile::PurpleKoopa) objects.push(KoopaState::make_purple({ x, y }));

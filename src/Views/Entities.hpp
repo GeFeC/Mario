@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Renderer/Drawable.hpp"
+#include "States/FlameGoombaState.hpp"
 #include "Views/Util.hpp"
 #include "Views/Blocks.hpp"
 
@@ -17,12 +19,9 @@ static auto render_entity(const T&, const LevelState&) {}
 static auto render_entity(const PlantState&, const LevelState&) {}
 static auto render_entity(const BlackPlantState&, const LevelState&) {}
 
-static auto render_entity(const EntityState& entity, const LevelState& level) -> void{
-  const auto& offset = level.camera_offset;
-  if (!views::is_component_on_screen(entity, offset)) return;
-
+static auto make_drawable_from_entity(const EntityState& entity, const LevelState& level) -> renderer::Drawable{
   auto drawable = renderer::Drawable{};
-  drawable.position = entity.position - offset;
+  drawable.position = entity.position - level.camera_offset;
   drawable.size = entity.size;
   drawable.texture = entity.current_texture;
   drawable.is_visible = entity.is_visible;
@@ -31,7 +30,36 @@ static auto render_entity(const EntityState& entity, const LevelState& level) ->
     entity.vertical_flip 
   };
 
-  renderer::draw(drawable);
+  return drawable;
+}
+
+static auto render_entity(const EntityState& entity, const LevelState& level) -> void{
+  if (!views::is_component_on_screen(entity, level.camera_offset)) return;
+  renderer::draw(make_drawable_from_entity(entity, level));
+}
+
+static auto render_entity(const FlameParticleState& flame, const LevelState& level){
+  if (!flame.is_active) return;
+
+  renderer::draw_plain(renderer::PlainDrawable{
+    flame.position - level.camera_offset,
+    flame.size,
+    glm::vec4(1.f, flame.opacity, 0.f, flame.opacity)
+  });
+}
+
+static auto render_entity(const FlameGoombaState& goomba, const LevelState& level){
+  for (const auto& flame : goomba.flames_generator.items){
+    for (const auto& particle : flame.particles()){
+      render_entity(particle, level);
+    }
+  }
+
+  for (const auto& particle : goomba.inner_flame.particles()){
+    render_entity(particle, level);
+  }
+
+  render_entity(goomba | util::as<EntityState>, level);
 }
 
 static auto render_entity(const LakitoState& lakito, const LevelState& level){
@@ -109,7 +137,5 @@ static auto render_entity(const KingLakitoState& boss, const LevelState& level){
   render_entity(boss | util::as<LakitoState>, level);
   renderer::highlight_mode = false;
 }
-
-
 
 } //namespace mario::views

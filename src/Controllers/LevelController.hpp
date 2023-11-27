@@ -31,6 +31,7 @@
 #include "Controllers/SquidController.hpp"
 #include "Controllers/LakitoController.hpp"
 #include "Controllers/UnstableCloudController.hpp"
+#include "Controllers/FlameGoombaController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"

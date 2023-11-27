@@ -57,6 +57,11 @@ static const auto yellow_goomba = TextureGroup({
   &textures::yellow_goomba_walk[1]
 });
 
+static const auto flame_goomba = TextureGroup({
+  &textures::flame_goomba_walk[0],
+  &textures::flame_goomba_walk[1]
+});
+
 static const auto green_koopa = TextureGroup({
   &textures::green_koopa_dead,
   &textures::green_koopa_walk[0],
