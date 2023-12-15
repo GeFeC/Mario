@@ -29,6 +29,7 @@ static auto run_green_mushroom_controller(MushroomState& mushroom, LevelState& l
   if (player.is_dead) return;
 
   if (collision_controller::intersects(player, mushroom) && mushroom.is_active){
+    mushroom.points_generator.make_item_if_needed();
     auto& points = mushroom.points_generator.item();
     points.set_active("+1 HP", mushroom.position);
 
@@ -46,7 +47,7 @@ static auto run_red_mushroom_controller(MushroomState& mushroom, LevelState& lev
 
   if (collision_controller::intersects(player, mushroom) && mushroom.is_active){
     auto& points = mushroom.points_generator.item();
-    points.set_active(mushroom.reward_for_killing, mushroom.position);
+    mushroom.spawn_points(1);
   
     mushroom.disappear();
 

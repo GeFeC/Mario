@@ -37,10 +37,13 @@
 # Build
 debug
 release
+build
 
 # IDE 
 compile_commands.json
+cmake-build-debug
 .vscode
+.idea
 
-# Helper Tiled Layers
+# Tiled Helper Layers
 *helper_layer.csv

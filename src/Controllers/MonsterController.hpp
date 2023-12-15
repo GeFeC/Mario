@@ -85,7 +85,7 @@ static auto bounce_die(MonsterState& entity, StatsState& stats){
   bounce_out(entity);
 
   stats.score += entity.reward_for_killing;
-  entity.points_generator.item().set_active(entity.reward_for_killing, entity.position);
+  entity.spawn_points();
 }
 
 static auto is_hit_by_fireball(const MonsterState& entity, const FireballState& fireball){
