@@ -1,7 +1,5 @@
 #pragma once
 #include "States/BlockState.hpp"
-#include "States/EntityState.hpp"
-#include <vector>
 
 namespace mario{
 

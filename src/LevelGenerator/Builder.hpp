@@ -4,7 +4,6 @@
 #include "States/BlockState.hpp"
 #include "States/FireFlowerPusherState.hpp"
 #include "States/FireFlowerState.hpp"
-#include "States/JumpingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Util/Direction.hpp"
 #include <glm/glm.hpp>

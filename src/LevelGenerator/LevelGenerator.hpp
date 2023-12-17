@@ -5,6 +5,7 @@
 
 #include "States/BlockState.hpp"
 #include "States/JumpingKoopaState.hpp"
+#include "States/FlameKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Util/File.hpp"
 #include "config.hpp"
@@ -109,6 +110,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::RedKoopa) objects.push(KoopaState::make_red({ x, y }));
     else if (tile == Tile::GreenKoopa) objects.push(KoopaState::make_green({ x, y }));
     else if (tile == Tile::PurpleKoopa) objects.push(KoopaState::make_purple({ x, y }));
+    else if (tile == Tile::FlameKoopa) objects.push(FlameKoopaState::make({ x, y }));
     else if (tile == Tile::RedKoopaWings) objects.push(JumpingKoopaState::make_red({ x, y }));
     else if (tile == Tile::GreenKoopaWings) objects.push(JumpingKoopaState::make_green({ x, y }));
     else if (tile == Tile::PurpleKoopaWings) objects.push(JumpingKoopaState::make_purple({ x, y }));

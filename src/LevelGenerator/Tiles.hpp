@@ -104,6 +104,7 @@ enum class Tile{
   UnstableCloud = 117,
   PurpleCoin = 187,
   FlameGoomba = 120,
+	FlameKoopa = 188,
 };
 
 static constexpr Tile HillTiles[] = {

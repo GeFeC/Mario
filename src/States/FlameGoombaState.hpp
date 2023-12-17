@@ -2,7 +2,6 @@
 
 #include "States/FlameState.hpp"
 #include "States/BlockState.hpp"
-#include "States/FireballState.hpp"
 #include "States/MonsterState.hpp"
 #include "Util/Util.hpp"
 #include "res/textures.hpp"
@@ -24,6 +23,8 @@ struct FlameGoombaState : MonsterState{
     goomba.walk_speed = 4.f;
     goomba.current_texture = &textures::flame_goomba_walk[0];
     goomba.can_be_stomped = false;
+		goomba.fall_from_edge = false;
+		goomba.reward_for_killing = 400.f;
 
     return goomba;
   }

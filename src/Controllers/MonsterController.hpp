@@ -30,6 +30,7 @@ static auto die_when_stomped(
   if (entity_controller::was_stomped(entity, player)){
     set_entity_dead();
 
+		player.is_on_ground = false;
     player.gravity = PlayerState::BouncePower;
     player.position.y = entity.gravity_flip.is_flipped()
       ? entity.position.y + entity.size.y

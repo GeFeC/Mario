@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB_RECURSE sources src/*.cpp src/glad.c)
 
-add_executable(${PROJECT_NAME} ${sources}) 
+add_executable(${PROJECT_NAME} ${sources})
 
 set(include_dirs
   src

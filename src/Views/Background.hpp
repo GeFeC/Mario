@@ -1,12 +1,29 @@
 #pragma once
 
 #include "States/LevelState.hpp"
-#include "Views/Entities.hpp"
+#include "Views/Blocks.hpp"
+#include "Util/Loop.hpp"
 
 namespace mario::views{
 
 template<typename T>
 static auto render_background(const T&, const LevelState&) {}
+
+static auto render_background(const LavaState& lava, const LevelState& level){
+	static auto offset = 0.f;
+	offset += window::delta_time;
+	if (offset > 1.f) offset -= 1.f;
+
+	util::for_2d([&](auto x, auto y){
+		auto drawable = renderer::Drawable{};
+		drawable.position = BlockBase::Size * (lava.position + glm::vec2(offset + x, y)) - level.camera_offset;
+		drawable.size = glm::vec2(BlockBase::Size);
+
+		drawable.texture = y == 0 ? &textures::lava_top : &textures::lava_bottom;
+		
+		renderer::draw(drawable);
+	}, std::make_pair(-1.f, 0.f), std::make_pair(lava.size.x, lava.size.y));
+}
 
 static auto render_background(const CloudState& cloud, const LevelState& level){
   auto& textures = *level.cloud_textures;

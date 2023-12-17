@@ -1,15 +1,12 @@
 #pragma once
 
+#include "States/FlameKoopaState.hpp"
 #include "States/FlameGoombaState.hpp"
 #include "States/StatsState.hpp"
 #include "States/BlockState.hpp"
 #include "States/EntityPusherState.hpp"
-#include "States/EntityState.hpp"
-#include "States/MonsterState.hpp"
 #include "States/PlayerState.hpp"
-#include "States/PointsParticlesState.hpp"
 #include "States/QBlockState.hpp"
-#include "States/FireFlowerState.hpp"
 #include "States/PlantState.hpp"
 #include "States/BlackPlantState.hpp"
 #include "States/GoombaState.hpp"
@@ -30,15 +27,12 @@
 #include "States/CoinPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
 
-#include "Util/Direction.hpp"
 #include "Util/LoopedCounter.hpp"
 
-#include "Renderer/Text.hpp"
-#include "config.hpp"
-#include "res/fonts.hpp"
 #include "res/textures.hpp"
 #include "Util/Util.hpp"
 #include "Util/Poly.hpp"
+#include "LavaState.hpp"
 
 #include <vector>
 #include <limits>
@@ -51,6 +45,7 @@ struct LevelState{
     CloudState,
     BackgroundHillState,
     BackgroundBushState,
+    LavaState,
 
     //Blocks
     BlockState, 
@@ -70,6 +65,7 @@ struct LevelState{
     GoombaState,
     FlameGoombaState,
     KoopaState,
+		FlameKoopaState,
     JumpingKoopaState,
     FlyingKoopaState,
     BeetleState,

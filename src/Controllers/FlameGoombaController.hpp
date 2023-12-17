@@ -41,6 +41,7 @@ static auto run_controller(FlameGoombaState& goomba, LevelState& level){
   }
 
   //Base:
+	monster_controller::die_when_on_bouncing_block(goomba, level);
   monster_controller::endure_fireball(goomba, level.player);
   monster_controller::become_active_when_seen(goomba, level);
   monster_controller::handle_points_particles(goomba);

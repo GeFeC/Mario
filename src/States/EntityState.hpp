@@ -2,12 +2,8 @@
 
 #include "Util/Direction.hpp"
 #include "Renderer/Texture.hpp"
-#include "Renderer/Drawable.hpp"
-#include "res/textures.hpp"
-#include "config.hpp"
 
 #include <glm/glm.hpp>
-#include <unordered_map>
 
 namespace mario{
 
@@ -36,6 +32,7 @@ struct EntityState{
   //If monster was hit by a shell or fireball:
   bool was_hit = false;
 
+	bool follows_player = false;
   bool is_visible = true;
   bool is_active = false;
   bool is_dead = false;

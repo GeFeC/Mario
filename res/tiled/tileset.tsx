@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="32" tileheight="64" tilecount="109" columns="0">
+<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="32" tileheight="64" tilecount="110" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="73">
   <image width="32" height="32" source="../textures/bush/center.png"/>
@@ -319,7 +319,7 @@
  <tile id="80">
   <image width="32" height="32" source="checkpoint.png"/>
  </tile>
- <tile id="186">
+ <tile id="111">
   <image width="32" height="44" source="../textures/entity/plant/black0.png"/>
  </tile>
  <tile id="187">
@@ -327,5 +327,8 @@
  </tile>
  <tile id="120">
   <image width="32" height="32" source="../textures/entity/goomba/flame0.png"/>
+ </tile>
+ <tile id="188">
+  <image width="32" height="48" source="../textures/entity/koopa/flame1.png"/>
  </tile>
 </tileset>

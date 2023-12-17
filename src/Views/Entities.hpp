@@ -48,6 +48,13 @@ static auto render_entity(const FlameParticleState& flame, const LevelState& lev
   });
 }
 
+static auto render_entity(const FlameKoopaState& koopa, const LevelState& level){
+	render_entity(koopa.fireball, level);
+	render_block(koopa.fireball.explosion, level);
+
+	render_entity(koopa | util::as<EntityState>, level);
+}
+
 static auto render_entity(const FlameGoombaState& goomba, const LevelState& level){
   for (const auto& flame : goomba.flames_generator.items){
     for (const auto& particle : flame.particles()){

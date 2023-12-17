@@ -3,20 +3,13 @@
 #include "States/LevelState.hpp"
 #include "States/AppState.hpp"
 
-#include "Controllers/CollisionController.hpp"
 #include "Controllers/PlayerController.hpp"
 #include "Controllers/BlinkController.hpp"
 #include "Controllers/CoinController.hpp"
-#include "Controllers/BounceController.hpp"
 #include "Controllers/QBlockController.hpp"
 #include "Controllers/StatsController.hpp"
-#include "Controllers/PointsParticlesController.hpp"
-#include "Controllers/EntityController.hpp"
 #include "Controllers/GoombaController.hpp"
-#include "Controllers/MushroomController.hpp"
 #include "Controllers/BricksController.hpp"
-#include "Controllers/FireFlowerController.hpp"
-#include "Controllers/ShellMonsterController.hpp"
 #include "Controllers/SpikeController.hpp"
 #include "Controllers/PlantController.hpp"
 #include "Controllers/BlackPlantController.hpp"
@@ -32,6 +25,7 @@
 #include "Controllers/LakitoController.hpp"
 #include "Controllers/UnstableCloudController.hpp"
 #include "Controllers/FlameGoombaController.hpp"
+#include "Controllers/FlameKoopaController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"
@@ -44,7 +38,6 @@
 #include "Util/Enum.hpp"
 #include "Window.hpp"
 #include "config.hpp"
-#include "res/textures.hpp"
 
 namespace mario{
 
@@ -212,7 +205,7 @@ static auto handle_level_background_pulsing(LevelState& level){
     counter.loops = 0;
 
     opacity = 1.f;
-    counter.limit = util::random_value(10, 30) / 10.f;
+    counter.limit = util::random_value(5, 15) / 10.f;
   }
 }
 

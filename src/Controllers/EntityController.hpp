@@ -1,17 +1,13 @@
 #pragma once
 
 #include "Controllers/CollisionController.hpp"
-#include "Renderer/Drawable.hpp"
-#include "Renderer/Renderer.hpp"
 #include "States/BlockState.hpp"
-#include "States/EntityPusherState.hpp"
 #include "States/EntityState.hpp"
 #include "States/LevelState.hpp"
 #include "States/MonsterState.hpp"
 #include "Util/Loop.hpp"
 #include "Util/Util.hpp"
 #include "Window.hpp"
-#include "config.hpp"
 
 #include "Terminal.hpp"
 
@@ -95,13 +91,19 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   using Hitbox = LevelState::HitboxState;
 
   if (level.hitbox_grid[right_x][y] == Hitbox::NonSolid && entity.direction.is_right()){
-    entity.turn_around();
     entity.position.x = (right_x - 1) * BlockBase::Size + Offset;
+
+		if (!entity.follows_player){
+			entity.turn_around();
+		}
   }
 
   if (level.hitbox_grid[left_x][y] == Hitbox::NonSolid && entity.direction.is_left()){
-    entity.turn_around();
     entity.position.x = (left_x + 1) * BlockBase::Size - Offset;
+
+		if (!entity.follows_player){
+			entity.turn_around();
+		}
   }
 };
 
@@ -216,17 +218,17 @@ static auto is_player_on_entity(const EntityState& entity, const PlayerState& pl
 }
 
 static auto kill_player_on_touch(const EntityState& entity, LevelState& level){
-  if (terminal::god_mode) return;
+  if (terminal::god_mode) return false;
 
-  if (level.is_finished) return;
+  if (level.is_finished) return false;
 
-  if (!entity.is_active) return;
-  if (entity.was_hit) return;
-  if (entity.is_dead) return;
+  if (!entity.is_active) return false;
+  if (entity.was_hit) return false;
+  if (entity.is_dead) return false;
 
   auto& player = level.player;
-  if (player.is_dead) return;
-  if (is_player_on_entity(entity, player)) return;
+  if (player.is_dead) return false;
+  if (is_player_on_entity(entity, player)) return false;
 
   static constexpr auto EntityHitboxOffset = 1.f / 5.f;
   const auto entity_hitbox = collision_controller::Rect(
@@ -234,14 +236,18 @@ static auto kill_player_on_touch(const EntityState& entity, LevelState& level){
     entity.size * (1 - EntityHitboxOffset)
   );
 
-  if (!collision_controller::intersects(player, entity_hitbox)) return;
+  if (!collision_controller::intersects(player, entity_hitbox)) return false;
 
   if (player.growth == PlayerState::Growth::Big){
     player.is_shrinking = true;
+		return true;
   }
   else if (!player.is_shrinking && player.invincibility_delay <= 0.f) { 
     player.is_dead = true; 
+		return true;
   }
+
+	return false;
 };
 
 static auto was_stomped(const EntityState& entity, const PlayerState& player) -> bool{

@@ -5,13 +5,10 @@
 
 #include "States/EntityState.hpp"
 #include "States/FlyingKoopaState.hpp"
-#include "States/JumpingKoopaState.hpp"
 #include "States/PlatformState.hpp"
 #include "States/LevelState.hpp"
-#include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
-#include <iterator>
 
 namespace mario::platform_controller{
 
@@ -28,7 +25,8 @@ static auto handle_collisions(
       if (entity.gravity_flip.is_flipped()){
         return entity.position.y - platform.position.y - platform.size().y == util::in_range(-15.f, 15.f);
       }
-      return entity.position.y + entity.size.y - platform.position.y == util::in_range(-15.f, 15.f);
+      return entity.position.y + entity.size.y - platform.position.y 
+				== util::in_range(-PlatformState::ElementSize, PlatformState::ElementSize);
     } 
 
     return false;
@@ -60,13 +58,17 @@ static auto handle_collisions(
       if (entity.fall_from_edge) return;
 
       if (entity.position.x < platform.position.x - MonsterState::EdgeDetectionOffset){
-        entity.turn_around();
+				if (!entity.follows_player){
+					entity.turn_around();
+				}
         entity.position.x = platform.position.x - MonsterState::EdgeDetectionOffset;
       }
 
       const auto platform_right_edge_pos = platform.position.x + platform.size().x;
       if (entity.position.x + entity.size.x > platform_right_edge_pos + MonsterState::EdgeDetectionOffset){
-        entity.turn_around();
+				if (!entity.follows_player){
+					entity.turn_around();
+				}
         entity.position.x = platform_right_edge_pos - entity.size.x + MonsterState::EdgeDetectionOffset;
       }
 

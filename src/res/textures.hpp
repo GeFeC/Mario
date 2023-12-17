@@ -22,6 +22,9 @@ static auto castle_bg = Texture("castle_background.png");
 static auto platform = Texture("platform.png");
 
 //Blocks and Background objects
+static auto lava_bottom = Texture("tile/lava1.png");
+static auto lava_top = Texture("tile/lava2.png");
+
 static auto bricks_particles_normal = Texture("bricks_particle/normal.png");
 static auto bricks_particles_blue = Texture("bricks_particle/blue.png");
 
@@ -286,6 +289,12 @@ static auto yellow_goomba_walk = std::array<Texture, 2>{
   Texture("entity/goomba/yellow1.png")
 };
 static auto yellow_goomba_dead = Texture("entity/goomba/yellowdead.png");
+
+static auto flame_koopa_walk = std::array<Texture, 2>{
+  Texture("entity/koopa/flame1.png"),
+  Texture("entity/koopa/flame2.png")
+};
+static auto flame_koopa_dead = Texture("entity/koopa/flamedead.png");
 
 static auto purple_koopa_walk = std::array<Texture, 2>{
   Texture("entity/koopa/purple1.png"),

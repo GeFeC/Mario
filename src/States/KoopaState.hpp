@@ -9,7 +9,6 @@ struct KoopaState : ShellMonsterState{
     Green, Red, Purple
   } type;
 
-protected:
   template<typename Entity>
   static auto make(const glm::vec2& position){
     auto koopa = Entity();
@@ -25,7 +24,6 @@ protected:
     return koopa;
   }
 
-public:
   static auto make_green(const glm::vec2& position){
     auto koopa = make<KoopaState>(position);
     koopa.type = Type::Green;
