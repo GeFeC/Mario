@@ -1,7 +1,7 @@
 #pragma once
 
-#include "States/PointsParticlesState.hpp"
 #include "Views/Util.hpp"
+#include "Views/Entities.hpp"
 #include "States/BlockState.hpp"
 #include "States/LevelState.hpp"
 
@@ -10,7 +10,7 @@ namespace mario::views{
 template<typename T, typename = util::not_derived<T, BlockBase>>
 static auto render_block(const T&, const LevelState&){}
 
-static auto render_block(const BlockBase& block, const LevelState& level){
+static auto render_block(const BlockBase& block, const LevelState& level) -> void{
   const auto& offset = level.camera_offset;
   if (!views::is_component_on_screen(block, offset)) return;
 
@@ -25,7 +25,6 @@ static auto render_block(const BlockBase& block, const LevelState& level){
   renderer::draw(drawable);
 }
 
-static auto render_entity(const EntityState&, const LevelState&) -> void;
 static auto render_block(const BricksBlockState& block, const LevelState& level){
   for (const auto& particle : block.particles){
     render_entity(particle, level);

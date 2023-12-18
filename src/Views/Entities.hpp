@@ -3,7 +3,6 @@
 #include "Renderer/Drawable.hpp"
 #include "States/FlameGoombaState.hpp"
 #include "Views/Util.hpp"
-#include "Views/Blocks.hpp"
 
 #include "Util/Util.hpp"
 #include "States/EntityState.hpp"
@@ -47,6 +46,8 @@ static auto render_entity(const FlameParticleState& flame, const LevelState& lev
     glm::vec4(1.f, flame.opacity, 0.f, flame.opacity)
   });
 }
+
+static auto render_block(const BlockBase& block, const LevelState& level) -> void;
 
 static auto render_entity(const FlameKoopaState& koopa, const LevelState& level){
 	render_entity(koopa.fireball, level);

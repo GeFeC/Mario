@@ -13,11 +13,12 @@ static auto run_level71(AppState& app){
   level.type = LevelState::Type::Horizontal;
   level.number = { 7, 1 };
   level.extra_textures = {
-    &textures::castle_bg,
     texture_groups::flame_goomba,
+		texture_groups::red_hammerbro,
+    &textures::castle_bg,
 		&textures::lava_bottom,
 		&textures::lava_top,
-		&textures::platform
+		&textures::platform,
   };
 
   run_levelbase(app, level, [](AppState& app){

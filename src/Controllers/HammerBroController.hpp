@@ -7,7 +7,6 @@
 #include "Controllers/MonsterController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
 
-#include "Util/Util.hpp"
 #include "Window.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
