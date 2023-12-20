@@ -322,7 +322,7 @@
  <tile id="111">
   <image width="32" height="44" source="../textures/entity/plant/black0.png"/>
  </tile>
- <tile id="187">
+ <tile id="118">
   <image width="32" height="32" source="../textures/coin/purple0.png"/>
  </tile>
  <tile id="120">

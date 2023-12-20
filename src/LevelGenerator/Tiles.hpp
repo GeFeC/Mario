@@ -102,7 +102,7 @@ enum class Tile{
   BlackPlant = 111,
   SmallStone = 116,
   UnstableCloud = 117,
-  PurpleCoin = 187,
+  PurpleCoin = 118,
   FlameGoomba = 120,
 	FlameKoopa = 188,
 	FlameKoopaWings = 189,
