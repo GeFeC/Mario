@@ -4,7 +4,6 @@
 #include "States/FlyingKoopaState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/ShellMonsterController.hpp"
-#include "Window.hpp"
 
 namespace mario::flying_koopa_controller{
 
@@ -13,7 +12,8 @@ static auto run_controller_base(
     LevelState& level, 
     const std::array<renderer::Texture, 2>& walk_frames_with_wings,
     const std::array<renderer::Texture, 2>& walk_frames_without_wings,
-    float& timer
+    float& timer,
+		bool endures_fireball = false
 ){
   //Motion
   if (koopa.has_wings && koopa.should_collide){
@@ -45,7 +45,12 @@ static auto run_controller_base(
   }
 
   //Interaction with player
-  monster_controller::die_when_hit_by_fireball(koopa, level);
+	if (endures_fireball){
+		monster_controller::endure_fireball(koopa, level.player);
+	}
+	else{
+		monster_controller::die_when_hit_by_fireball(koopa, level);
+	}
   monster_controller::become_active_when_seen(koopa, level);
 
   if (koopa.has_wings){

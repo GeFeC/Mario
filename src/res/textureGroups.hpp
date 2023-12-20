@@ -80,6 +80,11 @@ static const auto purple_koopa = TextureGroup({
   &textures::purple_koopa_walk[1]
 });
 
+static const auto flame_flying_koopa = purple_koopa.with({
+  &textures::flame_flying_koopa_walk[0],
+  &textures::flame_flying_koopa_walk[1]
+});
+
 static const auto purple_flying_koopa = purple_koopa.with({
   &textures::purple_flying_koopa_walk[0],
   &textures::purple_flying_koopa_walk[1]

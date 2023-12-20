@@ -168,12 +168,18 @@ static auto render_all_points_particles(const LevelState& level){
     }
   });
 
-  level.game_objects.for_each_derived<EntityState>([&](const auto& entity){
+  level.game_objects.for_each_derived<MonsterState>([&](const auto& entity){
     render_points_particles(entity.points_generator.items, level.camera_offset);
   });
 }
 
 static auto render_all_level_objects(const LevelState& level){
+  renderer::draw_with_shadow([&]{
+    level.game_objects.for_each_type<UpfireState>([&](auto& object){
+      render_entity(object, level);
+    });
+  });
+
   renderer::draw_with_shadow([&]{
     level.game_objects.for_each([&](auto& object){
       render_background(object, level);
@@ -198,7 +204,9 @@ static auto render_all_level_objects(const LevelState& level){
 
   renderer::draw_with_shadow([&]{
     level.game_objects.for_each([&](auto& object){
-      render_entity(object, level);
+			if constexpr (!std::is_convertible_v<decltype(object), UpfireState>){
+				render_entity(object, level);
+			}
     });
   });
 

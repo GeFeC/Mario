@@ -10,13 +10,12 @@ template<typename T>
 static auto render_background(const T&, const LevelState&) {}
 
 static auto render_background(const LavaState& lava, const LevelState& level){
-	static auto offset = 0.f;
-	offset += window::delta_time;
-	if (offset > 1.f) offset -= 1.f;
-
 	util::for_2d([&](auto x, auto y){
 		auto drawable = renderer::Drawable{};
-		drawable.position = BlockBase::Size * (lava.position + glm::vec2(offset + x, y)) - level.camera_offset;
+		drawable.position = BlockBase::Size 
+			* (lava.position + glm::vec2(level.lava_offset + x, y)) 
+			- level.camera_offset;
+
 		drawable.size = glm::vec2(BlockBase::Size);
 
 		drawable.texture = y == 0 ? &textures::lava_top : &textures::lava_bottom;
@@ -39,16 +38,16 @@ static auto render_background(const CloudState& cloud, const LevelState& level){
   const auto x = position.x - level.cloud_offset;
   const auto y = position.y;
 
-  render_block(BlockState({ x, y  }, &top_left), level);
-  render_block(BlockState({ x, y + 1  }, &bottom_left), level);
+  render_block(BlockState({ x, y }, &top_left), level);
+  render_block(BlockState({ x, y + 1 }, &bottom_left), level);
 
   for (int i = 0; i < size; ++i){
-    render_block(BlockState({ x + i + 1, y  }, &top_center), level);
-    render_block(BlockState({ x + i + 1, y + 1  }, &bottom_center), level);
+    render_block(BlockState({ x + i + 1, y }, &top_center), level);
+    render_block(BlockState({ x + i + 1, y + 1 }, &bottom_center), level);
   }
 
-  render_block(BlockState({ x + size + 1, y  }, &top_right), level);
-  render_block(BlockState({ x + size + 1, y + 1  }, &bottom_right), level);
+  render_block(BlockState({ x + size + 1, y }, &top_right), level);
+  render_block(BlockState({ x + size + 1, y + 1 }, &bottom_right), level);
 }
 
 static auto render_background(const BackgroundBushState& bush, const LevelState& level){

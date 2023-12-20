@@ -114,6 +114,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::RedKoopaWings) objects.push(JumpingKoopaState::make_red({ x, y }));
     else if (tile == Tile::GreenKoopaWings) objects.push(JumpingKoopaState::make_green({ x, y }));
     else if (tile == Tile::PurpleKoopaWings) objects.push(JumpingKoopaState::make_purple({ x, y }));
+    else if (tile == Tile::FlameKoopaWings) objects.push(FlameJumpingKoopaState::make({ x, y }));
     else if (tile == Tile::GreenPlant) objects.push(PlantState::make_green({ x, y }));
     else if (tile == Tile::RedPlant) objects.push(PlantState::make_red({ x, y }));
     else if (tile == Tile::BlackPlant) objects.push(BlackPlantState::make({ x, y }));

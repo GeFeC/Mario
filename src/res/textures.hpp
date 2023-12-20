@@ -222,6 +222,8 @@ static auto black_big_mario_swim = std::array<Texture, 2>{
 static auto medium_mario = Texture("player/mario/growing.png");
 
 //Entities:
+static auto upfire = Texture("upfire.png");
+
 static auto hammer = std::array<Texture, 4>{
   Texture("entity/hammerbro/hammer1.png"),
   Texture("entity/hammerbro/hammer2.png"),
@@ -301,6 +303,11 @@ static auto purple_koopa_walk = std::array<Texture, 2>{
   Texture("entity/koopa/purple2.png")
 };
 static auto purple_koopa_dead = Texture("entity/koopa/purpledead.png");
+
+static auto flame_flying_koopa_walk = std::array<Texture, 2>{
+  Texture("entity/koopa/flame_flying1.png"),
+  Texture("entity/koopa/flame_flying2.png")
+};
 
 static auto purple_flying_koopa_walk = std::array<Texture, 2>{
   Texture("entity/koopa/purple_flying1.png"),

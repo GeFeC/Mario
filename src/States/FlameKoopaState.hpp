@@ -6,9 +6,11 @@
 
 namespace mario{
 
-struct FlameKoopaState : ShellMonsterState{
+struct FlameKoopaBase{
 	FireballState fireball;
+};
 
+struct FlameKoopaState : ShellMonsterState, FlameKoopaBase{
 	static auto make(const glm::vec2& position){
 		auto koopa = KoopaState::make<FlameKoopaState>(position);
 		koopa.current_texture = &textures::flame_koopa_walk[0];

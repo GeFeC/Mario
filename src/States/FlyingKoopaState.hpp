@@ -11,8 +11,9 @@ struct FlyingKoopaState : KoopaState{
   float start_time = 0.f;
   bool has_wings = true;
 
+	template<typename T = FlyingKoopaState>
   static auto make(const glm::vec2& position, const glm::vec2& axis){
-    auto koopa = KoopaState::make<FlyingKoopaState>(position);
+    auto koopa = KoopaState::make<T>(position);
 
     koopa.initial_position = position * BlockBase::Size;
     koopa.movement_axis = axis;

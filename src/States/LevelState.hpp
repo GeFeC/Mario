@@ -1,5 +1,8 @@
 #pragma once
 
+#include "States/FlameFlyingKoopaState.hpp"
+#include "States/FlameJumpingKoopaState.hpp"
+#include "States/UpfireState.hpp"
 #include "States/FlameKoopaState.hpp"
 #include "States/FlameGoombaState.hpp"
 #include "States/StatsState.hpp"
@@ -67,7 +70,9 @@ struct LevelState{
     KoopaState,
 		FlameKoopaState,
     JumpingKoopaState,
+    FlameJumpingKoopaState,
     FlyingKoopaState,
+    FlameFlyingKoopaState,
     BeetleState,
     SpikeState,
     MushroomState,
@@ -79,6 +84,7 @@ struct LevelState{
     LakitoState,
 
     //Obstacles
+		UpfireState,
     FireBarState,
     PlatformState,
     LoopedPlatformState,
@@ -146,6 +152,7 @@ struct LevelState{
 
   float cloud_offset = 0.f;
   float water_level = util::BigValue;
+	float lava_offset = 0.f;
 
   float load_delay = 3.f;
   float finish_delay = 2.f;

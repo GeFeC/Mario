@@ -2,8 +2,44 @@
 
 #include "Controllers/EntityController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
+#include "Controllers/FireballController.hpp"
 
 namespace mario::monster_controller{
+
+template<typename GenericMonster>
+static auto throw_fireball(GenericMonster& monster, LevelState& level){
+	fireball_controller::run(monster.fireball, level);
+	if (entity_controller::kill_player_on_touch(monster.fireball, level)){
+		fireball_controller::reset(monster.fireball);
+	}
+
+	if (monster.in_shell) return;
+	if (!monster.is_active) return;
+
+	const auto distance_to_player = std::abs(monster.position.x - level.player.position.x);
+
+	if (!monster.fireball.is_active && distance_to_player < 8.f * BlockBase::Size){
+		const auto fireball_y = monster.position.y + BlockBase::Size / 2.f;
+		const auto fireball_x = monster.position.x + (monster.direction.is_left()
+			? 0.f
+			: monster.size.x - monster.fireball.size.x);
+
+		monster.fireball.shoot(
+			glm::vec2(fireball_x, fireball_y), 
+			monster.direction, 
+			PlayerState::FireballSpeed
+		);
+	}
+}
+
+static auto follow_player(MonsterState& monster, const LevelState& level){
+	if (!level.player.is_dead){
+		if (monster.position.x > level.player.position.x) monster.set_direction(util::Direction::left());
+		else monster.set_direction(util::Direction::right());
+	}
+
+	if (level.player.is_dead) monster.follows_player = false;
+}
 
 static auto handle_points_particles(MonsterState& monster){
   for (auto& p : monster.points_generator.items){

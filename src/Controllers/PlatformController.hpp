@@ -39,7 +39,7 @@ static auto handle_collisions(
     player.position += platform.position - previous_pos;
   }
 
-  level.game_objects.for_each_derived<EntityState>([&](auto& entity){
+  level.game_objects.for_each_derived<MonsterState>([&](auto& entity){
     if constexpr (std::is_convertible_v<decltype(entity), PlantState>) return;
 
     if (is_entity_on_platform(entity)){

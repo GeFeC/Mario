@@ -152,7 +152,8 @@ static auto handle_gravity_base(EntityState& entity, const LevelState& level, co
   auto position_increaser = entity.gravity * window::delta_time * 70.f;
 
   static constexpr auto ViewHeight = LevelState::BlocksInColumn * BlockBase::Size;
-  const auto can_player_see_entity = entity.position.y < level.camera_offset.y + ViewHeight;
+  auto can_player_see_entity = entity.position.y < level.camera_offset.y + ViewHeight;
+	
   if (entity.gravity_flip.is_flipped() || can_player_see_entity || level.is_level_underground()){
     detect_collision_with_level(entity, level, [&](const auto& collision_state){
       collision_callback(collision_state, position_increaser);

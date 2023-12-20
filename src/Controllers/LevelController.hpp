@@ -26,6 +26,9 @@
 #include "Controllers/UnstableCloudController.hpp"
 #include "Controllers/FlameGoombaController.hpp"
 #include "Controllers/FlameKoopaController.hpp"
+#include "Controllers/FlameFlyingKoopaController.hpp"
+#include "Controllers/FlameJumpingKoopaController.hpp"
+#include "Controllers/UpfireController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"
@@ -197,7 +200,7 @@ static auto handle_checkpoints(LevelState& level){
 
 static auto handle_level_background_pulsing(LevelState& level){
   auto& opacity = level.background_opacity;
-  opacity = std::max(opacity - window::delta_time, 0.f);
+  opacity = std::max(opacity - window::delta_time, 0.5f);
 
   auto& counter = level.background_pulse_counter;
   counter.run(window::delta_time);
@@ -207,6 +210,11 @@ static auto handle_level_background_pulsing(LevelState& level){
     opacity = 1.f;
     counter.limit = util::random_value(5, 15) / 10.f;
   }
+}
+
+static auto handle_lava(LevelState& level){
+	level.lava_offset += window::delta_time;
+	if (level.lava_offset > 1.f) level.lava_offset -= 1.f;
 }
 
 static auto run(AppState& app){
@@ -221,6 +229,8 @@ static auto run(AppState& app){
     level.load_delay -= window::delta_time;
     return;
   }
+
+	handle_lava(level);
 
   handle_checkpoints(level);
   restart_when_player_fell_out(app);

@@ -3,9 +3,7 @@
 #include "States/EntityState.hpp"
 #include "States/FireballState.hpp"
 #include "Util/LoopedCounter.hpp"
-#include "config.hpp"
 
-#include <unordered_map>
 #include <array>
 
 namespace mario{

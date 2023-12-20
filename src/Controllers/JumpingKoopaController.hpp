@@ -13,7 +13,8 @@ static auto run_controller_base(
     JumpingKoopaState& koopa, 
     LevelState& level, 
     const std::array<renderer::Texture, 2>& walk_frames_with_wings,
-    const std::array<renderer::Texture, 2>& walk_frames_without_wings
+    const std::array<renderer::Texture, 2>& walk_frames_without_wings,
+		bool endures_fireball = false
 ){
   if (koopa.has_wings && koopa.is_on_ground){
     koopa.gravity = JumpingKoopaState::JumpForce;
@@ -31,7 +32,12 @@ static auto run_controller_base(
   monster_controller::die_when_on_bouncing_block(koopa, level);
 
   //Interaction with player
-  monster_controller::die_when_hit_by_fireball(koopa, level);
+	if (endures_fireball){
+		monster_controller::endure_fireball(koopa, level.player);
+	}
+	else{
+		monster_controller::die_when_hit_by_fireball(koopa, level);
+	}
   monster_controller::become_active_when_seen(koopa, level);
 
   if (koopa.has_wings) {
