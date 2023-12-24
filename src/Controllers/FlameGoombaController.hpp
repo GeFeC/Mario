@@ -45,7 +45,7 @@ static auto run_controller(FlameGoombaState& goomba, LevelState& level){
   monster_controller::endure_fireball(goomba, level.player);
   monster_controller::become_active_when_seen(goomba, level);
   monster_controller::handle_points_particles(goomba);
-  monster_controller::run_movement_animation(goomba, textures::flame_goomba_walk);
+  entity_controller::run_movement_animation(goomba, textures::flame_goomba_walk);
   monster_controller::handle_turning_around(goomba);
   monster_controller::kill_player_on_touch(goomba, level);
   entity_controller::handle_gravity(goomba, level);

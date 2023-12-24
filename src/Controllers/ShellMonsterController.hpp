@@ -23,7 +23,7 @@ static auto run(
 
   if (entity.is_dead || entity.in_shell) return;
 
-  monster_controller::run_movement_animation(entity, walk_frames);
+  entity_controller::run_movement_animation(entity, walk_frames);
 }
 
 static auto hide_in_shell(ShellMonsterState& entity, const renderer::Texture& dead_texture){

@@ -37,7 +37,7 @@ static auto run_controller_base(
       koopa.direction = util::Direction::right();
     }
 
-    monster_controller::run_movement_animation(koopa, walk_frames_with_wings);
+    entity_controller::run_movement_animation(koopa, walk_frames_with_wings);
   }
   else{
     koopa.set_direction(koopa.direction);

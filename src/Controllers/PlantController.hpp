@@ -65,13 +65,13 @@ static auto run_controller_base(PlantState& plant, LevelState& level){
 static auto run_green_plant_controller(PlantState& plant, LevelState& level){
   run_controller_base(plant, level);
   
-  monster_controller::run_movement_animation(plant, textures::plant);
+  entity_controller::run_movement_animation(plant, textures::plant);
 }
 
 static auto run_red_plant_controller(PlantState& plant, LevelState& level){
   run_controller_base(plant, level);
   
-  monster_controller::run_movement_animation(plant, textures::red_plant);
+  entity_controller::run_movement_animation(plant, textures::red_plant);
 }
 
 } //namespace mario::plant_controller

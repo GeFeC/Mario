@@ -60,7 +60,7 @@ static auto run_controller(KingKoopaState& boss, LevelState& level){
 
   //Movement
   if (boss.hp > 0 && !boss.in_shell){
-    monster_controller::run_movement_animation(boss, textures::green_koopa_walk);
+    entity_controller::run_movement_animation(boss, textures::green_koopa_walk);
   }
 
   boss_controller::run(boss, level);

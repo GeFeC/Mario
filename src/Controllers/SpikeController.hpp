@@ -21,7 +21,7 @@ static auto run_controller(SpikeState& spike, LevelState& level){
 
   monster_controller::handle_turning_around(spike);
 
-  monster_controller::run_movement_animation(spike, textures::spike_walk);
+  entity_controller::run_movement_animation(spike, textures::spike_walk);
 
   //Interaction with blocks
   monster_controller::die_when_on_bouncing_block(spike, level);

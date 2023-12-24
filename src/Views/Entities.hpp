@@ -49,6 +49,16 @@ static auto render_entity(const FlameParticleState& flame, const LevelState& lev
 
 static auto render_block(const BlockBase& block, const LevelState& level) -> void;
 
+static auto render_entity(const BowserState& bowser, const LevelState& level){
+	for (const auto& fire : bowser.fire_generator.items){
+		render_entity(fire, level);
+	}
+
+	renderer::highlight_mode = bowser.is_highlighted;
+	render_entity(bowser | util::as<EntityState>, level);
+	renderer::highlight_mode = false;
+}
+
 static auto render_entity(const FlameKoopaState& koopa, const LevelState& level){
 	render_entity(koopa.fireball, level);
 	render_block(koopa.fireball.explosion, level);

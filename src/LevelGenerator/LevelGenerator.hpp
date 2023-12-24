@@ -125,6 +125,7 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::GreyFish) objects.push(FishState::make_grey({ x, y }));
     else if (tile == Tile::RedFish) objects.push(FishState::make_red({ x, y }));
     else if (tile == Tile::Squid) objects.push(SquidState::make({ x, y }));
+    else if (tile == Tile::Bowser) objects.push(BowserState::make({ x, y }));
 
     else if (tile == Tile::Hitbox) put_hitbox_block(level, { x, y });
     else if (tile == Tile::Finish) level.finish_position = { x, y };

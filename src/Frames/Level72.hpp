@@ -13,12 +13,11 @@ static auto run_level72(AppState& app){
   level.number = { 7, 2 };
   level.extra_textures = {
     &textures::castle_bg,
-		&textures::lava_bottom,
-		&textures::lava_top,
 		&textures::platform,
 		&textures::upfire,
 		texture_groups::flame_flying_koopa,
-		texture_groups::flame_koopa
+		texture_groups::flame_koopa,
+		texture_groups::lava
   };
 
   run_levelbase(app, level, [](AppState& app){

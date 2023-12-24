@@ -77,7 +77,7 @@ static auto run_controller_base(
   auto copy = textures::hammerbro_walk[0];
 
   entity_controller::handle_gravity(hammerbro, level);
-  monster_controller::run_movement_animation(hammerbro, *current_walk_frames);
+  entity_controller::run_movement_animation(hammerbro, *current_walk_frames);
 
   //Interaction with player
   monster_controller::die_when_hit_by_fireball(hammerbro, level);

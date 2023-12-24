@@ -14,7 +14,7 @@ static auto run_controller(FlameJumpingKoopaState& koopa, LevelState& level){
 
 	shell_monster_controller::handle_shell(koopa, level, textures::flame_koopa_dead);
 
-	if (!koopa.in_shell){
+	if (!koopa.in_shell && koopa.position.y >= level.player.position.y - koopa.size.y){
 		monster_controller::follow_player(koopa, level);
 	}
 

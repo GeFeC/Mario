@@ -29,6 +29,7 @@
 #include "Controllers/FlameFlyingKoopaController.hpp"
 #include "Controllers/FlameJumpingKoopaController.hpp"
 #include "Controllers/UpfireController.hpp"
+#include "Controllers/BowserController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"

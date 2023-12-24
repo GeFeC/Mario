@@ -132,6 +132,7 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::GreyFish, texture_groups::grey_fish),
   pair(Tile::RedFish, texture_groups::red_fish),
   pair(Tile::Squid, texture_groups::squid),
+  pair(Tile::Bowser, texture_groups::bowser),
 };
 
 static auto allocated_textures = std::unordered_set<Tile>{};

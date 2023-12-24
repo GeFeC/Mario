@@ -10,9 +10,7 @@ namespace mario{
 static auto run_controller(UpfireState& upfire, LevelState& level){
 	entity_controller::kill_player_on_touch(upfire, level);	
 
-	if (upfire.is_active){
-		entity_controller::handle_gravity(upfire, level);
-	}
+	entity_controller::handle_gravity(upfire, level);
 
 	if (upfire.gravity > 0.f){
 		upfire.vertical_flip = util::Flip::flip();

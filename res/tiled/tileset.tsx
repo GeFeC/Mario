@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="32" tileheight="64" tilecount="111" columns="0">
+<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="64" tileheight="64" tilecount="112" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="73">
   <image width="32" height="32" source="../textures/bush/center.png"/>
@@ -244,7 +244,7 @@
  <tile id="15">
   <image width="32" height="32" source="../textures/tile/cloud.png"/>
  </tile>
- <tile id="159">
+ <tile id="117">
   <image width="32" height="32" source="../textures/tile/cloud_unstable.png"/>
  </tile>
  <tile id="106">
@@ -333,5 +333,8 @@
  </tile>
  <tile id="189">
   <image width="32" height="48" source="../textures/entity/koopa/flame_flying1.png"/>
+ </tile>
+ <tile id="190">
+  <image width="64" height="64" source="../textures/entity/bowser/0.png"/>
  </tile>
 </tileset>

@@ -14,7 +14,7 @@ namespace mario{
 
 static auto run_controller(KingGoombaState& boss, LevelState& level){
   if (boss.hp > 0){
-    monster_controller::run_movement_animation(boss, textures::king_goomba_walk);
+    entity_controller::run_movement_animation(boss, textures::king_goomba_walk);
   }
 
   //Jumping

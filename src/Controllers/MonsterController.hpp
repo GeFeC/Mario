@@ -34,8 +34,12 @@ static auto throw_fireball(GenericMonster& monster, LevelState& level){
 
 static auto follow_player(MonsterState& monster, const LevelState& level){
 	if (!level.player.is_dead){
-		if (monster.position.x > level.player.position.x) monster.set_direction(util::Direction::left());
-		else monster.set_direction(util::Direction::right());
+		if (monster.position.x > level.player.position.x + BlockBase::Size + monster.size.x) {
+			monster.set_direction(util::Direction::left());
+		}
+		if (monster.position.x + BlockBase::Size < level.player.position.x) {
+			monster.set_direction(util::Direction::right());
+		}
 	}
 
 	if (level.player.is_dead) monster.follows_player = false;
@@ -196,11 +200,6 @@ static auto bounce_when_on_bouncing_block(MonsterState& entity, LevelState& leve
     entity.gravity = MonsterState::BouncePower;
     entity.is_on_ground = false;
   });
-}
-
-static auto run_movement_animation(MonsterState& entity, const std::array<renderer::Texture, 2>& walk_frames){
-  const auto counter = glfwGetTime() * 8.f | util::as<int>;
-  entity.current_texture = &walk_frames[counter % 2];
 }
 
 static auto handle_turning_around(MonsterState& entity){

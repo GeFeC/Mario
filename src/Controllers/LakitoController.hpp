@@ -13,7 +13,7 @@ namespace mario::lakito_controller{
 static auto run_thrown_spike_controller(LakitoState::ThrownSpikeState& thrown_spike, LevelState& level){
   entity_controller::kill_player_on_touch(thrown_spike, level);
   entity_controller::handle_gravity(thrown_spike, level);
-  monster_controller::run_movement_animation(thrown_spike, textures::lakito_throw);
+  entity_controller::run_movement_animation(thrown_spike, textures::lakito_throw);
 
   if (thrown_spike.is_on_ground){
     auto& new_spike = level.game_objects.push(SpikeState::make({ 0, 0 }));

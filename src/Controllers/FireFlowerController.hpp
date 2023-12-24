@@ -1,12 +1,9 @@
 #pragma once
 
-#include "States/EntityState.hpp"
-#include "States/BlockState.hpp"
+#include "States/LevelState.hpp"
 
-#include "Controllers/PlayerController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
-
-#include "Window.hpp"
+#include "Controllers/CollisionController.hpp"
 
 namespace mario::fire_flower_controller{
 
@@ -18,6 +15,7 @@ static auto run(FireFlowerState& flower, LevelState& level){
   //Interaction with player
   auto& player = level.player;
   if (collision_controller::intersects(player, flower) && flower.is_visible){
+		flower.points_generator.make_item_if_needed();
     flower.points_generator.item().set_active(
       FireFlowerState::RewardForEating,
       flower.position

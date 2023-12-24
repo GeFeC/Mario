@@ -26,6 +26,7 @@
 #include "States/FishState.hpp"
 #include "States/SquidState.hpp"
 #include "States/LakitoState.hpp"
+#include "States/BowserState.hpp"
 
 #include "States/CoinPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
@@ -82,6 +83,7 @@ struct LevelState{
     FishState,
     SquidState,
     LakitoState,
+		BowserState,
 
     //Obstacles
 		UpfireState,

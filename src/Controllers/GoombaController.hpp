@@ -17,7 +17,7 @@ static auto set_dead(GoombaState& goomba, const renderer::Texture& dead_texture)
 
 static auto run_walk_animation(GoombaState& goomba, const std::array<renderer::Texture, 2>& walk_frames){
   if (goomba.is_dead) return;
-  monster_controller::run_movement_animation(goomba, walk_frames);
+  entity_controller::run_movement_animation(goomba, walk_frames);
 }
 
 static auto controller_base(GoombaState& goomba, LevelState& level){

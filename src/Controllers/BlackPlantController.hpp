@@ -67,7 +67,7 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
   }
 
   plant_controller::run_controller_base(plant, level);
-  monster_controller::run_movement_animation(plant, textures::black_plant);
+  entity_controller::run_movement_animation(plant, textures::black_plant);
 }
 
 } //namespace mario

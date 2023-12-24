@@ -222,6 +222,21 @@ static auto black_big_mario_swim = std::array<Texture, 2>{
 static auto medium_mario = Texture("player/mario/growing.png");
 
 //Entities:
+static auto bowser_walk = std::array<Texture, 2>{
+	Texture("entity/bowser/2.png"),
+	Texture("entity/bowser/3.png")
+};
+
+static auto bowser_walk_attack = std::array<Texture, 2>{
+	Texture("entity/bowser/0.png"),
+	Texture("entity/bowser/1.png")
+};
+
+static auto bowser_fire = std::array<Texture, 2>{
+	Texture("entity/bowser/fire1.png"),
+	Texture("entity/bowser/fire2.png")
+};
+
 static auto upfire = Texture("upfire.png");
 
 static auto hammer = std::array<Texture, 4>{

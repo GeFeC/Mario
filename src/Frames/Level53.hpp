@@ -1,9 +1,6 @@
 #pragma once
 
 #include "States/AppState.hpp"
-#include "Views/Level.hpp"
-#include "Controllers/LevelController.hpp"
-#include "Frame.hpp"
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 #include "Frames/LevelBase.hpp"

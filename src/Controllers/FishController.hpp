@@ -75,12 +75,12 @@ static auto controller_base(FishState& fish, LevelState& level){
 
 static auto grey_fish_controller(FishState& fish, LevelState& level){
   controller_base(fish, level);
-  monster_controller::run_movement_animation(fish, textures::grey_fish_swim);
+  entity_controller::run_movement_animation(fish, textures::grey_fish_swim);
 }
 
 static auto red_fish_controller(FishState& fish, LevelState& level){
   controller_base(fish, level);
-  monster_controller::run_movement_animation(fish, textures::red_fish_swim);
+  entity_controller::run_movement_animation(fish, textures::red_fish_swim);
 }
 
 } //namespace mario::fish_controller

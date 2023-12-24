@@ -29,7 +29,7 @@ static auto run_controller(KingCheepState& boss, LevelState& level){
   boss.timer += window::delta_time;
 
   if (boss.hp > 0){
-    monster_controller::run_movement_animation(boss, textures::red_fish_swim);
+    entity_controller::run_movement_animation(boss, textures::red_fish_swim);
   }
   else{
     entity_controller::handle_gravity(boss, level);

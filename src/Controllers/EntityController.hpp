@@ -139,6 +139,11 @@ static auto handle_movement(EntityState& entity, const LevelState& level){
   entity.position.x -= left_boost;
 }
 
+static auto run_movement_animation(EntityState& entity, const std::array<renderer::Texture, 2>& frames, float speed = 8.f){
+  const auto counter = glfwGetTime() * speed | util::as<int>;
+  entity.current_texture = &frames[counter % 2];
+}
+
 template<typename Callable>
 static auto handle_gravity_base(EntityState& entity, const LevelState& level, const Callable& collision_callback){
   if (entity.is_dead && entity.death_delay > 0.f) return;
@@ -159,8 +164,8 @@ static auto handle_gravity_base(EntityState& entity, const LevelState& level, co
       collision_callback(collision_state, position_increaser);
     });
   }
-  else if (&entity != &level.player){
-    entity.position.y = util::BigValue;
+  else if (&entity != &level.player && entity.should_collide){
+		entity.position.y = util::BigValue;
   }
 
   static constexpr auto MaxGravityForce = 100.f;

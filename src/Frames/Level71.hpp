@@ -15,9 +15,8 @@ static auto run_level71(AppState& app){
   level.extra_textures = {
     texture_groups::flame_goomba,
 		texture_groups::red_hammerbro,
+		texture_groups::lava,
     &textures::castle_bg,
-		&textures::lava_bottom,
-		&textures::lava_top,
 		&textures::platform,
   };
 

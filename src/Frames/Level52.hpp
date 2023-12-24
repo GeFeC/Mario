@@ -1,9 +1,7 @@
 #pragma once
 
-#include "LevelGenerator/Builder.hpp"
 #include "States/AppState.hpp"
 #include "Frames/LevelBase.hpp"
-#include "res/textureGroups.hpp"
 #include "res/textures.hpp"
 
 namespace mario::frames{
@@ -23,10 +21,10 @@ static auto run_level52(AppState& app){
 
     level.player.position = glm::vec2(2, 4) * BlockBase::Size;
 
+    level.game_objects.push(FireBarState({ 7, 43 }, 4));
+
     level_generator::generate_level(level, "level52_1.csv");
     level_generator::generate_level(level, "level52_2.csv");
-
-    level.game_objects.push(FireBarState({ 7, 43 }, 4));
   });
 }
 

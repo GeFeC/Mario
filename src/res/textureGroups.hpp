@@ -250,6 +250,7 @@ static const auto red_hammerbro = TextureGroup({
   &textures::hammer[2],
   &textures::hammer[3]
 });
+
 static const auto red_cloud = TextureGroup({
   &textures::red_cloud_top_left,
   &textures::red_cloud_top_right,
@@ -282,4 +283,17 @@ static const auto red_hill = TextureGroup({
   &textures::red_hill_center_dot
 });
 
+static const auto lava = TextureGroup({
+	&textures::lava_top,
+	&textures::lava_bottom
+});
+
+static const auto bowser = TextureGroup({
+	&textures::bowser_walk[0],
+	&textures::bowser_walk[1],
+	&textures::bowser_walk_attack[0],
+	&textures::bowser_walk_attack[1],
+	&textures::bowser_fire[0],
+	&textures::bowser_fire[1]
+});
 } //namespace mario::texture_groups

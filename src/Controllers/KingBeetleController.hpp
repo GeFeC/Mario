@@ -14,7 +14,7 @@ namespace mario{
 
 static auto run_controller(KingBeetleState& boss, LevelState& level){
   if (boss.hp > 0){
-    monster_controller::run_movement_animation(boss, textures::beetle_walk);
+    entity_controller::run_movement_animation(boss, textures::beetle_walk);
   }
 
   monster_controller::endure_fireball(boss, level.player);
