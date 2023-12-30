@@ -16,6 +16,7 @@ struct FlameKoopaState : ShellMonsterState, FlameKoopaBase{
 		koopa.current_texture = &textures::flame_koopa_walk[0];
 		koopa.fall_from_edge = false;
 		koopa.follows_player = true;
+		koopa.reward_for_killing = 400;
 
 		return koopa;
 	}

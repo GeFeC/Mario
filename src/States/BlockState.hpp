@@ -1,14 +1,10 @@
 #pragma once
 
 #include "Renderer/Texture.hpp"
-#include "Renderer/Text.hpp"
-
 #include "States/EntityState.hpp"
-
 #include "res/textures.hpp"
 
 #include <glm/glm.hpp>
-#include <vector>
 #include <array>
 
 namespace mario{
@@ -117,6 +113,7 @@ struct BackgroundHillState : BlockState{
   explicit BackgroundHillState(const glm::vec2& position, renderer::Texture const* texture)
     : BlockState(position, texture) {}
 };
+
 struct BackgroundBushState : BlockState{
   explicit BackgroundBushState(const glm::vec2& position, renderer::Texture const* texture)
     : BlockState(position, texture) {}

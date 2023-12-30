@@ -16,7 +16,7 @@ struct FishState : MonsterState{
   bool started_jumping = false;
 
   enum class Type{
-    Grey, Red
+    Grey, Red, Flame
   } type;
 
   enum class MotionType{

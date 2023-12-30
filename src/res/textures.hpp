@@ -22,6 +22,10 @@ static auto castle_bg = Texture("castle_background.png");
 static auto platform = Texture("platform.png");
 
 //Blocks and Background objects
+static auto cannon_top = Texture("cannon/top.png");
+static auto cannon_bottom = Texture("cannon/bottom.png");
+static auto cannon_bullet = Texture("cannon/bullet.png");
+
 static auto lava_bottom = Texture("tile/lava1.png");
 static auto lava_top = Texture("tile/lava2.png");
 
@@ -277,6 +281,11 @@ static auto squid2 = Texture("entity/squid/2.png");
 static auto grey_fish_swim = std::array<Texture, 2>{
   Texture("entity/fish/grey1.png"),
   Texture("entity/fish/grey2.png")
+};
+
+static auto flame_fish_swim = std::array<Texture, 2>{
+  Texture("entity/fish/flame1.png"),
+  Texture("entity/fish/flame2.png")
 };
 
 static auto red_fish_swim = std::array<Texture, 2>{

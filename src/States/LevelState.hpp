@@ -27,6 +27,7 @@
 #include "States/SquidState.hpp"
 #include "States/LakitoState.hpp"
 #include "States/BowserState.hpp"
+#include "States/CannonState.hpp"
 
 #include "States/CoinPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
@@ -56,6 +57,7 @@ struct LevelState{
     CoinBlockState, PurpleCoinBlockState,
     BricksBlockState, 
     UnstableCloudState,
+		CannonState,
     QBlockState<CoinPusherState>,
     QBlockState<FireFlowerPusherState>,
     QBlockState<MushroomPusherState>,

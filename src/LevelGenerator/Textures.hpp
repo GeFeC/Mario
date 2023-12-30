@@ -26,19 +26,22 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::Cloud, &textures::cloud_block),
   pair(Tile::UnstableCloud, &textures::cloud_unstable),
 
+  pair(Tile::CannonTop, texture_groups::cannon),
+  pair(Tile::CannonBottom, &textures::cannon_bottom),
+
   pair(Tile::MushroomRight, &textures::mushroom_right),
-  pair(Tile::MushroomLeft, &textures::mushroom_left), 
+  pair(Tile::MushroomLeft, &textures::mushroom_left),
   pair(Tile::MushroomCenter, &textures::mushroom_center),
   pair(Tile::MushroomBot2, &textures::mushroom_bot2),
   pair(Tile::MushroomBot1, &textures::mushroom_bot1),
 
   pair(Tile::GrassCenter, &textures::grass_center),
-  pair(Tile::GrassLeft, &textures::grass_left), 
+  pair(Tile::GrassLeft, &textures::grass_left),
   pair(Tile::GrassRight, &textures::grass_right),
   pair(Tile::GrassBot, &textures::grass_bot),
 
   pair(Tile::SnowCenter, &textures::snow_center),
-  pair(Tile::SnowLeft, &textures::snow_left), 
+  pair(Tile::SnowLeft, &textures::snow_left),
   pair(Tile::SnowRight, &textures::snow_right),
   pair(Tile::SnowBot, &textures::snow_bot),
 
@@ -98,11 +101,11 @@ static auto id_to_texture = std::unordered_map<Tile, renderer::TextureGroup>{
   pair(Tile::GreenBushRight, &textures::green_bush_right),
   pair(Tile::GreenBushLeft, &textures::green_bush_left),
   pair(Tile::GreenBushCenter, &textures::green_bush_center),
-  
+
   pair(Tile::WhiteBushRight, &textures::white_bush_right),
   pair(Tile::WhiteBushLeft, &textures::white_bush_left),
   pair(Tile::WhiteBushCenter, &textures::white_bush_center),
-  
+
   pair(Tile::Coin, texture_groups::coin),
   pair(Tile::PurpleCoin, texture_groups::purple_coin),
 

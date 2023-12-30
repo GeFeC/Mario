@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="64" tileheight="64" tilecount="112" columns="0">
+<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="64" tileheight="64" tilecount="114" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="73">
   <image width="32" height="32" source="../textures/bush/center.png"/>
@@ -336,5 +336,11 @@
  </tile>
  <tile id="190">
   <image width="64" height="64" source="../textures/entity/bowser/0.png"/>
+ </tile>
+ <tile id="191">
+  <image width="32" height="32" source="../textures/cannon/bottom.png"/>
+ </tile>
+ <tile id="192">
+  <image width="32" height="32" source="../textures/cannon/top.png"/>
  </tile>
 </tileset>

@@ -9,6 +9,7 @@ struct FlameJumpingKoopaState : JumpingKoopaState, FlameKoopaBase{
 	static auto make(const glm::vec2& position){
     auto koopa = JumpingKoopaState::make<FlameJumpingKoopaState>(position);
 		koopa.current_texture = &textures::flame_flying_koopa_walk[0];
+		koopa.reward_for_killing = 500;
 
     return koopa;
 	}

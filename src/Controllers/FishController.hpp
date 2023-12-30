@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Controllers/PointsParticlesController.hpp"
 #include "Controllers/EntityController.hpp"
 #include "States/BlockState.hpp"
 #include "States/LevelState.hpp"
@@ -83,6 +82,11 @@ static auto red_fish_controller(FishState& fish, LevelState& level){
   entity_controller::run_movement_animation(fish, textures::red_fish_swim);
 }
 
+static auto flame_fish_controller(FishState& fish, LevelState& level){
+  controller_base(fish, level);
+  entity_controller::run_movement_animation(fish, textures::flame_fish_swim);
+}
+
 } //namespace mario::fish_controller
 
 namespace mario{
@@ -91,6 +95,7 @@ namespace mario{
     switch(fish.type){
       case FishState::Type::Grey: fish_controller::grey_fish_controller(fish, level); break;
       case FishState::Type::Red: fish_controller::red_fish_controller(fish, level); break;
+      case FishState::Type::Flame: fish_controller::flame_fish_controller(fish, level); break;
     }
   }
 

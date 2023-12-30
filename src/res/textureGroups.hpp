@@ -7,6 +7,11 @@ namespace mario::texture_groups{
 
 using renderer::TextureGroup;
 
+static const auto cannon = TextureGroup({
+	&textures::cannon_top,
+	&textures::cannon_bullet
+});
+
 static const auto coin = TextureGroup({
   &textures::coin[0],
   &textures::coin[1],

@@ -90,6 +90,10 @@ static auto generate_level(LevelState& level, const std::string& file_path){
     else if (tile == Tile::Bricks) put_bricks(level, BricksBlockState(texture_groups::bricks, { x, y }));
     else if (tile == Tile::BlueBricks) put_bricks(level, BricksBlockState(texture_groups::blue_bricks, { x, y }));
     else if (tile == Tile::UnstableCloud) put_unstable_cloud(level, { x, y });
+    else if (tile == Tile::CannonTop) {
+			put_hitbox_block(level, { x, y });
+			objects.push(CannonState({ x, y }));
+		}
 
     else if (any_tile(HillTiles, tile)) put_hill(level, { x, y }, tile);
     else if (any_tile(BushTiles, tile)) put_bush(level, { x, y }, tile);

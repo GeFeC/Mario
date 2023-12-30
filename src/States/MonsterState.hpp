@@ -2,10 +2,7 @@
 
 #include "States/EntityState.hpp"
 #include "States/PointsParticlesState.hpp"
-#include "Util/Util.hpp"
 #include "Util/Generator.hpp"
-
-#include <algorithm>
 
 namespace mario{
 

@@ -30,6 +30,7 @@
 #include "Controllers/FlameJumpingKoopaController.hpp"
 #include "Controllers/UpfireController.hpp"
 #include "Controllers/BowserController.hpp"
+#include "Controllers/CannonController.hpp"
 
 #include "Controllers/KingGoombaController.hpp"
 #include "Controllers/KingKoopaController.hpp"

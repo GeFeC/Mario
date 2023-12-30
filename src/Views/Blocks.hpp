@@ -53,4 +53,12 @@ static auto render_block(const QBlockState<EntityPusherState<T>>& block, const L
   render_block(block | util::as<BlockBase>, level);
 }
 
+static auto render_block(const CannonState& block, const LevelState& level){
+	for (auto& bullet : block.bullet_generator.items){
+		render_entity(bullet, level);
+	}
+
+	render_block(block | util::as<BlockBase>, level);
+}
+
 } //namespace mario::views
