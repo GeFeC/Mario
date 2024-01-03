@@ -1,7 +1,6 @@
 #pragma once
 
 #include "States/AppState.hpp"
-#include "Controllers/LevelController.hpp"
 
 #include "Frames/Level11.hpp"
 #include "Frames/Level12.hpp"
@@ -49,6 +48,7 @@
 #include "Frames/Level72.hpp"
 #include "Frames/Level73.hpp"
 #include "Frames/Level74.hpp"
+#include "Frames/Level75.hpp"
 
 #include <unordered_map>
 
@@ -101,6 +101,7 @@ static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppSta
   { AppState::Frame::Level72, frames::run_level72 },
   { AppState::Frame::Level73, frames::run_level73 },
   { AppState::Frame::Level74, frames::run_level74 },
+  { AppState::Frame::Level75, frames::run_level75 },
 };
 
 static auto run(AppState& app){
