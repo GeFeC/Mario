@@ -98,7 +98,7 @@ static auto handle_movement(PlayerState& player, LevelState& level){
 
   //Calculating max speed
   if (!player.is_squating){
-    if (window::is_key_pressed(GLFW_KEY_LEFT_CONTROL)){
+    if (window::is_key_pressed(GLFW_KEY_LEFT_SHIFT)){
       player.max_speed = PlayerState::MaxSpeedWithSprint;
     }
     else if (player.max_speed > PlayerState::MaxSpeedWithoutSprint){

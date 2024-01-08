@@ -1,14 +1,11 @@
 #pragma once
 
-#include "Renderer/Drawable.hpp"
 #include "States/BossState.hpp"
 #include "States/LevelState.hpp"
 #include "Controllers/EntityController.hpp"
 #include "Controllers/BossController.hpp"
-#include "Window.hpp"
 #include "config.hpp"
 #include "res/textures.hpp"
-#include "Util/Util.hpp"
 
 namespace mario{
 

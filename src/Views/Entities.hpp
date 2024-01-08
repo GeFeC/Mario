@@ -10,6 +10,8 @@
 #include "States/BlackPlantState.hpp"
 #include "States/LevelState.hpp"
 
+#include <iostream>
+
 namespace mario::views{
 
 template<typename T, typename = util::not_derived<T, EntityState>>
@@ -18,8 +20,9 @@ static auto render_entity(const T&, const LevelState&) {}
 static auto render_entity(const PlantState&, const LevelState&) {}
 static auto render_entity(const BlackPlantState&, const LevelState&) {}
 
-static auto make_drawable_from_entity(const EntityState& entity, const LevelState& level) -> renderer::Drawable{
-  auto drawable = renderer::Drawable{};
+template<typename Drawable = renderer::Drawable>
+static auto make_drawable_from_entity(const EntityState& entity, const LevelState& level) -> Drawable{
+  auto drawable = Drawable{};
   drawable.position = entity.position - level.camera_offset;
   drawable.size = entity.size;
   drawable.texture = entity.current_texture;
@@ -59,6 +62,49 @@ static auto render_entity(const BowserState& bowser, const LevelState& level){
 	renderer::highlight_mode = false;
 }
 
+static auto render_flame(const FlameState& flame, const LevelState& level){
+	for (const auto& particle : flame.particles()){
+		render_entity(particle, level);
+	}
+}
+
+static auto render_entity(const KingBowserState& bowser, const LevelState& level){
+	//Flames:
+	for (const auto& flame : bowser.flames_generator.items){
+		render_flame(flame, level);
+	}
+
+	//Copies:
+	for (const auto& copy : bowser.copies){
+		auto copy_drawable = make_drawable_from_entity(bowser, level);
+		copy_drawable.alpha = copy.opacity;
+		copy_drawable.position = copy.position;
+
+		renderer::draw(copy_drawable);
+	}
+
+	//Boss:
+	renderer::highlight_mode = bowser.is_highlighted;
+	auto boss = make_drawable_from_entity<renderer::RotatableDrawable>(bowser | util::as<EntityState>, level);
+	boss.rotation = glm::radians(-bowser.rotation);
+
+	renderer::draw_with_shadow([&]{
+		renderer::draw(boss);
+	});
+	renderer::highlight_mode = false;
+
+	//attack indicator:
+	auto indicator = renderer::PlainDrawable();
+	const auto resize = (1.f - bowser.attack_indicator_opacity) * BlockBase::Size;
+
+	indicator.position = bowser.attack_indicator_pos + glm::vec2(resize / 2.f);
+	indicator.size = KingBowserState::AttackIndicatorSize - glm::vec2(resize);
+
+	indicator.color = glm::vec4(1.f, 0.5f, 0.f, bowser.attack_indicator_opacity);
+
+	renderer::draw_plain(indicator);
+}
+
 static auto render_entity(const FlameKoopaState& koopa, const LevelState& level){
 	render_entity(koopa.fireball, level);
 	render_block(koopa.fireball.explosion, level);
@@ -82,9 +128,7 @@ static auto render_entity(const FlameJumpingKoopaState& koopa, const LevelState&
 
 static auto render_entity(const FlameGoombaState& goomba, const LevelState& level){
   for (const auto& flame : goomba.flames_generator.items){
-    for (const auto& particle : flame.particles()){
-      render_entity(particle, level);
-    }
+		render_flame(flame, level);
   }
 
   for (const auto& particle : goomba.inner_flame.particles()){

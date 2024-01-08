@@ -38,6 +38,7 @@
 #include "Controllers/KingCheepController.hpp"
 #include "Controllers/KingPlantController.hpp"
 #include "Controllers/KingLakitoController.hpp"
+#include "Controllers/KingBowserController.hpp"
 
 #include "Util/LoopedCounter.hpp"
 #include "Util/Enum.hpp"

@@ -7,7 +7,6 @@
 #include "States/LevelState.hpp"
 #include "Util/Random.hpp"
 #include "Window.hpp"
-#include "glm/glm.hpp"
 #include "res/textures.hpp"
 
 namespace mario{

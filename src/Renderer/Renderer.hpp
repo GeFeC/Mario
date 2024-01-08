@@ -212,6 +212,7 @@ static auto draw_plain(const PlainDrawable& drawable){
 
   set_uniform("is_shadow", renderer::shadow_mode);
   set_uniform("is_glyph", false);
+  set_uniform("is_highlighted", renderer::highlight_mode);
   glDrawArrays(GL_TRIANGLES, 0, 6);
 
   set_uniform("is_texture", 1);

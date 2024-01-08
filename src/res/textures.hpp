@@ -236,6 +236,16 @@ static auto bowser_walk_attack = std::array<Texture, 2>{
 	Texture("entity/bowser/1.png")
 };
 
+static auto king_bowser_walk = std::array<Texture, 2>{
+	Texture("entity/bowser/king2.png"),
+	Texture("entity/bowser/king3.png")
+};
+
+static auto king_bowser_walk_attack = std::array<Texture, 2>{
+	Texture("entity/bowser/king0.png"),
+	Texture("entity/bowser/king1.png")
+};
+
 static auto bowser_fire = std::array<Texture, 2>{
 	Texture("entity/bowser/fire1.png"),
 	Texture("entity/bowser/fire2.png")

@@ -4,21 +4,15 @@
 #include "States/BlockState.hpp"
 #include "Util/Generator.hpp"
 #include "Util/LoopedCounter.hpp"
-#include "Util/Random.hpp"
 #include "Util/Util.hpp"
-#include "Window.hpp"
-#include <iostream>
 
 namespace mario{
 
 struct FlameParticleState : EntityState{
-  static constexpr auto Size = glm::vec2(BlockBase::Size / 2.f);
-
   float opacity = 1.f;
   float angle = 0.f;
 
   FlameParticleState(){
-    size = Size;
     is_active = true;
     is_visible = true;
   }
@@ -27,6 +21,17 @@ struct FlameParticleState : EntityState{
 struct FlameState{
   bool is_active = false;
   glm::vec2 position;
+	float rotation = 0.f;
+	float speed = 500.f;
+
+	float min_angle = -90.f;
+	float max_angle = 90.f;
+	
+	float opacity_required_to_kill_player = 0.5f;
+
+	float particle_size = BlockBase::Size / 2.f;
+	float burn_speed = 2.f;
+
   util::Generator<FlameParticleState> particle_generator;
   util::LoopedCounter particle_counter = util::LoopedCounter(1.f, 20.f, util::BigValue);
 

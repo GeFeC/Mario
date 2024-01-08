@@ -3,7 +3,6 @@
 #include "Controllers/FlameController.hpp"
 #include "Controllers/EntityController.hpp"
 #include "Controllers/MonsterController.hpp"
-#include "States/FireballState.hpp"
 #include "States/FlameGoombaState.hpp"
 #include "States/LevelState.hpp"
 #include "Util/Util.hpp"
@@ -15,8 +14,8 @@ namespace mario{
 static auto run_controller(FlameGoombaState& goomba, LevelState& level){
   //Inner flame:
   goomba.inner_flame.position = {
-    goomba.position.x + goomba.size.x / 2.f - FlameParticleState::Size.x / 2.f,
-    goomba.position.y + goomba.size.y - FlameParticleState::Size.y
+    goomba.position.x + goomba.size.x / 2.f - goomba.inner_flame.particle_size / 2.f,
+    goomba.position.y + goomba.size.y - goomba.inner_flame.particle_size
   };
 
   flame_controller(goomba.inner_flame, level);

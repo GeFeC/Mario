@@ -301,4 +301,12 @@ static const auto bowser = TextureGroup({
 	&textures::bowser_fire[0],
 	&textures::bowser_fire[1]
 });
+
+static const auto king_bowser = TextureGroup({
+	&textures::king_bowser_walk[0],
+	&textures::king_bowser_walk[1],
+	&textures::king_bowser_walk_attack[0],
+	&textures::king_bowser_walk_attack[1]
+});
+
 } //namespace mario::texture_groups

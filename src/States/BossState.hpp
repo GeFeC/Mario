@@ -1,12 +1,12 @@
 #pragma once
 
+#include "States/FlameState.hpp"
 #include "States/LakitoState.hpp"
 #include "States/MonsterState.hpp"
 #include "States/FireballState.hpp"
 #include "States/BlackPlantState.hpp"
 #include "Util/LoopedCounter.hpp"
 #include "Util/Random.hpp"
-#include <iostream>
 
 namespace mario{
 
@@ -148,6 +148,51 @@ struct KingLakitoState : BossState<LakitoState>{
   }
 };
 
+struct KingBowserState : BossState<>{
+  static constexpr auto Size = glm::vec2(3.f) * BlockBase::Size;
+  static constexpr auto MaxHp = 20;
+	static constexpr auto NoTarget = glm::vec2(-1.f);
+	static constexpr auto InitialPosition = glm::vec2(8.5f, 5.f) * BlockBase::Size;
+	static constexpr auto AttackIndicatorSize = glm::vec2(BlockBase::Size * 2.f);
 
+	enum class AttackState{
+		Flame,
+		Charge
+	} attack_state = AttackState::Flame;
+
+	struct Copy{
+		glm::vec2 position;
+		float opacity = 0.f;
+	};
+
+	std::vector<Copy> copies;
+	int current_copy = 0;
+
+	util::LoopedCounter charge_counter = util::LoopedCounter(12.f, 10.f, 1);
+	glm::vec2 charge_target_position = NoTarget;
+	glm::vec2 charge_start_position = InitialPosition;
+	glm::vec2 attack_indicator_pos;
+	float attack_indicator_opacity = 0.f;
+	int attacks_count = 0;
+
+	float velocity = 0.f;
+	glm::vec2 temp_direction;
+
+	util::Generator<FlameState> flames_generator;
+	util::LoopedCounter breathe_counter = util::LoopedCounter(1.f, 10.f, 1);
+	float rotation = 0.f;
+
+  KingBowserState() : BossState(){
+		position = InitialPosition;
+		current_texture = &textures::king_bowser_walk[0];
+    can_be_stomped = false;
+    is_active = true;
+    size = Size;
+    hp = MaxHp;
+    should_collide = true;
+		texture_flip = util::Flip::flip();
+		copies.resize(20);
+  }
+};
 
 } //namespace mario

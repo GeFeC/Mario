@@ -29,10 +29,11 @@ static auto take_damage(BossState<T>& boss){
 
 template<typename T>
 static auto react_when_hit_by_fireball(BossState<T>& boss, LevelState& level){
+	if (level.player.is_dead) return;
+
   monster_controller::react_when_hit_by_fireball(boss, level, [&](auto& fireball){
     take_damage(boss);
-    fireball.acceleration.left = fireball.acceleration.right = 0.f;
-    fireball.position.x = util::BigValue;
+		fireball_controller::reset(fireball);
   });
 }
 
