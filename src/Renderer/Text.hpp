@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 
 #include <string>
-#include <utility>
 #include <vector>
 #include <algorithm>
 

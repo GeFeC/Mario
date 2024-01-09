@@ -15,6 +15,7 @@ static auto run_level76(AppState& app){
   level.number = { 7, 6 };
   level.extra_textures = {
     &textures::castle_bg,
+		&textures::peach,
 		texture_groups::king_bowser,
 		texture_groups::lava
   };

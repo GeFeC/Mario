@@ -82,7 +82,7 @@ static auto run_levelbase(
 
   const auto loop = [](auto& app){
     level_controller::run(app);
-    views::render_level(app.current_level);
+    views::render_level(app);
   };
 
   run_frame(app, level_data.frame, textures, setup, loop);

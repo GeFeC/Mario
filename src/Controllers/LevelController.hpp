@@ -3,6 +3,8 @@
 #include "States/LevelState.hpp"
 #include "States/AppState.hpp"
 
+#include "LevelGenerator/LevelGenerator.hpp"
+
 #include "Controllers/PlayerController.hpp"
 #include "Controllers/BlinkController.hpp"
 #include "Controllers/CoinController.hpp"
@@ -61,6 +63,21 @@ static auto handle_background(LevelState& level){
   if (level.cloud_offset > CloudMaxOffset) level.cloud_offset -= CloudMaxOffset;
 }
 
+static auto handle_final_boss_level(LevelState& level){
+	if (level.stats.boss_hp.current == nullptr) return;
+
+	if (*level.stats.boss_hp.current == 0){
+		level.game_objects = {};
+		level.stats.boss_hp.current = nullptr;
+		level.type = LevelState::Type::Horizontal;
+		level.hitbox_grid.clear();
+		level.initialise_hitbox_grid();
+		level.game_objects.push(LavaState{ glm::vec2(3.f, 11.f), glm::vec2(14.f, 1.f) });
+		level_generator::generate_level(level, "level76after_boss.csv");
+    level.background_texture = &textures::castle_bg;
+	}
+}
+
 static auto handle_finishing(LevelState& level, AppState& app){
   const auto finish = level.finish_position; 
   auto& player = level.player;
@@ -88,8 +105,16 @@ static auto handle_finishing(LevelState& level, AppState& app){
       level.finish_delay -= window::delta_time;
 
       if (level.finish_delay <= 0.f){
+				if (app.current_frame == AppState::Frame::Level76){
+					handle_final_boss_level(level);
+					level.is_finished = false;
+
+					return;
+				}
+
         app.current_frame = util::enum_add(app.current_frame, 1);
         app.current_level.current_checkpoint = LevelState::CheckpointNotSet;
+
       }
     }
   }
@@ -251,11 +276,27 @@ static auto run(AppState& app){
 
   if (!level.is_finished) {
     stats_controller::run(level.stats);
-    player_controller::run(player, level);
+
+		if (!(app.current_frame == AppState::Frame::Level76 && player.position.x >= 39.f * BlockBase::Size)){
+			player_controller::run(player, level);
+		}
+		else{
+			level.player.current_texture = &textures::fire_big_mario;
+			app.game_finish_timer += window::delta_time;
+		}
 
     if (level.stats.time <= 0){
       player.is_dead = true;
     }
+
+		const auto final_boss_defeated = 
+			app.current_frame == AppState::Frame::Level76 && 
+			level.stats.boss_hp.current == nullptr;
+
+		if (final_boss_defeated){
+			//Prevent from death:
+			player.is_dead = false;
+		}
   }
 
   if (player.is_growing_up || player.is_shrinking || player.is_changing_to_fire) return;

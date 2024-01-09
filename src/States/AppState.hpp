@@ -15,6 +15,8 @@ struct AppState{
     Level71, Level72, Level73, Level74, Level75, Level76
   };
 
+	float game_finish_timer = 0.f;
+
   bool should_restart_current_frame = false;
   Frame current_frame;
 

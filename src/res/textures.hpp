@@ -21,6 +21,8 @@ static auto castle_bg = Texture("castle_background.png");
 
 static auto platform = Texture("platform.png");
 
+static auto peach = Texture("peach.png");
+
 //Blocks and Background objects
 static auto cannon_top = Texture("cannon/top.png");
 static auto cannon_bottom = Texture("cannon/bottom.png");

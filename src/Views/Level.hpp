@@ -2,7 +2,7 @@
 
 #include "Renderer/Drawable.hpp"
 #include "Renderer/Renderer.hpp"
-#include "States/LevelState.hpp"
+#include "States/AppState.hpp"
 
 #include "Views/Entities.hpp"
 #include "Views/Plants.hpp"
@@ -281,7 +281,9 @@ static auto render_darkness(const LevelState& level){
 
 }
 
-static auto render_level(const LevelState& level){
+static auto render_level(const AppState& app){
+	auto& level = app.current_level;
+
   render_level_background(level);
   render_all_level_objects(level);
 
@@ -302,6 +304,48 @@ static auto render_level(const LevelState& level){
   renderer::draw_with_shadow([&]{
     render_stats(level);
   });
+
+	//Render final level textures:
+	if (app.current_frame != AppState::Frame::Level76) return;
+
+	//Peach:
+	renderer::draw(renderer::Drawable{
+		{},
+		glm::vec2(41.f, 9.5f) * BlockBase::Size - level.camera_offset,
+		glm::vec2(1.f, 1.5f) * BlockBase::Size,
+		&textures::peach
+	});
+
+	if (level.player.position.x < 39.f * BlockBase::Size) return;
+
+	renderer::draw_with_shadow([&]{
+		auto text = renderer::Text(&fonts::normal, "Thank you mario!", 4.f);
+		text.update();
+		text.position = glm::vec2(40.f, 4.f) * BlockBase::Size - glm::vec2(text.get_text_width() / 2.f, 0.f) - level.camera_offset;
+		text.update_position();
+
+		renderer::print(text, glm::vec2(0));
+
+		if (app.game_finish_timer < 2.f) return;
+
+		text.text = "YOUR QUEST IS OVER";
+		text.update();
+		text.position = glm::vec2(40.f, 5.5f) * BlockBase::Size - glm::vec2(text.get_text_width() / 2.f, 0.f) - level.camera_offset;
+		text.update_position();
+
+		renderer::print(text, glm::vec2(0));
+
+		if (app.game_finish_timer < 4.f) return;
+
+		text.text = "THE END";
+		text.font_scale = 6.f;
+		text.update();
+		text.position = glm::vec2(40.f, 7.f) * BlockBase::Size - glm::vec2(text.get_text_width() / 2.f, 0.f) - level.camera_offset;
+		text.update_position();
+
+		renderer::print(text, glm::vec2(0));
+	});
+
 }
 
 } //namespace mario::views
