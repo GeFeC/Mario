@@ -171,7 +171,8 @@ static auto restart_when_player_fell_out(AppState& app){
   }
 }
 
-static auto handle_camera(LevelState& level){
+static auto handle_camera(AppState& app){
+	auto& level = app.current_level;
   auto& player = level.player;
   auto player_y = player.position.y - BlockBase::Size + player.size.y;
   
@@ -183,7 +184,15 @@ static auto handle_camera(LevelState& level){
     }
 
     //Scroll down
-    if (level.is_level_underground() && player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY){
+		const auto level_allows_scrolling_down = [&]{
+			if (level.is_level_underground()) return true;
+			if (player_controller::is_in_water(player, level)) return true;
+			if (app.current_frame == AppState::Frame::Level35) return true;
+
+			return false;
+		};
+
+    if (level_allows_scrolling_down() && player_y - level.camera_offset.y > LevelState::MaxPlayerRelativeY){
       level.camera_offset.y = player_y - LevelState::MaxPlayerRelativeY;
     }
 
@@ -317,7 +326,7 @@ static auto run(AppState& app){
   }
 
   //Camera
-  handle_camera(level);
+  handle_camera(app);
 
   //Timers
   LevelState::timer += window::delta_time;

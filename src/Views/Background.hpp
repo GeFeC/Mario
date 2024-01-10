@@ -51,11 +51,11 @@ static auto render_background(const CloudState& cloud, const LevelState& level){
 }
 
 static auto render_background(const BackgroundBushState& bush, const LevelState& level){
-  render_block(bush, level);
+  render_block(bush | util::as<BlockBase>, level);
 }
 
 static auto render_background(const BackgroundHillState& bush, const LevelState& level){
-  render_block(bush, level);
+  render_block(bush | util::as<BlockBase>, level);
 }
 
 } //namespace mario::views

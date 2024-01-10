@@ -82,11 +82,13 @@ static auto handle_collisions(
 namespace mario{
 
 static auto run_controller(PlatformState& platform, LevelState& level){
-  static constexpr auto PlatformSpeed = PlatformState::Speed;
-  const auto sin = (glm::sin(platform.timer / platform.move_distance() * PlatformSpeed) + 1) / 2.f;
+	const auto previous_pos = platform.position;
+	static constexpr auto PlatformSpeed = PlatformState::Speed;
 
-  const auto previous_pos = platform.position;
-  platform.position = platform.initial_position + (sin | util::as<float>) * platform.transport_distance;
+	if (platform.move_distance() > 0.f){
+		const auto sin = (glm::sin(platform.timer / platform.move_distance() * PlatformSpeed) + 1) / 2.f;
+		platform.position = platform.initial_position + (sin | util::as<float>) * platform.transport_distance;
+	}
 
   platform_controller::handle_collisions(platform, level, previous_pos);
   if (!platform.is_active){

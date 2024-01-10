@@ -35,6 +35,8 @@ static auto run_level54(AppState& app){
     level.game_objects.push(FlyingKoopaState::make_green({ 9.5, 50.5 }, { 6, 0 }));
     level.game_objects.push(BlockState({ 20, 108 }, &textures::blue_dirt));
 
+		level.game_objects.push(PlatformState(glm::vec2(20.f, 108.f),  glm::vec2(0.f)));
+
     level.game_objects.for_each_type<SpikeState>([](auto& spike){
       spike.can_move = false; //Spikes don't need to walk in this level
     });

@@ -51,9 +51,9 @@ static auto controller_base(FishState& fish, LevelState& level){
   }
   else{
     monster_controller::die_when_stomped(fish, level, [&]{
-        monster_controller::bounce_out(fish);
-        fish.gravity_boost = 1.f;
-        });
+			monster_controller::bounce_die(fish, level.stats);
+			fish.gravity_boost = 1.f;
+		});
   }
 
   entity_controller::kill_player_on_touch(fish, level);

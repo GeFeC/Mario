@@ -1,9 +1,7 @@
 #pragma once
 
-#include "LevelGenerator/Builder.hpp"
 #include "States/AppState.hpp"
 #include "Frames/LevelBase.hpp"
-#include "States/BlockState.hpp"
 #include "States/FireBarState.hpp"
 #include "res/textureGroups.hpp"
 
@@ -32,9 +30,11 @@ static auto run_level35(AppState& app){
     level_generator::generate_level(level, "level35_2.csv");
 
     auto& objects = level.game_objects;
-    objects.push(FireBarState({ 16, 87 }, 6));
+    objects.push(FireBarState({ 16, 133 }, 6));
     
-    objects.push(FlyingKoopaState::make_green({ 9.5f, 102 }, { 0.5f, 0.f }));
+    for (int i = 0; i < 10; ++i){
+      objects.push(FlyingKoopaState::make_green({ 9.5f, 102 + i * 4 }, { 0.5f, 0.f }));
+    }
   });
 }
 

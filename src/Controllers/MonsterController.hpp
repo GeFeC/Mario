@@ -63,6 +63,7 @@ static auto die_when_stomped(
     Function set_entity_dead
 ){
   if (!entity.is_active) return false;
+	if (entity.was_hit) return false;
 
   auto& player = level.player;
   auto& stats = level.stats;

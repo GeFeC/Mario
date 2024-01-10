@@ -10,6 +10,9 @@ namespace mario::views{
 template<typename T, typename = util::not_derived<T, BlockBase>>
 static auto render_block(const T&, const LevelState&){}
 
+static auto render_block(const BackgroundBushState&, const LevelState&){}
+static auto render_block(const BackgroundHillState&, const LevelState&){}
+
 static auto render_block(const BlockBase& block, const LevelState& level) -> void{
   const auto& offset = level.camera_offset;
   if (!views::is_component_on_screen(block, offset)) return;
