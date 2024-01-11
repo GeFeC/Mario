@@ -68,20 +68,23 @@ static auto render_flame(const FlameState& flame, const LevelState& level){
 	}
 }
 
+static auto render_entity_copies(const EntityState& entity, const LevelState& level){
+	for (const auto& copy : entity.copies_generator.items){
+		auto copy_drawable = make_drawable_from_entity(entity, level);
+		copy_drawable.alpha = copy.opacity;
+		copy_drawable.position = copy.position - level.camera_offset;
+
+		renderer::draw(copy_drawable);
+	}
+}
+
 static auto render_entity(const KingBowserState& bowser, const LevelState& level){
 	//Flames:
 	for (const auto& flame : bowser.flames_generator.items){
 		render_flame(flame, level);
 	}
 
-	//Copies:
-	for (const auto& copy : bowser.copies){
-		auto copy_drawable = make_drawable_from_entity(bowser, level);
-		copy_drawable.alpha = copy.opacity;
-		copy_drawable.position = copy.position;
-
-		renderer::draw(copy_drawable);
-	}
+	render_entity_copies(bowser, level);
 
 	//Boss:
 	renderer::highlight_mode = bowser.is_highlighted;
@@ -103,6 +106,12 @@ static auto render_entity(const KingBowserState& bowser, const LevelState& level
 	indicator.color = glm::vec4(1.f, 0.5f, 0.f, bowser.attack_indicator_opacity);
 
 	renderer::draw_plain(indicator);
+}
+
+static auto render_entity(const KoopaState& koopa, const LevelState& level){
+	render_entity_copies(koopa, level);
+
+	render_entity(koopa | util::as<EntityState>, level);
 }
 
 static auto render_entity(const FlameKoopaState& koopa, const LevelState& level){

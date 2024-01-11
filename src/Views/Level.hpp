@@ -236,7 +236,7 @@ static auto render_level_background(const LevelState& level){
 }
 
 static auto render_darkness(const LevelState& level){
-  static constexpr auto PlayerViewSizeInDarkness = 3.f * BlockBase::Size;
+  static constexpr auto PlayerViewSizeInDarkness = 4.f * BlockBase::Size;
   const auto player_center = level.player.position + level.player.size / 2.f - level.camera_offset;
 
   const auto player_view_min = glm::vec2(

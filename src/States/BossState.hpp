@@ -160,14 +160,6 @@ struct KingBowserState : BossState<>{
 		Charge
 	} attack_state = AttackState::Flame;
 
-	struct Copy{
-		glm::vec2 position;
-		float opacity = 0.f;
-	};
-
-	std::vector<Copy> copies;
-	int current_copy = 0;
-
 	util::LoopedCounter charge_counter = util::LoopedCounter(12.f, 10.f, 1);
 	glm::vec2 charge_target_position = NoTarget;
 	glm::vec2 charge_start_position = InitialPosition;
@@ -191,7 +183,6 @@ struct KingBowserState : BossState<>{
     hp = MaxHp;
     should_collide = true;
 		texture_flip = util::Flip::flip();
-		copies.resize(20);
   }
 };
 

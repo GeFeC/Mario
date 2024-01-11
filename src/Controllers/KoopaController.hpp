@@ -38,7 +38,22 @@ static auto run_red_koopa_controller(KoopaState& koopa, LevelState& level){
 }
 
 static auto handle_purple_koopa_speedup(KoopaState& koopa, const LevelState& level){
-  if (koopa.in_shell || koopa.was_hit) return;
+	if (koopa.walk_speed < 10.f){
+		entity_controller::fade_copies_out(koopa);
+	}
+	koopa.should_create_copy = !koopa.should_create_copy;
+
+  if (koopa.in_shell || koopa.was_hit) {
+		for (auto& copy : koopa.copies_generator.items){
+			copy.opacity = 0.f;
+			copy.is_active = false;
+		}
+		return;
+	}
+
+	if (koopa.walk_speed == 10.f && koopa.should_create_copy){
+		entity_controller::create_copy(koopa);
+	}
 
   if (level.purple_koopa_counter.value > 8.f){
     koopa.walk_speed = 10.f;

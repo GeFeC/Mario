@@ -86,26 +86,21 @@ static auto run_controller(KingBowserState& boss, LevelState& level){
 	}
 
 	//Attack:
-	for (auto& copy : boss.copies){
-		copy.opacity = std::max(copy.opacity - window::delta_time, 0.f);
-	}
+	entity_controller::fade_copies_out(boss);
 	
 	if (boss.charge_counter.stopped_counting()){
 		const auto target = get_target();
 
 		const auto direction_to_target = target - boss.charge_start_position;
 		boss.position += glm::normalize(direction_to_target) * 8'000.f * window::delta_time;
-		boss.copies[boss.current_copy].position = boss.position;
-		boss.copies[boss.current_copy].opacity = 0.5f;
 		
-		boss.current_copy++;
+		entity_controller::create_copy(boss);
 
 		if (direction_to_target.x * boss.position.x > direction_to_target.x * target.x){
 			boss.position = target;
 		}
 
 		if (boss.position == target){
-			boss.current_copy = 0;
 			boss.attacks_count--;
 			boss.charge_counter.reset();
 			boss.charge_target_position = KingBowserState::NoTarget;

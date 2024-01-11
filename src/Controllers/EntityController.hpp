@@ -13,6 +13,22 @@
 
 namespace mario::entity_controller{
 
+static auto fade_copies_out(EntityState& entity){
+	for (auto& copy : entity.copies_generator.items){
+		copy.opacity = std::max(copy.opacity - window::delta_time, 0.f);
+		if (copy.opacity == 0.f) copy.is_active = false;
+	}
+}
+
+static auto create_copy(EntityState& entity){
+	entity.copies_generator.make_item_if_needed();
+
+	auto& new_copy = entity.copies_generator.item();
+	new_copy.is_active = true;
+	new_copy.position = entity.position;
+	new_copy.opacity = 0.5f;
+}
+
 static auto detect_collision_with_level = [](EntityState& entity, const LevelState& level, auto callable){
   if (!entity.should_collide){
     return;

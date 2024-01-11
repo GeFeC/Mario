@@ -2,10 +2,17 @@
 
 #include "Util/Direction.hpp"
 #include "Renderer/Texture.hpp"
+#include "Util/Generator.hpp"
 
 #include <glm/glm.hpp>
 
 namespace mario{
+
+struct EntityCopy{
+	glm::vec2 position;
+	float opacity = 0.f;
+	bool is_active = false;
+};
 
 struct EntityState{
   static constexpr auto GravityForce = 70.f;
@@ -14,7 +21,9 @@ struct EntityState{
   struct Acceleration{
     float left = 0.f, right = 0.f;
   } acceleration;
-  
+
+	util::Generator<EntityCopy> copies_generator;
+
   renderer::Texture const* current_texture = nullptr;
   util::Direction direction = util::Direction::right();
   util::Flip gravity_flip = util::Flip::no_flip();
@@ -37,6 +46,7 @@ struct EntityState{
   bool is_active = false;
   bool is_dead = false;
 
+	bool should_create_copy = true;
   bool can_be_stomped = true;
   bool is_on_ground = false;
   bool is_on_platform = false;
