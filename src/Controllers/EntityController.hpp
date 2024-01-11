@@ -46,12 +46,22 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
   );
 
   auto blocks_surrounding_entity = std::vector<BlockState>();
+
+	if (level.should_handle_hitbox_on_sides){
+		blocks_surrounding_entity.emplace_back(BlockState({ -1.f, 0.f }, &textures::dirt))
+			.size.y = level.max_size().y * BlockBase::Size;
+
+		blocks_surrounding_entity.emplace_back(BlockState({ level.max_size().x, 0.f }, &textures::dirt))
+			.size.y = level.max_size().y * BlockBase::Size;
+	}
+
   util::for_2d([&](auto x, auto y){
     const auto is_block_outside_the_world = x != util::in_range(0.f, level.max_size().x - 1);
 
-    if (is_block_outside_the_world && !level.should_handle_hitbox_on_sides) return;
+    if (is_block_outside_the_world) return;
+		if (!level.should_handle_hitbox_on_sides) return;
 
-    if (is_block_outside_the_world || level.hitbox_grid[x][y] == LevelState::HitboxState::Solid){
+    if (level.hitbox_grid[x][y] == LevelState::HitboxState::Solid){
       blocks_surrounding_entity.push_back(BlockState({ x, y }, &textures::dirt));
     }
   }, min_index, max_index);
