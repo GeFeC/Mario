@@ -1,13 +1,8 @@
 #pragma once
 
-#include "States/EntityState.hpp"
-
-#include "Controllers/PlayerController.hpp"
 #include "Controllers/CollisionController.hpp"
 #include "Controllers/MonsterController.hpp"
 #include "Controllers/PointsParticlesController.hpp"
-
-#include "Window.hpp"
 
 namespace mario::mushroom_controller{
 
@@ -52,8 +47,11 @@ static auto run_red_mushroom_controller(MushroomState& mushroom, LevelState& lev
     mushroom.disappear();
 
     if (player.growth == PlayerState::Growth::Small){
-      player.is_growing_up = true;
+   		player.is_growing_up = true;
     }
+		else{
+			level.stats.stored_mushrooms++;
+		}
     level.stats.score += mushroom.reward_for_killing;
   }
 

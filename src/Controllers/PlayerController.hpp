@@ -6,10 +6,8 @@
 #include "States/BlockState.hpp"
 #include "States/EntityState.hpp"
 
-#include "config.hpp"
 #include "res/textures.hpp"
 #include "Window.hpp"
-#include "Util/Util.hpp"
 
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -324,11 +322,23 @@ static auto handle_fireballs(PlayerState& player, const LevelState& level){
   fireball.shoot(fireball_position, player.direction, PlayerState::FireballSpeed);
 }
 
+static auto can_use_stored_mushroom(PlayerState& player, LevelState& level){
+	if (level.stats.stored_mushrooms == 0) return false;
+	if (player.growth != PlayerState::Growth::Small) return false;
+	if (player.is_growing_up) return false;
+
+	return true;
+}
+
 static auto run(PlayerState& player, LevelState& level){
   if (player.is_changing_to_fire){
     transform_to_fire(player);
-  }
-  else if (player.is_growing_up){
+  } 
+	else if (glfwGetKey(window::g_window, GLFW_KEY_SPACE) && can_use_stored_mushroom(player, level)){
+		player.is_growing_up = true;
+		level.stats.stored_mushrooms--;
+	}
+	else if (player.is_growing_up){
     grow(player);
   }
   else if (player.is_shrinking){

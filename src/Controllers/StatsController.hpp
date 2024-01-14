@@ -1,7 +1,7 @@
 #pragma once
 
-#include "States/LevelState.hpp"
 #include "Window.hpp"
+#include "States/StatsState.hpp"
 
 namespace mario::stats_controller{
 

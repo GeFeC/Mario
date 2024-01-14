@@ -33,7 +33,8 @@ static auto run_levelbase(
 ){
   auto textures = std::vector<renderer::TextureGroup>{
     texture_groups::mario,
-    &textures::mini_coin
+    &textures::mini_coin,
+		&textures::mushroom
   };
 
   const auto setup = [&](auto& app){

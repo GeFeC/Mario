@@ -58,15 +58,16 @@ static auto render_stats(const LevelState& level){
 
   auto body = std::ostringstream(); 
   body 
-    << std::setw(6) << std::setfill('0') << stats.score << "    x"
-    << std::setw(2) << std::setfill('0') << stats.coins << "    "
-    << stats.level_major << '-' << stats.level_minor << "     "
+    << std::setw(6) << std::setfill('0') << stats.score << "  x"
+    << std::setw(2) << std::setfill('0') << stats.coins << "  x"
+    << std::setw(2) << std::setfill('0') << stats.stored_mushrooms << "  "
+    << stats.level_major << '-' << stats.level_minor << "   "
     << std::setw(3) << std::setfill('0') << stats.time;
 
   const auto font_size = fonts::normal.size * 3.5f;
   static constexpr auto WindowWidth = config::FrameBufferSize.x;
 
-  auto text = renderer::Text(&fonts::normal, "MARIO           WORLD   TIME", font_size / fonts::normal.size);
+  auto text = renderer::Text(&fonts::normal, "MARIO            WORLD TIME", font_size / fonts::normal.size);
   text.update();
   const auto center_x = WindowWidth / 2 - text.get_size().x / 2;
   const auto step_y = 2.f / 3.f * BlockBase::Size;
@@ -82,10 +83,17 @@ static auto render_stats(const LevelState& level){
 
   //Mini coin
   auto mini_coin = renderer::Drawable{};
-  mini_coin.position = glm::vec2(center_x + 9 * font_size, step_y * 2 + level.stats.position_y);
+  mini_coin.position = glm::vec2(center_x + 7 * font_size, step_y * 2 + level.stats.position_y);
   mini_coin.size = glm::vec2(font_size);
   mini_coin.texture = &textures::mini_coin;
   renderer::draw(mini_coin);
+
+	//Mushroom:
+  auto mushroom = renderer::Drawable{};
+  mushroom.position = glm::vec2(center_x + 11.9f * font_size, step_y * 2 + level.stats.position_y - font_size * 0.1f);
+  mushroom.size = glm::vec2(font_size * 1.f);
+  mushroom.texture = &textures::mushroom;
+  renderer::draw(mushroom);
 
   if (level.type == LevelState::Type::Boss && stats.boss_hp.current != nullptr){
     text.text = "BOSS";
