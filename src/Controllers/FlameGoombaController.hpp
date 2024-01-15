@@ -12,6 +12,23 @@
 namespace mario{
 
 static auto run_controller(FlameGoombaState& goomba, LevelState& level){
+  monster_controller::become_active_when_seen(goomba, level);
+
+	if (!goomba.is_active) return;
+
+  //Base:
+	monster_controller::die_when_on_bouncing_block(goomba, level);
+  monster_controller::endure_fireball(goomba, level.player);
+  monster_controller::handle_points_particles(goomba);
+  entity_controller::run_movement_animation(goomba, textures::flame_goomba_walk);
+  monster_controller::handle_turning_around(goomba);
+  monster_controller::kill_player_on_touch(goomba, level);
+  entity_controller::handle_gravity(goomba, level);
+  entity_controller::handle_movement(goomba, level);
+
+	static constexpr auto ScreenSize = LevelState::BlocksInRow * BlockBase::Size;
+	if (glm::abs(level.player.position.x - goomba.position.x) > ScreenSize * 1.2f) return;
+	
   //Inner flame:
   goomba.inner_flame.position = {
     goomba.position.x + goomba.size.x / 2.f - goomba.inner_flame.particle_size / 2.f,
@@ -39,16 +56,6 @@ static auto run_controller(FlameGoombaState& goomba, LevelState& level){
     }
   }
 
-  //Base:
-	monster_controller::die_when_on_bouncing_block(goomba, level);
-  monster_controller::endure_fireball(goomba, level.player);
-  monster_controller::become_active_when_seen(goomba, level);
-  monster_controller::handle_points_particles(goomba);
-  entity_controller::run_movement_animation(goomba, textures::flame_goomba_walk);
-  monster_controller::handle_turning_around(goomba);
-  monster_controller::kill_player_on_touch(goomba, level);
-  entity_controller::handle_gravity(goomba, level);
-  entity_controller::handle_movement(goomba, level);
 }
 
 } //namespace mario

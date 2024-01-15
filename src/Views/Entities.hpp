@@ -10,8 +10,6 @@
 #include "States/BlackPlantState.hpp"
 #include "States/LevelState.hpp"
 
-#include <iostream>
-
 namespace mario::views{
 
 template<typename T, typename = util::not_derived<T, EntityState>>
@@ -140,9 +138,7 @@ static auto render_entity(const FlameGoombaState& goomba, const LevelState& leve
 		render_flame(flame, level);
   }
 
-  for (const auto& particle : goomba.inner_flame.particles()){
-    render_entity(particle, level);
-  }
+	render_flame(goomba.inner_flame, level);
 
   render_entity(goomba | util::as<EntityState>, level);
 }
