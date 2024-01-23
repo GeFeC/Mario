@@ -56,6 +56,8 @@ struct PlayerState : EntityState{
   bool is_shrinking = false;
   bool is_changing_to_fire = false;
 
+	bool is_controllable = true;
+
   PlayerState(){
     death_delay = 0.5f;
     size = glm::vec2(BlockBase::Size);

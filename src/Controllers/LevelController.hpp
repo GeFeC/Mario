@@ -157,17 +157,6 @@ static auto restart_when_player_fell_out(AppState& app){
     level.stats.hp--;
     player.form = PlayerState::Form::Normal;
     player.growth = PlayerState::Growth::Small;
-
-    if (level.stats.hp == 0){
-      level.stats = StatsState{};
-      app.current_frame = get_worlds_first_level(app.current_frame);
-
-      level.stats.level_major = util::enum_modify(app.current_frame, [](auto value){
-        return value / config::LevelsInWorld + 1;
-      });
-
-      level.current_checkpoint = LevelState::CheckpointNotSet;
-    }
   }
 }
 

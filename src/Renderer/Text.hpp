@@ -31,7 +31,7 @@ private:
 
 public:
   std::string text;
-  glm::vec4 color;
+  glm::vec4 color = glm::vec4(1.f);
   Font* font;
 
   float font_scale = 0.f;

@@ -4,7 +4,6 @@
 #include "Frames/LevelBase.hpp"
 #include "States/BossState.hpp"
 #include "res/textureGroups.hpp"
-#include "Controllers/BossController.hpp"
 
 namespace mario::frames{
 

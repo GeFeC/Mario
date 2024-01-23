@@ -3,11 +3,10 @@
 #include "Frame.hpp"
 
 #include "Views/Level.hpp"
+#include "Views/Stats.hpp"
 #include "Controllers/LevelController.hpp"
 
 #include "States/AppState.hpp"
-#include "LevelGenerator/Builder.hpp"
-#include "LevelGenerator/LevelGenerator.hpp"
 
 #include "res/textureGroups.hpp"
 #include "res/textures.hpp"
@@ -37,11 +36,18 @@ static auto run_levelbase(
 		&textures::mushroom
   };
 
-  const auto setup = [&](auto& app){
+  const auto setup = [&](AppState& app){
     fonts::normal.allocate(16);
     LevelState::timer = 0.f;
 
     auto& level = app.current_level;
+
+		if (level.stats.hp == 0){
+			level.stats.hp = 5;
+			if (app.difficulty == AppState::Difficulty::Hard){
+				level.stats.hp = 3;
+			}
+		}
 
     level.type = level_data.type;
 
@@ -66,6 +72,14 @@ static auto run_levelbase(
     level.initialise_hitbox_grid();
     extra_setup(app);
 
+		if (level.stats.boss_hp.current != nullptr){
+			if (app.difficulty == AppState::Difficulty::Hard){
+				auto& boss_hp = level.stats.boss_hp;
+				*boss_hp.current += 10;
+				boss_hp.max = *boss_hp.current;	
+			}
+		}
+
     //Camera:
     if (level.type == LevelState::Type::Vertical){
       level.camera_offset.y = player.position.y - LevelState::BlocksInColumn / 2.f * BlockSize;
@@ -84,6 +98,14 @@ static auto run_levelbase(
   const auto loop = [](auto& app){
     level_controller::run(app);
     views::render_level(app);
+
+		if (app.current_level.load_delay > 0.f){
+			views::render_loading_screen(app.current_level, app.difficulty);
+		}
+
+		renderer::draw_with_shadow([&]{
+			views::render_stats(app.current_level);
+		});
   };
 
   run_frame(app, level_data.frame, textures, setup, loop);

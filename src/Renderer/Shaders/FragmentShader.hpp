@@ -33,7 +33,7 @@ static auto fragment_shader_script = R"(
       + vec4(1, 1, 1, texture_pixel.a) * is_highlighted * (1 - is_shadow);
 
     vec4 glyph_color = 
-      is_glyph * vec4(1.0, 1.0, 1.0, alpha) * (1 - is_shadow)
+      is_glyph * vec4(f_color.r, f_color.g, f_color.b, alpha * f_color.a) * (1 - is_shadow)
       + vec4(shadow, shadow, shadow, alpha * 0.5) * is_glyph * is_shadow;
 
     color = face_color + glyph_color;

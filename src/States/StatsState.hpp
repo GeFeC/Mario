@@ -14,7 +14,7 @@ struct StatsState{
   static constexpr auto MinPositionY = 2.f / 3.f * BlockBase::Size;
   static constexpr auto MaxPositionY = config::FrameBufferSize.y - MinPositionY * 4;
 
-  int hp = 5;
+  int hp = 0;
   int score = 0;
 	int stored_mushrooms = 0;
   int time = 100;

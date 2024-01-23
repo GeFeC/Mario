@@ -232,6 +232,8 @@ static auto print(const Text& text, const glm::vec2& offset){
     
     current_glyph_texture.set_mag_filter(GL_NEAREST);
     current_glyph_texture.set_min_filter(GL_NEAREST_MIPMAP_NEAREST);
+
+		set_uniform("f_color", text.color);
     draw_base(text.get_glyph(i), true, offset);
   }
 }

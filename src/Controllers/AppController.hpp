@@ -2,6 +2,8 @@
 
 #include "States/AppState.hpp"
 
+#include "Frames/Menu.hpp"
+
 #include "Frames/Level11.hpp"
 #include "Frames/Level12.hpp"
 #include "Frames/Level13.hpp"
@@ -56,6 +58,8 @@
 namespace mario::app_controller{
 
 static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppState&)>{
+  { AppState::Frame::Menu, frames::run_menu },
+
   { AppState::Frame::Level11, frames::run_level11 },
   { AppState::Frame::Level12, frames::run_level12 },
   { AppState::Frame::Level13, frames::run_level13 },
@@ -106,30 +110,70 @@ static auto frame_functions = std::unordered_map<AppState::Frame, void(*)(AppSta
   { AppState::Frame::Level76, frames::run_level76 },
 };
 
+static auto save_progress(AppState& app){
+	auto& frame = app.current_frame;
+	if (frame == AppState::Frame::Menu) return;
+
+	const auto frame_index = frame | util::as<int>;
+	auto state = saves::SaveState{};
+	state.world = frame_index / 6;
+	state.difficulty = app.difficulty;
+
+	if (app.difficulty == AppState::Difficulty::Easy){
+		state.level = frame_index % 6;
+	}
+
+	saves::save(state);
+}
+
+static auto reset_level(AppState& app){
+	auto& level = app.current_level;
+
+  const auto prev_stats = level.stats;
+  const auto prev_player_form = level.player.form;
+  const auto prev_player_growth = level.player.growth;
+  const auto prev_current_checkpoint = level.current_checkpoint;
+
+  level = LevelState{};
+
+  auto& stats = level.stats;
+  stats = prev_stats;
+  stats.move_direction = util::Direction::up();
+  stats.position_y = StatsState::MinPositionY;
+
+  level.stats.boss_hp = StatsState::BossHp();
+  level.player.form = prev_player_form;
+  level.player.growth = prev_player_growth;
+  level.current_checkpoint = prev_current_checkpoint;
+
+	if (level.stats.hp == 0){
+		const auto prev_level_major = level.stats.level_major;
+		const auto prev_level_minor = level.stats.level_minor;
+
+		level.stats = StatsState{};
+		level.current_checkpoint = LevelState::CheckpointNotSet;
+		level.stats.level_major = prev_level_major;
+
+		if (app.difficulty == AppState::Difficulty::Easy){
+			level.stats.level_minor = prev_level_minor;
+		}
+		else{
+			app.current_frame = level_controller::get_worlds_first_level(app.current_frame);
+		}
+	}
+}
+
 static auto run(AppState& app){
   auto& frame = app.current_frame;
 
-  const auto& run_level = frame_functions[frame];
-  run_level(app);
+	save_progress(app);
 
-  //reset level:
-  const auto stats = app.current_level.stats;
-  const auto player_form = app.current_level.player.form;
-  const auto player_growth = app.current_level.player.growth;
-  const auto current_checkpoint = app.current_level.current_checkpoint;
+  const auto& run_frame = frame_functions[frame];
+  run_frame(app);
 
-  app.current_level = LevelState{};
-
-  //reset stats position:
-  auto& new_stats = app.current_level.stats;
-  new_stats = stats;
-  new_stats.move_direction = util::Direction::up();
-  new_stats.position_y = StatsState::MinPositionY;
-
-  app.current_level.stats.boss_hp = StatsState::BossHp();
-  app.current_level.player.form = player_form;
-  app.current_level.player.growth = player_growth;
-  app.current_level.current_checkpoint = current_checkpoint;
+	if (frame != AppState::Frame::Menu){
+		reset_level(app);
+	}
 }
 
 } //namespace mario::app_controller
