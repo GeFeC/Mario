@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="64" tileheight="64" tilecount="114" columns="0">
+<tileset version="1.8" tiledversion="1.8.2" name="tileset" tilewidth="64" tileheight="64" tilecount="116" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="73">
   <image width="32" height="32" source="../textures/bush/center.png"/>
@@ -19,13 +19,13 @@
  <tile id="68">
   <image width="32" height="32" source="../textures/bush/right.png"/>
  </tile>
- <tile id="89">
+ <tile id="97">
   <image width="32" height="32" source="../textures/bush/snow_center.png"/>
  </tile>
- <tile id="90">
+ <tile id="98">
   <image width="32" height="32" source="../textures/bush/snow_left.png"/>
  </tile>
- <tile id="91">
+ <tile id="99">
   <image width="32" height="32" source="../textures/bush/snow_right.png"/>
  </tile>
  <tile id="83">
@@ -103,10 +103,10 @@
  <tile id="108">
   <image width="32" height="32" source="../textures/entity/squid/2.png"/>
  </tile>
- <tile id="54">
+ <tile id="51">
   <image width="32" height="32" source="../textures/hill/mush_center.png"/>
  </tile>
- <tile id="53">
+ <tile id="50">
   <image width="32" height="32" source="../textures/hill/mush_center_dot.png"/>
  </tile>
  <tile id="52">
@@ -283,13 +283,13 @@
  <tile id="88">
   <image width="32" height="32" source="../textures/tile/snow_bot.png"/>
  </tile>
- <tile id="176">
+ <tile id="89">
   <image width="32" height="32" source="../textures/tile/snow_center.png"/>
  </tile>
- <tile id="177">
+ <tile id="90">
   <image width="32" height="32" source="../textures/tile/snow_left.png"/>
  </tile>
- <tile id="178">
+ <tile id="91">
   <image width="32" height="32" source="../textures/tile/snow_right.png"/>
  </tile>
  <tile id="81">
@@ -342,5 +342,11 @@
  </tile>
  <tile id="192">
   <image width="32" height="32" source="../textures/cannon/top.png"/>
+ </tile>
+ <tile id="53">
+  <image width="32" height="32" source="../textures/hill/center_dot.png"/>
+ </tile>
+ <tile id="54">
+  <image width="32" height="32" source="../textures/hill/center.png"/>
  </tile>
 </tileset>
