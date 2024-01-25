@@ -8,6 +8,7 @@
 
 auto main() -> int{
   mario::window::init();
+	mario::input::init();
   mario::renderer::init();
 
   auto app = mario::AppState();

@@ -7,7 +7,7 @@
 #include "States/EntityState.hpp"
 
 #include "res/textures.hpp"
-#include "Window.hpp"
+#include "Input.hpp"
 
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -17,7 +17,7 @@ namespace mario::player_controller{
 
 static auto detect_collision_above(PlayerState& player, LevelState& level){
   entity_controller::detect_collision_with_level(player, level, [&](const auto& collision_state){
-    if (collision_state.distance_below < BlockBase::Size && !window::is_key_pressed(GLFW_KEY_UP)){
+    if (collision_state.distance_below < BlockBase::Size && !input::key_jump.is_down()){
       player.jump_cooldown = false;
     }
   });
@@ -34,7 +34,7 @@ static auto handle_swimming(PlayerState& player, LevelState& level){
   [&]{
     if (player.position.y < BlockBase::Size * 1.5f) return;
 
-    if (window::is_key_pressed(GLFW_KEY_UP) && !player.swim_cooldown && !player.is_squating){
+    if (input::key_squat.is_down() && !player.swim_cooldown && !player.is_squating){
       player.swim_counter.reset();
       player.gravity = PlayerState::SwimPower;
       player.is_on_ground = false;
@@ -42,7 +42,7 @@ static auto handle_swimming(PlayerState& player, LevelState& level){
     }
   }();
 
-  if (!window::is_key_pressed(GLFW_KEY_UP)){
+  if (!input::key_jump.is_down()){
     player.swim_cooldown = false;
   }
 
@@ -52,7 +52,7 @@ static auto handle_swimming(PlayerState& player, LevelState& level){
 static auto handle_jumping(PlayerState& player, LevelState& level){
   if (player.is_dead) return;
 
-  if (window::is_key_pressed(GLFW_KEY_UP) && player.is_on_ground && !player.jump_cooldown && player.is_controllable){
+  if (input::key_jump.is_down() && player.is_on_ground && !player.jump_cooldown && player.is_controllable){
     player.gravity = PlayerState::JumpPower;
     player.is_on_ground = false;
     player.jump_cooldown = true;
@@ -63,7 +63,7 @@ static auto handle_jumping(PlayerState& player, LevelState& level){
 
 static auto handle_gravity(PlayerState& player, LevelState& level){
   player.gravity_boost = 1.f;
-  if (!player.is_dead && player.gravity < 0 && !window::is_key_pressed(GLFW_KEY_UP) && player.is_controllable){
+  if (!player.is_dead && player.gravity < 0 && !input::key_jump.is_down() && player.is_controllable){
     player.gravity_boost = 2.f;
   }
 
@@ -78,7 +78,7 @@ static auto handle_movement(PlayerState& player, LevelState& level){
 
   using util::Direction;
   //Keyboard events:
-  if (window::is_key_pressed(GLFW_KEY_RIGHT) && player.is_controllable){
+  if (input::key_go_right.is_down() && player.is_controllable){
     player.acceleration.right += speed_boost;
     player.direction = Direction::right();
   }
@@ -86,7 +86,7 @@ static auto handle_movement(PlayerState& player, LevelState& level){
     player.acceleration.right -= speed_boost / player.slip;
   }
 
-  if (window::is_key_pressed(GLFW_KEY_LEFT) && player.is_controllable){
+  if (input::key_go_left.is_down() && player.is_controllable){
     player.acceleration.left += speed_boost;
     player.direction = Direction::left();
   }
@@ -96,7 +96,7 @@ static auto handle_movement(PlayerState& player, LevelState& level){
 
   //Calculating max speed
   if (!player.is_squating){
-    if (window::is_key_pressed(GLFW_KEY_LEFT_SHIFT)){
+    if (input::key_sprint.is_down()){
       player.max_speed = PlayerState::MaxSpeedWithSprint;
     }
     else if (player.max_speed > PlayerState::MaxSpeedWithoutSprint){
@@ -277,7 +277,7 @@ static auto handle_squating(PlayerState& player, LevelState& level){
   });
 
   if (player.growth == PlayerState::Growth::Big){
-    if (window::is_key_pressed(GLFW_KEY_DOWN) || is_forced_to_squat){
+    if (input::key_squat.is_down() || is_forced_to_squat){
       if (player.size.y == BlockBase::Size * 2){
         player.is_squating = true;
         player.position.y += BlockBase::Size * player.gravity_flip.as_binary();
@@ -303,12 +303,7 @@ static auto handle_fireballs(PlayerState& player, const LevelState& level){
 
   if (player.form != PlayerState::Form::Fire) return;
 
-  static auto key_active = true;
-  const auto shoot_key_pressed = window::is_key_pressed(GLFW_KEY_Z) && player.is_controllable;
-
-  if (!shoot_key_pressed) key_active = true;
-  if (!shoot_key_pressed || !key_active) return;
-  key_active = false;
+  if (!input::key_shoot.clicked() || !player.is_controllable) return;
 
   const auto fireball_ptr = std::find_if(player.fireballs.begin(), player.fireballs.end(), [](const auto& f){
     return !f.is_active && f.explosion.finished();
@@ -334,7 +329,7 @@ static auto run(PlayerState& player, LevelState& level){
   if (player.is_changing_to_fire){
     transform_to_fire(player);
   } 
-	else if (window::is_key_pressed(GLFW_KEY_SPACE) && can_use_stored_mushroom(player, level)){
+	else if (input::key_use_mushroom.clicked() && can_use_stored_mushroom(player, level)){
 		player.is_growing_up = true;
 		level.stats.stored_mushrooms--;
 	}
