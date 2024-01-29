@@ -119,6 +119,10 @@ static auto save_progress(AppState& app){
 	state.world = frame_index / 6;
 	state.difficulty = app.difficulty;
 
+	std::transform(input::controls.begin(), input::controls.end(), state.controls.begin(), [](const input::Key& key){
+		return key.code;
+	});
+
 	if (app.difficulty == AppState::Difficulty::Easy){
 		state.level = frame_index % 6;
 	}

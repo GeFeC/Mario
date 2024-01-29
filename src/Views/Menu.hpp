@@ -91,16 +91,16 @@ static auto render_menu_title(const AppState& app){
 	});
 }
 
-static auto render_menu_options(const MenuState& menu, const glm::vec2& background_size){
+static auto render_menu_options(const MenuState& menu){
 	const auto background_position = glm::vec2(
-		config::FrameBufferSize.x / 2.f - background_size.x / 2.f,
-		BlockBase::Size * 2.3f + 250.f
+		config::FrameBufferSize.x / 2.f - menu.size.x / 2.f,
+		menu.position_y
 	);
 
-	renderer::draw_plain(make_menu_background(background_position, background_size));
+	renderer::draw_plain(make_menu_background(background_position, menu.size));
 
 	renderer::draw_with_shadow([&]{
-		render_menu_frame(background_position, background_size);
+		render_menu_frame(background_position, menu.size);
 	});
 
 	for (int i = 0; i < menu.options.size(); ++i){
@@ -117,7 +117,7 @@ static auto render_menu_options(const MenuState& menu, const glm::vec2& backgrou
 		text.update();
 
 		text.position = background_position + glm::vec2(
-			background_size.x / 2.f - text.get_text_width() / 2.f,
+			menu.size.x / 2.f - text.get_text_width() / 2.f,
 			BlockBase::Size * (i + 0.9)
 		);
 
@@ -130,9 +130,11 @@ static auto render_menu_options(const MenuState& menu, const glm::vec2& backgrou
 }
 
 static auto render_menu(const AppState& app){
-	render_menu_title(app);
+	if (app.menu.state != MenuState::State::Controls){
+		render_menu_title(app);
+	}
 
-	render_menu_options(app.menu, glm::vec2(7.5f, 5.5f) * BlockBase::Size);
+	render_menu_options(app.menu);
 }
 
 } //namespace mario::views

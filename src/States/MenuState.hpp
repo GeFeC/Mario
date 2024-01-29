@@ -16,10 +16,20 @@ struct MenuStringState{
 };
 
 struct MenuState{
+	static constexpr auto MainMenuSize = glm::vec2(7.5f, 5.5f) * 95.f;
+	static constexpr auto MainMenuPositionY = 470.f;
+	static constexpr auto ControlNameMaxSize = 10;
+	static constexpr auto ControlTextSize = 20;
+
 	using Options = std::vector<MenuStringState>;
+
 	Options options;
+	glm::vec2 size;
+	float position_y;
+	bool controls_change_mode = false;
 
 	enum class Option{
+		First = 0,
 		NewGame = 0,
 		Continue = 1,
 		Controls = 2,
@@ -34,12 +44,13 @@ struct MenuState{
 	enum class State{
 		Main,
 		NewGame,
-		Continue,
-		Exit
+		Controls
 	} state = MenuState::State::Main;
 
 	MenuState() {
 		options = main_options();
+		size = MainMenuSize;
+		position_y = MainMenuPositionY;
 	}
 
 	auto main_options() const -> Options{

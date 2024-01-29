@@ -9,8 +9,13 @@
 
 namespace mario::window{
 
+static int last_pressed_key = -1;
 static float delta_time = 0.f;
 static GLFWwindow* g_window;
+
+static auto input_callback(GLFWwindow*, int key, int, int, int){
+	last_pressed_key = key;
+}
 
 static auto resize_callback(GLFWwindow*, int window_width, int window_height){
   const auto ratio = (window_width | util::as<float>) / window_height;
@@ -18,7 +23,7 @@ static auto resize_callback(GLFWwindow*, int window_width, int window_height){
   auto game_screen_width = window_width;
   auto game_screen_height = window_height;
 
-  if (ratio > config::FrameBufferAspectRatio){                                   
+  if (ratio > config::FrameBufferAspectRatio){
     game_screen_width = window_height * config::FrameBufferAspectRatio;
   }
   else{
@@ -68,6 +73,7 @@ static auto init(){
 
   //Resize callback
   glfwSetFramebufferSizeCallback(g_window, resize_callback);
+	glfwSetKeyCallback(g_window, input_callback);
 
   //Initialise glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){

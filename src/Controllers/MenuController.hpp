@@ -2,7 +2,6 @@
 
 #include "States/AppState.hpp"
 #include "States/MenuState.hpp"
-#include "Window.hpp"
 #include "Saves.hpp"
 #include "Input.hpp"
 #include "Util/Enum.hpp"
@@ -50,6 +49,41 @@ static auto run_main_menu_controller(AppState& app){
 		app.current_frame = level_index | util::as<AppState::Frame>;
 	}
 
+	if (menu.current_option == MenuState::Option::Controls){
+		menu.state = MenuState::State::Controls;
+		menu.current_option = MenuState::Option::First;
+		menu.size = glm::vec2(1100.f, 900.f);
+		menu.position_y = 100.f;
+
+		auto& options = menu.options;
+		options = {
+			MenuStringState("JUMP"),
+			MenuStringState("SQUAT"),
+			MenuStringState("LEFT"),
+			MenuStringState("RIGHT"),
+			MenuStringState("SPRINT"),
+			MenuStringState("SHOOT"),
+			MenuStringState("MUSHROOM"),
+		};
+
+		for (auto& option : options){
+			option.font_size = 3.f;
+			option.text.resize(MenuState::ControlNameMaxSize, ' ');
+		}
+
+		for (int i = 0; i < 7; ++i){
+			options[i].text += input::key_names.at(input::controls[i].code);
+		}
+
+		for (auto& option : options){
+			option.text.resize(MenuState::ControlTextSize, ' ');
+		}
+
+		options.push_back(MenuStringState("BACK"));
+
+		options.shrink_to_fit();
+	}
+
 	if (menu.current_option == MenuState::Option::Exit){
 		app.should_exit = true;
 	}
@@ -83,9 +117,79 @@ static auto run_new_game_menu_controller(AppState& app){
 	app.current_frame = AppState::Frame::Level11;
 }
 
+static auto run_controls_menu_controller(AppState& app){
+	auto& menu = app.menu;
+	auto current_option_index = menu.current_option | util::as<int>;
+
+	const auto option_back = menu.options.size() - 1;
+	if (current_option_index == option_back){
+		menu.state = MenuState::State::Main;
+		menu.options = menu.main_options();
+		menu.current_option = MenuState::Option::NewGame;
+
+		menu.size = MenuState::MainMenuSize;
+		menu.position_y = MenuState::MainMenuPositionY;
+
+		return;
+	}
+
+	menu.controls_change_mode = true;
+	window::last_pressed_key = -1;
+	menu.options[current_option_index].color.b = 0.5f;
+}
+
+static auto update_controls(AppState& app){
+	auto& menu = app.menu;
+	auto current_option_index = menu.current_option | util::as<int>;
+	auto& current_option = menu.options[current_option_index];
+
+	current_option.text.resize(MenuState::ControlNameMaxSize, ' ');
+
+	//Ignore first key detection, because this key is an enter from previous controls selection
+	static auto enter_pressed = false;
+	if (window::last_pressed_key == GLFW_KEY_ENTER && !enter_pressed){
+		enter_pressed = true;
+		window::last_pressed_key = -1;
+	}
+
+	if (window::last_pressed_key != -1 && enter_pressed){
+		if (input::key_names.find(window::last_pressed_key) == input::key_names.end()){
+			current_option.text.resize(MenuState::ControlTextSize, ' ');
+
+			return;
+		}
+
+		if (window::last_pressed_key == GLFW_KEY_DOWN){
+			input::key_down.clickable = false;
+		}
+
+		menu.controls_change_mode = false;
+		current_option.text += input::key_names.at(window::last_pressed_key);
+		current_option.color = glm::vec3(1.f);
+
+		input::controls[current_option_index].code = window::last_pressed_key;
+		enter_pressed = false;
+
+		auto state = saves::load();
+		std::transform(input::controls.begin(), input::controls.end(), state.controls.begin(), [](const input::Key& key){
+			return key.code;
+		});
+		saves::save(state);
+	}
+
+	current_option.text.resize(MenuState::ControlTextSize, ' ');
+}
+
 static auto run(AppState& app){
 	run_player_controller(app.current_level.player);
-	run_input_controller(app);
+
+	if (app.menu.controls_change_mode){
+		update_controls(app);
+		return;
+	}
+	else{
+		run_input_controller(app);
+	}
 
 	if (!input::key_enter.clicked()) return;
 
@@ -96,6 +200,10 @@ static auto run(AppState& app){
 
 		case MenuState::State::NewGame:
 			run_new_game_menu_controller(app);
+			break;
+
+		case MenuState::State::Controls:
+			run_controls_menu_controller(app);
 			break;
 
 		default:;

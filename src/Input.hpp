@@ -3,6 +3,7 @@
 #include "Window.hpp"
 #include <string>
 #include <unordered_map>
+#include <array>
 
 namespace mario::input{
 
@@ -23,6 +24,7 @@ inline auto key_names = std::unordered_map<int, std::string>{
 	{ GLFW_KEY_ENTER, "ENTER" },
 	{ GLFW_KEY_BACKSLASH, "BACKSLASH" },
 	{ GLFW_KEY_BACKSPACE, "BACKSPACE" },
+	{ GLFW_KEY_SPACE, "SPACE" },
 	{ GLFW_KEY_INSERT, "INSERT" },
 	{ GLFW_KEY_HOME, "HOME" },
 	{ GLFW_KEY_DELETE, "DELETE" },
@@ -37,16 +39,6 @@ inline auto key_names = std::unordered_map<int, std::string>{
 	{ GLFW_KEY_EQUAL, "EQUAL" },
 	{ GLFW_KEY_MINUS, "MINUS" }
 };
-
-static auto init(){
-	for (int i = 0; i < 10; ++i){
-		key_names.insert({ GLFW_KEY_0 + i, std::to_string(i) });
-	}
-
-	for (int i = GLFW_KEY_A; i <= GLFW_KEY_Z; ++i){
-		key_names.insert({ i, std::string(1, i - GLFW_KEY_A + 'A') });
-	}
-}
 
 struct Key{
 	int code = 0;
@@ -75,12 +67,36 @@ inline auto key_up = Key(GLFW_KEY_UP);
 inline auto key_down = Key(GLFW_KEY_DOWN);
 inline auto key_enter = Key(GLFW_KEY_ENTER);
 
-inline auto key_jump = Key(GLFW_KEY_UP);
-inline auto key_squat = Key(GLFW_KEY_DOWN);
-inline auto key_go_left = Key(GLFW_KEY_LEFT);
-inline auto key_go_right = Key(GLFW_KEY_RIGHT);
-inline auto key_sprint = Key(GLFW_KEY_LEFT_SHIFT);
-inline auto key_shoot = Key(GLFW_KEY_Z);
-inline auto key_use_mushroom = Key(GLFW_KEY_SPACE);
+enum ControlName{
+	Jump,
+	Squat,
+	GoLeft,
+	GoRight,
+	Sprint,
+	Shoot,
+	UseMushroom,
+	ItemsCount
+};
+
+static auto controls = std::array{
+	Key(GLFW_KEY_UP),
+	Key(GLFW_KEY_DOWN),
+	Key(GLFW_KEY_LEFT),
+	Key(GLFW_KEY_RIGHT),
+	Key(GLFW_KEY_LEFT_SHIFT),
+	Key(GLFW_KEY_Z),
+	Key(GLFW_KEY_SPACE)
+};
+
+static auto init(){
+	for (int i = 0; i < 10; ++i){
+		key_names.insert({ GLFW_KEY_0 + i, std::to_string(i) });
+	}
+
+	for (int i = GLFW_KEY_A; i <= GLFW_KEY_Z; ++i){
+		key_names.insert({ i, std::string(1, i - GLFW_KEY_A + 'A') });
+	}
+}
+
 
 } //namespace mario::input

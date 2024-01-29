@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/AppState.hpp"
+#include "Input.hpp"
 #include <fstream>
 
 namespace mario::saves{
@@ -11,6 +12,7 @@ struct SaveState{
 	int world = 0;
 	int level = 0;
 	AppState::Difficulty difficulty = AppState::Difficulty::Easy;
+	std::array<int, input::ControlName::ItemsCount> controls;
 };
 
 static auto save(SaveState state){
