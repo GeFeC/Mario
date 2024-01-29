@@ -145,7 +145,6 @@ struct LevelState{
 
   glm::vec2 camera_offset;
 
-  float background_opacity = 0.f;
   util::InfiniteCounter background_pulse_counter = util::InfiniteCounter(5.f, 1.f);
   util::InfiniteCounter coin_spin_counter = util::InfiniteCounter(4.f, 20.f);
   util::InfiniteCounter fire_flower_blink_counter = util::InfiniteCounter(4.f, 15.f);
@@ -153,6 +152,7 @@ struct LevelState{
   util::InfiniteCounter hammer_counter = util::InfiniteCounter(4.f, 10.f);
   util::InfiniteCounter purple_koopa_counter = util::InfiniteCounter(10.f, 10.f);
 
+  float background_opacity = 0.f;
   float purple_flying_koopa_timer = 0.f;
 
   float cloud_offset = 0.f;
@@ -164,7 +164,9 @@ struct LevelState{
   float score_adding_after_finish_delay = 0.f;
 
   int blink_state = 0;
+	int pause_menu_current_option = 0;
 
+	bool is_paused = false;
   bool is_finished = false;
   bool is_dark = false;
   bool should_handle_hitbox_on_sides = true;

@@ -66,6 +66,7 @@ struct Key{
 inline auto key_up = Key(GLFW_KEY_UP);
 inline auto key_down = Key(GLFW_KEY_DOWN);
 inline auto key_enter = Key(GLFW_KEY_ENTER);
+inline auto key_escape = Key(GLFW_KEY_ESCAPE);
 
 enum ControlName{
 	Jump,
@@ -97,6 +98,5 @@ static auto init(){
 		key_names.insert({ i, std::string(1, i - GLFW_KEY_A + 'A') });
 	}
 }
-
 
 } //namespace mario::input

@@ -243,12 +243,37 @@ static auto handle_lava(LevelState& level){
 	if (level.lava_offset > 1.f) level.lava_offset -= 1.f;
 }
 
+static auto handle_pause_menu(AppState& app){
+	auto& level = app.current_level;
+
+	if (input::key_escape.clicked() && app.current_frame != AppState::Frame::Menu) {
+		level.is_paused = !level.is_paused;
+	}
+
+	if (!level.is_paused) return;
+
+	if (input::key_up.clicked() || input::key_down.clicked()) {
+		level.pause_menu_current_option = !level.pause_menu_current_option;
+	}
+
+	if (!input::key_enter.clicked()) return;
+
+	level.is_paused = false;
+	if (level.pause_menu_current_option == 1) {
+		app.current_frame = AppState::Frame::Menu;
+	}
+}
+
 static auto run(AppState& app){
   auto& level = app.current_level;
 
   if (level.is_level_in_castle()){
     handle_level_background_pulsing(level);
   }
+
+	handle_pause_menu(app);
+
+	if (level.is_paused) return;
 
   //Level loading
   if (level.load_delay > 0.f) {

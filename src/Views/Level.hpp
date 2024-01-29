@@ -15,10 +15,45 @@
 #include "res/textures.hpp"
 #include "Window.hpp"
 
-#include <sstream>
-#include <iomanip>
-
 namespace mario::views{
+
+static auto render_pause_menu(const LevelState& level){
+	renderer::draw_plain(renderer::PlainDrawable{
+		glm::vec2(0.f),
+		config::FrameBufferSize,
+		glm::vec4(0.f, 0.f, 0.f, 0.5f)
+	});
+
+	auto text = renderer::Text(&fonts::normal, "BACK TO GAME", 4.f);
+	text.update();
+
+	text.position.x = config::FrameBufferSize.x / 2.f - text.get_text_width() / 2.f;
+	text.position.y = config::FrameBufferSize.y / 2.f - 60.f;
+	if (level.pause_menu_current_option == 1){
+		text.color.a = 0.5f;
+	}
+
+	text.update_position();
+
+	renderer::draw_with_shadow([&]{
+		renderer::print(text, glm::vec2(0.f));
+	});
+	text.color.a = 1.f;
+
+	text.text = "MAIN MENU";
+	text.update();
+
+	text.position.x = config::FrameBufferSize.x / 2.f - text.get_text_width() / 2.f;
+	text.position.y = config::FrameBufferSize.y / 2.f + 60.f;
+	if (level.pause_menu_current_option == 0){
+		text.color.a = 0.5f;
+	}
+
+	text.update_position();
+	renderer::draw_with_shadow([&]{
+		renderer::print(text, glm::vec2(0.f));
+	});
+}
 
 static auto render_water(const LevelState& level){
   static constexpr auto WaterTransparency = 0.5f;
@@ -181,25 +216,8 @@ static auto render_darkness(const LevelState& level){
   });
 }
 
-static auto render_level(const AppState& app){
+static auto render_final_level_textures(const AppState& app){
 	auto& level = app.current_level;
-
-  render_level_background(level);
-  render_all_level_objects(level);
-
-  if (level.is_dark){
-    render_darkness(level);
-  }
-
-  renderer::draw_with_shadow([&]{
-    render_all_points_particles(level);  
-  });
-
-  render_water(level);
-
-
-	//Render final level textures:
-	if (app.current_frame != AppState::Frame::Level76) return;
 
 	//Peach:
 	renderer::draw(renderer::Drawable{
@@ -238,7 +256,31 @@ static auto render_level(const AppState& app){
 
 		renderer::print(text, glm::vec2(0));
 	});
+}
 
+static auto render_level(const AppState& app){
+	auto& level = app.current_level;
+
+  render_level_background(level);
+  render_all_level_objects(level);
+
+  if (level.is_dark){
+    render_darkness(level);
+  }
+
+  renderer::draw_with_shadow([&]{
+    render_all_points_particles(level);  
+  });
+
+  render_water(level);
+
+	if (app.current_frame == AppState::Frame::Level76){
+		render_final_level_textures(app);
+	}
+
+	if (app.current_level.is_paused){
+		render_pause_menu(level);
+	}
 }
 
 } //namespace mario::views

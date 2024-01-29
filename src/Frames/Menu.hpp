@@ -28,6 +28,7 @@ static auto run_menu(AppState& app){
   };
 
 	auto& level = app.current_level;
+	level = {};
 	const auto setup = [&](auto& app){
     fonts::normal.allocate(16);
     LevelState::timer = 0.f;

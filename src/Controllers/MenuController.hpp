@@ -17,13 +17,22 @@ static auto run_input_controller(AppState& app){
 	const auto is_last_option = 
 		(menu.current_option | util::as<int>) == menu.options.size() - 1;
 
-	if (input::key_down.clicked() && !is_last_option){
+	if (input::key_down.clicked()){
+		if (is_last_option) {
+			menu.current_option = MenuState::Option::First;
+			return;
+		}
+
 		menu.current_option = util::enum_add(menu.current_option, 1.f);
 	}
 
 	const auto is_first_option = (menu.current_option | util::as<int>) == 0;
 
-	if (input::key_up.clicked() && !is_first_option){
+	if (input::key_up.clicked()){
+		if (is_first_option){
+			menu.current_option = (menu.options.size() - 1) | util::as<MenuState::Option>;
+			return;
+		}
 		menu.current_option = util::enum_add(menu.current_option, -1.f);
 	}
 }
