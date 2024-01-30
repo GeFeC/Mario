@@ -15,6 +15,10 @@ struct SaveState{
 	std::array<int, input::ControlName::ItemsCount> controls;
 };
 
+static auto file_exists(){
+	return !!std::ifstream(FileName, std::ios::binary);
+}
+
 static auto save(SaveState state){
 	auto file = std::ofstream(FileName, std::ios::binary);
 

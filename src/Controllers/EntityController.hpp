@@ -59,7 +59,6 @@ static auto detect_collision_with_level = [](EntityState& entity, const LevelSta
     const auto is_block_outside_the_world = x != util::in_range(0.f, level.max_size().x - 1);
 
     if (is_block_outside_the_world) return;
-		if (!level.should_handle_hitbox_on_sides) return;
 
     if (level.hitbox_grid[x][y] == LevelState::HitboxState::Solid){
       blocks_surrounding_entity.push_back(BlockState({ x, y }, &textures::dirt));

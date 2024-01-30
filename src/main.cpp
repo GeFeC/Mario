@@ -11,10 +11,12 @@ auto main() -> int{
 	mario::input::init();
   mario::renderer::init();
 
-	const auto controls = mario::saves::load().controls;
-	std::transform(controls.begin(), controls.end(), mario::input::controls.begin(), [](int code){
-		return mario::input::Key(code);
-	});
+	if (mario::saves::file_exists()){
+		const auto controls = mario::saves::load().controls;
+		std::transform(controls.begin(), controls.end(), mario::input::controls.begin(), [](int code){
+			return mario::input::Key(code);
+		});
+	}
 
   auto app = mario::AppState();
   app.current_frame = mario::AppState::Frame::Menu;
