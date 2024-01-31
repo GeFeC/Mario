@@ -1,7 +1,6 @@
 #pragma once
 
 #include "States/AppState.hpp"
-#include "Util/Util.hpp"
 #include "config.hpp"
 #include <iostream>
 

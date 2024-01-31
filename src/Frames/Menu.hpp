@@ -29,8 +29,8 @@ static auto run_menu(AppState& app){
 
 	auto& level = app.current_level;
 	level = {};
+	app.menu = {};
 	const auto setup = [&](auto& app){
-    fonts::normal.allocate(16);
     LevelState::timer = 0.f;
 
 		level.initialise_hitbox_grid();
@@ -84,7 +84,6 @@ static auto run_menu(AppState& app){
 
 	const auto loop = [&](auto& app){
 		level_controller::run(app);
-
 		menu_controller::run(app);
 		views::render_level(app);
 		views::render_menu(app);

@@ -138,6 +138,9 @@ static auto init(){
 
     throw std::runtime_error("Failed to link shader with error:\n" + std::string{ msg.data() } );
   }
+
+	glDeleteShader(vertex_shader);
+	glDeleteShader(fragment_shader);
   glUseProgram(shader_program);
 
   //Create Projection Matrix
@@ -239,11 +242,17 @@ static auto print(const Text& text, const glm::vec2& offset){
 }
 
 template<typename F>
-auto draw_with_shadow(const F& callable){
+static auto draw_with_shadow(const F& callable){
   shadow_mode = true;
   callable();
   shadow_mode = false;
   callable();
+}
+
+static auto free(){
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	glDeleteProgram(shader_program);
 }
 
 } //namespace mario::renderer

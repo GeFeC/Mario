@@ -102,4 +102,8 @@ static auto is_key_pressed(int key){
   return glfwGetKey(g_window, key) == GLFW_PRESS;
 }
 
+static auto free(){
+	glfwTerminate();
+}
+
 } //namespace mario::window

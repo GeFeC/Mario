@@ -37,7 +37,6 @@ static auto run_levelbase(
   };
 
   const auto setup = [&](AppState& app){
-    fonts::normal.allocate(16);
     LevelState::timer = 0.f;
 
     auto& level = app.current_level;

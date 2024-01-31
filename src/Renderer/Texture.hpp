@@ -16,8 +16,6 @@ struct Texture{
 private:
   std::string source_path;
 
-  auto read_from_source_path_and_load_() const -> void;
-
 public:
   bool allocated = false;
   GLuint id;

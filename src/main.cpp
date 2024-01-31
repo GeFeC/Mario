@@ -1,8 +1,9 @@
 #include "Renderer/Renderer.hpp"
 #include "Window.hpp"
-
-#include "Controllers/AppController.hpp"
+#include "Input.hpp"
+#include "Saves.hpp"
 #include "States/AppState.hpp"
+#include "Controllers/AppController.hpp"
 
 #include "Terminal.hpp"
 
@@ -10,6 +11,8 @@ auto main() -> int{
   mario::window::init();
 	mario::input::init();
   mario::renderer::init();
+
+	mario::fonts::normal.allocate(16);
 
 	if (mario::saves::file_exists()){
 		const auto controls = mario::saves::load().controls;
@@ -27,4 +30,10 @@ auto main() -> int{
   while(!mario::window::should_close() && !app.should_exit){
     mario::app_controller::run(app);
   }
+
+	mario::fonts::normal.free();
+	mario::renderer::free();
+	mario::window::free();
+
+	return 0;
 }
