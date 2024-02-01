@@ -32,6 +32,9 @@ static auto run(FireFlowerState& flower, LevelState& level){
     else{
       player.is_growing_up = true;
     }
+
+		sounds::sounds[sounds::MushroomEat].play();
+
   }
 }
 

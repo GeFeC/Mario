@@ -31,13 +31,15 @@
 
 #include "States/CoinPusherState.hpp"
 #include "States/FireFlowerPusherState.hpp"
+#include "States/LavaState.hpp"
 
 #include "Util/LoopedCounter.hpp"
 
 #include "res/textures.hpp"
 #include "Util/Util.hpp"
 #include "Util/Poly.hpp"
-#include "LavaState.hpp"
+
+#include "Audio.hpp"
 
 #include <vector>
 #include <limits>
@@ -132,6 +134,8 @@ struct LevelState{
 
   util::vector2d<HitboxState> hitbox_grid;
 
+	audio::Sound* background_music = nullptr;
+	audio::Sound* background_low_time_music = nullptr;
   renderer::Texture const* background_texture = nullptr;
   renderer::TextureGroup const* cloud_textures = nullptr;
 

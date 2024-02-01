@@ -100,6 +100,10 @@ static auto run_controller(BowserState& bowser, LevelState& level){
 			+ bowser.size.x * fire.direction.as_binary();
 		fire.position.y = bowser.position.y + fire.size.y / 2;
 
+		if (entity_controller::is_player_nearby(bowser, player)){
+			sounds::sounds[sounds::Fire].play();
+		}
+
 		//Calculation of direction vector:
 		const auto player_center = player.position + player.size / 2.f;
 		const auto fire_center = fire.position + fire.size / 2.f;

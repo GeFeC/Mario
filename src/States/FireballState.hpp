@@ -4,6 +4,7 @@
 #include "Util/LoopedCounter.hpp"
 #include "States/BlockState.hpp"
 #include "EntityState.hpp"
+#include "res/sounds.hpp"
 
 namespace mario{
 

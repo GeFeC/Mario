@@ -8,6 +8,8 @@
 #include "Terminal.hpp"
 
 auto main() -> int{
+	mario::audio::init();
+	mario::sounds::init();
   mario::window::init();
 	mario::input::init();
   mario::renderer::init();
@@ -31,6 +33,7 @@ auto main() -> int{
     mario::app_controller::run(app);
   }
 
+	mario::audio::free();
 	mario::fonts::normal.free();
 	mario::renderer::free();
 	mario::window::free();

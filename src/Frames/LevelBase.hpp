@@ -53,7 +53,7 @@ static auto run_levelbase(
     level.stats.level_major = level_data.number.major;
     level.stats.level_minor = level_data.number.minor;
 
-    level.stats.time = 400.f;
+    level.stats.time = 400;
 
     level.camera_offset.y = 0.f;
     auto& player = level.player;
@@ -71,6 +71,15 @@ static auto run_levelbase(
     level.initialise_hitbox_grid();
     extra_setup(app);
 
+		//Audio:
+		if (app.current_level.type == LevelState::Type::Boss && app.current_frame != AppState::Frame::Level76){
+			app.current_level.background_music->set_pitch(1.2f);
+		}
+		else{
+			app.current_level.background_music->set_pitch(1.0f);
+		}
+
+		//Boss:
 		if (level.stats.boss_hp.current != nullptr){
 			if (app.difficulty == AppState::Difficulty::Hard){
 				auto& boss_hp = level.stats.boss_hp;

@@ -229,6 +229,12 @@ static auto render_final_level_textures(const AppState& app){
 
 	if (level.player.position.x < 39.f * BlockBase::Size) return;
 
+	static auto game_finished = false;
+	if (!game_finished){
+		game_finished = true;
+		sounds::sounds[sounds::Princess].play();
+	}
+
 	renderer::draw_with_shadow([&]{
 		auto text = renderer::Text(&fonts::normal, "Thank you mario!", 4.f);
 		text.update();

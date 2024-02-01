@@ -10,6 +10,7 @@ static constexpr auto FrameBufferSize = glm::vec2(1920, 1152);
 static constexpr auto FrameBufferAspectRatio = FrameBufferSize.x / FrameBufferSize.y;
 static constexpr auto LevelsInWorld = 6;
 
+static constexpr auto AudioSourceDir = "../res/audio/";
 static constexpr auto FontsSourceDir = "../res/fonts/";
 static constexpr auto TexturesSourceDir = "../res/textures/";
 static constexpr auto LevelsSourceDir = "../res/levels/";

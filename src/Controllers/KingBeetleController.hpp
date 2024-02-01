@@ -61,6 +61,7 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
       const auto fireball_position = boss.position + glm::vec2(direction * boss.size.x, boss.size.y / 2.f);
       fireball.shoot(fireball_position, boss.direction, FireballSpeed);
       fireball.gravity = FireballGravity;
+			sounds::sounds[sounds::Fireball].play();
     }
   }
 
@@ -110,6 +111,7 @@ static auto run_controller(KingBeetleState& boss, LevelState& level){
     boss_controller::take_damage(boss);
     monster_controller::bounce_out(minion);
     minion.was_hit = true;
+		sounds::sounds[sounds::Shot].play();
   }
 
   if (!boss_was_hit_by_shell){

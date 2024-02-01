@@ -12,7 +12,7 @@ struct MonsterState : EntityState{
   inline static constexpr auto EdgeDetectionOffset = BlockBase::Size / 3.f;
 
   int reward_for_killing = 0;
-  int walk_speed = 0.f;
+  int walk_speed = 0;
 
   //When used with q_block
   float push_offset = 0.f;

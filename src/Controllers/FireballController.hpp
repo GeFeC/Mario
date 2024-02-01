@@ -8,6 +8,7 @@
 namespace mario::fireball_controller{
 
 static auto reset(FireballState& fireball){
+	sounds::sounds[sounds::Boom].play();
   fireball.is_active = false;
   fireball.is_visible = false;
   fireball.gravity = 0.f;

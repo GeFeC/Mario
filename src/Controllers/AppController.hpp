@@ -53,6 +53,8 @@
 #include "Frames/Level75.hpp"
 #include "Frames/Level76.hpp"
 
+#include "res/sounds.hpp"
+
 #include <unordered_map>
 
 namespace mario::app_controller{
@@ -169,6 +171,30 @@ static auto reset_level(AppState& app){
 
 static auto run(AppState& app){
   auto& frame = app.current_frame;
+	auto& level = app.current_level;
+	if (
+		app.current_frame == AppState::Frame::Level41 ||
+		app.current_frame == AppState::Frame::Level43 ||
+		app.current_frame == AppState::Frame::Level45 ||
+		app.current_frame == AppState::Frame::Level46
+	){
+		level.background_music = &sounds::sounds[sounds::Underwater];
+		level.background_low_time_music = &sounds::sounds[sounds::UnderwaterFast];
+	}
+	else if (util::is_enum_between(app.current_frame, AppState::Frame::Level51, AppState::Frame::Level56)){
+		level.background_music = &sounds::sounds[sounds::Underworld];
+		level.background_low_time_music = &sounds::sounds[sounds::UnderworldFast];
+	}
+	else if (util::is_enum_between(app.current_frame, AppState::Frame::Level71, AppState::Frame::Level76)){
+		level.background_music = &sounds::sounds[sounds::Castle];
+		level.background_low_time_music = &sounds::sounds[sounds::Castle];
+		ma_sound_set_volume(&level.background_music->sound, 2.f);
+	}
+	else{
+		level.background_music = &sounds::sounds[sounds::Overworld];
+		level.background_low_time_music = &sounds::sounds[sounds::OverworldFast];
+	}
+
 
 	save_progress(app);
 

@@ -11,7 +11,18 @@
 
 #include "Terminal.hpp"
 
+#include "res/sounds.hpp"
+
 namespace mario::entity_controller{
+
+static auto is_player_nearby(const EntityState& entity, const PlayerState& player){
+	const auto distance_x = std::abs(player.position.x - entity.position.x);
+	if (distance_x > LevelState::BlocksInRow * BlockBase::Size) return false;
+	const auto distance_y = player.position.y - entity.position.y;
+	if (distance_y / BlockBase::Size != util::in_range(-LevelState::BlocksInColumn / 2.f, LevelState::BlocksInColumn)) return false;
+
+	return true;
+}
 
 static auto fade_copies_out(EntityState& entity){
 	for (auto& copy : entity.copies_generator.items){
@@ -263,10 +274,14 @@ static auto kill_player_on_touch(const EntityState& entity, LevelState& level){
 
   if (player.growth == PlayerState::Growth::Big){
     player.is_shrinking = true;
+		sounds::sounds[sounds::Shrink].play();
 		return true;
   }
   else if (!player.is_shrinking && player.invincibility_delay <= 0.f) { 
     player.is_dead = true; 
+		sounds::sounds[sounds::Death].play();
+		level.background_music->stop();
+		sounds::sounds[sounds::LowTime].stop();
 		return true;
   }
 

@@ -23,6 +23,7 @@ static auto entity_controller(EntityPusherState<Entity>& pusher, LevelState& lev
 
 template<typename Entity>
 static auto push_out(EntityPusherState<Entity>& pusher, LevelState& level){
+	sounds::sounds[sounds::MushroomAppear].play();
   auto& entity = pusher.entity;
 
   entity.should_be_pushed_out = true;

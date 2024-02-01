@@ -76,8 +76,11 @@ static auto run(BossState<T>& boss, LevelState& level){
   //Interactions with player
   auto boss_hitbox = get_hitbox(boss);
   entity_controller::kill_player_on_touch(boss_hitbox, level);
-  if (level.player.form == PlayerState::Form::Normal){
+  if (level.player.form == PlayerState::Form::Normal && !level.player.is_dead){
     level.player.is_dead = true;
+		level.background_music->stop();
+		sounds::sounds[sounds::LowTime].stop();
+		sounds::sounds[sounds::Death].play();
   }
 }
 

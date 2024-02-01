@@ -50,9 +50,12 @@ static auto run_controller(BricksBlockState& block, LevelState& level){
 
       particle.set_direction(direction, util::random_value(2, 5));
     }
+
+		sounds::sounds[sounds::Blockbreak].play();
   }
 
   bounce_controller::bounce(block);
+	sounds::sounds[sounds::Blockhit].play();
 }
 
 } //namespace mario

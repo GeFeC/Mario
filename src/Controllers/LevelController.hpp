@@ -47,6 +47,8 @@
 #include "Window.hpp"
 #include "config.hpp"
 
+#include "res/sounds.hpp"
+
 namespace mario{
 
 template<typename T>
@@ -83,6 +85,13 @@ static auto handle_finishing(LevelState& level, AppState& app){
   auto& player = level.player;
 
   if (level.is_finished){
+		if (level.background_music->is_playing() || sounds::sounds[sounds::LowTime].is_playing()){
+			level.background_music->stop();
+			sounds::sounds[sounds::LowTime].stop();
+			sounds::sounds[sounds::Pipe].play();
+			sounds::sounds[sounds::LevelEnd].play();
+		}
+
     level.score_adding_after_finish_delay -= window::delta_time;
 
     //Going through pipe:
@@ -99,6 +108,7 @@ static auto handle_finishing(LevelState& level, AppState& app){
         level.stats.time -= multiplier;
         static constexpr auto PointsForEachTimeUnit = 10;
         level.stats.score += PointsForEachTimeUnit * multiplier;
+				sounds::sounds[sounds::Coin].play();
       }
     }
     else{
@@ -111,6 +121,8 @@ static auto handle_finishing(LevelState& level, AppState& app){
 
 					return;
 				}
+
+				if (sounds::sounds[sounds::LevelEnd].is_playing()) return;
 
         app.current_frame = util::enum_add(app.current_frame, 1);
         app.current_level.current_checkpoint = LevelState::CheckpointNotSet;
@@ -135,14 +147,17 @@ static auto restart_when_player_fell_out(AppState& app){
   auto& level = app.current_level;
   auto& player = level.player;
 
-  const auto started_falling = player.gravity_flip.is_flipped()
-    ? player.position.y < -BlockBase::Size
-    : player.position.y > (level.max_size().y + 1) * BlockBase::Size;
-
-  if (started_falling) {
+  if (player_controller::fell_out(player, level)) {
     player.can_move = false;
+		player.is_dead = true;
     //set speed to 0
     player.set_direction(util::Direction::left(), 0);
+
+		if (level.background_music->is_playing() || sounds::sounds[sounds::LowTime].is_playing()){
+			level.background_music->stop();
+			sounds::sounds[sounds::LowTime].stop();
+			sounds::sounds[sounds::Death].play();
+		}
   }
 
   const auto position_required_to_restart_level 
@@ -248,19 +263,31 @@ static auto handle_pause_menu(AppState& app){
 
 	if (input::key_escape.clicked() && app.current_frame != AppState::Frame::Menu) {
 		level.is_paused = !level.is_paused;
+		
+		if (level.is_paused){
+			sounds::sounds[sounds::Pause].play();
+			level.background_music->pause();
+		}
+		else{
+			level.background_music->resume();
+		}
 	}
 
 	if (!level.is_paused) return;
 
 	if (input::key_up.clicked() || input::key_down.clicked()) {
 		level.pause_menu_current_option = !level.pause_menu_current_option;
+		sounds::sounds[sounds::Blockhit].play();
 	}
 
 	if (!input::key_enter.clicked()) return;
 
+	level.background_music->resume();
+
 	level.is_paused = false;
 	if (level.pause_menu_current_option == 1) {
 		app.current_frame = AppState::Frame::Menu;
+		level.background_music->stop();
 	}
 }
 
@@ -281,6 +308,14 @@ static auto run(AppState& app){
     return;
   }
 
+	if (level.load_delay > -util::BigValue){
+		level.load_delay = -util::BigValue;
+
+		if (level.background_music != nullptr){
+			level.background_music->play();
+		}
+	}
+
 	handle_lava(level);
 
   handle_checkpoints(level);
@@ -298,7 +333,7 @@ static auto run(AppState& app){
   auto& player = level.player;
 
   if (!level.is_finished) {
-    stats_controller::run(level.stats);
+    stats_controller::run(level.stats, level);
 
 		if (!(app.current_frame == AppState::Frame::Level76 && player.position.x >= 39.f * BlockBase::Size)){
 			player_controller::run(player, level);
@@ -308,13 +343,18 @@ static auto run(AppState& app){
 			app.game_finish_timer += window::delta_time;
 		}
 
-    if (level.stats.time <= 0){
-      player.is_dead = true;
-    }
-
 		const auto final_boss_defeated = 
 			app.current_frame == AppState::Frame::Level76 && 
 			level.stats.boss_hp.current == nullptr;
+
+    if (level.stats.time == 0 && !player.is_dead && !final_boss_defeated){
+			sounds::sounds[sounds::Death].play();
+			level.background_music->stop();
+
+      player.is_dead = true;
+			player.growth = PlayerState::Growth::Small;
+			player.size.y = BlockBase::Size;
+    }
 
 		if (final_boss_defeated){
 			//Prevent from death:

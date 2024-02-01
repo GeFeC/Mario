@@ -29,6 +29,7 @@ static auto run_green_mushroom_controller(MushroomState& mushroom, LevelState& l
     points.set_active("+1 HP", mushroom.position);
 
     mushroom.disappear();
+		sounds::sounds[sounds::OneUp].play();
 
     level.stats.hp++;
   }
@@ -45,6 +46,7 @@ static auto run_red_mushroom_controller(MushroomState& mushroom, LevelState& lev
     mushroom.spawn_points(1);
   
     mushroom.disappear();
+		sounds::sounds[sounds::MushroomEat].play();
 
     if (player.growth == PlayerState::Growth::Small){
    		player.is_growing_up = true;

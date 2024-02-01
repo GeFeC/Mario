@@ -7,9 +7,13 @@
 #include "Controllers/PointsParticlesController.hpp"
 #include "States/QBlockState.hpp"
 
+#include "res/sounds.hpp"
+
 namespace mario::pusher_controller{
 
 static auto push_out(CoinPusherState& pusher, LevelState& level){
+	sounds::sounds[sounds::Coin].play();
+
   auto& coin = pusher.active_coin();
   auto block_pos = coin.position;
   

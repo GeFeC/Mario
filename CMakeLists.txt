@@ -6,7 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-file(GLOB_RECURSE sources src/*.cpp src/glad.c)
+file(GLOB_RECURSE sources 
+	src/*.cpp 
+	src/glad.c
+)
 
 add_executable(${PROJECT_NAME} ${sources})
 

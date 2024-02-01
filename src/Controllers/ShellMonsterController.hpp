@@ -1,12 +1,9 @@
 #pragma once
 
 #include "Controllers/MonsterController.hpp"
-#include "Controllers/PointsParticlesController.hpp"
 #include "States/EntityState.hpp"
 #include "States/MonsterState.hpp"
 #include "States/LevelState.hpp"
-#include "res/textures.hpp"
-#include "config.hpp"
 
 namespace mario::shell_monster_controller{
 
@@ -17,6 +14,16 @@ static auto run(
 ){
   entity_controller::handle_gravity(entity, level);
   entity_controller::handle_movement(entity, level);
+
+	if (
+		entity.total_speed() == 0.f && 
+		entity.in_shell && 
+		entity.walk_speed > 0.f && 
+		entity_controller::is_player_nearby(entity, level.player)
+	){
+		sounds::sounds[sounds::Blockhit].play();
+	}
+
   monster_controller::handle_turning_around(entity);
 
   monster_controller::handle_points_particles(entity);
@@ -54,6 +61,7 @@ static auto push_shell_on_player_touch(
 
   if (entity.position.y > player.position.y + 10.f){
     entity.spawn_points(player.mobs_killed_in_row);
+		sounds::sounds[sounds::Stomp].play();
 
     const auto total_reward = entity.reward_for_killing * player.mobs_killed_in_row;
     level.stats.score += total_reward;

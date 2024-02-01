@@ -27,6 +27,7 @@ static auto run_controller(CannonState& cannon, LevelState& level){
 			: util::Direction::right();
 
 		new_bullet.set_direction(fly_direction);
+		sounds::sounds[sounds::BulletBill].play();
 	}
 
 	//Bullets controller:

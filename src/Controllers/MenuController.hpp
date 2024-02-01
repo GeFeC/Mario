@@ -6,6 +6,8 @@
 #include "Input.hpp"
 #include "Util/Enum.hpp"
 
+#include "res/sounds.hpp"
+
 namespace mario::menu_controller{
 
 static auto run_player_controller(PlayerState& player){
@@ -18,6 +20,8 @@ static auto run_input_controller(AppState& app){
 		(menu.current_option | util::as<int>) == menu.options.size() - 1;
 
 	if (input::key_down.clicked()){
+		sounds::sounds[sounds::Blockhit].play();
+
 		if (is_last_option) {
 			menu.current_option = MenuState::Option::First;
 			return;
@@ -29,6 +33,8 @@ static auto run_input_controller(AppState& app){
 	const auto is_first_option = (menu.current_option | util::as<int>) == 0;
 
 	if (input::key_up.clicked()){
+		sounds::sounds[sounds::Blockhit].play();
+
 		if (is_first_option){
 			menu.current_option = (menu.options.size() - 1) | util::as<MenuState::Option>;
 			return;
@@ -56,6 +62,7 @@ static auto run_main_menu_controller(AppState& app){
 		}
 
 		app.current_frame = level_index | util::as<AppState::Frame>;
+		sounds::sounds[sounds::Coin].play();
 	}
 
 	if (menu.current_option == MenuState::Option::Controls){
@@ -124,6 +131,7 @@ static auto run_new_game_menu_controller(AppState& app){
 	}
 
 	app.current_frame = AppState::Frame::Level11;
+	sounds::sounds[sounds::Coin].play();
 }
 
 static auto run_controls_menu_controller(AppState& app){
@@ -168,8 +176,14 @@ static auto update_controls(AppState& app){
 			return;
 		}
 
+		sounds::sounds[sounds::Coin].play();
+
 		if (window::last_pressed_key == GLFW_KEY_DOWN){
 			input::key_down.clickable = false;
+		}
+
+		if (window::last_pressed_key == GLFW_KEY_UP){
+			input::key_up.clickable = false;
 		}
 
 		menu.controls_change_mode = false;

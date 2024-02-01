@@ -36,7 +36,13 @@ static auto run_controller(BlackPlantState& plant, LevelState& level){
   if (plant.offset >= PlantState::MaxOffset){
     plant.shot_counter.run(window::delta_time);
 
-    if (plant.shot_counter.int_value() == 1 && !plant.was_hit){
+    if (
+			entity_controller::is_player_nearby(plant, level.player) && 
+			plant.shot_counter.int_value() == 1 && 
+			!plant.was_hit
+		){
+			sounds::sounds[sounds::Shot].play();
+
       plant.fireball_generator.make_item_if_needed();
       auto& fireball = plant.fireball_generator.item();
 

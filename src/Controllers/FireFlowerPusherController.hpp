@@ -3,6 +3,7 @@
 #include "Controllers/FireFlowerController.hpp"
 #include "States/FireFlowerPusherState.hpp"
 #include "States/LevelState.hpp"
+#include "res/sounds.hpp"
 
 namespace mario::pusher_controller{
 
@@ -11,6 +12,7 @@ static auto push_out(FireFlowerPusherState& pusher, LevelState& level){
 
   flower.should_be_pushed_out = true;
   flower.is_visible = true;
+	sounds::sounds[sounds::MushroomAppear].play();
 }
 
 static auto run(FireFlowerPusherState& pusher, LevelState& level){

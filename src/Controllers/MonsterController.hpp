@@ -4,6 +4,8 @@
 #include "Controllers/PointsParticlesController.hpp"
 #include "Controllers/FireballController.hpp"
 
+#include "res/sounds.hpp"
+
 namespace mario::monster_controller{
 
 template<typename GenericMonster>
@@ -13,6 +15,8 @@ static auto throw_fireball(GenericMonster& monster, LevelState& level){
 		fireball_controller::reset(monster.fireball);
 	}
 
+	if (!entity_controller::is_player_nearby(monster, level.player)) return;
+	if (monster.was_hit) return;
 	if (monster.in_shell) return;
 	if (!monster.is_active) return;
 
@@ -29,6 +33,7 @@ static auto throw_fireball(GenericMonster& monster, LevelState& level){
 			monster.direction, 
 			PlayerState::FireballSpeed
 		);
+		sounds::sounds[sounds::Fireball].play();
 	}
 }
 
@@ -69,6 +74,7 @@ static auto die_when_stomped(
   auto& stats = level.stats;
 
   if (entity_controller::was_stomped(entity, player)){
+		sounds::sounds[sounds::Stomp].play();
     set_entity_dead();
 
 		player.is_on_ground = false;
@@ -123,6 +129,8 @@ static auto bounce_out(MonsterState& entity){
 }
 
 static auto bounce_die(MonsterState& entity, StatsState& stats){
+	sounds::sounds[sounds::Shot].play();
+
   entity.was_hit = true;
   bounce_out(entity);
 

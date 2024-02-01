@@ -7,6 +7,7 @@
 #include "States/EntityState.hpp"
 
 #include "res/textures.hpp"
+#include "res/sounds.hpp"
 #include "Input.hpp"
 
 #include <GLFW/glfw3.h>
@@ -39,6 +40,7 @@ static auto handle_swimming(PlayerState& player, LevelState& level){
       player.gravity = PlayerState::SwimPower;
       player.is_on_ground = false;
       player.swim_cooldown = true;
+			sounds::sounds[sounds::Stomp].play();
     }
   }();
 
@@ -56,6 +58,13 @@ static auto handle_jumping(PlayerState& player, LevelState& level){
     player.gravity = PlayerState::JumpPower;
     player.is_on_ground = false;
     player.jump_cooldown = true;
+		
+		if (player.growth == PlayerState::Growth::Small){
+			sounds::sounds[sounds::Jump].play();
+		}
+		else{
+			sounds::sounds[sounds::Jumpbig].play();
+		}
   }
 
   detect_collision_above(player, level);
@@ -135,7 +144,7 @@ static auto shrink(PlayerState& player){
     player.is_squating = false;
     player.growth_counter.reset();
 
-    player.invincibility_delay = 2.f; //2 Seconds
+    player.invincibility_delay = 2.f;
   }
 }
 
@@ -247,7 +256,13 @@ static auto handle_textures(PlayerState& player, const LevelState& level){
   }
 }
 
-static auto handle_death(PlayerState& player){
+static auto fell_out(const PlayerState& player, const LevelState& level){
+  return player.gravity_flip.is_flipped()
+    ? player.position.y < level.camera_offset.y - BlockBase::Size
+    : player.position.y > level.camera_offset.y + LevelState::BlocksInColumn * BlockBase::Size;
+}
+
+static auto handle_death(PlayerState& player, const LevelState& level){
   if (player.is_dead && player.death_delay > 0.f){
     player.death_delay -= window::delta_time;
   }
@@ -255,7 +270,9 @@ static auto handle_death(PlayerState& player){
   static constexpr auto VerySmallValue = -1000.f;
 
   if (player.death_delay == util::in_range(VerySmallValue, 0.f)){
-    player.gravity = PlayerState::DeathBouncePower;
+		if (!fell_out(player, level)){
+			player.gravity = PlayerState::DeathBouncePower;
+		}
     player.death_delay = VerySmallValue - 1;
   }
 }
@@ -315,6 +332,7 @@ static auto handle_fireballs(PlayerState& player, const LevelState& level){
 
   const auto fireball_position = player.position + player.size / 2.f - fireball.size / 2.f;
   fireball.shoot(fireball_position, player.direction, PlayerState::FireballSpeed);
+	sounds::sounds[sounds::Fireball].play();
 }
 
 static auto can_use_stored_mushroom(PlayerState& player, LevelState& level){
@@ -332,6 +350,7 @@ static auto run(PlayerState& player, LevelState& level){
 	else if (input::controls[input::UseMushroom].clicked() && can_use_stored_mushroom(player, level)){
 		player.is_growing_up = true;
 		level.stats.stored_mushrooms--;
+		sounds::sounds[sounds::MushroomEat].play();
 	}
 	else if (player.is_growing_up){
     grow(player);
@@ -356,7 +375,7 @@ static auto run(PlayerState& player, LevelState& level){
     handle_invincibility(player);
     handle_fireballs(player, level);
 
-    handle_death(player);
+    handle_death(player, level);
   } 
 
   update_growth(player);
