@@ -128,13 +128,15 @@ static auto bounce_out(MonsterState& entity){
   entity.vertical_flip = util::Flip::flip();
 }
 
-static auto bounce_die(MonsterState& entity, StatsState& stats){
-	sounds::sounds[sounds::Shot].play();
+static auto bounce_die(MonsterState& entity, LevelState& level){
+	if (entity_controller::is_player_nearby(entity, level.player)){
+		sounds::sounds[sounds::Shot].play();
+	}
 
   entity.was_hit = true;
   bounce_out(entity);
 
-  stats.score += entity.reward_for_killing;
+  level.stats.score += entity.reward_for_killing;
   entity.spawn_points();
 }
 
@@ -153,7 +155,7 @@ static auto react_when_hit_by_fireball(MonsterState& entity, LevelState& level, 
 
 static auto die_when_hit_by_fireball(MonsterState& entity, LevelState& level){
   react_when_hit_by_fireball(entity, level, [&](FireballState& fireball){
-    bounce_die(entity, level.stats);
+    bounce_die(entity, level);
 
     fireball.acceleration.left = fireball.acceleration.right = 0.f;
   });
@@ -199,7 +201,7 @@ static auto react_when_on_bouncing_block(
 
 static auto die_when_on_bouncing_block(MonsterState& entity, LevelState& level){
   monster_controller::react_when_on_bouncing_block(entity, level, [&]{
-    bounce_die(entity, level.stats);
+    bounce_die(entity, level);
   });
 }
 

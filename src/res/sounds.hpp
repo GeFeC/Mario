@@ -49,7 +49,7 @@ static auto init(){
 	sounds[UnderwaterFast] = Sound("underwater-fast.wav");
 	sounds[Underworld] = Sound("underground.wav");
 	sounds[UnderworldFast] = Sound("underground-fast.wav");
-	sounds[Castle] = Sound("castle.wav");
+	sounds[Castle] = Sound("castle.mp3");
 	sounds[Blockbreak] = Sound("blockbreak.wav");
 	sounds[Blockhit] = Sound("blockhit.wav");
 	sounds[Coin] = Sound("coin.wav");

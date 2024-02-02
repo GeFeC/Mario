@@ -377,6 +377,7 @@ static auto run(AppState& app){
   if (level.stats.coins >= CoinsToGetHP) {
     level.stats.coins -= CoinsToGetHP;
     level.stats.hp++;
+		sounds::sounds[sounds::OneUp].play();
   }
 
   //Camera

@@ -20,7 +20,7 @@ static auto run_controller(BowserState& bowser, LevelState& level){
 			bowser.hp--;
 			
 			if (bowser.hp == 0 && !bowser.was_hit){
-				monster_controller::bounce_die(bowser, level.stats);
+				monster_controller::bounce_die(bowser, level);
 			}
 
 			bowser.is_highlighted = true;

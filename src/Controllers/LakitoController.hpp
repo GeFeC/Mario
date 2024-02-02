@@ -39,7 +39,7 @@ namespace mario{
 static auto run_controller(LakitoState& lakito, LevelState& level){
   monster_controller::become_active_when_seen(lakito, level);
   monster_controller::die_when_stomped(lakito, level, [&]{
-    monster_controller::bounce_die(lakito, level.stats);
+    monster_controller::bounce_die(lakito, level);
   });
   monster_controller::handle_points_particles(lakito);
   monster_controller::die_when_hit_by_fireball(lakito, level);

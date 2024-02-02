@@ -134,7 +134,7 @@ static auto handle_shell(
   auto shell_kill_entity = [&](MonsterState& target_entity){
     if (!did_hit_monster_with_shell(entity, target_entity)) return;
 
-    monster_controller::bounce_die(target_entity, level.stats);
+    monster_controller::bounce_die(target_entity, level);
   };
 
   //Killing Entities with shell
